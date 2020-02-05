@@ -2,7 +2,7 @@
 
 ;;; Commentary:
 
-;; Copyright (C) 2019 
+;; Copyright (C) 2019
 ;; Author:  Toby Slight
 
 ;;; Code:
@@ -63,8 +63,8 @@
 (setf epa-pinentry-mode 'loopback)
 
 (setq erc-autojoin-channels-alist '(("freenode.net"
-                                     "#org-mode"
-                                     "#emacs")))
+				     "#org-mode"
+				     "#emacs")))
 (setq erc-fill-column 80)
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 (setq erc-input-line-position -2)
@@ -104,13 +104,12 @@
 (setq css-indent-offset 2)
 (setq js-indent-level 2)
 
-(recentf-mode 1)
 (setq recentf-exclude '(".*init\.el"
-                        ".*\/my-.*\.el"
-                        "^/var/folders\\.*"
-                        "COMMIT_EDITMSG\\'"
-                        ".*-autoloads\\.el\\'"
-                        "[/\\]\\.elpa/"))
+			".*\/my-.*\.el"
+			"^/var/folders\\.*"
+			"COMMIT_EDITMSG\\'"
+			".*-autoloads\\.el\\'"
+			"[/\\]\\.elpa/"))
 (setq recentf-max-menu-items 128)
 (setq recentf-max-saved-items 256)
 

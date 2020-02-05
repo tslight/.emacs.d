@@ -1,4 +1,4 @@
-;;; my-dired.el ---
+;;; my-dired.el --- My Dired
 
 ;;; Commentary:
 
@@ -7,7 +7,6 @@
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
-
 (require 'dired-x)
 (require 'dired)
 (require 'find-dired)

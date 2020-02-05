@@ -1,13 +1,12 @@
-;;; my-advice.el ---
+;;; my-advice.el --- My Advice
 
 ;;; Commentary:
 
-;; Copyright (C) 2019 
+;; Copyright (C) 2019
 ;; Author:  Toby Slight
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
-
 (defadvice align-regexp (around align-regexp-with-spaces activate)
   "Force alignment commands to use spaces, not tabs."
   (let ((indent-tabs-mode nil))

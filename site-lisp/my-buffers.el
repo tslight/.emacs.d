@@ -1,13 +1,12 @@
-;;; my-buffers.el ---
+;;; my-buffers.el --- My Buffers
 
 ;;; Commentary:
 
-;; Copyright (C) 2019 
+;; Copyright (C) 2019
 ;; Author:  Toby Slight
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
-
 (defun my/fill-buffer ()
   "Fill the contents of a buffer."
   (interactive)
@@ -76,10 +75,10 @@
 (define-key my/keymap (kbd "M-s s") 'my/search-all-)
 (define-key my/keymap
   (kbd "C-c t m") '(lambda () (interactive)
-                     (my/toggle-buffer "*Messages*")))
+		     (my/toggle-buffer "*Messages*")))
 (define-key my/keymap
   (kbd "C-c t s") '(lambda () (interactive)
-                     (my/toggle-buffer "*scratch*")))
+		     (my/toggle-buffer "*scratch*")))
 
 (provide 'my-buffers)
 ;;; my-buffers.el ends here

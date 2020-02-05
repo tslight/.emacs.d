@@ -1,4 +1,4 @@
-;;; my-edits.el ---
+;;; my-edits.el --- My Edits
 
 ;;; Commentary:
 
@@ -7,7 +7,6 @@
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
-
 (defun my/align-symbol (begin end symbol)
   "Align any SYMBOL in region (between BEGIN and END)."
   (interactive "r\nsEnter align symbol: ")
@@ -474,5 +473,4 @@ argument."
 ;; (add-hook 'before-save-hook 'my/remove-ctrl-m)
 
 (provide 'my-edits)
-
 ;;; my-edits.el ends here

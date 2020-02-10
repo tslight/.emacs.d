@@ -1,39 +1,15 @@
-;;; my-dired.el --- My Dired
+;;; my-dired.el ---
 
 ;;; Commentary:
 
-;; Copyright (C) 2019
-;; Author:  Toby Slight
+;; Copyright (C) 2020 Toby Slight
+;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
 (require 'dired-x)
 (require 'dired)
 (require 'find-dired)
-
-(autoload 'dired-jump "dired-x" t)
-(setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
-(when (eq system-type 'berkeley-unix)
-  (progn
-    (setq dired-listing-switches "-alhpL")))
-(setq dired-dwim-target t)
-(setq dired-use-ls-dired nil)
-;; (setq dired-omit-mode t)
-;; (setq-default dired-omit-files-p t) ; Buffer-local variable
-(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
-(setq dired-recursive-copies 'always)
-(setq dired-recursive-deletes 'always)
-
-(defvar dired-compress-files-alist
-  '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
-    ("\\.zip\\'" . "zip %o -r --filesync %i"))
-  " Control the compression shell command for
-  `dired-do-compress-to'.  Each element is (REGEXP . CMD), where
-  REGEXP is the name of the archive to which you want to
-  compress, and CMD the the corresponding command.
-
-  Within CMD, %i denotes the input file(s), and %o denotes the
-  output file.  %i path(s) are relative, while %o is absolute.")
 
 (defun my/dired-get-size ()
   "Get cumlative size of marked or current item."
@@ -110,6 +86,30 @@
 	(view-file file))
       (other-window -1))))
 
+;; Settings
+(autoload 'dired-jump "dired-x" t)
+(setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
+(when (eq system-type 'berkeley-unix)
+  (progn
+    (setq dired-listing-switches "-alhpL")))
+(setq dired-dwim-target t)
+(setq dired-use-ls-dired nil)
+;; (setq dired-omit-mode t)
+;; (setq-default dired-omit-files-p t) ; Buffer-local variable
+(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
+
+(defvar dired-compress-files-alist
+  '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
+    ("\\.zip\\'" . "zip %o -r --filesync %i"))
+  " Control the compression shell command for
+    `dired-do-compress-to'.  Each element is (REGEXP . CMD), where
+    REGEXP is the name of the archive to which you want to compress,
+    and CMD the the corresponding command.
+    Within CMD, %i denotes the input file(s), and %o denotes the
+    output file.  %i path(s) are relative, while %o is absolute.")
+
 (define-key my/keymap (kbd "C-x M-d") 'list-directory)
 (define-key my/keymap (kbd "C-x C-d") 'dired)
 (define-key my/keymap (kbd "C-x d") 'dired-jump)
@@ -119,13 +119,16 @@
 (define-key dired-mode-map "b" (lambda () (interactive (find-alternate-file ".."))))
 (define-key dired-mode-map "f" 'dired-find-alternate-file)
 (define-key dired-mode-map "c" 'dired-do-compress-to)
-(define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
-(define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
 (define-key dired-mode-map "?" 'my/dired-get-size)
 (define-key dired-mode-map "s" 'my/dired-sort)
 (define-key dired-mode-map (kbd "C-RET") 'my/dired-get-size)
 (define-key dired-mode-map (kbd "o") 'my/dired-view-current)
 (define-key dired-mode-map (kbd "C-o") 'dired-find-file-other-window)
+
+(define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
+(define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
+
+(add-hook 'dired-mode-hook 'hl-line-mode)
 
 (provide 'my-dired)
 ;;; my-dired.el ends here

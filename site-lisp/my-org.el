@@ -2,13 +2,29 @@
 
 ;;; Commentary:
 
-;; Copyright (C) 2019 
-;; Author:  Toby Slight
+;; Copyright (C) 2020 Toby Slight
+;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
-
 (require 'org)
+
+(defun my/org-recursive-sort ()
+  "Sort all entries in the current buffer, recursively."
+  (interactive)
+  (org-map-entries
+   (lambda ()
+     (condition-case x
+	 (org-sort-entries nil ?a)
+       (user-error)))))
+
+(defun my/org-tangle-block ()
+  "Only tangle the block at point."
+  (interactive)
+  (let ((current-prefix-arg '(4)))
+    (call-interactively 'org-babel-tangle)))
+
+;; Settings
 (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
 (setq org-emphasis-regexp-components '(" \t('\"{" "- \t.,:!?;'\")}\\" " \t\r\n,\"'" "." 300))
 (setq org-confirm-babel-evaluate t)
@@ -28,7 +44,7 @@
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 (setq org-refile-targets '((nil :maxlevel . 9)))
 (setq org-speed-commands-user (quote (("N" . org-down-element)
-                                      ("P" . org-up-element))))
+				      ("P" . org-up-element))))
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
 (setq org-src-window-setup 'current-window)
@@ -38,66 +54,59 @@
 
 (setq org-capture-templates
       '(("t" "TODO Entry"
-         entry (file+headline "~/org/todo.org" "CURRENT")
-         "* TODO %?\n  %i\n  %a")
-        ("j" "Journal Entry"
-         entry (file+datetree "~/org/journal.org" "JOURNAL")
-         "* %?\nEntered on %U\n  %i\n  %a")
-        ("h" "Health Note"
-         entry (file+headline "~/org/notes.org" "HEALTH")
-         "* %?\n  %i\n  %a")
-        ("m" "Misc Note"
-         entry (file+headline "~/org/notes.org" "MISC")
-         "* %?\n  %i\n  %a")
-        ("M" "Mathematics Note"
-         entry (file+headline "~/org/notes.org" "MATHEMATICS")
-         "* %?\n  %i\n  %a")
-        ("P" "Philosophy Note"
-         entry (file+headline "~/org/notes.org" "PHILOSOPHY")
-         "* %?\n  %i\n  %a")
-        ("p" "Programming Note"
-         entry (file+headline "~/org/notes.org" "PROGRAMMING")
-         "* %?\n  %i\n  %a")
-        ("s" "Sysadmin Note"
-         entry (file+headline "~/org/notes.org" "SYSADMIN")
-         "* %?\n  %i\n  %a")
-        ("w" "Webadmin Note"
-         entry (file+headline "~/org/notes.org" "WEBADMIN")
-         "* %?\n  %i\n  %a")))
+	 entry (file+headline "~/org/todo.org" "CURRENT")
+	 "* TODO %?\n  %i\n  %a")
+	("j" "Journal Entry"
+	 entry (file+datetree "~/org/journal.org" "JOURNAL")
+	 "* %?\nEntered on %U\n  %i\n  %a")
+	("h" "Health Note"
+	 entry (file+headline "~/org/notes.org" "HEALTH")
+	 "* %?\n  %i\n  %a")
+	("m" "Misc Note"
+	 entry (file+headline "~/org/notes.org" "MISC")
+	 "* %?\n  %i\n  %a")
+	("M" "Mathematics Note"
+	 entry (file+headline "~/org/notes.org" "MATHEMATICS")
+	 "* %?\n  %i\n  %a")
+	("P" "Philosophy Note"
+	 entry (file+headline "~/org/notes.org" "PHILOSOPHY")
+	 "* %?\n  %i\n  %a")
+	("p" "Programming Note"
+	 entry (file+headline "~/org/notes.org" "PROGRAMMING")
+	 "* %?\n  %i\n  %a")
+	("s" "Sysadmin Note"
+	 entry (file+headline "~/org/notes.org" "SYSADMIN")
+	 "* %?\n  %i\n  %a")
+	("w" "Webadmin Note"
+	 entry (file+headline "~/org/notes.org" "WEBADMIN")
+	 "* %?\n  %i\n  %a")))
 
 (add-to-list 'org-structure-template-alist
-             '("C" "#+BEGIN_SRC c\n?\n#+END_SRC"
-               "<src lang=\"c\">\n\n</src>"))
+	     '("C" "#+BEGIN_SRC c\n?\n#+END_SRC"
+	       "<src lang=\"c\">\n\n</src>"))
 (add-to-list 'org-structure-template-alist
-             '("cl" "#+BEGIN_SRC common-lisp\n?\n#+END_SRC"
-               "<src lang=\"common-lisp\">\n\n</src>"))
+	     '("cl" "#+BEGIN_SRC common-lisp\n?\n#+END_SRC"
+	       "<src lang=\"common-lisp\">\n\n</src>"))
 (add-to-list 'org-structure-template-alist
-             '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"
-               "<src lang=\"emacs-lisp\">\n\n</src>"))
+	     '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"
+	       "<src lang=\"emacs-lisp\">\n\n</src>"))
 (add-to-list 'org-structure-template-alist
-             '("j" "#+BEGIN_SRC java\n?\n#+END_SRC"
-               "<src lang=\"java\">\n\n</src>"))
+	     '("j" "#+BEGIN_SRC java\n?\n#+END_SRC"
+	       "<src lang=\"java\">\n\n</src>"))
 (add-to-list 'org-structure-template-alist
-             '("py" "#+BEGIN_SRC python\n?\n#+END_SRC"
-               "<src lang=\"python\">\n\n</src>"))
+	     '("py" "#+BEGIN_SRC python\n?\n#+END_SRC"
+	       "<src lang=\"python\">\n\n</src>"))
 (add-to-list 'org-structure-template-alist
-             '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"
-               "<src lang=\"sh\">\n\n</src>"))
+	     '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"
+	       "<src lang=\"sh\">\n\n</src>"))
 
-(defun my/org-recursive-sort ()
-  "Sort all entries in the current buffer, recursively."
-  (interactive)
-  (org-map-entries
-   (lambda ()
-     (condition-case x
-         (org-sort-entries nil ?a)
-       (user-error)))))
+(define-key my/keymap (kbd "C-c o a") 'org-agenda)
+(define-key my/keymap (kbd "C-c o c") 'org-capture)
 
-(defun my/org-tangle-block()
-  "Only tangle the block at point."
-  (interactive)
-  (let ((current-prefix-arg '(4)))
-    (call-interactively 'org-babel-tangle)))
+(define-key org-mode-map (kbd "C-c M-l") 'org-store-link)
+
+(add-hook 'org-mode-hook 'auto-fill-mode)
+(add-hook 'org-mode-hook 'hl-line-mode)
 
 (provide 'my-org)
 ;;; my-org.el ends here

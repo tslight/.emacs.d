@@ -1,9 +1,9 @@
-;;; my-edits.el --- My Edits
+;;; my-edits.el ---
 
 ;;; Commentary:
 
-;; Copyright (C) 2019
-;; Author:  Toby Slight
+;; Copyright (C) 2020 Toby Slight
+;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
@@ -466,11 +466,9 @@ argument."
 (define-key isearch-mode-map (kbd "C-w") 'my/copy-isearch-match)
 (define-key isearch-mode-map (kbd "M-w") 'my/kill-isearch-match)
 
-(add-hook 'after-save-hook 'my/auto-recompile)
-(add-hook 'find-file-hook 'my/hide-dos-eol)
-;; (add-hook 'before-save-hook 'my/convert-to-unix-coding-system)
 (add-hook 'before-save-hook 'my/push-mark-no-activate)
-;; (add-hook 'before-save-hook 'my/remove-ctrl-m)
+;; (add-hook 'after-save-hook 'my/auto-recompile)
+(add-hook 'find-file-hook 'my/hide-dos-eol)
 
 (provide 'my-edits)
 ;;; my-edits.el ends here

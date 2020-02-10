@@ -1,9 +1,9 @@
-;;; my-advice.el --- My Advice
+;;; my-advice.el ---
 
 ;;; Commentary:
 
-;; Copyright (C) 2019
-;; Author:  Toby Slight
+;; Copyright (C) 2020 Toby Slight
+;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
@@ -17,8 +17,8 @@
   (mapc #'disable-theme custom-enabled-themes))
 
 (defadvice term-handle-exit (after term-kill-buffer-on-exit activate)
-    "Kill term when shell exits."
-    (kill-buffer))
+  "Kill term when shell exits."
+  (kill-buffer))
 
 (defadvice text-scale-increase (around all-buffers (arg) activate)
   "Make all buffers increase font size with `text-scale-increase'."

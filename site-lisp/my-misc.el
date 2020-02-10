@@ -2,12 +2,11 @@
 
 ;;; Commentary:
 
-;; Copyright (C) 2019 
-;; Author:  Toby Slight
+;; Copyright (C) 2020 Toby Slight
+;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
-
 (defun my/substring (substring string)
   "Returns SUBSTRING of a STRING."
   (let ((regex (concat  ".*\\(" substring "\\).*")))
@@ -31,9 +30,9 @@
   in quotes."
   (interactive "P")
   (let ((query
-         (if (region-active-p)
-             (buffer-substring (region-beginning) (region-end))
-           (read-string "Query: "))))
+	 (if (region-active-p)
+	     (buffer-substring (region-beginning) (region-end))
+	   (read-string "Query: "))))
     (when arg (setq query (concat "\"" query "\"")))
     (browse-url
      (concat "http://www.google.com/search?ie=utf-8&oe=utf-8&q=" query))))
@@ -47,28 +46,28 @@ path.  The ansi-term buffer is named based on NAME."
   (unless name (setq name "ansi-term"))
   (ansi-term "/bin/bash" name)
   (let ((path (replace-regexp-in-string "^file:" "" path))
-        (cd-str
-         "fn=%s; if test ! -d $fn; then fn=$(dirname $fn); fi; cd $fn;")
-        (bufname (concat "*" name "*" )))
+	(cd-str
+	 "fn=%s; if test ! -d $fn; then fn=$(dirname $fn); fi; cd $fn;")
+	(bufname (concat "*" name "*" )))
     (if (tramp-tramp-file-p path)
-        (let ((tstruct (tramp-dissect-file-name path)))
-          (cond
-           ((equal (tramp-file-name-method tstruct) "ssh")
-            (process-send-string bufname (format
-                                          (concat  "ssh -t %s '"
-                                                   cd-str
-                                                   "exec bash'; exec bash; clear\n")
-                                          (tramp-file-name-host tstruct)
-                                          (tramp-file-name-localname tstruct))))
-           (t (error "Not implemented for method %s"
-                     (tramp-file-name-method tstruct)))))
+	(let ((tstruct (tramp-dissect-file-name path)))
+	  (cond
+	   ((equal (tramp-file-name-method tstruct) "ssh")
+	    (process-send-string bufname (format
+					  (concat  "ssh -t %s '"
+						   cd-str
+						   "exec bash'; exec bash; clear\n")
+					  (tramp-file-name-host tstruct)
+					  (tramp-file-name-localname tstruct))))
+	   (t (error "Not implemented for method %s"
+		     (tramp-file-name-method tstruct)))))
       (process-send-string bufname (format (concat cd-str " exec bash;clear\n")
-                                           path)))))
-
-(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+					   path)))))
 
 (define-key my/keymap (kbd "C-c G") 'my/google)
 (define-key my/keymap (kbd "C-x t") 'my/switch-to-ansi-term)
+
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
 (provide 'my-misc)
 ;;; my-misc.el ends here

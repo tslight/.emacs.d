@@ -2,19 +2,21 @@
 
 ;;; Commentary:
 
-;; Copyright (C) 2019
-;; Author:  Toby Slight
+;; Copyright (C) 2020 Toby Slight
+;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
 (require 'ido)
-(setq ido-use-virtual-buffers 'auto) ;; show recent files too
+
+(setq ido-use-virtual-buffers 't) ;; show recent files too
 (setq ido-auto-merge-work-directories-length -1)
 (setq ido-create-new-buffer 'always)
 (setq ido-enable-prefix t)
 (setq ido-enable-flex-matching 't)
 (setq ido-everywhere t)
-(setq ido-use-filename-at-point 't)
+(setq ido-use-filename-at-point 'ffap-guesser)
+
 (setq ido-decorations (quote ("\n--> "
 			      " "
 			      "\n    "
@@ -51,7 +53,7 @@
   (define-key ido-completion-map (kbd "C-p") 'ido-prev-match))
 
 (define-key my/keymap (kbd "C-c r") 'my/ido-find-recentf)
-(define-key my/keymap (kbd "M-y") 'my/ido-kill-ring)
+(define-key my/keymap (kbd "C-M-y") 'my/ido-kill-ring)
 (define-key my/keymap (kbd "M-x") (lambda () (interactive)
 				    (call-interactively
 				     (intern
@@ -66,7 +68,7 @@
 (define-key icomplete-minibuffer-map (kbd "C-s") 'icomplete-forward-completions)
 (define-key icomplete-minibuffer-map (kbd "C-r") 'icomplete-backward-completions)
 
-(add-hook 'ido-minibuffer-setup-hook (lambda () (set	(make-local-variable 'truncate-lines) nil)))
+(add-hook 'ido-minibuffer-setup-hook (lambda () (set (make-local-variable 'truncate-lines) nil)))
 (add-hook 'ido-setup-hook (lambda () (define-key ido-completion-map [tab] 'ido-complete)))
 (add-hook 'ido-setup-hook 'my/ido-keys)
 

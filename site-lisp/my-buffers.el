@@ -1,9 +1,9 @@
-;;; my-buffers.el --- My Buffers
+;;; my-buffers.el ---
 
 ;;; Commentary:
 
-;; Copyright (C) 2019
-;; Author:  Toby Slight
+;; Copyright (C) 2020 Toby Slight
+;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
@@ -72,13 +72,9 @@
 (define-key my/keymap (kbd "C-c M-n") 'my/nuke-buffers)
 (define-key my/keymap (kbd "C-c s") 'my/save-buffers-silently)
 (define-key my/keymap (kbd "C-x k") 'my/kill-this-buffer)
-(define-key my/keymap (kbd "M-s s") 'my/search-all-)
-(define-key my/keymap
-  (kbd "C-c t m") '(lambda () (interactive)
-		     (my/toggle-buffer "*Messages*")))
-(define-key my/keymap
-  (kbd "C-c t s") '(lambda () (interactive)
-		     (my/toggle-buffer "*scratch*")))
+(define-key my/keymap (kbd "M-s s") 'my/search-all-buffers)
+(define-key my/keymap (kbd "C-c t m") '(lambda () (interactive) (my/toggle-buffer "*Messages*")))
+(define-key my/keymap (kbd "C-c t s") '(lambda () (interactive) (my/toggle-buffer "*scratch*")))
 
 (provide 'my-buffers)
 ;;; my-buffers.el ends here

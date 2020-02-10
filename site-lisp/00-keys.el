@@ -1,25 +1,12 @@
-;;; my-keys.el --- My Keys
+;;; 00-keys.el ---
 
 ;;; Commentary:
 
-;; This gives me ~bind*~ without have to have use-package installed.
-
-;; This needs to be in the ~init~ directory rather than the ~conf~
-;; directory, as those libraries depend on it.
-
-;; https://emacs.stackexchange.com/a/27943
-;; https://stackoverflow.com/a/683575
-;; https://emacs.stackexchange.com/a/358
-
-;; Copyright (C) 2019
-;; Author:  Toby Slight
+;; Copyright (C) 2020 Toby Slight
+;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
 ;; -*- lexical-binding: t; -*-
-
-;; Main use is to have my key bindings have the highest priority
-;; https://github.com/kaushalmodi/.emacs.d/blob/master/elisp/modi-mode.el
-
 (defvar my/keymap (make-sparse-keymap)
   "Keymap for `my/key-mode'.")
 
@@ -83,8 +70,6 @@
 (define-key my/keymap (kbd "C-c e r") 'eval-region)
 (define-key my/keymap (kbd "C-c e s") 'eshell)
 (define-key my/keymap (kbd "C-c i") 'imenu)
-(define-key my/keymap (kbd "C-c o a") 'org-agenda)
-(define-key my/keymap (kbd "C-c o c") 'org-capture)
 (define-key my/keymap (kbd "C-c t a") 'toggle-text-mode-autofill)
 (define-key my/keymap (kbd "C-c t d E") 'toggle-debug-on-entry)
 (define-key my/keymap (kbd "C-c t d e") 'toggle-debug-on-error)
@@ -124,5 +109,5 @@
 (define-key special-mode-map "f" #'widget-forward)
 (define-key special-mode-map "b" #'widget-backward)
 
-(provide 'my-keys)
-;;; my-keys.el ends here
+(provide '00-keys)
+;;; 00-keys.el ends here

@@ -1,13 +1,15 @@
-;;; my-org.el ---
+;;; my-org.el --- my-org  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Copyright (C) 2020 Toby Slight
-;; Author: Toby Slight tslight@pm.me
+;; Emacs Configuration
+
+;; Copyright: (C) 2020 Toby Slight
+;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; -*- lexical-binding: t; -*-
 (require 'org)
+(require 'org-tempo)
 
 (defun my/org-recursive-sort ()
   "Sort all entries in the current buffer, recursively."
@@ -15,7 +17,7 @@
   (org-map-entries
    (lambda ()
      (condition-case x
-	 (org-sort-entries nil ?a)
+         (org-sort-entries nil ?a)
        (user-error)))))
 
 (defun my/org-tangle-block ()
@@ -44,7 +46,7 @@
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 (setq org-refile-targets '((nil :maxlevel . 9)))
 (setq org-speed-commands-user (quote (("N" . org-down-element)
-				      ("P" . org-up-element))))
+                                      ("P" . org-up-element))))
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
 (setq org-src-window-setup 'current-window)
@@ -54,59 +56,82 @@
 
 (setq org-capture-templates
       '(("t" "TODO Entry"
-	 entry (file+headline "~/org/todo.org" "CURRENT")
-	 "* TODO %?\n  %i\n  %a")
-	("j" "Journal Entry"
-	 entry (file+datetree "~/org/journal.org" "JOURNAL")
-	 "* %?\nEntered on %U\n  %i\n  %a")
-	("h" "Health Note"
-	 entry (file+headline "~/org/notes.org" "HEALTH")
-	 "* %?\n  %i\n  %a")
-	("m" "Misc Note"
-	 entry (file+headline "~/org/notes.org" "MISC")
-	 "* %?\n  %i\n  %a")
-	("M" "Mathematics Note"
-	 entry (file+headline "~/org/notes.org" "MATHEMATICS")
-	 "* %?\n  %i\n  %a")
-	("P" "Philosophy Note"
-	 entry (file+headline "~/org/notes.org" "PHILOSOPHY")
-	 "* %?\n  %i\n  %a")
-	("p" "Programming Note"
-	 entry (file+headline "~/org/notes.org" "PROGRAMMING")
-	 "* %?\n  %i\n  %a")
-	("s" "Sysadmin Note"
-	 entry (file+headline "~/org/notes.org" "SYSADMIN")
-	 "* %?\n  %i\n  %a")
-	("w" "Webadmin Note"
-	 entry (file+headline "~/org/notes.org" "WEBADMIN")
-	 "* %?\n  %i\n  %a")))
+         entry (file+headline "~/org/todo.org" "CURRENT")
+         "* TODO %?\n  %i\n  %a")
+        ("j" "Journal Entry"
+         entry (file+datetree "~/org/journal.org" "JOURNAL")
+         "* %?\nEntered on %U\n  %i\n  %a")
+        ("h" "Health Note"
+         entry (file+headline "~/org/notes.org" "HEALTH")
+         "* %?\n  %i\n  %a")
+        ("m" "Misc Note"
+         entry (file+headline "~/org/notes.org" "MISC")
+         "* %?\n  %i\n  %a")
+        ("M" "Mathematics Note"
+         entry (file+headline "~/org/notes.org" "MATHEMATICS")
+         "* %?\n  %i\n  %a")
+        ("P" "Philosophy Note"
+         entry (file+headline "~/org/notes.org" "PHILOSOPHY")
+         "* %?\n  %i\n  %a")
+        ("p" "Programming Note"
+         entry (file+headline "~/org/notes.org" "PROGRAMMING")
+         "* %?\n  %i\n  %a")
+        ("s" "Sysadmin Note"
+         entry (file+headline "~/org/notes.org" "SYSADMIN")
+         "* %?\n  %i\n  %a")
+        ("w" "Webadmin Note"
+         entry (file+headline "~/org/notes.org" "WEBADMIN")
+         "* %?\n  %i\n  %a")))
 
-(add-to-list 'org-structure-template-alist
-	     '("C" "#+BEGIN_SRC c\n?\n#+END_SRC"
-	       "<src lang=\"c\">\n\n</src>"))
-(add-to-list 'org-structure-template-alist
-	     '("cl" "#+BEGIN_SRC common-lisp\n?\n#+END_SRC"
-	       "<src lang=\"common-lisp\">\n\n</src>"))
-(add-to-list 'org-structure-template-alist
-	     '("el" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"
-	       "<src lang=\"emacs-lisp\">\n\n</src>"))
-(add-to-list 'org-structure-template-alist
-	     '("j" "#+BEGIN_SRC java\n?\n#+END_SRC"
-	       "<src lang=\"java\">\n\n</src>"))
-(add-to-list 'org-structure-template-alist
-	     '("py" "#+BEGIN_SRC python\n?\n#+END_SRC"
-	       "<src lang=\"python\">\n\n</src>"))
-(add-to-list 'org-structure-template-alist
-	     '("sh" "#+BEGIN_SRC sh\n?\n#+END_SRC"
-	       "<src lang=\"sh\">\n\n</src>"))
+(add-to-list 'org-structure-template-alist '("cl" . "src common-lisp"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("go" . "src go"))
+(add-to-list 'org-structure-template-alist '("ja" . "src java"))
+(add-to-list 'org-structure-template-alist '("js" . "src javascript"))
+(add-to-list 'org-structure-template-alist '("kr" . "src c"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("sq" . "src sql"))
+(add-to-list 'org-structure-template-alist '("tx" . "src text"))
 
-(define-key my/keymap (kbd "C-c o a") 'org-agenda)
-(define-key my/keymap (kbd "C-c o c") 'org-capture)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((awk . t)
+   (C . t)
+   (clojure . t)
+   (css . t)
+   (dot . t) ;; graphviz language
+   (emacs-lisp . t)
+   (gnuplot . t)
+   (haskell . t)
+   ;; (http . t)
+   (java . t)
+   (js . t)
+   (latex . t)
+   (lisp . t)
+   (makefile . t)
+   (ocaml . t)
+   (perl . t)
+   (python . t)
+   (plantuml . t)
+   (ruby . t)
+   (scheme . t)
+   (sed . t)
+   (shell . t)
+   (sql . t)
+   (sqlite . t)))
 
-(define-key org-mode-map (kbd "C-c M-l") 'org-store-link)
+(my/bind-always "C-c o a" org-agenda)
+(my/bind-always "C-c o c" org-capture)
+(my/bind-always "C-c o l" org-store-link)
+(my/bind-always "C-c o t" org-time-stamp)
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (add-hook 'org-mode-hook 'hl-line-mode)
 
 (provide 'my-org)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; byte-compile-warnings: (not free-vars noruntime)
+;; End:
 ;;; my-org.el ends here

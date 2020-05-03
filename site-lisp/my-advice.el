@@ -1,12 +1,13 @@
-;;; my-advice.el ---
+;;; my-advice.el --- my-advice  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Copyright (C) 2020 Toby Slight
-;; Author: Toby Slight tslight@pm.me
+;; Emacs Configuration
+
+;; Copyright: (C) 2020 Toby Slight
+;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; -*- lexical-binding: t; -*-
 (defadvice align-regexp (around align-regexp-with-spaces activate)
   "Force alignment commands to use spaces, not tabs."
   (let ((indent-tabs-mode nil))
@@ -20,11 +21,9 @@
   "Kill term when shell exits."
   (kill-buffer))
 
-(defadvice text-scale-increase (around all-buffers (arg) activate)
-  "Make all buffers increase font size with `text-scale-increase'."
-  (dolist (buffer (buffer-list))
-    (with-current-buffer buffer
-      ad-do-it)))
-
 (provide 'my-advice)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; byte-compile-warnings: (not free-vars noruntime)
+;; End:
 ;;; my-advice.el ends here

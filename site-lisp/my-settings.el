@@ -1,19 +1,20 @@
-;;; my-settings.el ---
+;;; my-settings.el --- my-settings  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Copyright (C) 2020 Toby Slight
-;; Author: Toby Slight tslight@pm.me
+;; Emacs Configuration
+
+;; Copyright: (C) 2020 Toby Slight
+;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; -*- lexical-binding: t; -*-
 (setq abbrev-file-name (concat user-emacs-directory "abbrevs"))
 (setq save-abbrevs 'silently)
 
+(setq auto-window-vscroll nil)
+
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 (setq auto-save-timeout 5)
-
-(setq auto-window-vscroll nil)
 
 (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
 (setq backup-by-copying t) ;; copy files, don't rename them.
@@ -24,12 +25,15 @@
 (setq ring-bell-function 'ignore)
 (setq visible-bell 1)
 
-(setq mouse-yank-at-point t)
-
 (setq select-enable-clipboard t)
 (setq select-enable-primary t)
 (setq x-select-enable-clipboard-manager nil)
 (setq save-interprogram-paste-before-kill t)
+
+(setq display-line-numbers 'relative)
+
+(setq doc-view-continuous t)
+(setq doc-view-resolution 300)
 
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
@@ -54,9 +58,20 @@
 (setq set-mark-command-repeat-pop t) ;; repeating C-SPC after popping, pops it
 (show-paren-mode 1)
 
+(setq-default buffer-file-coding-system 'utf-8-unix)
+(setq-default default-buffer-file-coding-system 'utf-8-unix)
+(setq coding-system-for-read 'utf-8-unix)
+(setq coding-system-for-write 'utf-8-unix)
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8-unix)
+(prefer-coding-system 'utf-8-unix)
+
+(setq epa-file-cache-passphrase-for-symmetric-encryption t)
+(setf epa-pinentry-mode 'loopback)
+
 (setq erc-autojoin-channels-alist '(("freenode.net"
-				     "#org-mode"
-				     "#emacs")))
+                                     "#org-mode"
+                                     "#emacs")))
 (setq erc-fill-column 80)
 (setq erc-hide-list '("JOIN" "PART" "QUIT"))
 (setq erc-input-line-position -2)
@@ -70,7 +85,7 @@
 (setq eshell-where-to-jump 'begin)
 (setq eshell-review-quick-commands nil)
 (setq eshell-smart-space-goes-to-end t)
-(define-key my/keymap (kbd "C-c e s") 'eshell)
+(my/bind-always "C-c e s" eshell)
 
 ;; (require 'nnir)
 (setq gnus-init-file "~/.emacs.d/init.el")
@@ -89,64 +104,6 @@
 (global-highlight-changes-mode)
 (setq highlight-changes-visibility-initial-state nil)
 
-(setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
-
-(setq display-line-numbers 'relative)
-
-(setq epa-file-cache-passphrase-for-symmetric-encryption t)
-(setf epa-pinentry-mode 'loopback)
-
-(setq-default buffer-file-coding-system 'utf-8-unix)
-(setq-default default-buffer-file-coding-system 'utf-8-unix)
-(setq coding-system-for-read 'utf-8-unix)
-(setq coding-system-for-write 'utf-8-unix)
-(set-language-environment "UTF-8")
-(set-default-coding-systems 'utf-8-unix)
-(prefer-coding-system 'utf-8-unix)
-
-(setq compilation-scroll-output 'first-error)
-(setq custom-file (make-temp-file "emacs-custom"))
-(setq disabled-command-function nil) ;; enable all "advanced" features
-(setq message-log-max 10000)
-(setq apropos-do-all t) ;; doesn't seem to be documented anywhere..
-
-(setq user-full-name "Toby Slight")
-(setq user-mail-address "tslight@pm.me")
-
-(setq doc-view-continuous t)
-(setq doc-view-resolution 300)
-
-(setq c-default-style "bsd")
-(setq c-basic-offset 4)
-(setq css-indent-offset 2)
-(setq js-indent-level 2)
-
-(setq python-fill-docstring-style 'django)
-(setq fill-column 78)
-
-(recentf-mode 1)
-(setq recentf-exclude '(".*init\.el"
-			".*\/my-.*\.el"
-			"^/var/folders\\.*"
-			"COMMIT_EDITMSG\\'"
-			".*-autoloads\\.el\\'"
-			"[/\\]\\.elpa/"))
-(setq recentf-max-menu-items 128)
-(setq recentf-max-saved-items 256)
-
-(set-register ?h (cons 'file "~/"))
-(set-register ?s (cons 'file "~/src/"))
-(set-register ?j (cons 'file "~/src/tspub/"))
-(set-register ?a (cons 'file "~/src/tspub/etc/agnostic"))
-(set-register ?e (cons 'file "~/src/tspub/etc/emacs/"))
-(set-register ?l (cons 'file "~/src/tspub/etc/emacs/site-lisp"))
-(set-register ?o (cons 'file "~/src/tsprv/org/"))
-(set-register ?n (cons 'file "~/src/tsprv/org/work/notes.org"))
-(set-register ?t (cons 'file "~/src/tsprv/org/work/todo.org"))
-(set-register ?w (cons 'file "~/src/oe-developers/"))
-(set-register ?b (cons 'file "~/src/oe-developers/be/"))
-(set-register ?d (cons 'file "~/src/oe-developers/be/devops"))
-
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 (setq savehist-save-minibuffer-history 1)
@@ -156,14 +113,74 @@
 (save-place-mode 1)
 (setq save-place-file (concat user-emacs-directory "saveplace.el"))
 
+(setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
+
+(setq compilation-scroll-output 'first-error)
+(setq custom-file (make-temp-file "emacs-custom"))
+(setq disabled-command-function nil) ;; enable all "advanced" features
+(setq message-log-max 10000)
+(setq apropos-do-all t) ;; doesn't seem to be documented anywhere..
+
+(setq mouse-yank-at-point t)
+
+(setq c-default-style "bsd")
+(setq c-basic-offset 4)
+(setq css-indent-offset 2)
+(setq js-indent-level 2)
+
+(setq python-fill-docstring-style 'django)
+(setq fill-column 79)
+(when (executable-find "ipython")
+  (setq python-shell-interpreter "ipython"))
+
+(recentf-mode 1)
+(setq recentf-exclude '(".*init\.el"
+                        ".*\/my-.*\.el"
+                        "^/var/folders\\.*"
+                        "COMMIT_EDITMSG\\'"
+                        ".*-autoloads\\.el\\'"
+                        "[/\\]\\.elpa/"))
+(setq recentf-max-menu-items 128)
+(setq recentf-max-saved-items 256)
+
+(set-register ?h (cons 'file "~/"))
+(set-register ?s (cons 'file "~/src/"))
+(set-register ?j (cons 'file "~/src/gitlab/tspub/"))
+(set-register ?a (cons 'file "~/src/gitlab/tspub/etc/agnostic"))
+(set-register ?e (cons 'file "~/src/gitlab/tspub/etc/emacs/"))
+(set-register ?l (cons 'file "~/src/gitlab/tspub/etc/emacs/site-lisp"))
+(set-register ?o (cons 'file "~/src/gitlab/tsprv/org/"))
+(set-register ?n (cons 'file "~/src/gitlab/tsprv/org/work/notes.org"))
+(set-register ?t (cons 'file "~/src/gitlab/tsprv/org/work/todo.org"))
+(set-register ?w (cons 'file "~/src/oe-developers/"))
+(set-register ?b (cons 'file "~/src/oe-developers/be/"))
+(set-register ?d (cons 'file "~/src/oe-developers/be/devops"))
+
 (setq scroll-step 4)
 (setq scroll-margin 6)
 (setq scroll-conservatively 8)
+(setq scroll-preserve-screen-position t)
 
 (setq inhibit-startup-echo-area-message t)
 (setq inhibit-startup-screen t)
 (setq initial-scratch-message nil)
 (setq initial-major-mode 'fundamental-mode)
+
+;; make indent commands use space only (never tab character)
+;; emacs 23.1 to 26, default to t
+
+;; If indent-tabs-mode is t, it means it may use tab, resulting mixed space and
+;; tab
+(setq-default indent-tabs-mode nil)
+
+;; make tab key always call a indent command.
+;; (setq-default tab-always-indent t)
+
+;; make tab key call indent command or insert tab character, depending on cursor position
+;; (setq-default tab-always-indent nil)
+
+;; make tab key do indent first then completion.
+(setq-default tab-always-indent 'complete)
 
 (setq term-buffer-maximum-size 200000)
 
@@ -177,16 +194,23 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
+(setq user-full-name "Toby Slight")
+(setq user-mail-address "tslight@pm.me")
+
 (setq vc-follow-symlinks t)
 (setq vc-make-backup-files t)
 (setq version-control t)
-
-(fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
-(setq confirm-kill-emacs 'y-or-n-p)
 
 (when (fboundp 'winner-mode) (winner-mode 1))
 (setq split-width-threshold 160)
 (setq split-height-threshold 80)
 
+(fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
+(setq confirm-kill-emacs 'y-or-n-p)
+
 (provide 'my-settings)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; byte-compile-warnings: (not free-vars noruntime)
+;; End:
 ;;; my-settings.el ends here

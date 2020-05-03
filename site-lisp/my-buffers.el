@@ -1,12 +1,13 @@
-;;; my-buffers.el ---
+;;; my-buffers.el --- my-buffers  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Copyright (C) 2020 Toby Slight
-;; Author: Toby Slight tslight@pm.me
+;; Emacs Configuration
+
+;; Copyright: (C) 2020 Toby Slight
+;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; -*- lexical-binding: t; -*-
 (defun my/fill-buffer ()
   "Fill the contents of a buffer."
   (interactive)
@@ -64,17 +65,21 @@
       (window-configuration-to-register '_)
       (delete-other-windows))))
 
-(define-key my/keymap (kbd "C-<escape>") 'my/last-buffer)
-(define-key my/keymap (kbd "C-M-<escape>") 'my/toggle-buffer)
-(define-key my/keymap (kbd "C-c TAB") 'my/indent-buffer)
-(define-key my/keymap (kbd "C-c b i") 'my/indent-buffer)
-(define-key my/keymap (kbd "C-c z") 'my/toggle-maximize-buffer)
-(define-key my/keymap (kbd "C-c M-n") 'my/nuke-buffers)
-(define-key my/keymap (kbd "C-c s") 'my/save-buffers-silently)
-(define-key my/keymap (kbd "C-x k") 'my/kill-this-buffer)
-(define-key my/keymap (kbd "M-s s") 'my/search-all-buffers)
-(define-key my/keymap (kbd "C-c t m") '(lambda () (interactive) (my/toggle-buffer "*Messages*")))
-(define-key my/keymap (kbd "C-c t s") '(lambda () (interactive) (my/toggle-buffer "*scratch*")))
+(my/bind-always "C-<escape>" my/last-buffer)
+(my/bind-always "C-M-<escape>" my/toggle-buffer)
+(my/bind-always "C-c TAB" my/indent-buffer)
+(my/bind-always "C-c b i" my/indent-buffer)
+(my/bind-always "C-c z" my/toggle-maximize-buffer)
+(my/bind-always "C-c M-n" my/nuke-buffers)
+(my/bind-always "C-c s" my/save-buffers-silently)
+(my/bind-always "C-x k" my/kill-this-buffer)
+(my/bind-always "M-s s" my/search-all-buffers)
+(my/bind-always "C-c t m" (lambda () (interactive) (my/toggle-buffer "*Messages*")))
+(my/bind-always "C-c t s" (lambda () (interactive) (my/toggle-buffer "*scratch*")))
 
 (provide 'my-buffers)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; byte-compile-warnings: (not free-vars noruntime)
+;; End:
 ;;; my-buffers.el ends here

@@ -1,12 +1,13 @@
-;;; my-edits.el ---
+;;; my-edits.el --- my-edits  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Copyright (C) 2020 Toby Slight
-;; Author: Toby Slight tslight@pm.me
+;; Emacs Configuration
+
+;; Copyright: (C) 2020 Toby Slight
+;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; -*- lexical-binding: t; -*-
 (defun my/align-symbol (begin end symbol)
   "Align any SYMBOL in region (between BEGIN and END)."
   (interactive "r\nsEnter align symbol: ")
@@ -59,101 +60,101 @@
   If the string has length greater than 2, the rest are ignored."
   (interactive
    (let (($bracketsList
-	  '("(paren)"
-	    "{brace}"
-	    "<greater>"
-	    "<<double greater,2>>"
-	    "`emacs'"
-	    "`markdown`"
-	    "~tilde~"
-	    "=equal="
-	    "\"quote\""
-	    "[square]"
-	    "[[double square,2]]"
-	    "'single quote'"
-	    "none"
-	    )))
+          '("(paren)"
+            "{brace}"
+            "<greater>"
+            "<<double greater,2>>"
+            "`emacs'"
+            "`markdown`"
+            "~tilde~"
+            "=equal="
+            "\"quote\""
+            "[square]"
+            "[[double square,2]]"
+            "'single quote'"
+            "none"
+            )))
      (list
-      (ivy-completing-read "From:" $bracketsList )
-      (ivy-completing-read "To:" $bracketsList ))))
+      (ido-completing-read "From:" $bracketsList )
+      (ido-completing-read "To:" $bracketsList ))))
   (let ( $p1 $p2 )
     (if (use-region-p)
-	(progn
-	  (setq $p1 (region-beginning))
-	  (setq $p2 (region-end)))
+        (progn
+          (setq $p1 (region-beginning))
+          (setq $p2 (region-end)))
       (save-excursion
-	(if (re-search-backward "\n[ \t]*\n" nil "move")
-	    (progn (re-search-forward "\n[ \t]*\n")
-		   (setq $p1 (point)))
-	  (setq $p1 (point)))
-	(if (re-search-forward "\n[ \t]*\n" nil "move")
-	    (progn (re-search-backward "\n[ \t]*\n")
-		   (setq $p2 (point)))
-	  (setq $p2 (point)))))
+        (if (re-search-backward "\n[ \t]*\n" nil "move")
+            (progn (re-search-forward "\n[ \t]*\n")
+                   (setq $p1 (point)))
+          (setq $p1 (point)))
+        (if (re-search-forward "\n[ \t]*\n" nil "move")
+            (progn (re-search-backward "\n[ \t]*\n")
+                   (setq $p2 (point)))
+          (setq $p2 (point)))))
     (save-excursion
       (save-restriction
-	(narrow-to-region $p1 $p2)
-	(let ( (case-fold-search nil)
-	       $fromLeft
-	       $fromRight
-	       $toLeft
-	       $toRight)
-	  (cond
-	   ((string-match ",2" @from-chars  )
-	    (progn
-	      (setq $fromLeft (substring @from-chars 0 2))
-	      (setq $fromRight (substring @from-chars -2))))
-	   (t
-	    (progn
-	      (setq $fromLeft (substring @from-chars 0 1))
-	      (setq $fromRight (substring @from-chars -1)))))
-	  (cond
-	   ((string-match ",2" @to-chars)
-	    (progn
-	      (setq $toLeft (substring @to-chars 0 2))
-	      (setq $toRight (substring @to-chars -2))))
-	   ((string-match "none" @to-chars)
-	    (progn
-	      (setq $toLeft "")
-	      (setq $toRight "")))
-	   (t
-	    (progn
-	      (setq $toLeft (substring @to-chars 0 1))
-	      (setq $toRight (substring @to-chars -1)))))
-	  (cond
-	   ((string-match "markdown" @from-chars)
-	    (progn
-	      (goto-char (point-min))
-	      (while
-		  (re-search-forward "`\\([^`]+?\\)`" nil t)
-		(replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-	   ((string-match "tilde" @from-chars)
-	    (progn
-	      (goto-char (point-min))
-	      (while
-		  (re-search-forward "~\\([^~]+?\\)~" nil t)
-		(replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-	   ((string-match "ascii quote" @from-chars)
-	    (progn
-	      (goto-char (point-min))
-	      (while
-		  (re-search-forward "\"\\([^\"]+?\\)\"" nil t)
-		(replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-	   ((string-match "equal" @from-chars)
-	    (progn
-	      (goto-char (point-min))
-	      (while
-		  (re-search-forward "=\\([^=]+?\\)=" nil t)
-		(replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-	   (t (progn
-		(progn
-		  (goto-char (point-min))
-		  (while (search-forward $fromLeft nil t)
-		    (replace-match $toLeft "FIXEDCASE" "LITERAL")))
-		(progn
-		  (goto-char (point-min))
-		  (while (search-forward $fromRight nil t)
-		    (replace-match $toRight "FIXEDCASE" "LITERAL")))))))))))
+        (narrow-to-region $p1 $p2)
+        (let ( (case-fold-search nil)
+               $fromLeft
+               $fromRight
+               $toLeft
+               $toRight)
+          (cond
+           ((string-match ",2" @from-chars  )
+            (progn
+              (setq $fromLeft (substring @from-chars 0 2))
+              (setq $fromRight (substring @from-chars -2))))
+           (t
+            (progn
+              (setq $fromLeft (substring @from-chars 0 1))
+              (setq $fromRight (substring @from-chars -1)))))
+          (cond
+           ((string-match ",2" @to-chars)
+            (progn
+              (setq $toLeft (substring @to-chars 0 2))
+              (setq $toRight (substring @to-chars -2))))
+           ((string-match "none" @to-chars)
+            (progn
+              (setq $toLeft "")
+              (setq $toRight "")))
+           (t
+            (progn
+              (setq $toLeft (substring @to-chars 0 1))
+              (setq $toRight (substring @to-chars -1)))))
+          (cond
+           ((string-match "markdown" @from-chars)
+            (progn
+              (goto-char (point-min))
+              (while
+                  (re-search-forward "`\\([^`]+?\\)`" nil t)
+                (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
+           ((string-match "tilde" @from-chars)
+            (progn
+              (goto-char (point-min))
+              (while
+                  (re-search-forward "~\\([^~]+?\\)~" nil t)
+                (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
+           ((string-match "ascii quote" @from-chars)
+            (progn
+              (goto-char (point-min))
+              (while
+                  (re-search-forward "\"\\([^\"]+?\\)\"" nil t)
+                (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
+           ((string-match "equal" @from-chars)
+            (progn
+              (goto-char (point-min))
+              (while
+                  (re-search-forward "=\\([^=]+?\\)=" nil t)
+                (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
+           (t (progn
+                (progn
+                  (goto-char (point-min))
+                  (while (search-forward $fromLeft nil t)
+                    (replace-match $toLeft "FIXEDCASE" "LITERAL")))
+                (progn
+                  (goto-char (point-min))
+                  (while (search-forward $fromRight nil t)
+                    (replace-match $toRight "FIXEDCASE" "LITERAL")))))))))))
 
 (defun my/convert-to-unix-coding-system ()
   "Change the current buffer's file encoding to unix."
@@ -161,42 +162,6 @@
   (let ((coding-str (symbol-name buffer-file-coding-system)))
     (when (string-match "-\\(?:dos\\|mac\\)$" coding-str)
       (set-buffer-file-coding-system 'unix))))
-
-(defun my/copy-isearch-match ()
-  (interactive)
-  (copy-region-as-kill isearch-other-end (point)))
-
-(defun my/copy-line-or-region ()
-  "Copy current line or text selection to kill ring.  When
-  `universal-argument' is called first, copy whole buffer (but
-  respect `narrow-to-region')."
-  (interactive)
-  (let (p1 p2)
-    (if (null current-prefix-arg)
-	(progn (if (use-region-p)
-		   (progn (setq p1 (region-beginning))
-			  (setq p2 (region-end)))
-		 (progn (setq p1 (line-beginning-position))
-			(setq p2 (line-end-position)))))
-      (progn (setq p1 (point-min))
-	     (setq p2 (point-max))))
-    (kill-ring-save p1 p2)))
-
-(defun my/cut-line-or-region ()
-  "Cut current line, or text selection to kill ring.  When
-  `universal-argument' is called first, cut whole buffer (but
-  respect `narrow-to-region')."
-  (interactive)
-  (let (p1 p2)
-    (if (null current-prefix-arg)
-	(progn (if (use-region-p)
-		   (progn (setq p1 (region-beginning))
-			  (setq p2 (region-end)))
-		 (progn (setq p1 (line-beginning-position))
-			(setq p2 (line-beginning-position 2)))))
-      (progn (setq p1 (point-min))
-	     (setq p2 (point-max))))
-    (kill-region p1 p2)))
 
 (defun my/delete-inside ()
   "Deletes the text within parentheses, brackets or quotes."
@@ -229,10 +194,32 @@
   (interactive)
   (insert (format-time-string "%c" (current-time))))
 
-(defun my/insert-fortune ()
-  "Insert output of the fortune command into the buffer, before the point."
+(defun my/isearch-exit ()
+  "Move point to the start of the matched string, regardless of
+search direction. A.K.A. Vim style."
   (interactive)
-  (insert (shell-command-to-string "fortune")))
+  (when (eq isearch-forward t)
+    (goto-char isearch-other-end))
+  (isearch-exit))
+
+(defun my/copy-to-isearch ()
+  "Copy up to the search match when searching forward. When
+searching backward, copy to the start of the search match."
+  (interactive)
+  (my/isearch-exit)
+  (call-interactively 'kill-ring-save)
+  (exchange-point-and-mark))
+
+(defun my/kill-to-isearch ()
+  "Kill up to the search match when searching forward. When
+searching backward, kill to the beginning of the match."
+  (interactive)
+  (my/isearch-exit)
+  (call-interactively 'kill-region))
+
+(define-key isearch-mode-map (kbd "<return>") 'my/isearch-exit)
+(define-key isearch-mode-map (kbd "C-w") 'my/copy-to-isearch)
+(define-key isearch-mode-map (kbd "M-w") 'my/kill-to-isearch)
 
 (defun my/jump-to-mark ()
   "Jump to the local mark, respecting the `mark-ring' order.
@@ -240,11 +227,6 @@ This is the same as using \\[set-mark-command] with the prefix
 argument."
   (interactive)
   (set-mark-command 1))
-
-(defun my/kill-isearch-match ()
-  "Kill the current isearch match string and continue searching."
-  (interactive)
-  (kill-region isearch-other-end (point)))
 
 (defun my/narrow-or-widen-dwim (p)
   "If the buffer is narrowed, it widens. Otherwise, it narrows
@@ -257,17 +239,17 @@ argument."
   (interactive "P")
   (declare (interactive-only))
   (cond ((and (buffer-narrowed-p) (not p)) (widen))
-	((region-active-p)
-	 (narrow-to-region (region-beginning) (region-end)))
-	((derived-mode-p 'org-mode)
-	 ;; `org-edit-src-code' is not a real narrowing command.
-	 ;; Remove this first conditional if you don't want it.
-	 (cond ((ignore-errors (org-edit-src-code))
-		(delete-other-windows))
-	       ((org-at-block-p)
-		(org-narrow-to-block))
-	       (t (org-narrow-to-subtree))))
-	(t (narrow-to-defun))))
+        ((region-active-p)
+         (narrow-to-region (region-beginning) (region-end)))
+        ((derived-mode-p 'org-mode)
+         ;; `org-edit-src-code' is not a real narrowing command.
+         ;; Remove this first conditional if you don't want it.
+         (cond ((ignore-errors (org-edit-src-code))
+                (delete-other-windows))
+               ((org-at-block-p)
+                (org-narrow-to-block))
+               (t (org-narrow-to-subtree))))
+        (t (narrow-to-defun))))
 ;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
 ;; This line actually replaces Emacs' entire narrowing keymap, that's
 ;; how much I like this command. Only copy it if that's what you want.
@@ -283,12 +265,12 @@ argument."
       ;; We can't use `indent-according-to-mode' in languages like Python,
       ;; as there are multiple possible indentations with different meanings.
       (let* ((indent-end (progn (move-to-mode-line-start) (point)))
-	     (indent-start (progn (move-beginning-of-line nil) (point)))
-	     (indent-chars (buffer-substring indent-start indent-end)))
-	(forward-line -1)
-	;; This new line should be indented with the same characters as
-	;; the current line.
-	(insert indent-chars))
+             (indent-start (progn (move-beginning-of-line nil) (point)))
+             (indent-chars (buffer-substring indent-start indent-end)))
+        (forward-line -1)
+        ;; This new line should be indented with the same characters as
+        ;; the current line.
+        (insert indent-chars))
     ;; Just use the current major-mode's indent facility.
     (forward-line -1)
     (indent-according-to-mode)))
@@ -317,41 +299,77 @@ argument."
   (save-match-data
     (save-excursion
       (let ((count 0))
-	(goto-char (point-min))
-	(while (re-search-forward string (point-max) t)
-	  (setq count (+ count 1))
-	  (replace-match "" nil nil))
-	(message (format "%d %s removed from buffer." count string))))))
+        (goto-char (point-min))
+        (while (re-search-forward string (point-max) t)
+          (setq count (+ count 1))
+          (replace-match "" nil nil))
+        (message (format "%d %s removed from buffer." count string))))))
 
 (defun my/remove-character-number (number)
   "Remove all occurences of a control character NUMBER from a
   buffer (excluding ^I (tabs) and ^J (newline)."
   (if (and (>= number 0) (<= number 31)
-	   (not (= number 9)) (not (= number 10)))
+           (not (= number 9)) (not (= number 10)))
       (let ((character (string number)))
-	(my/remove-from-buffer character))))
+        (my/remove-from-buffer character))))
 
 (defun my/remove-all-ctrl-characters ()
   "Remove all occurences of all control characters from a
   buffer (excluding ^I (tabs) and ^J (newlines)."
   (interactive)
   (mapcar (lambda (n)
-	    (my/remove-character-number n))
-	  (number-sequence 0 31)))
+            (my/remove-character-number n))
+          (number-sequence 0 31)))
 
 (defun my/remove-ctrl-m ()
   "Remove all ^M occurrences from EOL in a buffer."
   (interactive)
   (my/remove-from-buffer "$"))
 
-(defun my/smart-beginning-of-line ()
+(defun smart/move-beginning-of-line ()
   "Moves point back to indentation if there is any non blank
-  characters to the left of the cursor.  Otherwise point moves to
-  beginning of line."
+characters to the left of the cursor.  Otherwise point moves to
+beginning of line."
   (interactive)
   (if (= (point) (save-excursion (back-to-indentation) (point)))
       (beginning-of-line)
     (back-to-indentation)))
+
+(defun smart/kill-ring-save ()
+  "Copy current line or text selection to kill ring.  When
+`universal-argument' is called first, copy whole buffer (but
+respect `narrow-to-region')."
+  (interactive)
+  (let (p1 p2)
+    (if (null current-prefix-arg)
+        (progn (if (use-region-p)
+                   (progn (setq p1 (region-beginning))
+                          (setq p2 (region-end)))
+                 (progn (setq p1 (line-beginning-position))
+                        (setq p2 (line-end-position)))))
+      (progn (setq p1 (point-min))
+             (setq p2 (point-max))))
+    (kill-ring-save p1 p2)))
+
+(defun smart/kill-region ()
+  "Cut current line, or text selection to kill ring.  When
+`universal-argument' is called first, cut whole buffer (but
+respect `narrow-to-region')."
+  (interactive)
+  (let (p1 p2)
+    (if (null current-prefix-arg)
+        (progn (if (use-region-p)
+                   (progn (setq p1 (region-beginning))
+                          (setq p2 (region-end)))
+                 (progn (setq p1 (line-beginning-position))
+                        (setq p2 (line-beginning-position 2)))))
+      (progn (setq p1 (point-min))
+             (setq p2 (point-max))))
+    (kill-region p1 p2)))
+
+(global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
+(global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
+(global-set-key [remap kill-region] 'smart/kill-region)
 
 (defun my/sort-lines-nocase ()
   "Sort marked lines with case sensitivity."
@@ -366,18 +384,77 @@ argument."
   (save-excursion
     (goto-char end)
     (if (string= close "")
-	(insert open)
+        (insert open)
       (insert close))
     (goto-char begin)
     (insert open)))
+
+(defun my/underline-text (arg)
+  "Inserts a line under the current line, filled with a default
+underline character `='. If point had been at the end of the
+line, moves point to the beginning of the line directly following
+the underlining. It does not underline the line's leading
+whitespace, trailing whitespace, or comment symbols. With prefix
+`C-u' prompts user for a custom underline character. With prefix
+`C-u C-u', does not underline whitespace embedded in the line."
+  (interactive "p")
+  (let* ((original-point (point))
+         (underline-char
+          (replace-regexp-in-string "[[:cntrl:][:space:]]" "="
+                                    (if (= arg 1)
+                                        "="
+                                      (char-to-string
+                                       (read-char "What character to underline with?")))))
+         (original-point-is-eol
+          (when (looking-at "$") t))
+         (original-point-is-eob
+          (= original-point (point-max))))
+    (beginning-of-line)
+    (unless
+        (when (looking-at "[[:space:]]*$")
+          (beginning-of-line 0)
+          (when (looking-at "[[:space:]]*$")
+            (goto-char original-point)
+            (message "nothing to do")))
+      (insert
+       (buffer-substring (line-beginning-position) (line-end-position))
+       "\n")
+      (save-restriction
+        (narrow-to-region
+         (progn
+           (goto-char (1- (re-search-forward "[^[:space:]]" nil t)))
+           (cond
+            ((looking-at ";+")   (match-end 0))
+            ((looking-at "#+")   (match-end 0))
+            ((looking-at "//+")  (match-end 0))
+            ((looking-at "/\\*+") (match-end 0))
+            (t (point))))
+         (1+ (progn
+               (goto-char (line-end-position))
+               (re-search-backward "[^[:space:]]" nil t))))
+        (untabify (point-min) (point-max))
+        (goto-char (point-min))
+        (if (= arg 16)
+            (while (re-search-forward "[^[:space:]]" nil t)
+              (replace-match underline-char nil))
+          (re-search-forward "[^[:space:]]" nil t)
+          (goto-char (1- (point)))
+          (while (re-search-forward "." nil t)
+            (replace-match underline-char nil)))
+        (widen))
+      (if original-point-is-eob
+          (goto-char (point-max))
+        (if original-point-is-eol
+            (goto-char (re-search-forward "^"))
+          (goto-char original-point))))))
 
 (defun my/unfill-region (&optional region)
   "Take a multi-line paragraph, or REGION, and make it into a
   single line of text."
   (interactive (progn (barf-if-buffer-read-only) '(t)))
   (let ((fill-column (point-max))
-	;; This would override `fill-column' if it's an integer.
-	(emacs-lisp-docstring-fill-column t))
+        ;; This would override `fill-column' if it's an integer.
+        (emacs-lisp-docstring-fill-column t))
     (fill-paragraph nil region)))
 
 (defun my/untabify-buffer ()
@@ -398,14 +475,14 @@ argument."
     (when (and delete-selection-mode (region-active-p))
       (delete-region (region-beginning) (region-end)))
     (if current-prefix-arg
-	(progn
-	  (dotimes ($i (prefix-numeric-value current-prefix-arg))
-	    (yank)))
+        (progn
+          (dotimes ($i (prefix-numeric-value current-prefix-arg))
+            (yank)))
       (if (eq real-last-command this-command)
-	  (if forwards
-	      (yank-pop -1)
-	    (yank-pop 1))
-	(yank)))))
+          (if forwards
+              (yank-pop -1)
+            (yank-pop 1))
+        (yank)))))
 
 (defun my/xml-pretty-print ()
   "Reformat and indent XML."
@@ -414,61 +491,52 @@ argument."
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
 
-(defun my/zap-to-isearch (rbeg rend)
-  "Kill the region (RBEG - REND) between the mark and the
-  closest portion of the isearch match string.
-
-  The behaviour is meant to be analogous to `zap-to-char'; let's
-  call it `my/zap-to-isearch'.  The deleted region does not include
-  the `isearch' word.  This is meant to be bound only in isearch
-  mode.  The point of this function is that oftentimes you want to
-  delete some portion of text, one end of which happens to be an
-  active isearch word.
-
-  The observation to make is that if you use isearch a lot to move
-  the cursor around (as you should, it is much more efficient than
-  using the arrows), it happens a lot that you could just delete
-  the active region between the mark and the point, not include the
-  isearch word."
-  (interactive "r")
-  (when (not mark-active)
-    (error "Mark is not active"))
-  (let* ((isearch-bounds (list isearch-other-end (point)))
-	 (ismin (apply 'min isearch-bounds))
-	 (ismax (apply 'max isearch-bounds)))
-    (if (< (mark) ismin)
-	(kill-region (mark) ismin)
-      (if (> (mark) ismax)
-	  (kill-region ismax (mark))
-	(error "Internal error in isearch kill function")))
-    (isearch-exit)))
-
-(define-key my/keymap (kbd "C-x RET u") 'my/convert-to-unix-coding-system)
-(define-key my/keymap (kbd "C-S-SPC") 'my/push-mark-no-activate)
-(define-key my/keymap (kbd "C-a") 'my/smart-beginning-of-line)
-(define-key my/keymap (kbd "C-w") 'my/copy-line-or-region)
-(define-key my/keymap (kbd "M-w") 'my/cut-line-or-region)
-(define-key my/keymap (kbd "C-c M-p") 'my/change-pairs)
-(define-key my/keymap (kbd "C-c a") 'my/align-symbol)
-(define-key my/keymap (kbd "C-c =") 'my/align-equals)
-(define-key my/keymap (kbd "C-c :") 'my/align-colon)
-(define-key my/keymap (kbd "C-c #") 'my/align-numbers)
-(define-key my/keymap (kbd "C-c d") 'my/delete-inside)
-(define-key my/keymap (kbd "C-c k") 'my/remove-from-buffer)
-(define-key my/keymap (kbd "M-s M-s") 'my/surround)
-(define-key my/keymap (kbd "C-o") 'my/open-line-above)
-(define-key my/keymap (kbd "C-S-o") 'my/open-line-below)
-;; (define-key my/keymap (kbd "C-y") 'my/yank)
-;; (define-key my/keymap (kbd "C-M-y") '(lambda () (interactive) (my/yank t)))
-(define-key my/keymap (kbd "M-Q") 'my/unfill-region)
-
-(define-key isearch-mode-map (kbd "C-z") 'my/zap-to-isearch)
-(define-key isearch-mode-map (kbd "C-w") 'my/copy-isearch-match)
-(define-key isearch-mode-map (kbd "M-w") 'my/kill-isearch-match)
+(my/bind-always "C-x RET u" my/convert-to-unix-coding-system)
+(my/bind-always "C-S-SPC" my/push-mark-no-activate)
+(my/bind-always "C-c M-p" my/change-pairs)
+(my/bind-always "C-c a" my/align-symbol)
+(my/bind-always "C-c =" my/align-equals)
+(my/bind-always "C-c :" my/align-colon)
+(my/bind-always "C-c #" my/align-numbers)
+(my/bind-always "C-c d" my/delete-inside)
+(my/bind-always "C-c k" my/remove-from-buffer)
+(my/bind-always "C-c u" my/underline-text)
+(my/bind-always "M-s M-s" my/surround)
+(my/bind-always "C-o" my/open-line-above)
+(my/bind-always "C-S-o" my/open-line-below)
+;; (my/bind-always "C-y" my/yank)
+;; (my/bind-always "C-M-y" (lambda () (interactive) (my/yank t)))
+(my/bind-always "M-Q" my/unfill-region)
+(my/bind "C-c +" my/increment-number-at-point)
+(my/bind "C-c -" my/decrement-number-at-point)
 
 (add-hook 'before-save-hook 'my/push-mark-no-activate)
 ;; (add-hook 'after-save-hook 'my/auto-recompile)
 (add-hook 'find-file-hook 'my/hide-dos-eol)
 
+(defun my/change-number-at-point (change)
+  (let ((number (number-at-point))
+        (point (point)))
+    (when number
+      (progn
+        (forward-word)
+        (search-backward (number-to-string number))
+        (replace-match (number-to-string (funcall change number)))
+        (goto-char point)))))
+
+(defun my/increment-number-at-point ()
+  "Increment number at point like vim's C-a"
+  (interactive)
+  (my/change-number-at-point '1+))
+
+(defun my/decrement-number-at-point ()
+  "Decrement number at point like vim's C-x"
+  (interactive)
+  (my/change-number-at-point '1-))
+
 (provide 'my-edits)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; byte-compile-warnings: (not free-vars noruntime)
+;; End:
 ;;; my-edits.el ends here

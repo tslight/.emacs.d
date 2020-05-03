@@ -1,14 +1,13 @@
-;;; my-hooks.el ---
+;;; my-hooks.el --- my-hooks  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Copyright (C) 2020 Toby Slight
-;; Author: Toby Slight tslight@pm.me
+;; Emacs Configuration
+
+;; Copyright: (C) 2020 Toby Slight
+;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; -*- lexical-binding: t; -*-
-(add-hook 'before-save-hook 'whitespace-cleanup)
-
 (add-hook 'emacs-lisp-mode 'eldoc-mode)
 (add-hook 'emacs-lisp-mode (lambda () (add-hook 'after-save-hook 'check-parens nil t)))
 
@@ -17,6 +16,8 @@
 
 (add-hook 'lisp-mode-hook 'eldoc-mode)
 (add-hook 'lisp-mode (lambda () (add-hook 'after-save-hook 'check-parens nil t)))
+
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ;; (add-hook 'makefile-mode-map (lambda () (local-set-key (kbd "<f5>") 'compile)))
 
@@ -42,5 +43,25 @@
 (add-hook 'text-mode-hook 'abbrev-mode)
 (add-hook 'text-mode-hook 'auto-fill-mode)
 
+(setq indent-tabs-mode 'nil) ;; don't undo untabify
+(setq whitespace-style '(face
+                         tabs
+                         spaces
+                         trailing
+                         lines
+                         space-before-tab::space
+                         newline
+                         indentation::space
+                         empty
+                         space-after-tab::space
+                         space-mark
+                         tab-mark
+                         newline-mark))
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
 (provide 'my-hooks)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; byte-compile-warnings: (not free-vars noruntime)
+;; End:
 ;;; my-hooks.el ends here

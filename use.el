@@ -180,6 +180,9 @@
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "PYTHONPATH"))
 
+(use-package flx
+  :ensure t)
+
 (use-package flycheck
   :ensure t
   :defer t

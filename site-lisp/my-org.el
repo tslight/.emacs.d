@@ -35,7 +35,6 @@
 (setq org-default-notes-file "~/org/notes.org")
 (setq org-directory "~/org")
 (setq org-export-with-toc t)
-(setq org-completion-use-ido t)
 (setq org-indent-indentation-per-level 1)
 (setq org-list-allow-alphabetical t)
 (setq org-list-indent-offset 1)

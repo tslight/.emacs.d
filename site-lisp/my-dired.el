@@ -38,14 +38,14 @@
   (let (-sort-by -arg)
     (if (eq system-type 'berkeley-unix)
         (progn
-          (setq -sort-by (ido-completing-read
+          (setq -sort-by (completing-read
                           "Sort by:" '( "date" "size" "name")))
           (cond ((equal -sort-by "name") (setq -arg "-alhpL"))
                 ((equal -sort-by "date") (setq -arg "-alhpLt"))
                 ((equal -sort-by "size") (setq -arg "-alhpLS "))
                 (t (error "Logic error 09535" ))))
       (progn
-        (setq -sort-by (ido-completing-read
+        (setq -sort-by (completing-read
                         "Sort by:" '( "date" "size" "name" "dir")))
         (cond ((equal -sort-by "name")
                (setq -arg "-Al --si --time-style long-iso "))
@@ -115,7 +115,6 @@
 (my/bind-always "C-x C-d" dired)
 (my/bind-always "C-x d" dired-jump)
 
-(define-key dired-mode-map "i" 'ido-find-file)
 (define-key dired-mode-map ")" 'dired-omit-mode)
 (define-key dired-mode-map "b" (lambda () (interactive (find-alternate-file ".."))))
 (define-key dired-mode-map "f" 'dired-find-alternate-file)

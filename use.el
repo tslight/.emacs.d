@@ -26,11 +26,6 @@
           :height
           2.0))))))
 
-(use-package amx
-  :ensure t
-  :bind*
-  ("M-x" . amx))
-
 (use-package anaconda-mode
   :ensure t
   :after python-mode
@@ -89,6 +84,30 @@
 (use-package company-terraform
   :ensure t
   :after (:all company-mode terraform-mode))
+
+(use-package counsel
+  :ensure t
+  :diminish
+  :bind*
+  ("C-x C-f" . counsel-find-file)
+  ("M-x" . counsel-M-x)
+  ("M-y" . counsel-yank-pop)
+  ("C-h a" . counsel-apropos)
+  ("C-h f" . counsel-describe-function)
+  ("C-h v" . counsel-describe-variable)
+  ("C-h l" . counsel-load-library)
+  ("C-h i" . counsel-info-lookup-symbol)
+  ("C-h u" . counsel-unicode-char)
+  ("C-c g c" . counsel-git)
+  ("C-c C-g" . counsel-git-grep)
+  ("C-c M-g" . counsel-ag)
+  ("C-c l" . counsel-locate)
+  ("C-x r b" . counsel-bookmark)
+  ("C-c f l" . counsel-find-library)
+  ("C-c f f" . counsel-file-jump)
+  ("C-c f j" . counsel-dired-jump)
+  :config
+  (counsel-mode 1))
 
 (use-package default-text-scale
   :ensure t
@@ -158,14 +177,6 @@
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "PYTHONPATH"))
 
-(use-package flx-ido
-  :ensure t
-  :config
-  (flx-ido-mode 1)
-  (setq ido-enable-flex-matching t)
-  ;; disable ido faces to see flx highlights.
-  (setq ido-use-faces nil))
-
 (use-package flycheck
   :ensure t
   :defer t
@@ -224,15 +235,31 @@
                 " "
                 vc-relative-file))))
 
-(use-package ido-completing-read+
-  :ensure t
-  :config
-  (ido-ubiquitous-mode 1))
-
 (use-package iedit
   :ensure t
   :bind
   ("M-%" . iedit-mode))
+
+(use-package ivy
+  :ensure t
+  :diminish
+  :bind*
+  ("C-x b" . ivy-switch-buffer)
+  ("C-M-r" . swiper)
+  ("C-M-s" . swiper)
+  ("C-S-s" . swiper-multi)
+  ("C-c C-r" . ivy-resume)
+  :config
+  (ivy-mode 1)
+  (setq ivy-wrap t)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-height 20)
+  (setq ivy-initial-inputs-alist nil) ;; no ^
+  (setq ivy-re-builders-alist
+        '((swiper . ivy--regex-plus)
+          (t      . ivy--regex-fuzzy)))
+  (define-key ivy-minibuffer-map (kbd "C-s") 'ivy-next-line)
+  (define-key ivy-minibuffer-map (kbd "C-r") 'ivy-previous-line))
 
 (use-package js2-mode
   :ensure t
@@ -312,7 +339,7 @@
           ("Path" 99 magit-repolist-column-path)))
   :config
   (setq magit-clone-set-remote.pushDefault t)
-  (setq magit-completing-read-function 'magit-ido-completing-read))
+  (setq magit-completing-read-function 'magit-ivy-completing-read))
 
 (use-package markdown-mode
   :ensure t
@@ -405,7 +432,7 @@
   ("C-c p" . projectile-command-map)
   :config
   (projectile-mode)
-  (setq projectile-completion-system 'ido)
+  (setq projectile-completion-system 'ivy)
   (when (require 'magit nil t)
     (mapc #'projectile-add-known-project
           (mapcar #'file-name-as-directory (magit-list-repos)))

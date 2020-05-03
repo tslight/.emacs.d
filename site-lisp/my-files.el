@@ -91,7 +91,7 @@ For detail, see `my/make-backup'."
   (interactive "P")
   (if (or arg (not buffer-file-name))
       (find-file (concat "/sudo:root@localhost:"
-                         (ido-read-file-name "Find file(as root): ")))
+                         (read-file-name "Find file (as root): ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 (my/bind-always "C-c f d" my/delete-this-file)

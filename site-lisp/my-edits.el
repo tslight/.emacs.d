@@ -75,8 +75,8 @@
             "none"
             )))
      (list
-      (ido-completing-read "From:" $bracketsList )
-      (ido-completing-read "To:" $bracketsList ))))
+      (completing-read "From:" $bracketsList )
+      (completing-read "To:" $bracketsList ))))
   (let ( $p1 $p2 )
     (if (use-region-p)
         (progn

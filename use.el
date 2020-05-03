@@ -26,6 +26,9 @@
           :height
           2.0))))))
 
+(use-package amx
+  :ensure t)
+
 (use-package anaconda-mode
   :ensure t
   :after python-mode

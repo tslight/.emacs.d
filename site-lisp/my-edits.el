@@ -511,7 +511,7 @@ whitespace, trailing whitespace, or comment symbols. With prefix
 (my/bind "C-c -" my/decrement-number-at-point)
 
 (add-hook 'before-save-hook 'my/push-mark-no-activate)
-;; (add-hook 'after-save-hook 'my/auto-recompile)
+(add-hook 'after-save-hook 'my/auto-recompile)
 (add-hook 'find-file-hook 'my/hide-dos-eol)
 
 (defun my/change-number-at-point (change)

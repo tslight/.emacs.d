@@ -345,7 +345,7 @@
           ("Path" 99 magit-repolist-column-path)))
   :config
   (setq magit-clone-set-remote.pushDefault t)
-  (setq magit-completing-read-function 'magit-ivy-completing-read))
+  (setq magit-completing-read-function 'magit-builtin-completing-read))
 
 (use-package markdown-mode
   :ensure t

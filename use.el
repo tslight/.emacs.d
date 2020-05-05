@@ -97,7 +97,7 @@
   ("C-h i" . counsel-info-lookup-symbol)
   ("C-h u" . counsel-unicode-char)
   ("C-c g c" . counsel-git)
-  ("C-c C-g" . counsel-git-grep)
+  ("C-c g g" . counsel-git-grep)
   ("C-c M-g" . counsel-ag)
   ("C-c l" . counsel-locate)
   ("C-x r b" . counsel-bookmark)
@@ -325,7 +325,7 @@
 
 (use-package magit
   :ensure t
-  :bind
+  :bind*
   ("C-x g" . magit-status)
   ("C-x C-g" . magit-dispatch)
   ("C-c C-g" . magit-list-repositories)

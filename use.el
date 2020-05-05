@@ -55,11 +55,6 @@
   :config
   (async-bytecomp-package-mode 1))
 
-(use-package browse-kill-ring
-  :ensure t
-  :bind*
-  ("M-y" . browse-kill-ring))
-
 (use-package change-inner
   :ensure t
   :bind

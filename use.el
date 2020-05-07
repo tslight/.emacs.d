@@ -39,11 +39,8 @@
 (use-package ansible
   :ensure t
   :defer t
-  :mode
-  "\\-pb.yaml\\'"
-  "\\-pb.yml\\'"
-  "\\.pb.yaml\\'"
-  "\\.pb.yml\\'")
+  :hook
+  (yaml-mode . ansible))
 
 (use-package ansible-doc
   :ensure t

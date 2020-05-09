@@ -68,11 +68,11 @@
                             (message "Evaluated region.")))
 (my/bind-always "C-c e s" eshell)
 
-(my/bind-always "C-c T a" toggle-text-mode-autofill)
-(my/bind-always "C-c T d E" toggle-debug-on-entry)
-(my/bind-always "C-c T d e" toggle-debug-on-error)
-(my/bind-always "C-c T d q" toggle-debug-on-quit)
-(my/bind-always "C-c T t" toggle-truncate-lines)
+(my/bind-always "C-c M-t a" toggle-text-mode-autofill)
+(my/bind-always "C-c M-t d E" toggle-debug-on-entry)
+(my/bind-always "C-c M-t d e" toggle-debug-on-error)
+(my/bind-always "C-c M-t d q" toggle-debug-on-quit)
+(my/bind-always "C-c M-t t" toggle-truncate-lines)
 
 (my/bind-always "C-S-n" highlight-changes-next-change)
 (my/bind-always "C-S-p" highlight-changes-previous-change)

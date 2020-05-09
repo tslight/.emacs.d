@@ -39,13 +39,14 @@
 (use-package ansible
   :ensure t
   :defer t
-  :hook
-  (yaml-mode . ansible))
+  :config
+  (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
 
 (use-package ansible-doc
   :ensure t
-  :hook
-  (yaml-mode . ansible-doc))
+  :defer t
+  :config
+  (add-hook 'yaml-mode-hook #'ansible-doc-mode))
 
 (use-package async
   :ensure t

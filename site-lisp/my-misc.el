@@ -104,7 +104,8 @@ path.  The ansi-term buffer is named based on NAME."
                                            path)))))
 
 (my/bind-always "C-c M-g" my/google)
-(my/bind-always "C-c M-t" my/switch-to-ansi-term)
+(my/bind-always "C-c t t" my/switch-to-ansi-term)
+(my/bind-always "C-c t c" (lambda () (interactive) (ansi-term (getenv "SHELL"))))
 (my/bind-always "C-c T l" my/cycle-line-numbers)
 (my/bind "C-c Q c" my/chuck-norris-joke)
 (my/bind "C-c Q k" my/kanye-west-quote)

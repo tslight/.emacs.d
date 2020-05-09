@@ -133,8 +133,8 @@
   (setq python-shell-interpreter "ipython"))
 
 (recentf-mode 1)
-(setq recentf-exclude '(".*init\.el"
-                        ".*\/my-.*\.el"
+(setq recentf-exclude '(;;".*init\.el"
+                        ;;".*\/my-.*\.el"
                         "^/var/folders\\.*"
                         "COMMIT_EDITMSG\\'"
                         ".*-autoloads\\.el\\'"

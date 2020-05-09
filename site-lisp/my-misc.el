@@ -31,11 +31,6 @@
         (setq display-line-numbers 'relative)
       (setq display-line-numbers t))))
 
-;; get unicode characters in ansi-term - https://stackoverflow.com/a/7442266
-(defadvice ansi-term (after advise-ansi-term-coding-system)
-    (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
-(ad-activate 'ansi-term)
-
 (defun my/switch-to-ansi-term ()
   "Open an ansi-term if it doesn't already exist, otherwise
   switch to current one."
@@ -111,11 +106,9 @@ path.  The ansi-term buffer is named based on NAME."
 (my/bind-always "C-c M-g" my/google)
 (my/bind-always "C-c M-t" my/switch-to-ansi-term)
 (my/bind-always "C-c T l" my/cycle-line-numbers)
-(my/bind "C-c q c" my/chuck-norris-joke)
-(my/bind "C-c q k" my/kanye-west-quote)
-(my/bind "C-c q f" my/fortune)
-
-(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+(my/bind "C-c Q c" my/chuck-norris-joke)
+(my/bind "C-c Q k" my/kanye-west-quote)
+(my/bind "C-c Q f" my/fortune)
 
 (provide 'my-misc)
 ;; Local Variables:

@@ -74,8 +74,8 @@
 (my/bind-always "C-c s" my/save-buffers-silently)
 (my/bind-always "C-x k" my/kill-this-buffer)
 (my/bind-always "M-s s" my/search-all-buffers)
-(my/bind-always "C-c t m" (lambda () (interactive) (my/toggle-buffer "*Messages*")))
-(my/bind-always "C-c t s" (lambda () (interactive) (my/toggle-buffer "*scratch*")))
+(my/bind-always "C-c T m" (lambda () (interactive) (my/toggle-buffer "*Messages*")))
+(my/bind-always "C-c T s" (lambda () (interactive) (my/toggle-buffer "*scratch*")))
 
 (provide 'my-buffers)
 ;; Local Variables:

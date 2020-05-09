@@ -64,7 +64,7 @@
 (setq prettify-symbols-unprettify-at-point 'right-edge)
 (global-prettify-symbols-mode 1)
 
-(my/bind-always "C-c t C-t" my/disable-themes)
+(my/bind-always "C-c T C-t" my/disable-themes)
 
 (provide 'my-theme)
 ;; Local Variables:

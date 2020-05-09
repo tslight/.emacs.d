@@ -110,7 +110,7 @@ path.  The ansi-term buffer is named based on NAME."
 
 (my/bind-always "C-c M-g" my/google)
 (my/bind-always "C-c M-t" my/switch-to-ansi-term)
-(my/bind-always "C-c t l" my/cycle-line-numbers)
+(my/bind-always "C-c T l" my/cycle-line-numbers)
 (my/bind "C-c q c" my/chuck-norris-joke)
 (my/bind "C-c q k" my/kanye-west-quote)
 (my/bind "C-c q f" my/fortune)

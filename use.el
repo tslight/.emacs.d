@@ -354,6 +354,24 @@
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
+(use-package multi-term
+  :ensure t
+  :bind
+  ("C-c t c" . multi-term)
+  ("C-c t n" . multi-term-next)
+  ("C-c t p" . multi-term-prev)
+  ("C-c t o" . multi-term-dedicated-open)
+  ("C-c t w" . multi-term-dedicated-close)
+  ("C-c t t" . multi-term-dedicated-toggle)
+  ("C-c t s" . multi-term-dedicated-select)
+  :config
+  (setq multi-term-program (getenv "SHELL"))
+  (setq multi-term-dedicated-close-back-to-open-buffer-p t)
+  (setq multi-term-dedicated-select-after-open-p t)
+  ;; https://stackoverflow.com/a/7437783
+  (add-hook 'term-exec-hook (lambda ()
+                              (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))))
+
 (use-package nix-mode
   :ensure t
   :defer t)

@@ -31,6 +31,11 @@
         (setq display-line-numbers 'relative)
       (setq display-line-numbers t))))
 
+;; get unicode characters in ansi-term - https://stackoverflow.com/a/7442266
+(defadvice ansi-term (after advise-ansi-term-coding-system)
+    (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+(ad-activate 'ansi-term)
+
 (defun my/switch-to-ansi-term ()
   "Open an ansi-term if it doesn't already exist, otherwise
   switch to current one."

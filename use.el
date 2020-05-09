@@ -44,7 +44,8 @@
 
 (use-package ansible-doc
   :ensure t
-  :after ansible)
+  :hook
+  (yaml-mode . ansible-doc))
 
 (use-package async
   :ensure t
@@ -71,6 +72,10 @@
 (use-package company-anaconda
   :ensure t
   :after (:all company-mode anaconda-mode))
+
+(use-package company-ansible
+  :ensure t
+  :after (:all company-mode ansible))
 
 (use-package company-go
   :ensure t

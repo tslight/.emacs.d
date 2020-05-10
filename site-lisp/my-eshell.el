@@ -99,6 +99,8 @@ With ARG also open the directory in a `dired' buffer."
 
 ;; (add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply)
 (add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply)
+;; https://www.8t8.us/blog/2016/06/05/enabling-eshell-smart-display-mode.html
+(add-hook 'eshell-mode-hook (lambda () (eshell-smart-initialize)))
 
 (provide 'my-eshell)
 ;;; my-eshell.el ends here

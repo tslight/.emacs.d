@@ -11,8 +11,6 @@
 (require 'em-smart)
 (require 'esh-module)
 
-(add-to-list 'eshell-modules-list 'eshell-tramp)
-
 (defun my/eshell-complete-history ()
   "Insert element from `eshell' history using completion."
   (interactive)
@@ -54,15 +52,14 @@ With ARG also open the directory in a `dired' buffer."
     (when arg
       (dired dir))))
 
-(setq eshell-history-size 4096)
-(setq eshell-hist-ignoredups t)
-(setq eshell-save-history-on-exit t)
-
 ;; smart stuff
 (setq eshell-where-to-jump 'begin)
 (setq eshell-review-quick-commands nil)
 (setq eshell-smart-space-goes-to-end t)
-;; (eshell-smart-initialize)
+
+(setq eshell-history-size 4096)
+(setq eshell-hist-ignoredups t)
+(setq eshell-save-history-on-exit t)
 
 (setq eshell-prefer-lisp-functions t)
 (setq eshell-prefer-lisp-variables t)
@@ -98,6 +95,7 @@ With ARG also open the directory in a `dired' buffer."
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+(add-to-list 'eshell-modules-list 'eshell-tramp) ;; no sudo password with ~/.authinfo
 
 ;; (add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply)
 (add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply)

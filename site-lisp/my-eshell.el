@@ -10,7 +10,6 @@
 ;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
-
 (require 'eshell)
 (require 'em-pred)
 (require 'em-hist)

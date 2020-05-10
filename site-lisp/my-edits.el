@@ -28,6 +28,11 @@
   (interactive "r")
   (my/align-symbol begin end "[0-9]+"))
 
+(defadvice align-regexp (around align-regexp-with-spaces activate)
+  "Force alignment commands to use spaces, not tabs."
+  (let ((indent-tabs-mode nil))
+    ad-do-it))
+
 (defun my/auto-recompile ()
   "Automatically recompile Emacs Lisp files whenever they are saved."
   (when (equal major-mode 'emacs-lisp-mode)
@@ -42,22 +47,17 @@
   (byte-compile-file (concat user-emacs-directory "init.el") 0))
 
 (defun my/change-pairs (@from-chars @to-chars)
-  "Change bracket pairs between @FROM-CHARS to @TO-CHARS from one
-  type to another.
+  "Change pairs from @FROM-CHARS to @TO-CHARS.
 
-  For example, change all parenthesis () to square brackets [].
+When called in Lisp program, @FROM-CHARS or @TO-CHARS is a string
+of bracket pair, eg \"(paren)\", \"[bracket]\", etc.  The first
+and last characters are used.
 
-  Works on selected text, or current text block.
+If the string contains “,2”, then the first 2 chars and last 2
+chars are used, for example \"[[bracket,2]]\".  If @to-chars is
+equal to string “none”, the brackets are deleted.
 
-  When called in Lisp program, @FROM-CHARS or @TO-CHARS is a string
-  of bracket pair. eg \"(paren)\", \"[bracket]\", etc.  The first
-  and last characters are used.
-
-  If the string contains “,2”, then the first 2 chars and last 2
-  chars are used, for example \"[[bracket,2]]\".  If @to-chars is
-  equal to string “none”, the brackets are deleted.
-
-  If the string has length greater than 2, the rest are ignored."
+If the string has length greater than 2, the rest are ignored."
   (interactive
    (let (($bracketsList
           '("(paren)"
@@ -491,6 +491,26 @@ whitespace, trailing whitespace, or comment symbols. With prefix
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
 
+(defun my/change-number-at-point (change)
+  (let ((number (number-at-point))
+        (point (point)))
+    (when number
+      (progn
+        (forward-word)
+        (search-backward (number-to-string number))
+        (replace-match (number-to-string (funcall change number)))
+        (goto-char point)))))
+
+(defun my/increment-number-at-point ()
+  "Increment number at point like vim's C-a"
+  (interactive)
+  (my/change-number-at-point '1+))
+
+(defun my/decrement-number-at-point ()
+  "Decrement number at point like vim's C-x"
+  (interactive)
+  (my/change-number-at-point '1-))
+
 (my/bind-always "C-x RET u" my/convert-to-unix-coding-system)
 (my/bind-always "C-S-SPC" my/push-mark-no-activate)
 (my/bind-always "C-c M-p" my/change-pairs)
@@ -513,26 +533,6 @@ whitespace, trailing whitespace, or comment symbols. With prefix
 (add-hook 'before-save-hook 'my/push-mark-no-activate)
 (add-hook 'after-save-hook 'my/auto-recompile)
 (add-hook 'find-file-hook 'my/hide-dos-eol)
-
-(defun my/change-number-at-point (change)
-  (let ((number (number-at-point))
-        (point (point)))
-    (when number
-      (progn
-        (forward-word)
-        (search-backward (number-to-string number))
-        (replace-match (number-to-string (funcall change number)))
-        (goto-char point)))))
-
-(defun my/increment-number-at-point ()
-  "Increment number at point like vim's C-a"
-  (interactive)
-  (my/change-number-at-point '1+))
-
-(defun my/decrement-number-at-point ()
-  "Decrement number at point like vim's C-x"
-  (interactive)
-  (my/change-number-at-point '1-))
 
 (provide 'my-edits)
 ;; Local Variables:

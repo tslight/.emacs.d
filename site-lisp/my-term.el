@@ -46,6 +46,16 @@ on NAME."
       (process-send-string bufname (format (concat cd-str " exec bash;clear\n")
                                            path)))))
 
+;; get unicode characters in ansi-term - https://stackoverflow.com/a/7442266
+;; (defadvice ansi-term (after advise-ansi-term-coding-system)
+;;   "Get unicode characters in `ansi-term'."
+;;   (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+;; (ad-activate 'ansi-term)
+
+(defadvice term-handle-exit (after term-kill-buffer-on-exit activate)
+  "Kill term when shell exits."
+  (kill-buffer))
+
 (my/bind-always "C-c t t" my/switch-to-ansi-term)
 (my/bind-always "C-c t c" (lambda () (interactive) (ansi-term (getenv "SHELL"))))
 

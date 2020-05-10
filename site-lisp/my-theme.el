@@ -64,6 +64,10 @@
 (setq prettify-symbols-unprettify-at-point 'right-edge)
 (global-prettify-symbols-mode 1)
 
+(defadvice load-theme (before theme-dont-propagate activate)
+  "Disable theme before loading new one."
+  (mapc #'disable-theme custom-enabled-themes))
+
 (my/bind-always "C-c M-t C-t" my/disable-themes)
 
 (provide 'my-theme)

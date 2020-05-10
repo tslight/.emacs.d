@@ -41,7 +41,7 @@
       (select-window win))))
 
 (defun my/open-buffer-other-window (buffer)
-  "Open a buffer in another window without switching to it."
+  "Open a BUFFER in another window without switching to it."
   (interactive "BBuffer: ")
   (switch-to-buffer-other-window buffer)
   (other-window -1))
@@ -52,23 +52,23 @@
   (other-window -1))
 
 (defun my/top-of-window ()
-  "Shift current line to the top of the window-  i.e. zt in Vim"
+  "Shift current line to the top of the window."
   (interactive)
   (set-window-start (selected-window) (point)))
 
 (defun my/bottom-of-window ()
-  "Shift current line to the bottom of the window- i.e. zb in Vim"
+  "Shift current line to the bottom of the window."
   (interactive)
   (my/top-of-window)
   (scroll-down (- (window-height) 3)))
 
 (defun my/scroll-line-up (n)
-  "Equivalent of Ctrl-e in Vi."
+  "Scroll line up N lines.  Like Ctrl-e in Vim."
   (interactive "p")
   (scroll-up n))
 
 (defun my/scroll-line-down (n)
-  "Equivalent of Ctrl-y in Vi."
+  "Scroll line down N lines.  Ctrl-y in Vim."
   (interactive "p")
   (scroll-down n))
 
@@ -90,9 +90,10 @@ With PREFIX stay in current buffer."
   (if (= prefix 1) (switch-to-next-buffer)))
 
 (defun my/toggle-split ()
-  "Switch window split from horizontally to vertically, or vice
-versa.  Change right window to bottom, or change bottom window to
-right."
+  "Switch window split from horizontally to vertically.
+
+Or vice versa.  Change right window to bottom, or change bottom
+window to right."
   (interactive)
   (require 'windmove)
   (let ((done))

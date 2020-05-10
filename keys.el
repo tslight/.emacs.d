@@ -33,9 +33,11 @@
 (my/global-keys-mode 1)
 
 (defmacro my/bind (key function)
+  "Bind a KEY to a FUNCTION at the global level."
   `(global-set-key (kbd ,key) ',function))
 
 (defmacro my/bind-always (key function)
+  "Bind a KEY to a FUNCTION at the global level - always."
   `(define-key my/keymap (kbd ,key) ',function))
 
 (my/bind-always "C-!" shell-command)

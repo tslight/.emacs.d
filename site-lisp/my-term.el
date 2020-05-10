@@ -59,6 +59,9 @@ on NAME."
 (my/bind-always "C-c t t" my/switch-to-ansi-term)
 (my/bind-always "C-c t c" (lambda () (interactive) (ansi-term (getenv "SHELL"))))
 
+;; https://stackoverflow.com/a/7437783
+(add-hook 'term-exec-hook '(lambda () (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
+
 (provide 'my-term)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

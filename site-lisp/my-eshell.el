@@ -93,5 +93,8 @@ With ARG also open the directory in a `dired' buffer."
 (define-key eshell-mode-map (kbd "C-c r") 'my/eshell-recent-dir)
 (define-key eshell-hist-mode-map (kbd "M-r") 'my/eshell-complete-history)
 
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
 (provide 'my-eshell)
 ;;; my-eshell.el ends here

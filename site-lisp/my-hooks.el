@@ -60,8 +60,6 @@
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-;; https://stackoverflow.com/a/7437783
-(add-hook 'term-exec-hook '(lambda () (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix)))
 
 (provide 'my-hooks)
 ;; Local Variables:

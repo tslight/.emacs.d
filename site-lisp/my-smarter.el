@@ -37,9 +37,10 @@ narrowed."
 (define-key ctl-x-map "n" #'smart/narrow-or-widen-dwim)
 
 (defun smart/move-beginning-of-line ()
-  "Moves point back to indentation if there is any non blank
-characters to the left of the cursor.  Otherwise point moves to
-beginning of line."
+  "Move point back to indentation.
+
+If there is any non blank characters to the left of the cursor.
+Otherwise point moves to beginning of line."
   (interactive)
   (if (= (point) (save-excursion (back-to-indentation) (point)))
       (beginning-of-line)
@@ -47,8 +48,9 @@ beginning of line."
 (global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
 
 (defun smart/kill-ring-save ()
-  "Copy current line or text selection to kill ring.  When
-`universal-argument' is called first, copy whole buffer (but
+  "Copy current line or text selection to kill ring.
+
+When `universal-argument' is called first, copy whole buffer (but
 respect `narrow-to-region')."
   (interactive)
   (let (p1 p2)
@@ -64,8 +66,9 @@ respect `narrow-to-region')."
 (global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
 
 (defun smart/kill-region ()
-  "Cut current line, or text selection to kill ring.  When
-`universal-argument' is called first, cut whole buffer (but
+  "Cut current line, or text selection to kill ring.
+
+When `universal-argument' is called first, cut whole buffer (but
 respect `narrow-to-region')."
   (interactive)
   (let (p1 p2)

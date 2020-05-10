@@ -61,14 +61,16 @@
 
 (defun my/jump-to-mark ()
   "Jump to the local mark, respecting the `mark-ring' order.
-This is the same as using \\[set-mark-command] with the prefix
-argument."
+
+This is the same as using \\[set-mark-command] with the prefix argument."
   (interactive)
   (set-mark-command 1))
 
 (defun my/open-line-above ()
-  "Insert an empty line above the current line.  Position the
-  cursor at its beginning, according to the current mode."
+  "Insert an empty line above the current line.
+
+Position the cursor at its beginning, according to the current
+mode."
   (interactive)
   (move-beginning-of-line nil)
   (insert "\n")
@@ -87,9 +89,10 @@ argument."
     (indent-according-to-mode)))
 
 (defun my/open-line-below (arg)
-  "Insert an empty line after the current line. Position the
-  cursor at its beginning, according to the current mode.  With a
-  prefix ARG open line above the current line."
+  "Insert an empty line after the current line.
+
+Position the cursor at its beginning, according to the current
+mode.  With a prefix ARG open line above the current line."
   (interactive "P")
   (if arg
       (my/open-line-above)
@@ -98,8 +101,8 @@ argument."
 
 (defun my/push-mark-no-activate ()
   "Push `point' to `mark-ring', but do not activate the region.
-  Equivalent to \\[set-mark-command] when \\[transient-mark-mode]
-  is disabled"
+
+Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
   (interactive)
   (push-mark (point) t nil)
   (message "Pushed mark to ring"))
@@ -202,28 +205,6 @@ line."
   (interactive)
   (untabify (point-min) (point-max)))
 
-(defun my/yank (&optional forwards)
-  "This command calls `yank', and if repeated, calls `yank-pop'.
-
-When `universal-argument' is called first with a number arg,
-paste that many times.
-
-If called with `optional' FORWARDS set to true, call `yank-pop'
-with -1."
-  (interactive)
-  (progn
-    (when (and delete-selection-mode (region-active-p))
-      (delete-region (region-beginning) (region-end)))
-    (if current-prefix-arg
-        (progn
-          (dotimes ($i (prefix-numeric-value current-prefix-arg))
-            (yank)))
-      (if (eq real-last-command this-command)
-          (if forwards
-              (yank-pop -1)
-            (yank-pop 1))
-        (yank)))))
-
 (defun my/xml-pretty-print ()
   "Reformat and indent XML."
   (interactive)
@@ -238,8 +219,6 @@ with -1."
 (my/bind-always "M-s M-s" my/surround)
 (my/bind-always "C-o" my/open-line-above)
 (my/bind-always "C-S-o" my/open-line-below)
-;; (my/bind-always "C-y" my/yank)
-;; (my/bind-always "C-M-y" (lambda () (interactive) (my/yank t)))
 (my/bind-always "M-Q" my/unfill-region)
 
 (add-hook 'before-save-hook 'my/push-mark-no-activate)

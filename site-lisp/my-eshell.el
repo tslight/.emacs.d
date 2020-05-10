@@ -85,8 +85,8 @@ wisely or prepare to use `eshell-interrupt-process'."
                                    contents))
          (subdirs (delete nil find-directories))
          (cands (cl-remove-if (lambda (x) (string-match-p "\\.git" x)) subdirs))
-         (selection (completing-read "Find sub-directory: " cands nil t)))
-    (insert selection)
+         (selection (completing-read "Go to directory: " cands nil t)))
+    (insert (concat "cd " selection))
     (eshell-send-input)))
 
 ;; smart stuff

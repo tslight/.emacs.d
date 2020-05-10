@@ -231,7 +231,7 @@
   ("C-M-r" . swiper)
   ("C-M-s" . swiper)
   ("C-S-s" . swiper-multi)
-  ("C-c C-r" . ivy-resume)
+  ("C-c M-r" . ivy-resume)
   :config
   (ivy-mode 1)
   (setq ivy-wrap t)

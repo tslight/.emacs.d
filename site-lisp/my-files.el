@@ -1,6 +1,8 @@
-;;; my-files.el --- my-files  -*- lexical-binding: t; -*-
+;;; my-files.el --- file wrangling functions  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
+
+;; file wrangling functions
 
 ;; Emacs Configuration
 
@@ -28,8 +30,9 @@
       (message "Copied buffer file name '%s' to the clipboard." filename))))
 
 (defun my/make-backup ()
-  "Make a backup copy of current file or dired marked files.  If
-in dired, backup current file or marked files."
+  "Make a backup copy of current file or dired marked files.
+
+If in dired, backup current file or marked files."
   (interactive)
   (let (($fname (buffer-file-name)))
     (if $fname
@@ -75,13 +78,13 @@ For detail, see `my/make-backup'."
         (set-visited-file-name new-name)))))
 
 (defun my/read-file (file)
-  "Return `file' file content as a string."
+  "Return FILE content as a string."
   (with-temp-buffer
     (insert-file-contents file)
     (buffer-string)))
 
 (defun my/read-lines (file)
-  "Return a list of lines of a file at `file'."
+  "Return a list of lines of a FILE."
   (with-temp-buffer
     (insert-file-contents file)
     (split-string (buffer-string) "\n" t)))

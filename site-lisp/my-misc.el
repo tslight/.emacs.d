@@ -9,7 +9,7 @@
 
 ;;; Code:
 (defun my/substring (substring string)
-  "Returns SUBSTRING of a STRING."
+  "Return SUBSTRING of a STRING."
   (let ((regex (concat  ".*\\(" substring "\\).*")))
     (string-match regex string)
     (match-string 1 string)))
@@ -30,14 +30,6 @@
     (if current-prefix-arg
         (setq display-line-numbers 'relative)
       (setq display-line-numbers t))))
-
-(defun my/switch-to-ansi-term ()
-  "Open an ansi-term if it doesn't already exist, otherwise
-  switch to current one."
-  (interactive)
-  (if (get-buffer "*ansi-term*")
-      (switch-to-buffer "*ansi-term*")
-    (ansi-term (getenv "SHELL"))))
 
 (defun my/fortune ()
   "Insert a fortune into the minibuffer unless called with
@@ -76,36 +68,7 @@ command into the buffer, before the point."
      (url-insert-file-contents "https://api.chucknorris.io/jokes/random")
      (cdr (assoc 'value (json-read))))))
 
-(defun my/tramp-term (&optional path name)
-  "Open an ansi terminal at PATH.  If no PATH is given, it uses
-the value of `default-directory'.  PATH may be a tramp remote
-path.  The ansi-term buffer is named based on NAME."
-  (interactive)
-  (unless path (setq path default-directory))
-  (unless name (setq name "ansi-term"))
-  (ansi-term "/bin/bash" name)
-  (let ((path (replace-regexp-in-string "^file:" "" path))
-        (cd-str
-         "fn=%s; if test ! -d $fn; then fn=$(dirname $fn); fi; cd $fn;")
-        (bufname (concat "*" name "*" )))
-    (if (tramp-tramp-file-p path)
-        (let ((tstruct (tramp-dissect-file-name path)))
-          (cond
-           ((equal (tramp-file-name-method tstruct) "ssh")
-            (process-send-string bufname (format
-                                          (concat  "ssh -t %s '"
-                                                   cd-str
-                                                   "exec bash'; exec bash; clear\n")
-                                          (tramp-file-name-host tstruct)
-                                          (tramp-file-name-localname tstruct))))
-           (t (error "Not implemented for method %s"
-                     (tramp-file-name-method tstruct)))))
-      (process-send-string bufname (format (concat cd-str " exec bash;clear\n")
-                                           path)))))
-
 (my/bind-always "C-c M-g" my/google)
-(my/bind-always "C-c t t" my/switch-to-ansi-term)
-(my/bind-always "C-c t c" (lambda () (interactive) (ansi-term (getenv "SHELL"))))
 (my/bind-always "C-c M-t l" my/cycle-line-numbers)
 (my/bind "C-c Q c" my/chuck-norris-joke)
 (my/bind "C-c Q k" my/kanye-west-quote)

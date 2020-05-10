@@ -35,20 +35,6 @@
 (setq doc-view-continuous t)
 (setq doc-view-resolution 300)
 
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-(setq ediff-split-window-function 'split-window-horizontally)
-(setq ediff-diff-options "-w")
-
-(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
-
-;; https://emacs.stackexchange.com/a/24602
-(defun disable-y-or-n-p (orig-fun &rest args)
-  "Advise ORIG-FUN with ARGS so it dynamically rebinds `y-or-n-p'."
-  (cl-letf (((symbol-function 'y-or-n-p) (lambda () t)))
-    (apply orig-fun args)))
-
-(advice-add 'ediff-quit :around #'disable-y-or-n-p)
-
 (global-subword-mode 1) ;; move by camel case, etc
 (global-auto-revert-mode 1) ;; reload if file changed on disk
 (pending-delete-mode 1) ;; remove selected region if typing
@@ -70,38 +56,6 @@
 
 (setq epa-file-cache-passphrase-for-symmetric-encryption t)
 (setf epg-pinentry-mode 'loopback)
-
-(setq erc-autojoin-channels-alist '(("freenode.net"
-                                     "#org-mode"
-                                     "#emacs")))
-(setq erc-fill-column 80)
-(setq erc-hide-list '("JOIN" "PART" "QUIT"))
-(setq erc-input-line-position -2)
-(setq erc-keywords '("not2b"))
-(setq erc-nick "not2b")
-(setq erc-prompt-for-password t)
-(setq erc-track-enable-keybindings t)
-
-(require 'eshell)
-(require 'em-smart)
-(setq eshell-history-size 2048)
-(setq eshell-where-to-jump 'begin)
-(setq eshell-review-quick-commands nil)
-(setq eshell-smart-space-goes-to-end t)
-(my/bind-always "C-c e s" eshell)
-
-;; (require 'nnir)
-(setq gnus-init-file "~/.emacs.d/init.el")
-(setq gnus-home-directory "~/.emacs.d/")
-(setq message-directory "~/.emacs.d/mail")
-(setq gnus-directory "~/.emacs.d/news")
-(setq nnfolder-directory "~/.emacs.d/mail/archive")
-(setq gnus-use-full-window nil)
-(setq gnus-select-method '(nntp "news.gnus.org"))
-(setq gnus-summary-thread-gathering-function
-      'gnus-gather-threads-by-subject)
-(setq gnus-thread-hide-subtree t)
-(setq gnus-thread-ignore-subject t)
 
 (global-highlight-changes-mode)
 (setq highlight-changes-visibility-initial-state nil)
@@ -144,19 +98,6 @@
                         "[/\\]\\.elpa/"))
 (setq recentf-max-menu-items 128)
 (setq recentf-max-saved-items 256)
-
-(set-register ?h (cons 'file "~/"))
-(set-register ?s (cons 'file "~/src/"))
-(set-register ?j (cons 'file "~/src/gitlab/tspub/"))
-(set-register ?a (cons 'file "~/src/gitlab/tspub/etc/agnostic"))
-(set-register ?e (cons 'file "~/src/gitlab/tspub/etc/emacs/"))
-(set-register ?l (cons 'file "~/src/gitlab/tspub/etc/emacs/site-lisp"))
-(set-register ?o (cons 'file "~/src/gitlab/tsprv/org/"))
-(set-register ?n (cons 'file "~/src/gitlab/tsprv/org/work/notes.org"))
-(set-register ?t (cons 'file "~/src/gitlab/tsprv/org/work/todo.org"))
-(set-register ?w (cons 'file "~/src/oe-developers/"))
-(set-register ?b (cons 'file "~/src/oe-developers/be/"))
-(set-register ?d (cons 'file "~/src/oe-developers/be/devops"))
 
 (setq scroll-step 4)
 (setq scroll-margin 6)

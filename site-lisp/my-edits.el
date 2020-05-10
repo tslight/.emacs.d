@@ -378,8 +378,9 @@ respect `narrow-to-region')."
     (call-interactively 'sort-lines)))
 
 (defun my/surround (begin end open close)
-  "Put OPEN at BEGIN and CLOSE at END of the region.  If you omit
-  CLOSE, it will reuse OPEN."
+  "Put OPEN at BEGIN and CLOSE at END of the region.
+
+If you omit CLOSE, it will reuse OPEN."
   (interactive  "r\nsStart: \nsEnd: ")
   (save-excursion
     (goto-char end)

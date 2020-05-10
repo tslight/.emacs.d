@@ -14,7 +14,7 @@
 (require 'em-smart)
 
 ;; https://www.emacswiki.org/emacs/EshellAlias
-(defun eshell-load-bash-aliases ()
+(defun my/bash-to-eshell-aliases ()
   "Convert bash aliases to eshell aliases."
   (interactive)
   (progn
@@ -55,7 +55,7 @@
          (user-login-name) "@" (system-name) " "
          (if (string= (eshell/pwd) (getenv "HOME"))
              "~" (eshell/basename (eshell/pwd)))
-         (if (= (user-uid) 0) "# " "$ "))))
+         (if (= (user-uid) 0) " # " " $ "))))
 
 (my/bind-always "C-c e s" eshell)
 

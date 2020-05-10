@@ -32,7 +32,7 @@
   "Automatically recompile Emacs Lisp files whenever they are saved."
   (when (equal major-mode 'emacs-lisp-mode)
     (progn
-      (byte-compile-file buffer-file-name)
+      (byte-compile-file buffer-file-name t)
       (message (concat "Re-compiled " buffer-file-name)))))
 
 (defun my/recompile-site-lisp ()

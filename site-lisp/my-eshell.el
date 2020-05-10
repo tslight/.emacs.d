@@ -45,8 +45,7 @@
 (defun my/eshell-recent-dir (&optional arg)
   "Switch to a recent `eshell' directory using completion.
 
-With \\[universal-argument] also open the directory in a `dired'
-buffer."
+With ARG also open the directory in a `dired' buffer."
   (interactive "P")
   (let* ((dirs (ring-elements eshell-last-dir-ring))
          (dir (completing-read "Switch to recent dir: " dirs nil t)))
@@ -73,11 +72,21 @@ buffer."
       eshell-prompt-function
       (lambda nil
         (concat
-         (user-login-name) "@" (system-name) " "
+         (propertize (user-login-name) 'face `(:foreground "green" ))
+         (propertize "@" 'face `(:foreground "yellow"))
+         (propertize (system-name) `face `(:foreground "green"))
+         (propertize ":" 'face `(:foreground "yellow"))
          (if (string= (eshell/pwd) (getenv "HOME"))
-             "~" (eshell/basename (eshell/pwd)))
+             (propertize "~" 'face `(:foreground "magenta"))
+           (propertize (eshell/basename (eshell/pwd)) 'face `(:foreground "magenta")))
+         (propertize (ignore-errors (format " (%s)" (vc-responsible-backend default-directory)))
+                     'face `(:foreground "cyan"))
          "\n"
-         (if (= (user-uid) 0) "# " "$ "))))
+         (if (= (user-uid) 0)
+             (propertize "#" 'face `(:foreground "red"))
+           (propertize "$" 'face `(:foreground "yellow")))
+         (propertize " " 'face `(:foreground "white"))))
+      eshell-highlight-prompt nil)
 
 (my/bind-always "C-c e s" my/eshell-switcher)
 

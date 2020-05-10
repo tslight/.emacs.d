@@ -2,6 +2,10 @@
 
 ;;; Commentary:
 
+;; http://www.howardism.org/Technical/Emacs/eshell-fun.html
+;; https://masteringemacs.org/article/complete-guide-mastering-eshell
+;; https://cestlaz.github.io/post/using-emacs-66-eshell-elisp/
+
 ;; Copyright (C) 2020 Toby Slight
 ;; Author: Toby Slight tslight@pm.me
 
@@ -10,13 +14,6 @@
 (require 'eshell)
 (require 'em-smart)
 (require 'esh-module)
-
-(defun my/eshell-complete-history ()
-  "Insert element from `eshell' history using completion."
-  (interactive)
-  (let ((hist (ring-elements eshell-history-ring)))
-    (insert
-     (completing-read "eshell history: " hist nil t))))
 
 (defun my/eshell-here ()
   "Opens up a new eshell in the current directory.
@@ -27,11 +24,10 @@ eshell windows easier."
   (let* ((parent (if (buffer-file-name)
                      (file-name-directory (buffer-file-name))
                    default-directory))
-         (name   (car (last (split-string parent "/" t)))))
+         (name (car (last (split-string parent "/" t)))))
     (eshell "new")
     (rename-buffer (concat "*eshell: " name "*"))))
 
-;; https://cestlaz.github.io/post/using-emacs-66-eshell-elisp/
 (defun my/select-or-create-eshell (arg)
   "Commentary ARG."
   (if (string= arg "New eshell")
@@ -52,6 +48,13 @@ eshell windows easier."
           ((not in-eshellp) (switch-to-buffer (car buffers)))
           (t (my/select-or-create-eshell
               (completing-read "Select Shell: " (cons "New eshell" names)))))))
+
+(defun my/eshell-complete-history ()
+  "Insert element from `eshell' history using completion."
+  (interactive)
+  (let ((hist (ring-elements eshell-history-ring)))
+    (insert
+     (completing-read "eshell history: " hist nil t))))
 
 (defun my/eshell-recent-dir (&optional arg)
   "Switch to a recent `eshell' directory using completion.

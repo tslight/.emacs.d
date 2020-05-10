@@ -58,8 +58,9 @@ With ARG also open the directory in a `dired' buffer."
 (setq eshell-hist-ignoredups t)
 (setq eshell-save-history-on-exit t)
 
+(require 'em-smart)
 (setq eshell-where-to-jump 'begin)
-(setq eshell-review-quick-commands t)
+(setq eshell-review-quick-commands nil)
 (setq eshell-smart-space-goes-to-end t)
 
 (setq eshell-prefer-lisp-functions t)
@@ -79,7 +80,8 @@ With ARG also open the directory in a `dired' buffer."
          (if (string= (eshell/pwd) (getenv "HOME"))
              (propertize "~" 'face `(:foreground "magenta"))
            (propertize (eshell/basename (eshell/pwd)) 'face `(:foreground "magenta")))
-         (propertize (ignore-errors (format " (%s)" (vc-responsible-backend default-directory)))
+         (propertize (ignore-errors (format " (%s)"
+                                            (vc-responsible-backend default-directory)))
                      'face `(:foreground "cyan"))
          "\n"
          (if (= (user-uid) 0)

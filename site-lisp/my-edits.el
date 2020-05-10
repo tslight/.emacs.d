@@ -390,13 +390,20 @@ respect `narrow-to-region')."
     (insert open)))
 
 (defun my/underline-text (arg)
-  "Inserts a line under the current line, filled with a default
-underline character `='. If point had been at the end of the
-line, moves point to the beginning of the line directly following
-the underlining. It does not underline the line's leading
-whitespace, trailing whitespace, or comment symbols. With prefix
-`C-u' prompts user for a custom underline character. With prefix
-`C-u C-u', does not underline whitespace embedded in the line."
+  "Insert ARG under the current line.
+
+Filled with a default underline character `='.
+
+If point had been at the end of the line, moves point to the
+beginning of the line directly following the underlining.
+
+It does not underline the line's leading whitespace, trailing
+whitespace, or comment symbols.
+
+With prefix prompts user for a custom underline character.
+
+With double prefix, does not underline whitespace embedded in the
+line."
   (interactive "p")
   (let* ((original-point (point))
          (underline-char
@@ -449,8 +456,7 @@ whitespace, trailing whitespace, or comment symbols. With prefix
           (goto-char original-point))))))
 
 (defun my/unfill-region (&optional region)
-  "Take a multi-line paragraph, or REGION, and make it into a
-  single line of text."
+  "Unfill multi-line paragraph, or REGION."
   (interactive (progn (barf-if-buffer-read-only) '(t)))
   (let ((fill-column (point-max))
         ;; This would override `fill-column' if it's an integer.
@@ -465,11 +471,11 @@ whitespace, trailing whitespace, or comment symbols. With prefix
 (defun my/yank (&optional forwards)
   "This command calls `yank', and if repeated, calls `yank-pop'.
 
-  When `universal-argument' is called first with a number arg,
-  paste that many times.
+When `universal-argument' is called first with a number arg,
+paste that many times.
 
-  If called with `optional' `forwards' set to true, call `yank-pop'
-  with -1."
+If called with `optional' FORWARDS set to true, call `yank-pop'
+with -1."
   (interactive)
   (progn
     (when (and delete-selection-mode (region-active-p))

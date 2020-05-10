@@ -131,6 +131,9 @@
 (setq tramp-default-method "ssh")
 (setf tramp-persistency-file-name (concat temporary-file-directory "tramp-" (user-login-name)))
 
+;; (setq password-cache t) ; enable password caching
+;; (setq password-cache-expiry 3600) ; for one hour (time in secs)
+
 (setq undo-limit 150000)
 (setq undo-strong-limit 300000)
 

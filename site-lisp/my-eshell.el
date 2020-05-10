@@ -9,14 +9,16 @@
 
 (require 'eshell)
 (require 'em-smart)
-(require 'cl-lib)
+(require 'esh-module)
+
+(add-to-list 'eshell-modules-list 'eshell-tramp)
 
 (defun my/eshell-complete-history ()
   "Insert element from `eshell' history using completion."
   (interactive)
   (let ((hist (ring-elements eshell-history-ring)))
     (insert
-     (completing-read "Input history: " hist nil t))))
+     (completing-read "eshell history: " hist nil t))))
 
 ;; https://cestlaz.github.io/post/using-emacs-66-eshell-elisp/
 (defun my/select-or-create-eshell (arg)
@@ -25,6 +27,7 @@
       (eshell t)
     (switch-to-buffer arg)))
 
+(require 'cl-lib)
 (defun my/eshell-switcher (&optional arg)
   "Commentary ARG."
   (interactive)
@@ -39,10 +42,31 @@
           (t (my/select-or-create-eshell
               (completing-read "Select Shell: " (cons "New eshell" names)))))))
 
-(setq eshell-history-size 2048)
+(defun my/eshell-recent-dir (&optional arg)
+  "Switch to a recent `eshell' directory using completion.
+
+With \\[universal-argument] also open the directory in a `dired'
+buffer."
+  (interactive "P")
+  (let* ((dirs (ring-elements eshell-last-dir-ring))
+         (dir (completing-read "Switch to recent dir: " dirs nil t)))
+    (insert (concat "cd " dir))
+    (eshell-send-input)
+    (when arg
+      (dired dir))))
+
+(setq eshell-history-size 4096)
+(setq eshell-hist-ignoredups t)
+(setq eshell-save-history-on-exit t)
+
 (setq eshell-where-to-jump 'begin)
-(setq eshell-review-quick-commands nil)
+(setq eshell-review-quick-commands t)
 (setq eshell-smart-space-goes-to-end t)
+
+(setq eshell-prefer-lisp-functions t)
+(setq eshell-prefer-lisp-variables t)
+
+(setq eshell-cd-on-directory t)
 
 ;; https://www.emacswiki.org/emacs/EshellPrompt
 (setq eshell-prompt-regexp "^[^#$\n]*[#$] "
@@ -57,6 +81,7 @@
 
 (my/bind-always "C-c e s" my/eshell-switcher)
 
+(define-key eshell-mode-map (kbd "C-c r") 'my/eshell-recent-dir)
 (define-key eshell-hist-mode-map (kbd "M-r") 'my/eshell-complete-history)
 
 (provide 'my-eshell)

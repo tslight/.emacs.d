@@ -10,6 +10,7 @@
 ;; Author: Toby Slight tslight@pm.me
 
 ;;; Code:
+(require 'cl-lib)
 (require 'eshell)
 (require 'em-pred)
 (require 'em-hist)
@@ -36,7 +37,6 @@ eshell windows easier."
       (my/eshell-here)
     (switch-to-buffer arg)))
 
-(require 'cl-lib)
 (defun my/eshell-switcher ()
   "Open an eshell or switch to an existing one."
   (interactive)
@@ -69,6 +69,25 @@ With ARG also open the directory in a `dired' buffer."
     (eshell-send-input)
     (when arg
       (dired dir))))
+
+(defun my/eshell-directory-children ()
+  "Recursive `eshell/cd' to subdirectory.
+
+This command has the potential for infinite recursion: use it
+wisely or prepare to use `eshell-interrupt-process'."
+  (interactive)
+  (let* ((dir (eshell/pwd))
+         (contents (directory-files-recursively dir ".*" t nil nil))
+         ;; (contents (directory-files dir t))
+         (find-directories (mapcar (lambda (x)
+                                     (when (file-directory-p x)
+                                       (abbreviate-file-name x)))
+                                   contents))
+         (subdirs (delete nil find-directories))
+         (cands (cl-remove-if (lambda (x) (string-match-p "\\.git" x)) subdirs))
+         (selection (completing-read "Find sub-directory: " cands nil t)))
+    (insert selection)
+    (eshell-send-input)))
 
 ;; smart stuff
 (setq eshell-where-to-jump 'begin)
@@ -120,6 +139,7 @@ With ARG also open the directory in a `dired' buffer."
 (my/bind-always "C-c C-e" my/eshell-switcher)
 
 (define-key eshell-mode-map (kbd "C-c r") 'my/eshell-recent-dir)
+(define-key eshell-mode-map (kbd "C-c D") 'my/eshell-directory-children)
 (define-key eshell-hist-mode-map (kbd "M-r") 'my/eshell-complete-history)
 
 (provide 'my-eshell)

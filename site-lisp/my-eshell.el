@@ -18,16 +18,29 @@
     (insert
      (completing-read "eshell history: " hist nil t))))
 
+(defun my/eshell-here ()
+  "Opens up a new eshell in the current directory.
+
+The eshell is renamed to match that directory to make multiple
+eshell windows easier."
+  (interactive)
+  (let* ((parent (if (buffer-file-name)
+                     (file-name-directory (buffer-file-name))
+                   default-directory))
+         (name   (car (last (split-string parent "/" t)))))
+    (eshell "new")
+    (rename-buffer (concat "*eshell: " name "*"))))
+
 ;; https://cestlaz.github.io/post/using-emacs-66-eshell-elisp/
 (defun my/select-or-create-eshell (arg)
   "Commentary ARG."
   (if (string= arg "New eshell")
-      (eshell t)
+      (my/eshell-here)
     (switch-to-buffer arg)))
 
 (require 'cl-lib)
-(defun my/eshell-switcher (&optional arg)
-  "Commentary ARG."
+(defun my/eshell-switcher ()
+  "Open an eshell or switch to an existing one."
   (interactive)
   (let* ((buffers (cl-remove-if-not
                    (lambda (n) (eq (buffer-local-value 'major-mode n) 'eshell-mode))
@@ -35,7 +48,7 @@
          (names (mapcar (lambda (n) (buffer-name n)) buffers))
          (num-buffers (length buffers) )
          (in-eshellp (eq major-mode 'eshell-mode)))
-    (cond ((eq num-buffers 0) (eshell (or arg t)))
+    (cond ((eq num-buffers 0) (my/eshell-here))
           ((not in-eshellp) (switch-to-buffer (car buffers)))
           (t (my/select-or-create-eshell
               (completing-read "Select Shell: " (cons "New eshell" names)))))))

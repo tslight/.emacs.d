@@ -41,8 +41,10 @@
 
 (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
+;; https://emacs.stackexchange.com/a/24602
 (defun disable-y-or-n-p (orig-fun &rest args)
-  (cl-letf (((symbol-function 'y-or-n-p) (lambda (prompt) t)))
+  "Advise ORIG-FUN with ARGS so it dynamically rebinds `y-or-n-p'."
+  (cl-letf (((symbol-function 'y-or-n-p) (lambda () t)))
     (apply orig-fun args)))
 
 (advice-add 'ediff-quit :around #'disable-y-or-n-p)
@@ -67,7 +69,7 @@
 (prefer-coding-system 'utf-8-unix)
 
 (setq epa-file-cache-passphrase-for-symmetric-encryption t)
-(setf epa-pinentry-mode 'loopback)
+(setf epg-pinentry-mode 'loopback)
 
 (setq erc-autojoin-channels-alist '(("freenode.net"
                                      "#org-mode"
@@ -80,6 +82,7 @@
 (setq erc-prompt-for-password t)
 (setq erc-track-enable-keybindings t)
 
+(require 'eshell)
 (require 'em-smart)
 (setq eshell-history-size 2048)
 (setq eshell-where-to-jump 'begin)

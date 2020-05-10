@@ -19,7 +19,7 @@
   (indent-region (point-min) (point-max)))
 
 (defun my/kill-this-buffer ()
-  "Kill the current buffer. `kill-this-buffer' is unreliable..."
+  "Kill the current buffer - `kill-this-buffer' is unreliable."
   (interactive)
   (kill-buffer (current-buffer)))
 

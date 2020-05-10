@@ -88,10 +88,10 @@ With ARG also open the directory in a `dired' buffer."
          (propertize " " 'face `(:foreground "white"))))
       eshell-highlight-prompt nil)
 
-(my/bind-always "C-c e s" my/eshell-switcher)
+(my/bind-always "C-c C-e" my/eshell-switcher)
 
 (define-key eshell-mode-map (kbd "C-c r") 'my/eshell-recent-dir)
-(define-key eshell-hist-mode-map (kbd "M-r") 'my/eshell-complete-history)
+(define-key eshell-mode-map (kbd "M-r") 'my/eshell-complete-history)
 
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)

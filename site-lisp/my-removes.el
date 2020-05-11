@@ -41,8 +41,6 @@
   (interactive)
   (my/remove-from-buffer "$"))
 
-(my/bind-always "C-c k" my/remove-from-buffer)
-
 (provide 'my-removes)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

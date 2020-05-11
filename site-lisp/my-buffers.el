@@ -65,18 +65,6 @@
       (window-configuration-to-register '_)
       (delete-other-windows))))
 
-(my/bind-always "C-<escape>" my/last-buffer)
-(my/bind-always "C-M-<escape>" my/toggle-buffer)
-(my/bind-always "C-c TAB" my/indent-buffer)
-(my/bind-always "C-c b i" my/indent-buffer)
-(my/bind-always "C-c z" my/toggle-maximize-buffer)
-(my/bind-always "C-c M-n" my/nuke-buffers)
-(my/bind-always "C-c s" my/save-buffers-silently)
-(my/bind-always "C-x k" my/kill-this-buffer)
-(my/bind-always "M-s s" my/search-all-buffers)
-(my/bind-always "C-c M-t m" (lambda () (interactive) (my/toggle-buffer "*Messages*")))
-(my/bind-always "C-c M-t s" (lambda () (interactive) (my/toggle-buffer "*scratch*")))
-
 (provide 'my-buffers)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

@@ -97,12 +97,6 @@ For detail, see `my/make-backup'."
                          (read-file-name "Find file (as root): ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
-(my/bind-always "C-c f d" my/delete-this-file)
-(my/bind-always "C-c f c" my/copy-file-name-to-clipboard)
-(my/bind-always "C-c f b" my/make-backup-and-save)
-(my/bind-always "C-c f r" my/rename-this-file-and-buffer)
-(my/bind-always "C-c f s" my/sudoedit)
-
 (provide 'my-files)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

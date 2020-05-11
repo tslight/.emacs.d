@@ -60,9 +60,6 @@
 (global-highlight-changes-mode)
 (setq highlight-changes-visibility-initial-state nil)
 
-(savehist-mode 1)
-(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-(setq savehist-save-minibuffer-history 1)
 (setq history-length t)
 (setq history-delete-duplicates t)
 (setq bookmark-save-flag 1) ;; always save bookmarks to file
@@ -79,25 +76,6 @@
 
 (setq mouse-yank-at-point t)
 
-(setq c-default-style "bsd")
-(setq c-basic-offset 4)
-(setq css-indent-offset 2)
-(setq js-indent-level 2)
-
-(setq python-fill-docstring-style 'django)
-(when (executable-find "ipython")
-  (setq python-shell-interpreter "ipython"))
-
-(recentf-mode 1)
-(setq recentf-exclude '(;;".*init\.el"
-                        ;;".*\/my-.*\.el"
-                        "^/var/folders\\.*"
-                        "COMMIT_EDITMSG\\'"
-                        ".*-autoloads\\.el\\'"
-                        "[/\\]\\.elpa/"))
-(setq recentf-max-menu-items 128)
-(setq recentf-max-saved-items 256)
-
 (setq scroll-step 4)
 (setq scroll-margin 6)
 (setq scroll-conservatively 8)
@@ -108,24 +86,6 @@
 (setq initial-scratch-message nil)
 (setq initial-major-mode 'fundamental-mode)
 
-;; make indent commands use space only (never tab character)
-;; emacs 23.1 to 26, default to t
-
-;; If indent-tabs-mode is t, it means it may use tab, resulting mixed space and
-;; tab
-(setq-default indent-tabs-mode nil)
-
-;; make tab key always call a indent command.
-;; (setq-default tab-always-indent t)
-
-;; make tab key call indent command or insert tab character, depending on cursor position
-;; (setq-default tab-always-indent nil)
-
-;; make tab key do indent first then completion.
-(setq-default tab-always-indent 'complete)
-
-(setq term-buffer-maximum-size 200000)
-
 (setq tramp-backup-directory-alist backup-directory-alist)
 (setq tramp-default-method "ssh")
 (setf tramp-persistency-file-name (concat temporary-file-directory "tramp-" (user-login-name)))
@@ -135,9 +95,6 @@
 
 (setq undo-limit 150000)
 (setq undo-strong-limit 300000)
-
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
 
 (setq user-full-name "Toby Slight")
 (setq user-mail-address "tslight@pm.me")
@@ -152,10 +109,6 @@
 
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
 (setq confirm-kill-emacs 'y-or-n-p)
-
-;; ansi-color support
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
 (provide 'my-settings)
 ;; Local Variables:

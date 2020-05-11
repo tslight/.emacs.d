@@ -20,12 +20,6 @@
         '(("melpa" . "https://melpa.org/packages/")
           ("gnu" . "https://elpa.gnu.org/packages/")))
   (package-initialize)
-  
-  (byte-recompile-file (concat user-emacs-directory "keys.el") 'nil 0 t)
-  (add-to-list 'load-path (concat user-emacs-directory "site-lisp/"))
-  (byte-recompile-directory (concat user-emacs-directory "site-lisp") 0)
-  (mapc (lambda (file) (load file))
-        (directory-files (concat user-emacs-directory "site-lisp") t "\.elc$"))
 
   ;; install use-package
   (unless (package-installed-p 'use-package)
@@ -37,10 +31,16 @@
   ;; (setq use-package-always-ensure t)
   (setq use-package-verbose t)
   (require 'use-package)
-  (require 'bind-key)
 
+  ;; add my custom libraries to load path and compile them & the init file
+  (add-to-list 'load-path (concat user-emacs-directory "site-lisp/"))
+  (byte-recompile-directory (concat user-emacs-directory "site-lisp") 0)
   (byte-recompile-file (concat user-emacs-directory "init.el") 'nil 0 'nil)
-  (byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 t)
+
+  ;; load all files in site-lisp that start with the `use' prefix.
+  (mapc (lambda (file) (load file))
+        (directory-files (concat user-emacs-directory "site-lisp") t "^use\-.*\.elc$"))
+  
   (message "Hacks and glory await! :-)"))
 
 (provide 'init)

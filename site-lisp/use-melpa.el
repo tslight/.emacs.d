@@ -132,7 +132,6 @@
   :diminish org-src-mode
   :diminish subword-mode
   :hook
-  (my/key-mode . (lambda () (diminish 'my/key-mode)))
   (org-indent-mode . (lambda () (diminish 'org-indent-mode)))
   (hs-minor-mode . (lambda () (diminish 'hs-minor-mode))))
 
@@ -234,6 +233,9 @@
   ("C-M-s" . swiper)
   ("C-S-s" . swiper-multi)
   ("C-c M-r" . ivy-resume)
+  (:map ivy-minibuffer-map
+        ("C-s" . ivy-next-line)
+        ("C-r" . ivy-previous-line))
   :config
   (ivy-mode 1)
   (setq ivy-wrap t)
@@ -242,9 +244,7 @@
   (setq ivy-initial-inputs-alist nil) ;; no ^
   (setq ivy-re-builders-alist
         '((swiper . ivy--regex-plus)
-          (t      . ivy--regex-fuzzy)))
-  (define-key ivy-minibuffer-map (kbd "C-s") 'ivy-next-line)
-  (define-key ivy-minibuffer-map (kbd "C-r") 'ivy-previous-line))
+          (t      . ivy--regex-fuzzy))))
 
 (use-package js2-mode
   :ensure t
@@ -259,9 +259,8 @@
   :hook
   (js2-mode . js2-refactor-mode)
   :bind
-  (:map
-   js2-mode-map
-   ("C-k" . js2r-kill))
+  (:map js2-mode-map
+        ("C-k" . js2r-kill))
   :config
   (js2r-add-keybindings-with-prefix "C-c C-j"))
 
@@ -328,12 +327,15 @@
 
 (use-package markdown-mode
   :ensure t
-  :defer t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
+
+(use-package edit-indirect
+  :ensure t
+  :defer t)
 
 (use-package nix-mode
   :ensure t

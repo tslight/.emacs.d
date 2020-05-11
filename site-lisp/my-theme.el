@@ -68,8 +68,6 @@
   "Disable theme before loading new one."
   (mapc #'disable-theme custom-enabled-themes))
 
-(my/bind-always "C-c M-t C-t" my/disable-themes)
-
 (provide 'my-theme)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

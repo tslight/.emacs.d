@@ -68,12 +68,6 @@ command into the buffer, before the point."
      (url-insert-file-contents "https://api.chucknorris.io/jokes/random")
      (cdr (assoc 'value (json-read))))))
 
-(my/bind-always "C-c M-g" my/google)
-(my/bind-always "C-c M-t l" my/cycle-line-numbers)
-(my/bind "C-c Q c" my/chuck-norris-joke)
-(my/bind "C-c Q k" my/kanye-west-quote)
-(my/bind "C-c Q f" my/fortune)
-
 (provide 'my-misc)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

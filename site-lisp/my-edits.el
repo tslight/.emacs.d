@@ -204,19 +204,6 @@ line."
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
 
-(my/bind-always "C-x RET u" my/convert-to-unix-coding-system)
-(my/bind-always "C-S-SPC" my/push-mark-no-activate)
-(my/bind-always "C-c d" my/delete-inside)
-(my/bind-always "C-c u" my/underline-text)
-(my/bind-always "M-s M-s" my/surround)
-(my/bind-always "C-o" my/open-line-above)
-(my/bind-always "C-S-o" my/open-line-below)
-(my/bind-always "M-Q" my/unfill-region)
-
-(add-hook 'before-save-hook 'my/push-mark-no-activate)
-(add-hook 'after-save-hook 'my/auto-recompile)
-(add-hook 'find-file-hook 'my/hide-dos-eol)
-
 (provide 'my-edits)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

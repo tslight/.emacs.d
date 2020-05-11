@@ -33,11 +33,6 @@
   (let ((indent-tabs-mode nil))
     ad-do-it))
 
-(my/bind-always "C-c a" my/align-symbol)
-(my/bind-always "C-c =" my/align-equals)
-(my/bind-always "C-c :" my/align-colon)
-(my/bind-always "C-c #" my/align-numbers)
-
 (provide 'my-align)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

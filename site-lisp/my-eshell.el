@@ -125,19 +125,7 @@ wisely or prepare to use `eshell-interrupt-process'."
          (propertize " " 'face `(:foreground "white"))))
       eshell-highlight-prompt nil)
 
-;; (add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply)
-(add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply)
-
-;; https://www.8t8.us/blog/2016/06/05/enabling-eshell-smart-display-mode.html
-(add-hook 'eshell-mode-hook (lambda () (eshell-smart-initialize)))
-
 (add-to-list 'eshell-modules-list 'eshell-tramp) ;; no sudo password with ~/.authinfo
-
-(my/bind-always "C-c C-e" my/eshell-switcher)
-
-(define-key eshell-mode-map (kbd "C-c r") 'my/eshell-recent-dir)
-(define-key eshell-mode-map (kbd "C-c D") 'my/eshell-directory-children)
-(define-key eshell-hist-mode-map (kbd "M-r") 'my/eshell-complete-history)
 
 (provide 'my-eshell)
 ;;; my-eshell.el ends here

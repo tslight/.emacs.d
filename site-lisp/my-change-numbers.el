@@ -29,9 +29,6 @@
   (interactive)
   (my/change-number-at-point '1-))
 
-(my/bind "C-c +" my/increment-number-at-point)
-(my/bind "C-c -" my/decrement-number-at-point)
-
 (provide 'my-change-numbers)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

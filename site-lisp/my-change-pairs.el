@@ -118,8 +118,6 @@ If the string has length greater than 2, the rest are ignored."
                   (while (search-forward $fromRight nil t)
                     (replace-match $toRight "FIXEDCASE" "LITERAL")))))))))))
 
-(my/bind-always "C-c M-p" my/change-pairs)
-
 (provide 'my-change-pairs)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

@@ -17,7 +17,6 @@
                     (point-max))
            fill-column)))
     (call-interactively #'fill-paragraph)))
-(global-set-key [remap fill-paragraph] #'smart/fill-or-unfill)
 
 (defun smart/narrow-or-widen-dwim (p)
   "If the buffer is narrowed, it widens, otherwise, it narrows intelligently.
@@ -42,10 +41,6 @@ narrowed."
                 (org-narrow-to-block))
                (t (org-narrow-to-subtree))))
         (t (narrow-to-defun))))
-;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
-;; This line actually replaces Emacs' entire narrowing keymap, that's
-;; how much I like this command. Only copy it if that's what you want.
-(define-key ctl-x-map "n" #'smart/narrow-or-widen-dwim)
 
 (defun smart/move-beginning-of-line ()
   "Move point back to indentation.
@@ -56,7 +51,6 @@ Otherwise point moves to beginning of line."
   (if (= (point) (save-excursion (back-to-indentation) (point)))
       (beginning-of-line)
     (back-to-indentation)))
-(global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
 
 (defun smart/kill-ring-save ()
   "Copy current line or text selection to kill ring.
@@ -74,7 +68,6 @@ respect `narrow-to-region')."
       (progn (setq p1 (point-min))
              (setq p2 (point-max))))
     (kill-ring-save p1 p2)))
-(global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
 
 (defun smart/kill-region ()
   "Cut current line, or text selection to kill ring.
@@ -92,7 +85,6 @@ respect `narrow-to-region')."
       (progn (setq p1 (point-min))
              (setq p2 (point-max))))
     (kill-region p1 p2)))
-(global-set-key [remap kill-region] 'smart/kill-region)
 
 (provide 'my-smarter)
 ;; Local Variables:

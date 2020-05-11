@@ -84,8 +84,9 @@
 (setq css-indent-offset 2)
 (setq js-indent-level 2)
 
-(setq python-fill-docstring-style 'django)
 (setq fill-column 79)
+
+(setq python-fill-docstring-style 'django)
 (when (executable-find "ipython")
   (setq python-shell-interpreter "ipython"))
 
@@ -153,6 +154,10 @@
 
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
 (setq confirm-kill-emacs 'y-or-n-p)
+
+;; ansi-color support
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
 (provide 'my-settings)
 ;; Local Variables:

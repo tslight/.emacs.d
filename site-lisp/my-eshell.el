@@ -125,9 +125,6 @@ wisely or prepare to use `eshell-interrupt-process'."
          (propertize " " 'face `(:foreground "white"))))
       eshell-highlight-prompt nil)
 
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-
 ;; (add-hook 'eshell-preoutput-filter-functions 'ansi-color-filter-apply)
 (add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply)
 

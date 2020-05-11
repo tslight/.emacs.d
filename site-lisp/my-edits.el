@@ -192,14 +192,6 @@ line."
             (goto-char (re-search-forward "^"))
           (goto-char original-point))))))
 
-(defun my/unfill-region (&optional region)
-  "Unfill multi-line paragraph, or REGION."
-  (interactive (progn (barf-if-buffer-read-only) '(t)))
-  (let ((fill-column (point-max))
-        ;; This would override `fill-column' if it's an integer.
-        (emacs-lisp-docstring-fill-column t))
-    (fill-paragraph nil region)))
-
 (defun my/untabify-buffer ()
   "Convert all tabs to spaces in the buffer."
   (interactive)

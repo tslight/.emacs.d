@@ -8,6 +8,17 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+(defun smart/fill-or-unfill ()
+  "Like `fill-paragraph', but unfill if used twice."
+  (interactive)
+  (let ((fill-column
+         (if (eq last-command 'smart/fill-or-unfill)
+             (progn (setq this-command nil)
+                    (point-max))
+           fill-column)))
+    (call-interactively #'fill-paragraph)))
+(global-set-key [remap fill-paragraph] #'smart/fill-or-unfill)
+
 (defun smart/narrow-or-widen-dwim (p)
   "If the buffer is narrowed, it widens, otherwise, it narrows intelligently.
 

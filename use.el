@@ -1,6 +1,8 @@
-;;; use.el --- use  -*- lexical-binding: t; -*-
+;;; use.el --- 3rd party packages  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
+
+;; Configuration of 3rd party packages with use-package
 
 ;; Emacs Configuration
 

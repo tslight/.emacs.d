@@ -84,8 +84,6 @@
 (setq css-indent-offset 2)
 (setq js-indent-level 2)
 
-(setq fill-column 79)
-
 (setq python-fill-docstring-style 'django)
 (when (executable-find "ipython")
   (setq python-shell-interpreter "ipython"))

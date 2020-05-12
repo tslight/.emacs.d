@@ -37,8 +37,6 @@
       (setq dired-listing-switches "-alhpL")))
   (setq dired-dwim-target t)
   (setq dired-use-ls-dired nil)
-  ;; (setq dired-omit-mode t)
-  ;; (setq-default dired-omit-files-p t) ; Buffer-local variable
   (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'always))

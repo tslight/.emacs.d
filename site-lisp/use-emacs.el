@@ -127,7 +127,9 @@
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
-  :interpreter ("ipython" . python-mode)
+  :interpreter
+  ("python" . python-mode)
+  ("ipython" . python-mode)
   :config
   (setq python-fill-docstring-style 'django))
 
@@ -163,6 +165,11 @@
   "\\zprompt\\'"
   "\\zshrc\\'"
   "\\prompt_.*_setup\\'"
+  :interpreter
+  "bash"
+  "ksh"
+  "sh"
+  "zsh"
   :hook
   (shell-script-mode . (lambda () (setq display-line-numbers 'relative)))
   (after-save . executable-make-buffer-file-executable-if-script-p))

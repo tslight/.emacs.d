@@ -165,6 +165,7 @@
   "\\zshenv\\'"
   "\\zprompt\\'"
   "\\zshrc\\'"
+  "^prompt_.*_setup$"
   :hook
   (shell-script-mode . (lambda () (setq display-line-numbers 'relative)))
   (after-save . executable-make-buffer-file-executable-if-script-p))

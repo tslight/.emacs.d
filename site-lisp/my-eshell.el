@@ -128,4 +128,8 @@ wisely or prepare to use `eshell-interrupt-process'."
 (add-to-list 'eshell-modules-list 'eshell-tramp) ;; no sudo password with ~/.authinfo
 
 (provide 'my-eshell)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; byte-compile-warnings: (not free-vars noruntime)
+;; End:
 ;;; my-eshell.el ends here

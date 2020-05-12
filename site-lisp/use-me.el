@@ -3,11 +3,26 @@
 ;;; Commentary:
 
 ;; site-lisp directory package configuration
+;; :bind*, :bind-keymap, :bind-keymap*, :mode, :interpreter & :hook all imply
+;; :defer
 
 ;; Copyright (C) 2020 Toby Slight
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+
+;; Stuff that we simply must have when starting Emacs, everything else is
+;; either implicitly or explicitly deferred.
+(use-package my-registers :demand)
+(use-package my-settings :demand)
+(use-package my-style :demand
+  :hook
+  (before-save . whitespace-cleanup))
+(use-package my-theme :demand
+  :bind*
+  ("C-c M-t C-t" . my/disable-themes))
+
+;; Everything declared under here should be deferred.
 (use-package my-align
   :bind*
   ("C-c a" . my/align-symbol)
@@ -73,6 +88,8 @@
         ("C-c D" . my/eshell-directory-children)
         ("M-r" . my/eshell-complete-history))
   :commands eshell my/eshell-here
+  :config
+  (use-package em-smart)
   :hook
   (eshell-preoutput-filter-functions . ansi-color-apply)
   (eshell-mode . (lambda () (eshell-smart-initialize))))
@@ -84,9 +101,6 @@
   ("C-c f b" . my/make-backup-and-save)
   ("C-c f r" . my/rename-this-file-and-buffer)
   ("C-c f s" . my/sudoedit))
-
-(use-package my-hooks
-  :demand t)
 
 (use-package my-isearch
   :bind
@@ -111,18 +125,11 @@
   ("C-c o t" . org-time-stamp)
   :hook
   (org-mode . auto-fill-mode)
-  (org-mode . hl-line-mode)
-  :mode ("\\.org\\'" . org-mode))
-
-(use-package my-registers
-  :demand t)
+  (org-mode . hl-line-mode))
 
 (use-package my-removes
   :bind*
   ("C-c k" . my/remove-from-buffer))
-
-(use-package my-settings
-  :demand t)
 
 (use-package my-smarter
   :bind*
@@ -134,11 +141,6 @@
   (:map ctl-x-map
         ("n" . smart/narrow-or-widen-dwim)))
 
-(use-package my-style
-  :demand t
-  :hook
-  (before-save . whitespace-cleanup))
-
 (use-package my-term
   :bind*
   ("C-c t t" . my/switch-to-ansi-term)
@@ -146,11 +148,6 @@
   :commands ansi-term term
   :hook
   (term-exec . (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix))))
-
-(use-package my-theme
-  :demand t
-  :bind*
-  ("C-c M-t C-t" . my/disable-themes))
 
 (use-package my-windows
   :bind*
@@ -172,4 +169,4 @@
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-use.el ends here
+;;; use-me.el ends here

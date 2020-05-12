@@ -2,17 +2,19 @@
 
 ;;; Commentary:
 
-;; `use-package' configuration for built in Emacs stuff
+;; `use-package' configuration for built in Emacs stuff :commands, :bind,
+;; :bind*, :bind-keymap, :bind-keymap*, :mode, :interpreter & :hook all imply
+;; :defer
 
 ;; Copyright (C) 2020 Toby Slight
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; The package is "python" but the mode is "python-mode":
 (use-package ansi-color
-  :defer t
-  ;; :config
-  ;; (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+  :config
+  (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+  (defun colorize-compilation-buffer ()
+    (ansi-color-apply-on-region compilation-filter-start (point)))
   :hook
   (compilation-filter . colorize-compilation-buffer)
   (shell-mode . ansi-color-for-comint-mode-on))
@@ -29,8 +31,6 @@
         ("f" . dired-find-alternate-file)
         ("c" . dired-do-compress-to)
         ("C-o" . dired-find-file-other-window))
-  :hook
-  (dired-mode . hl-line-mode)
   :config
   (when (eq system-type 'berkeley-unix)
     (progn
@@ -41,18 +41,7 @@
   ;; (setq-default dired-omit-files-p t) ; Buffer-local variable
   (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
   (setq dired-recursive-copies 'always)
-  (setq dired-recursive-deletes 'always)
-  (defvar dired-compress-files-alist
-    '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
-      ("\\.zip\\'" . "zip %o -r --filesync %i"))
-    "Control the compression shell command for `dired-do-compress-to'.
-
-Each element is (REGEXP . CMD), where REGEXP is the name of the
-archive to which you want to compress, and CMD the the
-corresponding command.
-
-Within CMD, %i denotes the input file(s), and %o denotes the
-output file.  %i path(s) are relative, while %o is absolute."))
+  (setq dired-recursive-deletes 'always))
 
 (use-package dired-x
   :bind*
@@ -67,7 +56,6 @@ output file.  %i path(s) are relative, while %o is absolute."))
   (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld")))
 
 (use-package ediff
-  :defer t
   :commands ediff ediff3
   :config
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -82,24 +70,19 @@ output file.  %i path(s) are relative, while %o is absolute."))
   (advice-add 'ediff-quit :around #'disable-y-or-n-p))
 
 (use-package eldoc
-  :defer t
   :hook
   (emacs-lisp-mode . eldoc-mode)
   (lisp-interaction-mode . eldoc-mode)
   (lisp-mode . eldoc-mode))
 
 (use-package electric
-  :defer t
   :hook
   (prog-mode . electric-indent-mode)
   (prog-mode . electric-pair-mode)
   (shell-script-mode . electric-indent-mode)
-  (shell-script-mode . electric-pair-mode)
-  (sh-mode . electric-indent-mode)
-  (sh-mode . electric-pair-mode))
+  (shell-script-mode . electric-pair-mode))
 
 (use-package erc
-  :defer t
   :commands erc
   :config
   (setq erc-autojoin-channels-alist '(("freenode.net"
@@ -114,7 +97,6 @@ output file.  %i path(s) are relative, while %o is absolute."))
   (setq erc-track-enable-keybindings t))
 
 (use-package gnus
-  :defer t
   :commands gnus
   :config
   (require 'nnir)
@@ -131,15 +113,22 @@ output file.  %i path(s) are relative, while %o is absolute."))
   (setq gnus-thread-ignore-subject t))
 
 (use-package hl-line
-  :defer t
   :hook
+  (dired-mode . hl-line-mode)
   (prog-mode . hl-line-mode)
   (shell-script-mode . hl-line-mode)
-  (sh-mode . hl-line-mode)
   (text-mode . hl-line-mode))
 
+(use-package lisp-mode
+  :hook
+  (lisp-mode . (lambda () (add-hook 'after-save-hook 'check-parens nil t))))
+
+(use-package prog-mode
+  :hook
+  (prog-mode . hs-minor-mode)
+  (prog-mode . (lambda () (setq display-line-numbers 'relative))))
+
 (use-package python
-  :defer t
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("ipython" . python-mode)
   :config
@@ -164,6 +153,26 @@ output file.  %i path(s) are relative, while %o is absolute."))
   (savehist-mode 1)
   (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
   (setq savehist-save-minibuffer-history 1))
+
+(use-package shell-script-mode
+  :mode
+  "\\.sh\\'"
+  "\\.bash\\'"
+  "\\.zsh\\'"
+  "\\bashrc\\'"
+  "\\kshrc\\'"
+  "\\profile\\'"
+  "\\zshenv\\'"
+  "\\zprompt\\'"
+  "\\zshrc\\'"
+  :hook
+  (shell-script-mode . (lambda () (setq display-line-numbers 'relative)))
+  (after-save . executable-make-buffer-file-executable-if-script-p))
+
+(use-package text-mode
+  :hook
+  (text-mode . abbrev-mode)
+  (text-mode . auto-fill-mode))
 
 (use-package uniquify
   :defer 2

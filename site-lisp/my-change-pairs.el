@@ -8,15 +8,15 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(defun my/change-pairs (@from-chars @to-chars)
-  "Change pairs from @FROM-CHARS to @TO-CHARS.
+(defun my/change-pairs (from-chars to-chars)
+  "Change pairs from FROM-CHARS to TO-CHARS.
 
-When called in Lisp program, @FROM-CHARS or @TO-CHARS is a string
+When called in Lisp program, FROM-CHARS or TO-CHARS is a string
 of bracket pair, eg \"(paren)\", \"[bracket]\", etc.  The first
 and last characters are used.
 
 If the string contains “,2”, then the first 2 chars and last 2
-chars are used, for example \"[[bracket,2]]\".  If @to-chars is
+chars are used, for example \"[[bracket,2]]\".  If to-chars is
 equal to string “none”, the brackets are deleted.
 
 If the string has length greater than 2, the rest are ignored."
@@ -62,47 +62,47 @@ If the string has length greater than 2, the rest are ignored."
                $toLeft
                $toRight)
           (cond
-           ((string-match ",2" @from-chars  )
+           ((string-match ",2" from-chars  )
             (progn
-              (setq $fromLeft (substring @from-chars 0 2))
-              (setq $fromRight (substring @from-chars -2))))
+              (setq $fromLeft (substring from-chars 0 2))
+              (setq $fromRight (substring from-chars -2))))
            (t
             (progn
-              (setq $fromLeft (substring @from-chars 0 1))
-              (setq $fromRight (substring @from-chars -1)))))
+              (setq $fromLeft (substring from-chars 0 1))
+              (setq $fromRight (substring from-chars -1)))))
           (cond
-           ((string-match ",2" @to-chars)
+           ((string-match ",2" to-chars)
             (progn
-              (setq $toLeft (substring @to-chars 0 2))
-              (setq $toRight (substring @to-chars -2))))
-           ((string-match "none" @to-chars)
+              (setq $toLeft (substring to-chars 0 2))
+              (setq $toRight (substring to-chars -2))))
+           ((string-match "none" to-chars)
             (progn
               (setq $toLeft "")
               (setq $toRight "")))
            (t
             (progn
-              (setq $toLeft (substring @to-chars 0 1))
-              (setq $toRight (substring @to-chars -1)))))
+              (setq $toLeft (substring to-chars 0 1))
+              (setq $toRight (substring to-chars -1)))))
           (cond
-           ((string-match "markdown" @from-chars)
+           ((string-match "markdown" from-chars)
             (progn
               (goto-char (point-min))
               (while
                   (re-search-forward "`\\([^`]+?\\)`" nil t)
                 (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-           ((string-match "tilde" @from-chars)
+           ((string-match "tilde" from-chars)
             (progn
               (goto-char (point-min))
               (while
                   (re-search-forward "~\\([^~]+?\\)~" nil t)
                 (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-           ((string-match "ascii quote" @from-chars)
+           ((string-match "ascii quote" from-chars)
             (progn
               (goto-char (point-min))
               (while
                   (re-search-forward "\"\\([^\"]+?\\)\"" nil t)
                 (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-           ((string-match "equal" @from-chars)
+           ((string-match "equal" from-chars)
             (progn
               (goto-char (point-min))
               (while

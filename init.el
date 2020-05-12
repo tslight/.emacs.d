@@ -40,7 +40,7 @@
   ;; load all files in site-lisp that start with the `use' prefix.
   (mapc (lambda (file) (load file))
         (directory-files (concat user-emacs-directory "site-lisp") t "^use\-.*\.elc$"))
-  
+
   (message "Hacks and glory await! :-)"))
 
 (provide 'init)

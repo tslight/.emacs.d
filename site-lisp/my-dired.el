@@ -8,6 +8,8 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+(require 'dired)
+
 (defun my/dired-get-size ()
   "Get cumlative size of marked or current item."
   (interactive)
@@ -82,6 +84,18 @@
           (switch-to-buffer filebuffer)
         (view-file file))
       (other-window -1))))
+
+(defvar dired-compress-files-alist
+  '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
+    ("\\.zip\\'" . "zip %o -r --filesync %i"))
+  "Control the compression shell command for `dired-do-compress-to'.
+
+Each element is (REGEXP . CMD), where REGEXP is the name of the
+archive to which you want to compress, and CMD the the
+corresponding command.
+
+Within CMD, %i denotes the input file(s), and %o denotes the
+output file.  %i path(s) are relative, while %o is absolute.")
 
 (provide 'my-dired)
 ;; Local Variables:

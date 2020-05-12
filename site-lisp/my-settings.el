@@ -110,6 +110,10 @@
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
 (setq confirm-kill-emacs 'y-or-n-p)
 
+;; supposedly increases minibuffer performance
+(add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 800000)))
+(add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold most-positive-fixnum)))
+
 (provide 'my-settings)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

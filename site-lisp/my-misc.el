@@ -14,10 +14,6 @@
     (string-match regex string)
     (match-string 1 string)))
 
-(require 'ansi-color)
-(defun colorize-compilation-buffer ()
-  (ansi-color-apply-on-region compilation-filter-start (point)))
-
 (defun my/cycle-line-numbers ()
   "Cycle through all the line numbering configurations."
   (interactive)

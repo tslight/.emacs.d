@@ -8,7 +8,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(require 'org)
 (require 'org-tempo)
 
 (defun my/org-recursive-sort ()
@@ -119,14 +118,6 @@
    (shell . t)
    (sql . t)
    (sqlite . t)))
-
-(my/bind-always "C-c o a" org-agenda)
-(my/bind-always "C-c o c" org-capture)
-(my/bind-always "C-c o l" org-store-link)
-(my/bind-always "C-c o t" org-time-stamp)
-
-(add-hook 'org-mode-hook 'auto-fill-mode)
-(add-hook 'org-mode-hook 'hl-line-mode)
 
 (provide 'my-org)
 ;; Local Variables:

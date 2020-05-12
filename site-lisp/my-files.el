@@ -10,6 +10,8 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+(require 'dired)
+
 (defun my/delete-this-file ()
   "Delete the current file, and kill the buffer."
   (interactive)

@@ -2,9 +2,9 @@
 
 ;;; Commentary:
 
-;; Configuration of 3rd party packages with use-package
-
-;; Emacs Configuration
+;; Configuration of 3rd party packages with `use-package'.
+;; :bind*, :bind-keymap, :bind-keymap*, :mode, :interpreter & :hook all imply
+;; :defer
 
 ;; Copyright: (C) 2020 Toby Slight
 ;; Author: Toby Slight <tslight@pm.me>

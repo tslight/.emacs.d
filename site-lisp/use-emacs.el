@@ -107,8 +107,7 @@
   (setq nnfolder-directory "~/.emacs.d/mail/archive")
   (setq gnus-use-full-window nil)
   (setq gnus-select-method '(nntp "news.gnus.org"))
-  (setq gnus-summary-thread-gathering-function
-        'gnus-gather-threads-by-subject)
+  (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject)
   (setq gnus-thread-hide-subtree t)
   (setq gnus-thread-ignore-subject t))
 

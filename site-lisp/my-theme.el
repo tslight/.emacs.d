@@ -9,6 +9,7 @@
 
 ;;; Code:
 (defun my/after-make-frame (frame)
+  "Add custom settings after making the FRAME."
   (select-frame frame)
   (when (eq system-type 'windows-nt)
     (set-frame-font "Consolas 10" nil t))

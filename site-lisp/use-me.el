@@ -162,7 +162,8 @@
   (:map ctl-x-4-map
         ("k" . my/kill-buffer-other-window)
         ("o" . my/open-buffer-other-window)
-        ("s" . my/toggle-split)))
+        ("s" . my/toggle-split)
+        ("t" . my/transpose-windows)))
 
 (provide 'my-use)
 ;; Local Variables:

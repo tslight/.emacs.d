@@ -8,6 +8,8 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+(require 'windmove)
+
 (defun my/three-way-split ()
   "Split the screen three ways."
   (interactive)
@@ -95,7 +97,6 @@ With PREFIX stay in current buffer."
 Or vice versa.  Change right window to bottom, or change bottom
 window to right."
   (interactive)
-  (require 'windmove)
   (let ((done))
     (dolist (dirs '((right . down) (down . right)))
       (unless done
@@ -117,18 +118,26 @@ window to right."
                   (split-window-horizontally))
                 (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
 
-(my/bind-always "C-x O" my/prev-window)
-(my/bind-always "C-c 3" my/vsplit-last-buffer)
-(my/bind-always "C-c 2" my/hsplit-last-buffer)
-(my/bind-always "M-<" my/top-of-window)
-(my/bind-always "M->" my/bottom-of-window)
-;; I don't want these overwritten in every mode
-(my/bind "M-p" my/scroll-line-up)
-(my/bind "M-n" my/scroll-line-down)
-
-(define-key ctl-x-4-map "k" 'my/kill-buffer-other-window)
-(define-key ctl-x-4-map "o" 'my/open-buffer-other-window)
-(define-key ctl-x-4-map "s" 'my/toggle-split)
+(defun my/transpose-windows (arg)
+  "Transpose windows.  Use prefix ARG to transpose in the other direction."
+  (interactive "P")
+  (if (not (> (count-windows) 1))
+      (message "You can't rotate a single window!")
+    (let* ((rotate-times (prefix-numeric-value arg))
+           (direction (if (or (< rotate-times 0) (equal arg '(4)))
+                          'reverse 'identity)))
+      (dotimes (_ (abs rotate-times))
+        (dotimes (i (- (count-windows) 1))
+          (let* ((w1 (elt (funcall direction (window-list)) i))
+                 (w2 (elt (funcall direction (window-list)) (+ i 1)))
+                 (b1 (window-buffer w1))
+                 (b2 (window-buffer w2))
+                 (s1 (window-start w1))
+                 (s2 (window-start w2))
+                 (p1 (window-point w1))
+                 (p2 (window-point w2)))
+            (set-window-buffer-start-and-point w1 b2 s2 p2)
+            (set-window-buffer-start-and-point w2 b1 s1 p1)))))))
 
 (provide 'my-windows)
 ;; Local Variables:

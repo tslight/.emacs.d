@@ -89,41 +89,41 @@ wisely or prepare to use `eshell-interrupt-process'."
     (insert (concat "cd " selection))
     (eshell-send-input)))
 
-;; smart stuff
-(setq eshell-where-to-jump 'begin)
-(setq eshell-review-quick-commands nil)
-(setq eshell-smart-space-goes-to-end t)
-
-(setq eshell-history-size 4096)
-(setq eshell-hist-ignoredups t)
-(setq eshell-save-history-on-exit t)
-
-(setq eshell-prefer-lisp-functions t)
-(setq eshell-prefer-lisp-variables t)
-
-(setq eshell-cd-on-directory t)
+(defun my/eshell-prompt ()
+  "Custom eshell prompt."
+  (concat
+   (propertize (user-login-name) 'face `(:foreground "green" ))
+   (propertize "@" 'face `(:foreground "yellow"))
+   (propertize (system-name) `face `(:foreground "green"))
+   (propertize ":" 'face `(:foreground "yellow"))
+   (if (string= (eshell/pwd) (getenv "HOME"))
+       (propertize "~" 'face `(:foreground "magenta"))
+     (propertize (eshell/basename (eshell/pwd)) 'face `(:foreground "magenta")))
+   (propertize (ignore-errors (format " (%s)"
+                                      (vc-responsible-backend default-directory)))
+               'face `(:foreground "cyan"))
+   "\n"
+   (if (= (user-uid) 0)
+       (propertize "#" 'face `(:foreground "red"))
+     (propertize "$" 'face `(:foreground "yellow")))
+   (propertize " " 'face `(:foreground "white"))))
 
 ;; https://www.emacswiki.org/emacs/EshellPrompt
-(setq eshell-prompt-regexp "^[^#$\n]*[#$] "
-      eshell-prompt-function
-      (lambda nil
-        (concat
-         (propertize (user-login-name) 'face `(:foreground "green" ))
-         (propertize "@" 'face `(:foreground "yellow"))
-         (propertize (system-name) `face `(:foreground "green"))
-         (propertize ":" 'face `(:foreground "yellow"))
-         (if (string= (eshell/pwd) (getenv "HOME"))
-             (propertize "~" 'face `(:foreground "magenta"))
-           (propertize (eshell/basename (eshell/pwd)) 'face `(:foreground "magenta")))
-         (propertize (ignore-errors (format " (%s)"
-                                            (vc-responsible-backend default-directory)))
-                     'face `(:foreground "cyan"))
-         "\n"
-         (if (= (user-uid) 0)
-             (propertize "#" 'face `(:foreground "red"))
-           (propertize "$" 'face `(:foreground "yellow")))
-         (propertize " " 'face `(:foreground "white"))))
-      eshell-highlight-prompt nil)
+(setq
+ eshell-cd-on-directory t
+ eshell-destroy-buffer-when-process-dies t
+ eshell-highlight-prompt nil
+ eshell-hist-ignoredups t
+ eshell-history-size 4096
+ eshell-ls-use-colors t
+ eshell-prefer-lisp-functions t
+ eshell-prefer-lisp-variables t
+ eshell-prompt-regexp "^[^#$\n]*[#$] "
+ eshell-prompt-function 'my/eshell-prompt
+ eshell-review-quick-commands nil
+ eshell-save-history-on-exit t
+ eshell-smart-space-goes-to-end t
+ eshell-where-to-jump 'begin)
 
 (add-to-list 'eshell-modules-list 'eshell-tramp) ;; no sudo password with ~/.authinfo
 

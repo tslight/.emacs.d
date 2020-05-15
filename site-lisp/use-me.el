@@ -118,14 +118,8 @@
   ("C-c Q f" . my/fortune))
 
 (use-package my-org
-  :bind*
-  ("C-c o a" . org-agenda)
-  ("C-c o c" . org-capture)
-  ("C-c o l" . org-store-link)
-  ("C-c o t" . org-time-stamp)
-  :hook
-  (org-mode . auto-fill-mode)
-  (org-mode . hl-line-mode))
+  :after org-mode
+  :commands my/org-recursive-sort my/org-tangle-block)
 
 (use-package my-removes
   :bind*

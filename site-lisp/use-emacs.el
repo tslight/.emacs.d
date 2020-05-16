@@ -120,7 +120,7 @@
   :hook
   (lisp-mode . (lambda () (add-hook 'after-save-hook 'check-parens nil t))))
 
-(use-package org-mode
+(use-package org
   :bind*
   ("C-c o a" . org-agenda)
   ("C-c o c" . org-capture)
@@ -130,7 +130,7 @@
   (org-mode . auto-fill-mode)
   (org-mode . hl-line-mode)
   :config
-  ;; Settings
+  (setq org-image-actual-width nil)
   (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
   (setq org-emphasis-regexp-components '(" \t('\"{" "- \t.,:!?;'\")}\\" " \t\r\n,\"'" "." 300))
   (setq org-confirm-babel-evaluate t)

@@ -460,8 +460,6 @@
   :ensure t
   :diminish undo-tree-mode
   :bind
-  ("C-?" . undo-tree-redo)
-  ("M-_" . undo-tree-redo)
   ("C-x u" . undo-tree-visualize)
   :config
   (global-undo-tree-mode 1)

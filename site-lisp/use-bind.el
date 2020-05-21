@@ -82,6 +82,10 @@
   ("C-x p" . pop-to-mark-command)
   ("M-SPC" . cycle-spacing)
   ("M-/" . hippie-expand)
+  ;; https://b3n.sdf-eu.org/undo-in-emacs.html
+  ("C-/" . undo-only)
+  ("C-?" . undo-redo)
+  ("C-_" . undo)
   :bind
   ("C-r" . isearch-backward-regexp)
   ("C-s" . isearch-forward-regexp)

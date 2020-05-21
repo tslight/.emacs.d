@@ -93,8 +93,9 @@
 ;; (setq password-cache t) ; enable password caching
 ;; (setq password-cache-expiry 3600) ; for one hour (time in secs)
 
-(setq undo-limit 150000)
-(setq undo-strong-limit 300000)
+;; http://www.dr-qubit.org/Lost_undo-tree_history.html
+(setq undo-limit 80000000)
+(setq undo-strong-limit 90000000)
 
 (setq user-full-name "Toby Slight")
 (setq user-mail-address "tslight@pm.me")

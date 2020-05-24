@@ -83,9 +83,9 @@
   ("M-SPC" . cycle-spacing)
   ("M-/" . hippie-expand)
   ;; https://b3n.sdf-eu.org/undo-in-emacs.html
-  ("C-/" . undo-only)
-  ("C-?" . undo-redo)
-  ("C-_" . undo)
+  ;; ("C-/" . undo-only)
+  ;; ("C-?" . undo-redo)
+  ;; ("C-_" . undo)
   :bind
   ("C-r" . isearch-backward-regexp)
   ("C-s" . isearch-forward-regexp)
@@ -107,4 +107,4 @@
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-bind.el ends here
+;;; use-bind.el ends here

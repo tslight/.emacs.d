@@ -438,6 +438,8 @@
 (use-package slime
   :ensure t
   :defer t
+  :hook
+  (slime-repl-mode . paredit-mode)
   :config
   (setq inferior-lisp-program "sbcl")
   (load (expand-file-name "~/quicklisp/slime-helper.el")))
@@ -460,6 +462,8 @@
   :ensure t
   :diminish undo-tree-mode
   :bind
+  ("C-?" . undo-tree-redo)
+  ("M-_" . undo-tree-redo)
   ("C-x u" . undo-tree-visualize)
   :config
   (global-undo-tree-mode 1)

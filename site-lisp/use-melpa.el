@@ -540,4 +540,4 @@
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; use.el ends here
+;;; use-melpa.el ends here

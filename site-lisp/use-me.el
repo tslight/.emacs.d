@@ -68,7 +68,6 @@
   :commands my/untabify-buffer my/xml-pretty-print
   :bind*
   ("C-x RET u" . my/convert-to-unix-coding-system)
-  ("C-S-SPC" . my/push-mark-no-activate)
   ("C-c d" . my/delete-inside)
   ("C-c u" . my/underline-text)
   ("M-s M-s" . my/surround)
@@ -78,6 +77,16 @@
   (before-save . my/push-mark-no-activate)
   (after-save . my/auto-recompile)
   (find-file . my/hide-dos-eol))
+
+(use-package my-mark-mitigations
+  :commands
+  my/exchange-point-and-mark-no-activate
+  my/jump-to-mark
+  my/push-mark-no-activate
+  :bind
+  ("C-S-SPC" . my/push-mark-no-activate)
+  ("M-S-SPC" . my/jump-to-mark)
+  ("C-S-x" . my/exchange-point-and-mark-no-activate))
 
 (use-package my-eshell
   :bind*

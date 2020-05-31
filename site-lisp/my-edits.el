@@ -59,13 +59,6 @@
   (interactive)
   (insert (format-time-string "%c" (current-time))))
 
-(defun my/jump-to-mark ()
-  "Jump to the local mark, respecting the `mark-ring' order.
-
-This is the same as using \\[set-mark-command] with the prefix argument."
-  (interactive)
-  (set-mark-command 1))
-
 (defun my/open-line-above ()
   "Insert an empty line above the current line.
 
@@ -98,14 +91,6 @@ mode.  With a prefix ARG open line above the current line."
       (my/open-line-above)
     (move-end-of-line nil)
     (newline-and-indent)))
-
-(defun my/push-mark-no-activate ()
-  "Push `point' to `mark-ring', but do not activate the region.
-
-Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
-  (interactive)
-  (push-mark (point) t nil)
-  (message "Pushed mark to ring"))
 
 (defun my/sort-lines-nocase ()
   "Sort marked lines with case sensitivity."

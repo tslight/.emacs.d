@@ -151,7 +151,8 @@
 
 (use-package exec-path-from-shell
   :ensure t
-  :defer t
+  :commands exec-path-from-shell-initialize
+  :defer 10
   :init
   (setq exec-path-from-shell-check-startup-files 'nil)
   :config

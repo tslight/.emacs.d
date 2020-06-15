@@ -17,7 +17,7 @@
 (use-package my-settings :demand)
 (use-package my-style :demand
   :hook
-  (before-save . whitespace-cleanup))
+  (before-save . (lambda () (interactive) (whitespace-cleanup))))
 (use-package my-theme :demand
   :bind*
   ("C-c M-t C-t" . my/disable-themes))

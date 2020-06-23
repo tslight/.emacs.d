@@ -24,7 +24,6 @@
   :bind*
   ("C-x C-d" . dired)
   ("C-x M-d" . list-directory)
-  :bind
   (:map dired-mode-map
         (")" . dired-omit-mode)
         ("b" . (lambda () (interactive (find-alternate-file ".."))))

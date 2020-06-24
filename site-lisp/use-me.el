@@ -91,6 +91,7 @@
 (use-package my-eshell
   :bind*
   ("C-c C-e" . my/eshell-switcher)
+  ("C-c M-e" . my/eshell-here)
   :bind
   (:map eshell-mode-map
         ("C-c r" . my/eshell-recent-dir)

@@ -17,7 +17,7 @@
 (use-package my-settings :demand)
 (use-package my-style :demand
   :hook
-  (before-save . (lambda () (interactive) (whitespace-cleanup))))
+  (before-save . whitespace-cleanup))
 (use-package my-theme :demand
   :bind*
   ("C-c M-t C-t" . my/disable-themes))
@@ -92,7 +92,7 @@
   :bind*
   ("C-c C-e" . my/eshell-switcher)
   :bind
-  (:map eshell-hist-mode-map
+  (:map eshell-mode-map
         ("C-c r" . my/eshell-recent-dir)
         ("C-c D" . my/eshell-directory-children)
         ("M-r" . my/eshell-complete-history))

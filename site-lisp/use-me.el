@@ -15,9 +15,7 @@
 ;; either implicitly or explicitly deferred.
 (use-package my-registers :demand)
 (use-package my-settings :demand)
-(use-package my-style :demand
-  :hook
-  (before-save . whitespace-cleanup))
+(use-package my-style :demand)
 (use-package my-theme :demand
   :bind*
   ("C-c M-t C-t" . my/disable-themes))

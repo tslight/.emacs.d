@@ -40,6 +40,8 @@
                          tab-mark
                          newline-mark))
 
+(add-hook 'before-save-hook 'whitespace-cleanup)
+
 (provide 'my-style)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

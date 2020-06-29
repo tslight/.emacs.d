@@ -26,22 +26,6 @@
 ;; make tab key do indent first then completion.
 (setq-default tab-always-indent 'complete)
 
-(setq whitespace-style '(face
-                         tabs
-                         spaces
-                         trailing
-                         lines
-                         space-before-tab::space
-                         newline
-                         indentation::space
-                         empty
-                         space-after-tab::space
-                         space-mark
-                         tab-mark
-                         newline-mark))
-
-(add-hook 'before-save-hook 'whitespace-cleanup)
-
 (provide 'my-style)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

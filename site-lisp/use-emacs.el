@@ -287,6 +287,35 @@
   :config
   (setq uniquify-buffer-name-style 'forward))
 
+(use-package whitespace
+  :diminish
+  :commands (whitespace-buffer
+             whitespace-cleanup
+             whitespace-mode)
+  :bind
+  ("C-c b w" . whitespace-cleanup)
+  :hook
+  (org-mode . whitespace-mode)
+  (prog-mode . whitespace-mode)
+  (text-mode . whitespace-mode)
+  (before-save . whitespace-cleanup)
+  (before-save . delete-trailing-lines)
+  :config
+  (setq whitespace-style '(face
+                           tabs
+                           spaces
+                           trailing
+                           lines
+                           space-before-tab::space
+                           newline
+                           indentation::space
+                           empty
+                           space-after-tab::space
+                           space-mark
+                           tab-mark
+                           newline-mark)
+        whitespace-face 'whitespace-trailing))
+
 (provide 'use-emacs)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

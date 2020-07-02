@@ -301,6 +301,7 @@
   (before-save . whitespace-cleanup)
   (before-save . delete-trailing-lines)
   :config
+  (setq whitespace-line-column 120)
   (setq whitespace-style '(face
                            tabs
                            spaces

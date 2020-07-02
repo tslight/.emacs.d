@@ -293,13 +293,10 @@
              whitespace-cleanup
              whitespace-mode)
   :bind
-  ("C-c b w" . whitespace-cleanup)
+  ("C-c w w" . whitespace-mode)
+  ("C-c w c" . whitespace-cleanup)
   :hook
-  (org-mode . whitespace-mode)
-  (prog-mode . whitespace-mode)
-  (text-mode . whitespace-mode)
   (before-save . whitespace-cleanup)
-  (before-save . delete-trailing-lines)
   :config
   (setq whitespace-line-column 120)
   (setq whitespace-style '(face

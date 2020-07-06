@@ -259,8 +259,8 @@
 (use-package shell-script-mode
   :mode
   "\\.sh\\'"
-  "\\.bash\\'"
-  "\\.zsh\\'"
+  "\\.bash.*\\'"
+  "\\.zsh.*\\'"
   "\\bashrc\\'"
   "\\kshrc\\'"
   "\\profile\\'"

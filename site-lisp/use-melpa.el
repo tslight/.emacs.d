@@ -191,6 +191,15 @@
               (setq indent-tabs-mode 1)
               (setq tab-width 2))))
 
+(use-package highlight-symbol
+  :ensure t
+  :bind
+  ("C-x w w" . highlight-symbol)
+  ("C-x w n" . highlight-symbol-next)
+  ("C-x w p" . highlight-symbol-prev)
+  ("C-x w u" . highlight-symbol-remove-all)
+  ("C-x w r" . highlight-symbol-query-replace))
+
 (use-package hungry-delete
   :ensure t
   :defer 6

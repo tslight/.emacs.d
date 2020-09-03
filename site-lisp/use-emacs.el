@@ -20,9 +20,10 @@
   (shell-mode . ansi-color-for-comint-mode-on))
 
 (use-package dired
-  :after dired-x
   :bind*
   ("C-x C-d" . dired)
+  ("C-x C-j" . dired-jump)
+  ("C-x d" . dired-jump)
   ("C-x M-d" . list-directory)
   (:map dired-mode-map
         (")" . dired-omit-mode)
@@ -30,7 +31,10 @@
         ("f" . dired-find-alternate-file)
         ("c" . dired-do-compress-to)
         ("C-o" . dired-find-file-other-window))
+  :init
+  (require 'dired-x)
   :config
+  (autoload 'dired-jump "dired-x" t)
   (when (eq system-type 'berkeley-unix)
     (progn
       (setq dired-listing-switches "-alhpL")))
@@ -39,13 +43,6 @@
   (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'always))
-
-(use-package dired-x
-  :bind*
-  ("C-x C-j" . dired-jump)
-  ("C-x d" . dired-jump)
-  :config
-  (autoload 'dired-jump "dired-x" t))
 
 (use-package find-dired
   :after dired

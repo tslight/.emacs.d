@@ -294,6 +294,8 @@
   ("C-c w c" . whitespace-cleanup)
   :hook
   (before-save . whitespace-cleanup)
+  (before-save . delete-trailing-lines)
+  (before-save . delete-trailing-whitespace)
   :config
   (setq whitespace-line-column 120)
   (setq whitespace-style '(face

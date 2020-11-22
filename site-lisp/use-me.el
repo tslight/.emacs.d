@@ -30,6 +30,8 @@
 
 (use-package my-buffers
   :bind*
+  ("C-c b b" . my/last-buffer)
+  ("C-c b t" . my/toggle-buffer)
   ("C-<escape>" . my/last-buffer)
   ("C-M-<escape>" . my/toggle-buffer)
   ("C-c TAB" . my/indent-buffer)

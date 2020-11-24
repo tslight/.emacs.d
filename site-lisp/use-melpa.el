@@ -290,7 +290,7 @@
   :defer t)
 
 (use-package lazygit
-  :load-path "~/src/gitlab/tspub/lisp/lazygit")
+  :load-path (lambda () (concat (getenv "HOME") "/src/gitlab/tspub/lisp/lazygit")))
 
 (use-package lazygitlab
   :after lazygit

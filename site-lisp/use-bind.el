@@ -11,6 +11,7 @@
 (use-package bind-key
   :ensure t
   :bind*
+  ("C-c ;" . comment-line)
   ("C-w" . kill-ring-save)
   ("M-w" . kill-region)
   ("C-z" . zap-up-to-char)

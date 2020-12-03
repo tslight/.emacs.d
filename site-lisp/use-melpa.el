@@ -113,6 +113,7 @@
   (counsel-mode 1))
 
 (use-package default-text-scale
+  :if window-system
   :ensure t
   :bind*
   ("C-M-=" . default-text-scale-increase)
@@ -142,12 +143,6 @@
 (use-package dockerfile-mode
   :ensure t
   :defer t )
-
-(use-package dot-mode
-  :ensure t
-  :diminish dot-mode
-  :config
-  (global-dot-mode))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -191,15 +186,6 @@
               (setq indent-tabs-mode 1)
               (setq tab-width 2))))
 
-(use-package highlight-symbol
-  :ensure t
-  :bind
-  ("C-x w w" . highlight-symbol)
-  ("C-x w n" . highlight-symbol-next)
-  ("C-x w p" . highlight-symbol-prev)
-  ("C-x w u" . highlight-symbol-remove-all)
-  ("C-x w r" . highlight-symbol-query-replace))
-
 (use-package hungry-delete
   :ensure t
   :defer 6
@@ -228,11 +214,6 @@
                 (vc-status 16 16 :left)
                 " "
                 vc-relative-file))))
-
-(use-package iedit
-  :ensure t
-  :bind
-  ("C-M-%" . iedit-mode))
 
 (use-package ivy
   :ensure t
@@ -289,33 +270,6 @@
   :ensure t
   :defer t)
 
-(use-package lazygit
-  :load-path (lambda () (concat (getenv "HOME") "/src/gitlab/tspub/lisp/lazygit")))
-
-(use-package lazygitlab
-  :after lazygit
-  :bind
-  ("C-c g l a" . lazygitlab-clone-or-pull-all)
-  ("C-c g l c" . lazygitlab-clone-or-pull-project)
-  ("C-c g l g" . lazygitlab-clone-or-pull-group)
-  ("C-c g l r" . lazygitlab-retriever)
-  :config
-  (defalias 'gl/api 'lazygitlab-retriever)
-  (defalias 'gl/all 'lazygitlab-clone-or-pull-all)
-  (defalias 'gl/grp 'lazygitlab-clone-or-pull-group)
-  (defalias 'gl/repo 'lazygitlab-clone-or-pull-project))
-
-(use-package lazygithub
-  :after lazygit
-  :bind
-  ("C-c g h a" . lazygithub-clone-or-pull-all)
-  ("C-c g h c" . lazygithub-clone-or-pull-repo)
-  ("C-c g h r" . lazygithub-retriever)
-  :config
-  (defalias 'gh/api 'lazygithub-retriever)
-  (defalias 'gh/all 'lazygithub-clone-or-pull-all)
-  (defalias 'gh/repo 'lazygithub-clone-or-pull-repo))
-
 (use-package magit
   :ensure t
   :bind*
@@ -342,10 +296,6 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
-
-(use-package edit-indirect
-  :ensure t
-  :defer t)
 
 (use-package nix-mode
   :ensure t
@@ -391,23 +341,6 @@
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
 
-(use-package paredit
-  :ensure t
-  :diminish paredit-mode
-  :bind
-  ("C-c t p" . paredit-mode)
-  ("C-c (" . paredit-forward-slurp-sexp)
-  ("C-c )" . paredit-backward-slurp-sexp)
-  ("C-c <" . paredit-forward-barf-sexp)
-  ("C-c >" . paredit-backward-barf-sexp)
-  ("C-c M-s" . paredit-splice-sexp)
-  :hook
-  (common-lisp-mode . paredit-mode)
-  (emacs-lisp-mode . paredit-mode)
-  (lisp-mode . paredit-mode)
-  :config
-  (unbind-key "M-s" paredit-mode-map))
-
 (use-package pdf-tools
   :ensure t
   :defer t)
@@ -446,21 +379,6 @@
   :ensure t
   :defer t)
 
-;; (use-package slime
-;;   :ensure t
-;;   :defer t
-;;   :hook
-;;   (slime-repl-mode . paredit-mode)
-;;   :config
-;;   (setq inferior-lisp-program "sbcl")
-;;   (load (expand-file-name "~/quicklisp/slime-helper.el")))
-
-;; (use-package slime-company
-;;   :ensure t
-;;   :defer t
-;;   :config
-;;   (slime-setup '(slime-company)))
-
 (use-package systemd
   :ensure t
   :defer t)
@@ -468,19 +386,6 @@
 (use-package terraform-mode
   :ensure t
   :defer t)
-
-(use-package undo-tree
-  :ensure t
-  :diminish undo-tree-mode
-  :bind
-  ("C-?" . undo-tree-redo)
-  ("M-_" . undo-tree-redo)
-  ("C-x u" . undo-tree-visualize)
-  :config
-  (global-undo-tree-mode 1)
-  (setq undo-tree-auto-save-history t)
-  (setq undo-tree-history-directory-alist
-        `(("." . ,(expand-file-name "~/.emacs.d/undos/")))))
 
 (use-package web-mode
   :ensure t

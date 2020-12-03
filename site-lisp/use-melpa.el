@@ -185,7 +185,10 @@
   :defer t
   :mode
   "\\.gitlab-ci.yaml\\'"
-  "\\.gitlab-ci.yml\\'")
+  "\\.gitlab-ci.yml\\'"
+  :hook
+  (yaml-mode . hs-minor-mode)
+  (gitlab-ci-mode . (lambda () (setq display-line-numbers 'relative))))
 
 (use-package go-mode
   :ensure t

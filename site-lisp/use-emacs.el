@@ -225,6 +225,11 @@
   (prog-mode . hs-minor-mode)
   (prog-mode . (lambda () (setq display-line-numbers 'relative))))
 
+(use-package yaml-mode
+  :hook
+  (yaml-mode . hs-minor-mode)
+  (yaml-mode . (lambda () (setq display-line-numbers 'relative))))
+
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter

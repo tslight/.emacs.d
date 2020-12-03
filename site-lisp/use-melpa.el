@@ -154,6 +154,7 @@
   :defer t )
 
 (use-package exec-path-from-shell
+  :if (not (eq system-type 'windows-nt))
   :ensure t
   :commands exec-path-from-shell-initialize
   :defer 10

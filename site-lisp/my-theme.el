@@ -30,7 +30,7 @@
         (when (fboundp 'tooltip-mode)
           (tooltip-mode -1)))
     (progn
-      (load-theme 'wombat)
+      (load-theme 'manoj-dark)
       (xterm-mouse-mode 1)
       (mouse-avoidance-mode 'banish)
       (menu-bar-mode -1)

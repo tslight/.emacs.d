@@ -59,7 +59,7 @@
   ("<f6>" . desktop-read)
   ("S-<f6>" . desktop-save)
   ("S-<f10>" . menu-bar-mode)
-  ("M-S-v" . scroll-other-window-down)
+  ("C-c v" . scroll-other-window-down)
   ("C-M-v" . scroll-other-window)
   ("C-c C-/" . winner-undo)
   ("C-c C-?" . winner-redo)
@@ -71,10 +71,6 @@
   ("C-x p" . pop-to-mark-command)
   ("M-SPC" . cycle-spacing)
   ("M-/" . hippie-expand)
-  ;; https://b3n.sdf-eu.org/undo-in-emacs.html
-  ;; ("C-/" . undo-only)
-  ;; ("C-?" . undo-redo)
-  ;; ("C-_" . undo)
   :bind
   ("C-r" . isearch-backward-regexp)
   ("C-s" . isearch-forward-regexp)

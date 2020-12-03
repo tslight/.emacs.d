@@ -293,11 +293,8 @@
   :bind
   ("C-c w w" . whitespace-mode)
   ("C-c w c" . whitespace-cleanup)
-  :hook
-  (before-save . whitespace-cleanup)
-  (before-save . delete-trailing-lines)
-  (before-save . delete-trailing-whitespace)
   :config
+  (add-hook 'before-save-hook 'whitespace-cleanup)
   (setq whitespace-line-column 120)
   (setq whitespace-style '(face
                            tabs

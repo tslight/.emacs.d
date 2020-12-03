@@ -285,6 +285,7 @@
   (setq uniquify-buffer-name-style 'forward))
 
 (use-package whitespace
+  :demand t
   :diminish
   :commands (whitespace-buffer
              whitespace-cleanup

@@ -33,6 +33,7 @@
       (load-theme 'wombat)
       (xterm-mouse-mode 1)
       (mouse-avoidance-mode 'banish)
+      (menu-bar-mode -1)
       ;; (setq linum-format "%d ")
       (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
       (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling

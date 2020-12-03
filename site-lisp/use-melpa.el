@@ -232,7 +232,7 @@
 (use-package iedit
   :ensure t
   :bind
-  ("M-%" . iedit-mode))
+  ("C-M-%" . iedit-mode))
 
 (use-package ivy
   :ensure t
@@ -290,7 +290,7 @@
   :defer t)
 
 (use-package lazygit
-  :load-path "~/src/gitlab/tspub/lisp/lazygit")
+  :load-path (concat (getenv "HOME") "/src/gitlab/tspub/lisp/lazygit"))
 
 (use-package lazygitlab
   :after lazygit
@@ -418,6 +418,7 @@
 
 (use-package powerline
   :ensure t
+  :if window-system
   :config
   ;; (setq powerline-default-separator 'bar)
   (powerline-default-theme))
@@ -445,20 +446,20 @@
   :ensure t
   :defer t)
 
-(use-package slime
-  :ensure t
-  :defer t
-  :hook
-  (slime-repl-mode . paredit-mode)
-  :config
-  (setq inferior-lisp-program "sbcl")
-  (load (expand-file-name "~/quicklisp/slime-helper.el")))
+;; (use-package slime
+;;   :ensure t
+;;   :defer t
+;;   :hook
+;;   (slime-repl-mode . paredit-mode)
+;;   :config
+;;   (setq inferior-lisp-program "sbcl")
+;;   (load (expand-file-name "~/quicklisp/slime-helper.el")))
 
-(use-package slime-company
-  :ensure t
-  :defer t
-  :config
-  (slime-setup '(slime-company)))
+;; (use-package slime-company
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (slime-setup '(slime-company)))
 
 (use-package systemd
   :ensure t

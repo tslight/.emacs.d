@@ -84,7 +84,7 @@
   my/jump-to-mark
   my/push-mark-no-activate
   :bind
-  ("C-S-SPC" . my/push-mark-no-activate)
+  ("C-c SPC" . my/push-mark-no-activate)
   ("M-S-SPC" . my/jump-to-mark)
   ("C-S-x" . my/exchange-point-and-mark-no-activate))
 
@@ -158,8 +158,8 @@
   ("C-x O" . my/prev-window)
   ("C-c 3" . my/vsplit-last-buffer)
   ("C-c 2" . my/hsplit-last-buffer)
-  ("M-<" . my/top-of-window)
-  ("M->" . my/bottom-of-window)
+  ("C-M-<" . my/top-of-window)
+  ("C-M->" . my/bottom-of-window)
   :bind
   ("M-p" . my/scroll-line-up)
   ("M-n" . my/scroll-line-down)

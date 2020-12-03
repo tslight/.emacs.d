@@ -12,7 +12,7 @@
   "Add custom settings after making the FRAME."
   (select-frame frame)
   (when (eq system-type 'windows-nt)
-    (set-frame-font "Consolas 10" nil t))
+    (set-frame-font "Cascadia Mono 10" nil t))
   (when (eq system-type 'darwin)
     (set-frame-font "Monaco 10" nil t))
   (when (or (eq system-type 'gnu/linux)

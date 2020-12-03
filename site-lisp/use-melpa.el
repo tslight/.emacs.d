@@ -62,6 +62,15 @@
   ("M-i" . change-inner)
   ("M-o" . change-outer))
 
+(use-package comment-dwim-2
+  :ensure t
+  :bind
+  ("M-;" . comment-dwim-2)
+  ("C-c ;" . comment-dwim-2)
+  (:map org-mode-map
+        ("M-;" . org-comment-dwim-2)
+        ("C-c ;" . org-comment-dwim-2)))
+
 (use-package company
   :ensure t
   :defer t

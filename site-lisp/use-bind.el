@@ -12,6 +12,8 @@
   :ensure t
   :bind*
   ("C-c ;" . comment-line)
+  ("C-c ," . beginning-of-buffer)
+  ("C-c ." . end-of-buffer)
   ("C-w" . kill-ring-save)
   ("M-w" . kill-region)
   ("C-z" . zap-up-to-char)

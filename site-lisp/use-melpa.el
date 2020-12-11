@@ -13,9 +13,9 @@
 (use-package ace-window
   :ensure t
   :bind*
-  ("C-x o" . ace-window)
-  ("C-x 0" . ace-delete-window)
-  ("C-x 1" . ace-delete-other-windows)
+  ("C-c o" . ace-window)
+  ("C-c 0" . ace-delete-window)
+  ("C-c 1" . ace-delete-other-windows)
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
   ;; (setq aw-background nil)

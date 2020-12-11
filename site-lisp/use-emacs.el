@@ -118,10 +118,10 @@
 
 (use-package org
   :bind*
-  ("C-c o a" . org-agenda)
-  ("C-c o c" . org-capture)
-  ("C-c o l" . org-store-link)
-  ("C-c o t" . org-time-stamp)
+  ("C-c C-o a" . org-agenda)
+  ("C-c C-o c" . org-capture)
+  ("C-c C-o l" . org-store-link)
+  ("C-c C-o t" . org-time-stamp)
   :hook
   (org-mode . auto-fill-mode)
   (org-mode . hl-line-mode)
@@ -298,8 +298,9 @@
   :bind
   ("C-c w w" . whitespace-mode)
   ("C-c w c" . whitespace-cleanup)
+  :hook
+  (before-save . whitespace-cleanup)
   :config
-  (add-hook 'before-save-hook 'whitespace-cleanup)
   (setq whitespace-line-column 120)
   (setq whitespace-style '(face
                            tabs

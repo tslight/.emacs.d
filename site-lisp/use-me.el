@@ -74,7 +74,6 @@
   ("C-o" . my/open-line-above)
   ("C-S-o" . my/open-line-below)
   :hook
-  (before-save . my/push-mark-no-activate)
   (after-save . my/auto-recompile)
   (find-file . my/hide-dos-eol))
 
@@ -86,7 +85,9 @@
   :bind
   ("C-c SPC" . my/push-mark-no-activate)
   ("M-S-SPC" . my/jump-to-mark)
-  ("C-S-x" . my/exchange-point-and-mark-no-activate))
+  ("C-S-x" . my/exchange-point-and-mark-no-activate)
+  :hook
+  (before-save . my/push-mark-no-activate))
 
 (use-package my-eshell
   :bind*
@@ -168,6 +169,12 @@
         ("o" . my/open-buffer-other-window)
         ("s" . my/toggle-split)
         ("t" . my/transpose-windows)))
+
+(use-package my-wsl
+  :if (string-match "-[Mm]icrosoft" operating-system-release)
+  :bind*
+  ("C-c C-w" . my/wsl-copy)
+  ("C-c C-y" . my/wsl-yank))
 
 (provide 'my-use)
 ;; Local Variables:

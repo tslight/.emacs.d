@@ -56,6 +56,11 @@
   :config
   (async-bytecomp-package-mode 1))
 
+(use-package blacken
+  :ensure t
+  :hook
+  (python-mode . blacken-mode))
+
 (use-package change-inner
   :ensure t
   :bind
@@ -382,11 +387,6 @@
           (mapcar #'file-name-as-directory (magit-list-repos)))
     ;; Optionally write to persistent `projectile-known-projects-file'
     (projectile-save-known-projects)))
-
-(use-package blacken
-  :ensure t
-  :hook
-  (python-mode . blacken-mode))
 
 (use-package restclient
   :ensure t

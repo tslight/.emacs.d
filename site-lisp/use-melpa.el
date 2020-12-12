@@ -369,10 +369,13 @@
 
 (use-package powerline
   :ensure t
-  :if window-system
+  :defer 2
+  :after my-theme
   :config
-  ;; (setq powerline-default-separator 'bar)
-  (powerline-default-theme))
+  (if window-system
+      (progn
+        ;; (setq powerline-default-separator 'bar)
+        (powerline-default-theme))))
 
 (use-package projectile
   :ensure t

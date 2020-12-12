@@ -46,7 +46,14 @@
 
 (use-package fido-mode
   :if (not (version< emacs-version "27"))
-  :hook (after-init . fido-mode))
+  :hook (after-init . fido-mode)
+  :config
+  (setq completion-styles '(flex
+                            partial-completition
+                            substring
+                            initials
+                            basic
+                            emacs22)))
 
 (use-package find-dired
   :after dired
@@ -121,7 +128,7 @@
   :config
   (ido-mode 1)
   (ido-everywhere 1)
-  (setq ido-use-virtual-buffer t ;; show recent files too
+  (setq ido-use-virtual-buffer 't ;; show recent files too
         ido-create-new-buffer 'always
         ido-enable-prefix t
         ido-enable-flex-matching t

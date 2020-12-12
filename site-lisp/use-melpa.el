@@ -369,13 +369,10 @@
 
 (use-package powerline
   :ensure t
-  :defer 2
-  :after my-theme
+  :defer 4
   :config
   (if window-system
-      (progn
-        ;; (setq powerline-default-separator 'bar)
-        (powerline-default-theme))))
+      (powerline-default-theme)))
 
 (use-package projectile
   :ensure t
@@ -394,6 +391,13 @@
 (use-package restclient
   :ensure t
   :defer t)
+
+(use-package smartparens
+  :ensure t
+  :hook
+  (common-lisp-mode . smartparens-strict-mode)
+  (emacs-lisp-mode . smartparens-strict-mode)
+  (lisp-mode . smartparens-strict-mode))
 
 (use-package systemd
   :ensure t

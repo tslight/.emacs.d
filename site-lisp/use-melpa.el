@@ -394,10 +394,14 @@
 
 (use-package smartparens
   :ensure t
+  :diminish t
   :hook
+  (prog-mode . smartparens-mode)
   (common-lisp-mode . smartparens-strict-mode)
   (emacs-lisp-mode . smartparens-strict-mode)
-  (lisp-mode . smartparens-strict-mode))
+  (lisp-mode . smartparens-strict-mode)
+  :config
+  (sp-use-paredit-bindings))
 
 (use-package systemd
   :ensure t

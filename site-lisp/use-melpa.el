@@ -102,30 +102,6 @@
   :ensure t
   :after (:all company-mode terraform-mode))
 
-(use-package counsel
-  :ensure t
-  :diminish
-  :bind*
-  ("C-x C-f" . counsel-find-file)
-  ("M-x" . counsel-M-x)
-  ("M-y" . counsel-yank-pop)
-  ("C-h a" . counsel-apropos)
-  ("C-h f" . counsel-describe-function)
-  ("C-h v" . counsel-describe-variable)
-  ("C-h l" . counsel-load-library)
-  ("C-h i" . counsel-info-lookup-symbol)
-  ("C-h u" . counsel-unicode-char)
-  ("C-c g c" . counsel-git)
-  ("C-c g g" . counsel-git-grep)
-  ("C-c M-g" . counsel-ag)
-  ("C-c l" . counsel-locate)
-  ("C-x r b" . counsel-bookmark)
-  ("C-c f l" . counsel-find-library)
-  ("C-c f f" . counsel-file-jump)
-  ("C-c f j" . counsel-dired-jump)
-  :config
-  (counsel-mode 1))
-
 (use-package default-text-scale
   :if window-system
   :ensure t
@@ -232,28 +208,6 @@
                 (vc-status 16 16 :left)
                 " "
                 vc-relative-file))))
-
-(use-package ivy
-  :ensure t
-  :diminish
-  :bind*
-  ("C-x b" . ivy-switch-buffer)
-  ("C-M-r" . swiper)
-  ("C-M-s" . swiper)
-  ("C-S-s" . swiper-multi)
-  ("C-c M-r" . ivy-resume)
-  (:map ivy-minibuffer-map
-        ("C-s" . ivy-next-line)
-        ("C-r" . ivy-previous-line))
-  :config
-  (ivy-mode 1)
-  (setq ivy-wrap t)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-height 20)
-  (setq ivy-initial-inputs-alist nil) ;; no ^
-  (setq ivy-re-builders-alist
-        '((swiper . ivy--regex-plus)
-          (t      . ivy--regex-fuzzy))))
 
 (use-package js2-mode
   :ensure t

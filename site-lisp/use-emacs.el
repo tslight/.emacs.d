@@ -44,6 +44,10 @@
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'always))
 
+(use-package fido-mode
+  :if (not (version< emacs-version "27"))
+  :hook (after-init . fido-mode))
+
 (use-package find-dired
   :after dired
   :config
@@ -111,6 +115,46 @@
   (prog-mode . hl-line-mode)
   (shell-script-mode . hl-line-mode)
   (text-mode . hl-line-mode))
+
+(use-package ido
+  :demand t
+  :config
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (setq ido-use-virtual-buffer t ;; show recent files too
+        ido-create-new-buffer 'always
+        ido-enable-prefix t
+        ido-enable-flex-matching t
+        ido-auto-merge-work-directories-length -1
+        ido-use-filename-at-point 'ffap-guesser
+        ido-decorations (quote ("\n--> "
+                                " "
+                                "\n    "
+                                "\n    ..."
+                                "["  "]"
+                                "  [No match]"
+                                "  [Matched]"
+                                "  [Not readable]"
+                                "  [Too big]"
+                                "  [Confirm]"))))
+
+(use-package icomplete
+  :hook
+  (after-init . (lambda () (if (version< emacs-version "27")
+                          (icomplete-mode))))
+  :config
+  (setq icomplete-compute-delay 0)
+  (setq icomplete-delay-completions-threshold 0)
+  (setq icomplete-hide-common-prefix nil)
+  (setq icomplete-in-buffer t)
+  (setq icomplete-max-delay-chars 0)
+  (setq icomplete-prospects-height 1)
+  (setq icomplete-separator "\n")
+  (setq icomplete-show-matches-on-no-input t)
+  :bind (:map icomplete-minibuffer-map
+              ;; ("TAB" . icomplete-force-complete)
+              ("C-n" . icomplete-forward-completions)
+              ("C-p" . icomplete-backward-completions)))
 
 (use-package lisp-mode
   :hook

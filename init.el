@@ -13,6 +13,7 @@
       (gc-cons-percentage 0.8))
 
   ;; install use-package
+  (require 'package)
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))

@@ -124,7 +124,19 @@
   (setq icomplete-in-buffer t)
   (setq icomplete-max-delay-chars 0)
   (setq icomplete-prospects-height 1)
-  (setq icomplete-show-matches-on-no-input t))
+  (setq icomplete-show-matches-on-no-input t)
+  :bind
+  (:map icomplete-minibuffer-map
+        ("<tab>" . icomplete-force-complete)
+        ("<return>" . icomplete-force-complete-and-exit) ; exit with completion
+        ("C-j" . exit-minibuffer) ; force input unconditionally
+        ("C-n" . icomplete-forward-completions)
+        ("<right>" . icomplete-forward-completions)
+        ("<down>" . icomplete-forward-completions)
+        ("C-p" . icomplete-backward-completions)
+        ("<left>" . icomplete-backward-completions)
+        ("<up>" . icomplete-backward-completions)
+        ("<C-backspace>" . icomplete-fido-backward-updir)))
 
 (use-package lisp-mode
   :hook

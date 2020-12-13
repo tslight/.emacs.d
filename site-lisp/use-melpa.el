@@ -10,27 +10,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(use-package ace-window
-  :ensure t
-  :bind*
-  ("C-c o" . ace-window)
-  ("C-c 0" . ace-delete-window)
-  ("C-c 1" . ace-delete-other-windows)
-  :config
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  ;; (setq aw-background nil)
-  (custom-set-faces
-   '(aw-leading-char-face
-     ((t (:foreground
-          "green"
-          ;; :background
-          ;; "black"
-          :height
-          2.0))))))
-
-(use-package amx
-  :ensure t)
-
 (use-package anaconda-mode
   :ensure t
   :after python-mode
@@ -144,9 +123,6 @@
   :config
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "PYTHONPATH"))
-
-(use-package flx
-  :ensure t)
 
 (use-package flycheck
   :ensure t
@@ -335,7 +311,7 @@
   ("C-c p" . projectile-command-map)
   :config
   (projectile-mode)
-  (setq projectile-completion-system 'ivy)
+  ;; (setq projectile-completion-system 'ivy)
   (when (require 'magit nil t)
     (mapc #'projectile-add-known-project
           (mapcar #'file-name-as-directory (magit-list-repos)))
@@ -351,9 +327,9 @@
   :diminish t
   :hook
   (prog-mode . smartparens-mode)
-  (common-lisp-mode . smartparens-strict-mode)
-  (emacs-lisp-mode . smartparens-strict-mode)
-  (lisp-mode . smartparens-strict-mode)
+  ;; (common-lisp-mode . smartparens-strict-mode)
+  ;; (emacs-lisp-mode . smartparens-strict-mode)
+  ;; (lisp-mode . smartparens-strict-mode)
   :config
   (sp-use-paredit-bindings))
 

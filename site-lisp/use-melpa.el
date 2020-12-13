@@ -241,8 +241,8 @@
   :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
+         ("\\.md\\'" . gfm-mode)
+         ("\\.markdown\\'" . gfm-mode))
   :init (setq markdown-command "multimarkdown"))
 
 (use-package nix-mode
@@ -405,7 +405,7 @@
   :ensure t
   :defer t)
 
-(provide 'use)
+(provide 'use-melpa)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

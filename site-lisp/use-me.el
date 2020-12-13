@@ -176,7 +176,7 @@
   ("C-c C-w" . my/wsl-copy)
   ("C-c C-y" . my/wsl-yank))
 
-(provide 'my-use)
+(provide 'use-me)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

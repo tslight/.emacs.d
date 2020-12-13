@@ -112,16 +112,16 @@
   (shell-script-mode . hl-line-mode)
   (text-mode . hl-line-mode))
 
-;; (use-package ido
-;;   :config
-;;   (ido-mode 1)
-;;   (ido-everywhere 1)
-;;   (setq ido-use-virtual-buffer 't ;; show recent files too
-;;         ido-create-new-buffer 'always
-;;         ido-enable-prefix t
-;;         ido-enable-flex-matching t
-;;         ido-auto-merge-work-directories-length -1
-;;         ido-use-filename-at-point 'ffap-guesser))
+(use-package ido
+  :config
+  (ido-mode 1)
+  (ido-everywhere 1)
+  (setq ido-use-virtual-buffer 't ;; show recent files too
+        ido-create-new-buffer 'always
+        ido-enable-prefix t
+        ido-enable-flex-matching t
+        ido-auto-merge-work-directories-length -1
+        ido-use-filename-at-point 'ffap-guesser))
 
 (use-package icomplete
   :hook

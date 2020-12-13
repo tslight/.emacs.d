@@ -9,7 +9,7 @@
 
 ;;; Code:
 ;; Initialise installed packages
-(setq package-enable-at-startup nil)
+(setq package-enable-at-startup t)
 ;; Allow loading from the package cache.
 (setq package-quickstart t)
 (setq package--init-file-ensured t)

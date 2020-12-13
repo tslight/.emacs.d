@@ -112,29 +112,12 @@
   (shell-script-mode . hl-line-mode)
   (text-mode . hl-line-mode))
 
-(use-package ido
-  :config
-  (ido-mode 1)
-  (ido-everywhere 1)
-  (setq ido-use-virtual-buffer 't ;; show recent files too
-        ido-create-new-buffer 'always
-        ido-enable-prefix t
-        ido-enable-flex-matching t
-        ido-auto-merge-work-directories-length -1
-        ido-use-filename-at-point 'ffap-guesser))
-
 (use-package icomplete
   :hook
   (after-init . (lambda () (if (version< emacs-version "27")
                           (icomplete-mode)
                         (fido-mode))))
   :config
-  (setq completion-styles '(flex
-                            partial-completition
-                            substring
-                            initials
-                            basic
-                            emacs22))
   (setq icomplete-compute-delay 0)
   (setq icomplete-delay-completions-threshold 0)
   (setq icomplete-hide-common-prefix nil)
@@ -146,6 +129,31 @@
 (use-package lisp-mode
   :hook
   (lisp-mode . (lambda () (add-hook 'after-save-hook 'check-parens nil t))))
+
+(use-package minibuffer
+  :hook
+  (minibuffer-exit . (lambda () (setq gc-cons-threshold 800000)))
+  (minibuffer-setup . (lambda () (setq gc-cons-threshold most-positive-fixnum)))
+  :config
+  (setq completion-styles '(flex partial-completition substring initials))
+  (setq completion-category-defaults nil)
+  (setq completion-cycle-threshold 3)
+  (setq completion-flex-nospace nil)
+  (setq completion-pcm-complete-word-inserts-delimiters t)
+  (setq completion-pcm-word-delimiters "-_./:| ")
+  (setq completion-show-help nil)
+  (setq completion-ignore-case t)
+  (setq completions-format 'one-column)
+  (setq completions-detailed t)
+  (setq read-buffer-completion-ignore-case t)
+  (setq read-file-name-completion-ignore-case t)
+  (setq enable-recursive-minibuffers t)
+  (setq read-answer-short t)
+  (setq resize-mini-windows t)
+  (setq minibuffer-eldef-shorten-default t)
+  (file-name-shadow-mode 1)
+  (minibuffer-depth-indicate-mode 1)
+  (minibuffer-electric-default-mode 1))
 
 (use-package org
   :bind*

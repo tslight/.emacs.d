@@ -12,15 +12,6 @@
       (gc-cons-threshold most-positive-fixnum)
       (gc-cons-percentage 0.8))
 
-  ;; setup package.el
-  (require 'package)
-  (setq package-enable-at-startup nil)
-  (setq package--init-file-ensured t)
-  (setq package-archives
-        '(("melpa" . "https://melpa.org/packages/")
-          ("gnu" . "https://elpa.gnu.org/packages/")))
-  (package-initialize)
-
   ;; install use-package
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)

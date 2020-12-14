@@ -189,6 +189,11 @@ line."
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
 
+(defun my/yank-pop-forwards (arg)
+  "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
+  (interactive "p")
+  (yank-pop (- arg)))
+
 (provide 'my-edits)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

@@ -138,6 +138,17 @@
         ("<up>" . icomplete-backward-completions)
         ("<C-backspace>" . icomplete-fido-backward-updir)))
 
+(use-package imenu
+  :config
+  (setq imenu--rescan-item '("" . -99))
+  (setq imenu-use-markers t)
+  (setq imenu-auto-rescan t)
+  (setq imenu-auto-rescan-maxout 600000)
+  (setq imenu-max-item-length 100)
+  (setq imenu-use-popup-menu nil)
+  (setq imenu-eager-completion-buffer t)
+  (setq imenu-space-replacement " "))
+
 (use-package lisp-mode
   :hook
   (lisp-mode . (lambda () (add-hook 'after-save-hook 'check-parens nil t))))

@@ -73,6 +73,7 @@
   ("M-s M-s" . my/surround)
   ("C-o" . my/open-line-above)
   ("C-S-o" . my/open-line-below)
+  ("C-M-y" . my/yank-pop-forwards)
   :hook
   (after-save . my/auto-recompile)
   (find-file . my/hide-dos-eol))
@@ -83,9 +84,9 @@
   my/jump-to-mark
   my/push-mark-no-activate
   :bind
-  ("C-c SPC" . my/push-mark-no-activate)
-  ("M-S-SPC" . my/jump-to-mark)
-  ("C-S-x" . my/exchange-point-and-mark-no-activate)
+  ("C-c SPC p" . my/push-mark-no-activate)
+  ("C-c SPC j" . my/jump-to-mark)
+  ("C-c SPC x" . my/exchange-point-and-mark-no-activate)
   :hook
   (before-save . my/push-mark-no-activate))
 

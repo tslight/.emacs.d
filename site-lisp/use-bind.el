@@ -14,6 +14,8 @@
   ("C-c ;" . comment-line)
   ("C-z" . zap-up-to-char)
   ("M-z" . zap-up-char)
+  ("C-x M-t" . transpose-regions)
+  ("C-x M-p" . transpose-paragraphs)
   ("C-c e b" . eval-buffer)
   ("C-c e e" . pp-eval-last-sexp)
   ("C-c e m" . lisp-interaction-mode)

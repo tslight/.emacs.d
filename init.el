@@ -12,30 +12,21 @@
       (gc-cons-threshold most-positive-fixnum)
       (gc-cons-percentage 0.8))
 
-  ;; add my custom libraries to load path and compile them & the init file
-  (byte-recompile-directory (concat user-emacs-directory "early-init.d") 0)
-  (byte-recompile-directory (concat user-emacs-directory "init.d") 0)
-  (byte-recompile-directory (concat user-emacs-directory "site-lisp") 0)
-  (byte-recompile-file (concat user-emacs-directory "early-init.el") 'nil 0 'nil)
-  (byte-recompile-file (concat user-emacs-directory "init.el") 'nil 0 'nil)
+  (mapc (lambda (directory) (byte-recompile-directory (concat user-emacs-directory directory) 0))
+        '("early-init.d" "init.d" "site-lisp")) ;; compile these directories
+
+  (mapc (lambda (file) (byte-recompile-file (concat user-emacs-directory file) 'nil 0 'nil))
+        '("early-init.el" "init.el")) ;; compile these files
+
+  (add-to-list 'load-path (concat user-emacs-directory "site-lisp/"))
 
   ;; load all files in ~/.emacs.d/init.d
   (mapc (lambda (file) (load file))
         (directory-files (concat user-emacs-directory "init.d") t "^.*\.elc$"))
 
-  ;; install use-package
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-
-  (byte-recompile-directory (concat user-emacs-directory "use.d") 0)
-  (byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
-
-  (add-to-list 'load-path (concat user-emacs-directory "site-lisp/"))
-  (load (concat user-emacs-directory "use.elc"))
+  (load (concat user-emacs-directory "use"))
 
   (message "HACKS AND GLORY AWAIT! :-)"))
-(provide 'init)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

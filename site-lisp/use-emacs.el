@@ -44,6 +44,42 @@
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'always))
 
+(use-package icomplete
+  :demand
+  :after (minibuffer recentf savehist)
+  :custom
+  (completion-category-defaults nil)
+  (completion-cycle-threshold 3)
+  (completion-flex-nospace nil)
+  (completion-pcm-complete-word-inserts-delimiters t)
+  (completion-pcm-word-delimiters "-_./:| ")
+  (completion-show-help nil)
+  (completion-ignore-case t)
+  (completions-format 'one-column)
+  (completions-detailed t)
+  (read-buffer-completion-ignore-case t)
+  (read-file-name-completion-ignore-case t)
+  (enable-recursive-minibuffers t)
+  (read-answer-short t)
+  (resize-mini-windows t)
+  (minibuffer-eldef-shorten-default t)
+  (file-name-shadow-mode 1)
+  (minibuffer-depth-indicate-mode 1)
+  (minibuffer-electric-default-mode 1)
+  (icomplete-delay-completions-threshold 100)
+  (icomplete-max-delay-chars 2)
+  (icomplete-compute-delay 0.2)
+  (icomplete-show-matches-on-no-input t)
+  (icomplete-hide-common-prefix nil)
+  (icomplete-prospects-height 1)
+  (icomplete-separator (propertize " · " 'face 'shadow))
+  (icomplete-with-completion-tables t)
+  (icomplete-tidy-shadowed-file-names t)
+  :config
+  (if (version< emacs-version "27")
+      (icomplete-mode)
+    (fido-mode)))
+
 (use-package find-dired
   :after dired
   :config
@@ -112,31 +148,6 @@
   (shell-script-mode . hl-line-mode)
   (text-mode . hl-line-mode))
 
-(use-package icomplete
-  :demand
-  :after minibuffer savehist
-  :config
-  (icomplete-mode)
-  (setq icomplete-compute-delay 0)
-  (setq icomplete-delay-completions-threshold 0)
-  (setq icomplete-hide-common-prefix nil)
-  (setq icomplete-in-buffer t)
-  (setq icomplete-max-delay-chars 0)
-  (setq icomplete-prospects-height 1)
-  (setq icomplete-show-matches-on-no-input t)
-  :bind
-  (:map icomplete-minibuffer-map
-        ("<tab>" . icomplete-force-complete)
-        ("<return>" . icomplete-force-complete-and-exit) ; exit with completion
-        ("C-j" . exit-minibuffer) ; force input unconditionally
-        ("C-n" . icomplete-forward-completions)
-        ("<right>" . icomplete-forward-completions)
-        ("<down>" . icomplete-forward-completions)
-        ("C-p" . icomplete-backward-completions)
-        ("<left>" . icomplete-backward-completions)
-        ("<up>" . icomplete-backward-completions)
-        ("<C-backspace>" . icomplete-fido-backward-updir)))
-
 (use-package imenu
   :bind*
   ("C-c i" . imenu)
@@ -151,12 +162,7 @@
 (use-package minibuffer
   :hook
   (minibuffer-exit . (lambda () (setq gc-cons-threshold 800000)))
-  (minibuffer-setup . (lambda () (setq gc-cons-threshold most-positive-fixnum)))
-  :config
-  (setq resize-mini-windows t) ;; makes vertical mode look better
-  (if (version< emacs-version "27")
-      (setq completion-styles '(initials partial-completion substring basic))
-    (setq completion-styles '(initials partial-completion flex substring basic))))
+  (minibuffer-setup . (lambda () (setq gc-cons-threshold most-positive-fixnum))))
 
 (use-package org
   :bind*

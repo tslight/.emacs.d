@@ -122,21 +122,16 @@
               (setq tab-width 2))))
 
 (use-package hungry-delete
-  :ensure t
-  :defer 6
+  :ensure t :defer 6
   :diminish hungry-delete-mode
   :config
   (global-hungry-delete-mode))
 
 (use-package icomplete-vertical
-  :ensure t
-  :demand
-  :after icomplete
+  :ensure :demand
+  :after (icomplete)
   :bind*
   ("C-c y" . my/icomplete-kill-ring)
-  (:map icomplete-minibuffer-map
-        ("C-s" . icomplete-forward-completions)
-        ("C-r" . icomplete-backward-completions))
   :config
   (defun my/icomplete-kill-ring ()
     "Insert item from kill-ring, selected with completion."
@@ -146,14 +141,12 @@
   (icomplete-vertical-mode))
 
 (use-package ibuffer-vc
-  :ensure t
-  :defer t
-  :init
-  (add-hook 'ibuffer-hook
-            (lambda ()
-              (ibuffer-vc-set-filter-groups-by-vc-root)
-              (unless (eq ibuffer-sorting-mode 'alphabetic)
-                (ibuffer-do-sort-by-alphabetic))))
+  :ensure
+  :hook
+  (ibuffer . (lambda ()
+               (ibuffer-vc-set-filter-groups-by-vc-root)
+               (unless (eq ibuffer-sorting-mode 'alphabetic)
+                 (ibuffer-do-sort-by-alphabetic))))
   :config
   (setq ibuffer-formats
         '((mark modified read-only vc-status-mini " "

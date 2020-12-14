@@ -116,7 +116,9 @@
 
 (use-package my-icomplete
   :demand
-  :after icomplete recentf
+  :after icomplete
+  :hook
+  (icomplete-minibuffer-setup . my/icomplete-styles)
   :bind*
   ("C-c r" . my/icomplete-recentf))
 

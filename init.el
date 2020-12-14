@@ -20,11 +20,10 @@
 
   (add-to-list 'load-path (concat user-emacs-directory "site-lisp/"))
 
-  ;; load all files in ~/.emacs.d/init.d
-  (mapc (lambda (file) (load file))
+  (mapc (lambda (file) (load file)) ;; load all files in ~/.emacs.d/init.d
         (directory-files (concat user-emacs-directory "init.d") t "^.*\.elc$"))
 
-  (load (concat user-emacs-directory "use"))
+  (load (concat user-emacs-directory "use")) ;; comment for no 3rd party packages
 
   (message "HACKS AND GLORY AWAIT! :-)"))
 ;; Local Variables:

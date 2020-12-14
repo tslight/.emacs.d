@@ -10,6 +10,14 @@
 ;;; Code:
 ;; install use-package
 ;; `use-package' does all the heavy lifting in my config.
+(require 'package)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(byte-recompile-directory (concat user-emacs-directory "use.d") 0)
+(byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
+
 (setq use-package-enable-imenu-support t)
 ;; (setq use-package-always-ensure t)
 (setq use-package-verbose t)

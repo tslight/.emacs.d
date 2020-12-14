@@ -9,6 +9,9 @@
 
 ;;; Code:
 ;; load all files ~/.emacs.d/early-init.d
+(byte-recompile-directory (concat user-emacs-directory "early-init.d") 0)
+(byte-recompile-file (concat user-emacs-directory "early-init.el") 'nil 0 'nil)
+
 (mapc (lambda (file) (load file))
       (directory-files
        (concat user-emacs-directory "early-init.d") t "^.*\.elc$"))

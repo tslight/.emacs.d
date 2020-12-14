@@ -143,29 +143,13 @@
   (lisp-mode . (lambda () (add-hook 'after-save-hook 'check-parens nil t))))
 
 (use-package minibuffer
+  :demand t
   :hook
   (minibuffer-exit . (lambda () (setq gc-cons-threshold 800000)))
   (minibuffer-setup . (lambda () (setq gc-cons-threshold most-positive-fixnum)))
   :config
-  (setq completion-styles '(flex partial-completition substring initials))
-  (setq completion-category-defaults nil)
-  (setq completion-cycle-threshold 3)
-  (setq completion-flex-nospace nil)
-  (setq completion-pcm-complete-word-inserts-delimiters t)
-  (setq completion-pcm-word-delimiters "-_./:| ")
-  (setq completion-show-help nil)
-  (setq completion-ignore-case t)
-  (setq completions-format 'one-column)
-  (setq completions-detailed t)
-  (setq read-buffer-completion-ignore-case t)
-  (setq read-file-name-completion-ignore-case t)
-  (setq enable-recursive-minibuffers t)
-  (setq read-answer-short t)
-  (setq resize-mini-windows t)
-  (setq minibuffer-eldef-shorten-default t)
-  (file-name-shadow-mode 1)
-  (minibuffer-depth-indicate-mode 1)
-  (minibuffer-electric-default-mode 1))
+  (setq completion-styles '(initials partial-completion flex)) ; > Emacs 27.1
+  (setq completion-cycle-threshold 10))
 
 (use-package org
   :bind*

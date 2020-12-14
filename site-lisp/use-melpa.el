@@ -46,41 +46,6 @@
   ("M-i" . change-inner)
   ("M-o" . change-outer))
 
-(use-package comment-dwim-2
-  :ensure t
-  :bind
-  ("M-;" . comment-dwim-2)
-  ("C-c ;" . comment-dwim-2)
-  (:map org-mode-map
-        ("M-;" . org-comment-dwim-2)
-        ("C-c ;" . org-comment-dwim-2)))
-
-(use-package company
-  :ensure t
-  :defer t
-  :diminish company-mode
-  :hook
-  (prog-mode . company-mode)
-  :config
-  (setq company-minimum-prefix-length 2
-        company-idle-delay 0.2))
-
-(use-package company-anaconda
-  :ensure t
-  :after (:all company-mode anaconda-mode))
-
-(use-package company-ansible
-  :ensure t
-  :after (:all company-mode ansible))
-
-(use-package company-go
-  :ensure t
-  :after company-mode go-mode)
-
-(use-package company-terraform
-  :ensure t
-  :after (:all company-mode terraform-mode))
-
 (use-package default-text-scale
   :if window-system
   :ensure t
@@ -326,10 +291,9 @@
   :ensure t
   :diminish t
   :hook
-  (prog-mode . smartparens-mode)
-  ;; (common-lisp-mode . smartparens-strict-mode)
-  ;; (emacs-lisp-mode . smartparens-strict-mode)
-  ;; (lisp-mode . smartparens-strict-mode)
+  (common-lisp-mode . smartparens-mode)
+  (emacs-lisp-mode . smartparens-mode)
+  (lisp-mode . smartparens-mode)
   :config
   (sp-use-paredit-bindings))
 

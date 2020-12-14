@@ -143,7 +143,6 @@
   (lisp-mode . (lambda () (add-hook 'after-save-hook 'check-parens nil t))))
 
 (use-package minibuffer
-  :demand t
   :hook
   (minibuffer-exit . (lambda () (setq gc-cons-threshold 800000)))
   (minibuffer-setup . (lambda () (setq gc-cons-threshold most-positive-fixnum)))

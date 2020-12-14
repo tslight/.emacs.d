@@ -15,13 +15,13 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(byte-recompile-directory (concat user-emacs-directory "use.d") 0)
-(byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
-
 (setq use-package-enable-imenu-support t)
 ;; (setq use-package-always-ensure t)
 (setq use-package-verbose t)
 (require 'use-package)
+
+(byte-recompile-directory (concat user-emacs-directory "use.d") 0)
+(byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
 
 ;; load all files in ~/.emacs.d/use.d directory
 (mapc (lambda (file) (load file))

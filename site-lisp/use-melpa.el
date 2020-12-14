@@ -132,8 +132,11 @@
   :ensure t
   :demand
   :after icomplete
-  :bind
+  :bind*
   ("C-c y" . my/icomplete-kill-ring)
+  (:map icomplete-minibuffer-map
+        ("C-s" . icomplete-forward-completions)
+        ("C-r" . icomplete-backward-completions))
   :config
   (defun my/icomplete-kill-ring ()
     "Insert item from kill-ring, selected with completion."

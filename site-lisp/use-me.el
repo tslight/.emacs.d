@@ -114,6 +114,12 @@
   ("C-c f r" . my/rename-this-file-and-buffer)
   ("C-c f s" . my/sudoedit))
 
+(use-package my-icomplete
+  :demand
+  :after icomplete recentf
+  :bind*
+  ("C-c r" . my/icomplete-recentf))
+
 (use-package my-isearch
   :bind
   (:map isearch-mode-map

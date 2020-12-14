@@ -128,6 +128,20 @@
   :config
   (global-hungry-delete-mode))
 
+(use-package icomplete-vertical
+  :ensure t
+  :demand
+  :after icomplete
+  :bind
+  ("C-c y" . my/icomplete-kill-ring)
+  :config
+  (defun my/icomplete-kill-ring ()
+    "Insert item from kill-ring, selected with completion."
+    (interactive)
+    (icomplete-vertical-do (:separator 'dotted-line :height 20)
+      (insert (completing-read "Yank: " kill-ring nil t))))
+  (icomplete-vertical-mode))
+
 (use-package ibuffer-vc
   :ensure t
   :defer t

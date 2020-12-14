@@ -113,11 +113,10 @@
   (text-mode . hl-line-mode))
 
 (use-package icomplete
-  :hook
-  (after-init . (lambda () (if (version< emacs-version "27")
-                          (icomplete-mode)
-                        (fido-mode))))
+  :demand
+  :after minibuffer savehist
   :config
+  (icomplete-mode)
   (setq icomplete-compute-delay 0)
   (setq icomplete-delay-completions-threshold 0)
   (setq icomplete-hide-common-prefix nil)
@@ -139,15 +138,11 @@
         ("<C-backspace>" . icomplete-fido-backward-updir)))
 
 (use-package imenu
+  :bind*
+  ("C-c i" . imenu)
+  :commands imenu
   :config
-  (setq imenu--rescan-item '("" . -99))
-  (setq imenu-use-markers t)
-  (setq imenu-auto-rescan t)
-  (setq imenu-auto-rescan-maxout 600000)
-  (setq imenu-max-item-length 100)
-  (setq imenu-use-popup-menu nil)
-  (setq imenu-eager-completion-buffer t)
-  (setq imenu-space-replacement " "))
+  (setq imenu-auto-rescan t))
 
 (use-package lisp-mode
   :hook
@@ -158,8 +153,10 @@
   (minibuffer-exit . (lambda () (setq gc-cons-threshold 800000)))
   (minibuffer-setup . (lambda () (setq gc-cons-threshold most-positive-fixnum)))
   :config
-  (setq completion-styles '(initials partial-completion flex)) ; > Emacs 27.1
-  (setq completion-cycle-threshold 10))
+  (setq resize-mini-windows t) ;; makes vertical mode look better
+  (if (version< emacs-version "27")
+      (setq completion-styles '(initials partial-completion substring basic))
+    (setq completion-styles '(initials partial-completion flex substring basic))))
 
 (use-package org
   :bind*
@@ -284,7 +281,7 @@
   (setq python-fill-docstring-style 'django))
 
 (use-package recentf
-  :defer 4
+  :demand
   :config
   (recentf-mode 1)
   (setq recentf-exclude '(;;".*init\.el"
@@ -297,7 +294,7 @@
   (setq recentf-max-saved-items 256))
 
 (use-package savehist
-  :defer 2
+  :demand
   :config
   (savehist-mode 1)
   (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))

@@ -23,6 +23,13 @@
   (mapc (lambda (file) (load file)) ;; load all files in ~/.emacs.d/init.d
         (directory-files (concat user-emacs-directory "init.d") t "^.*\.elc$"))
 
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (byte-recompile-directory (concat user-emacs-directory "use.d") 0)
+  (byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
+
   (load (concat user-emacs-directory "use")) ;; comment for no 3rd party packages
 
   (message "HACKS AND GLORY AWAIT! :-)"))

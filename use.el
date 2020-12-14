@@ -8,11 +8,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; install use-package
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
 ;; `use-package' does all the heavy lifting in my config.
 (setq use-package-enable-imenu-support t)
 ;; (setq use-package-always-ensure t)

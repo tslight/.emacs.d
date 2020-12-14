@@ -24,7 +24,9 @@
                          newline-mark)
       whitespace-face 'whitespace-trailing)
 
-(add-hook 'before-save 'whitespace-cleanup)
+(global-set-key (kbd "C-c M-w") 'whitespace-mode)
+
+(add-hook 'before-save-hook 'whitespace-cleanup)
 (provide 'early-init-whitespace)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

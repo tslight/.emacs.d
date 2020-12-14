@@ -13,7 +13,10 @@
 
 ;; Stuff that we simply must have when starting Emacs, everything else is
 ;; either implicitly or explicitly deferred.
-(use-package my-registers :demand)
+(use-package my-icomplete :demand
+  :after icomplete
+  :hook (icomplete-minibuffer-setup . my/icomplete-styles)
+  :bind* ("C-c r" . my/icomplete-recentf))(use-package my-registers :demand)
 (use-package my-settings :demand)
 (use-package my-style :demand)
 (use-package my-theme :demand
@@ -114,13 +117,7 @@
   ("C-c f r" . my/rename-this-file-and-buffer)
   ("C-c f s" . my/sudoedit))
 
-(use-package my-icomplete
-  :demand
-  :after icomplete
-  :hook
-  (icomplete-minibuffer-setup . my/icomplete-styles)
-  :bind*
-  ("C-c r" . my/icomplete-recentf))
+
 
 (use-package my-isearch
   :bind

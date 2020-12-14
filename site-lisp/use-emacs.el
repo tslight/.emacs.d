@@ -10,40 +10,9 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(use-package ansi-color
-  :config
-  (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-  (defun colorize-compilation-buffer ()
-    (ansi-color-apply-on-region compilation-filter-start (point)))
-  :hook
-  (compilation-filter . colorize-compilation-buffer)
-  (shell-mode . ansi-color-for-comint-mode-on))
 
-(use-package dired
-  :bind*
-  ("C-x C-d" . dired)
-  ("C-x C-j" . dired-jump)
-  ("C-x d" . dired-jump)
-  ("C-x M-d" . list-directory)
-  (:map dired-mode-map
-        (")" . dired-omit-mode)
-        ("b" . (lambda () (interactive (find-alternate-file ".."))))
-        ("f" . dired-find-alternate-file)
-        ("c" . dired-do-compress-to)
-        ("C-o" . dired-find-file-other-window))
-  :init
-  (require 'dired-x)
-  :config
-  (autoload 'dired-jump "dired-x" t)
-  (when (eq system-type 'berkeley-unix)
-    (progn
-      (setq dired-listing-switches "-alhpL")))
-  (setq dired-dwim-target t)
-  (setq dired-use-ls-dired nil)
-  (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
-  (setq dired-recursive-copies 'always)
-  (setq dired-recursive-deletes 'always))
-
+;; Stuff that we simply must have when starting Emacs, everything else is
+;; either implicitly or explicitly deferred.
 (use-package icomplete
   :demand
   :after (minibuffer recentf savehist)
@@ -79,6 +48,62 @@
   (if (version< emacs-version "27")
       (icomplete-mode)
     (fido-mode)))
+
+(use-package recentf
+  :demand
+  :config
+  (recentf-mode 1)
+  (setq recentf-exclude '(;;".*init\.el"
+                          ;;".*\/my-.*\.el"
+                          "^/var/folders\\.*"
+                          "COMMIT_EDITMSG\\'"
+                          ".*-autoloads\\.el\\'"
+                          "[/\\]\\.elpa/"))
+  (setq recentf-max-menu-items 128)
+  (setq recentf-max-saved-items 256))
+
+(use-package savehist
+  :demand
+  :config
+  (savehist-mode 1)
+  (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+  (setq savehist-save-minibuffer-history 1))
+
+;; Everything declared under here should be deferred.
+(use-package ansi-color
+  :config
+  (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+  (defun colorize-compilation-buffer ()
+    (ansi-color-apply-on-region compilation-filter-start (point)))
+  :hook
+  (compilation-filter . colorize-compilation-buffer)
+  (shell-mode . ansi-color-for-comint-mode-on))
+
+(use-package dired
+  :bind*
+  ("C-x C-d" . dired)
+  ("C-x C-j" . dired-jump)
+  ("C-x d" . dired-jump)
+  ("C-x M-d" . list-directory)
+  (:map dired-mode-map
+        (")" . dired-omit-mode)
+        ("b" . (lambda () (interactive (find-alternate-file ".."))))
+        ("f" . dired-find-alternate-file)
+        ("c" . dired-do-compress-to)
+        ("C-o" . dired-find-file-other-window))
+  :init
+  (require 'dired-x)
+  :config
+  (autoload 'dired-jump "dired-x" t)
+  (when (eq system-type 'berkeley-unix)
+    (progn
+      (setq dired-listing-switches "-alhpL")))
+  (setq dired-dwim-target t)
+  (setq dired-use-ls-dired nil)
+  (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+  (setq dired-recursive-copies 'always)
+  (setq dired-recursive-deletes 'always))
+
 
 (use-package find-dired
   :after dired
@@ -286,25 +311,6 @@
   :config
   (setq python-fill-docstring-style 'django))
 
-(use-package recentf
-  :demand
-  :config
-  (recentf-mode 1)
-  (setq recentf-exclude '(;;".*init\.el"
-                          ;;".*\/my-.*\.el"
-                          "^/var/folders\\.*"
-                          "COMMIT_EDITMSG\\'"
-                          ".*-autoloads\\.el\\'"
-                          "[/\\]\\.elpa/"))
-  (setq recentf-max-menu-items 128)
-  (setq recentf-max-saved-items 256))
-
-(use-package savehist
-  :demand
-  :config
-  (savehist-mode 1)
-  (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-  (setq savehist-save-minibuffer-history 1))
 
 (use-package shell-script-mode
   :mode
@@ -338,7 +344,6 @@
   (setq uniquify-buffer-name-style 'forward))
 
 (use-package whitespace
-  :demand t
   :diminish
   :commands (whitespace-buffer
              whitespace-cleanup

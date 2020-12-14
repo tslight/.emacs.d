@@ -1,4 +1,4 @@
-;;; init-settings.el --- init-settings  -*- lexical-binding: t; -*-
+;;; early-init-settings.el --- early-init-settings  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -111,9 +111,9 @@
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
 (setq confirm-kill-emacs 'y-or-n-p)
 
-(provide 'init-settings)
+(provide 'early-init-settings)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; init-settings.el ends here
+;;; early-init-settings.el ends here

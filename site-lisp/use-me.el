@@ -17,6 +17,7 @@
   :after icomplete
   :hook (icomplete-minibuffer-setup . my/icomplete-styles)
   :bind* ("C-c r" . my/icomplete-recentf))(use-package my-registers :demand)
+(use-package my-keys :demand)
 (use-package my-settings :demand)
 (use-package my-style :demand)
 (use-package my-theme :demand

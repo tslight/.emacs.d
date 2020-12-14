@@ -8,7 +8,6 @@
 ;; Author: Toby Slight <toby@probook>
 
 ;;; Code:
-(require 'package)
 ;; Initialise installed packages
 (setq package-enable-at-startup t)
 ;; Allow loading from the package cache.

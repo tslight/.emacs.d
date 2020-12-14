@@ -9,6 +9,8 @@
 
 ;;; Code:
 ;; install use-package
+(require 'package)
+
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))

@@ -1,4 +1,4 @@
-;;; early-init-keys.el --- custom key bindings -*- lexical-binding: t; -*-
+;;; keys.el --- custom key bindings -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -63,9 +63,8 @@
 (define-key special-mode-map "p" #'widget-backward)
 (define-key special-mode-map "f" #'widget-forward)
 (define-key special-mode-map "b" #'widget-backward)
-(provide 'early-init-keys)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; early-init-keys.el ends here
+;;; keys.el ends here

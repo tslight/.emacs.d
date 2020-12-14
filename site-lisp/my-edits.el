@@ -18,7 +18,10 @@
 (defun my/recompile-site-lisp ()
   "Recompile everything in Emacs configuration."
   (interactive)
+  (byte-recompile-directory (concat user-emacs-directory "early-init") 0 t)
+  (byte-recompile-directory (concat user-emacs-directory "init") 0 t)
   (byte-recompile-directory (concat user-emacs-directory "site-lisp") 0 t)
+  (byte-recompile-directory (concat user-emacs-directory "use") 0 t)
   (byte-compile-file (concat user-emacs-directory "init.el") 0))
 
 (defun my/convert-to-unix-coding-system ()

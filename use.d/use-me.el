@@ -42,17 +42,6 @@
   :bind*
   ("C-c M-p" . my/change-pairs))
 
-(use-package my-dired
-  :after dired
-  :bind
-  (:map dired-mode-map
-        ("?" . my/dired-get-size)
-        ("s" . my/dired-sort)
-        ("C-RET" . my/dired-get-size)
-        ("o" . my/dired-view-current)
-        ([remap beginning-of-buffer] . my/dired-back-to-top)
-        ([remap end-of-buffer] . my/dired-jump-to-bottom)))
-
 (use-package my-edits
   :commands my/untabify-buffer my/xml-pretty-print
   :bind*
@@ -103,8 +92,6 @@
   ("C-c f r" . my/rename-this-file-and-buffer)
   ("C-c f s" . my/sudoedit))
 
-
-
 (use-package my-isearch
   :bind
   (:map isearch-mode-map
@@ -119,10 +106,6 @@
   ("C-c Q c" . my/chuck-norris-joke)
   ("C-c Q k" . my/kanye-west-quote)
   ("C-c Q f" . my/fortune))
-
-(use-package my-org
-  :after org-mode
-  :commands my/org-recursive-sort my/org-tangle-block)
 
 (use-package my-removes
   :bind*

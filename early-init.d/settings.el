@@ -1,4 +1,4 @@
-;;; early-init-settings.el --- early-init-settings  -*- lexical-binding: t; -*-
+;;; settings.el --- misc settings  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -10,6 +10,7 @@
 ;;; Code:
 (setq abbrev-file-name (concat user-emacs-directory "abbrevs"))
 (setq save-abbrevs 'silently)
+(add-hook 'text-mode-hook 'abbrev-mode)
 
 (setq auto-window-vscroll nil)
 
@@ -38,12 +39,18 @@
 (global-subword-mode 1) ;; move by camel case, etc
 (global-auto-revert-mode 1) ;; reload if file changed on disk
 (pending-delete-mode 1) ;; remove selected region if typing
-(set-default 'truncate-lines t)
+
 (setq-default fill-column 79)
+(set-default 'truncate-lines t)
+(add-hook 'text-mode-hook 'auto-fill-mode)
+
 (setq backward-delete-char-untabify-method 'all)
 (setq create-lockfiles nil) ;; prevent creation of .#myfile.ext
 (setq require-final-newline t) ;; useful for crontab
 (setq set-mark-command-repeat-pop t) ;; repeating C-SPC after popping, pops it
+
+(electric-indent-mode)
+(electric-pair-mode)
 (show-paren-mode 1)
 
 (setq-default buffer-file-coding-system 'utf-8-unix)
@@ -110,10 +117,8 @@
 
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
 (setq confirm-kill-emacs 'y-or-n-p)
-
-(provide 'early-init-settings)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; early-init-settings.el ends here
+;;; settings.el ends here

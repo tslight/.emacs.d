@@ -1,4 +1,4 @@
-;;; init-minibuffer.el --- minibuffer/completion configuration -*- lexical-binding: t; -*-
+;;; minibuffer.el --- minibuffer/completion configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -8,6 +8,9 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+(require 'recentf)
+(require 'uniquify)
+
 (defun my/icomplete-recentf ()
   "Show a list of recent files."
   (interactive)
@@ -25,6 +28,8 @@
       (setq-local completion-styles '(initials partial-completion substring basic))
     (setq-local completion-styles '(initials partial-completion flex substring basic))))
 (add-hook 'icomplete-minibuffer-setup-hook 'my/icomplete-styles)
+
+(setq uniquify-buffer-name-style 'forward)
 
 (recentf-mode 1)
 (setq recentf-exclude '(;;".*init\.el"
@@ -76,12 +81,18 @@
 
 (setq imenu-auto-rescan t)
 
+(define-key icomplete-minibuffer-map "C-j" 'exit-minibuffer) ; force input unconditionally
+(define-key icomplete-minibuffer-map "C-n" 'icomplete-forward-completions)
+(define-key icomplete-minibuffer-map "C-p" 'icomplete-backward-completions)
+(define-key icomplete-minibuffer-map "<up>" 'icomplete-backward-completions)
+(define-key icomplete-minibuffer-map "<left>" 'icomplete-backward-completions)
+(define-key icomplete-minibuffer-map "<down>" 'icomplete-forward-completions)
+(define-key icomplete-minibuffer-map "<right>" 'icomplete-forward-completions)
+
 (add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 800000)))
 (add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold most-positive-fixnum)))
-
-(provide 'init-minibuffer)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; init-minibuffer.el ends here
+;;; minibuffer.el ends here

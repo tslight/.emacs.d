@@ -23,6 +23,8 @@
 ;; make tab key call indent command or insert tab character, depending on cursor position
 ;; (setq-default tab-always-indent nil)
 
+(setq python-fill-docstring-style 'django)
+
 ;; make tab key do indent first then completion.
 (setq-default tab-always-indent 'complete)
 

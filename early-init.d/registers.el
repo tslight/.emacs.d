@@ -1,12 +1,8 @@
-;;; early-init-registers.el --- registers -*- lexical-binding: t; -*-
+;;; registers.el --- registers -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Copyright (C) 2020 Toby Slight
-;; Author: Toby Slight tslight@pm.me
-;; Version: 0.0.1
-;; Package-Requires: nil
-;; URL: https://github.com/tslight/.emacs.d
+;; Set registers here
 
 ;;; Code:
 (set-register ?h (cons 'file "~/"))
@@ -21,10 +17,8 @@
 (set-register ?w (cons 'file "~/src/oe-developers/"))
 (set-register ?b (cons 'file "~/src/oe-developers/be/"))
 (set-register ?d (cons 'file "~/src/oe-developers/be/devops"))
-
-(provide 'early-init-registers)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; early-init-registers.el ends here
+;;; registers.el ends here

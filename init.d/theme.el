@@ -1,8 +1,8 @@
-;;; init-theme.el --- init-theme  -*- lexical-binding: t; -*-
+;;; theme.el --- theme configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Emacs Configuration
+;; Emacs Theming/UI Configuration
 
 ;; Copyright: (C) 2020 Toby Slight
 ;; Author: Toby Slight <tslight@pm.me>
@@ -70,10 +70,8 @@
 (defadvice load-theme (before theme-dont-propagate activate)
   "Disable theme before loading new one."
   (mapc #'disable-theme custom-enabled-themes))
-
-(provide 'init-theme)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; init-theme.el ends here
+;;; theme.el ends here

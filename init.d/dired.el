@@ -1,14 +1,16 @@
-;;; my-dired.el --- my-dired  -*- lexical-binding: t; -*-
+;;; dired.el --- dired configuration  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Emacs Configuration
+;; Dired Configuration
 
 ;; Copyright: (C) 2020 Toby Slight
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+(require 'dired-x)
 (require 'dired)
+(require 'find-dired)
 
 (defun my/dired-get-size ()
   "Get cumlative size of marked or current item."
@@ -97,9 +99,36 @@ corresponding command.
 Within CMD, %i denotes the input file(s), and %o denotes the
 output file.  %i path(s) are relative, while %o is absolute.")
 
-(provide 'my-dired)
+(autoload 'dired-jump "dired-x" t)
+(when (eq system-type 'berkeley-unix)
+  (progn
+    (setq dired-listing-switches "-alhpL")))
+(setq dired-dwim-target t)
+(setq dired-use-ls-dired nil)
+(setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
+(setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
+
+(global-set-key (kbd "C-x C-d") 'dired)
+(global-set-key (kbd "C-x C-j") 'dired-jump)
+(global-set-key (kbd "C-x d") 'dired-jump)
+(global-set-key (kbd "C-x M-d") 'list-directory)
+
+(define-key dired-mode-map ")" 'dired-omit-mode)
+(define-key dired-mode-map "b" (lambda () (interactive (find-alternate-file ".."))))
+(define-key dired-mode-map "f" 'dired-find-alternate-file)
+(define-key dired-mode-map "c" 'dired-do-compress-to)
+(define-key dired-mode-map "?" 'my/dired-get-size)
+(define-key dired-mode-map "s" 'my/dired-sort)
+(define-key dired-mode-map (kbd "C-RET") 'my/dired-get-size)
+(define-key dired-mode-map (kbd "o") 'my/dired-view-current)
+(define-key dired-mode-map (kbd "C-o") 'dired-find-file-other-window)
+
+(define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
+(define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-dired.el ends here
+;;; dired.el ends here

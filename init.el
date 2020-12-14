@@ -12,8 +12,6 @@
       (gc-cons-threshold most-positive-fixnum)
       (gc-cons-percentage 0.8))
 
-  (add-to-list 'load-path (concat user-emacs-directory "site-lisp/"))
-
   (mapc (lambda (directory) (byte-recompile-directory (concat user-emacs-directory directory) 0))
         '("early-init.d" "init.d" "site-lisp")) ;; compile these directories
 
@@ -23,6 +21,7 @@
   (mapc (lambda (file) (load file)) ;; load all files in ~/.emacs.d/init.d
         (directory-files (concat user-emacs-directory "init.d") t "^.*\.elc$"))
 
+  (add-to-list 'load-path (concat user-emacs-directory "site-lisp/"))
   (load (concat user-emacs-directory "use")) ;; comment for no 3rd party packages
 
   (message "HACKS AND GLORY AWAIT! :-)"))

@@ -1,4 +1,4 @@
-;;; early-init-theme.el --- early-init-theme  -*- lexical-binding: t; -*-
+;;; init-theme.el --- init-theme  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -71,9 +71,9 @@
   "Disable theme before loading new one."
   (mapc #'disable-theme custom-enabled-themes))
 
-(provide 'early-init-theme)
+(provide 'init-theme)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; early-init-theme.el ends here
+;;; init-theme.el ends here

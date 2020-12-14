@@ -12,6 +12,9 @@
       (gc-cons-threshold most-positive-fixnum)
       (gc-cons-percentage 0.8))
 
+  (mapc (lambda (file) (load file))
+        (directory-files (concat user-emacs-directory "site-lisp") t "^init\-.*\.elc$"))
+
   ;; install use-package
   (require 'package)
   (unless (package-installed-p 'use-package)

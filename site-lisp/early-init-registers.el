@@ -1,4 +1,4 @@
-;;; my-registers.el --- registers -*- lexical-binding: t; -*-
+;;; early-init-registers.el --- registers -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -22,9 +22,9 @@
 (set-register ?b (cons 'file "~/src/oe-developers/be/"))
 (set-register ?d (cons 'file "~/src/oe-developers/be/devops"))
 
-(provide 'my-registers)
+(provide 'early-init-registers)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-registers.el ends here
+;;; early-init-registers.el ends here

@@ -10,15 +10,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-
-;; Stuff that we simply must have when starting Emacs, everything else is
-;; either implicitly or explicitly deferred.
-(use-package my-icomplete :demand
-  :after icomplete
-  :hook (icomplete-minibuffer-setup . my/icomplete-styles)
-  :bind* ("C-c r" . my/icomplete-recentf))(use-package my-registers :demand)
-
-;; Everything declared under here should be deferred.
 (use-package my-align
   :bind*
   ("C-c a" . my/align-symbol)

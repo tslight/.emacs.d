@@ -13,62 +13,6 @@
 
 ;; Stuff that we simply must have when starting Emacs, everything else is
 ;; either implicitly or explicitly deferred.
-(use-package icomplete
-  :demand
-  :after (minibuffer recentf savehist)
-  :custom
-  (completion-category-defaults nil)
-  (completion-cycle-threshold 3)
-  (completion-flex-nospace nil)
-  (completion-pcm-complete-word-inserts-delimiters t)
-  (completion-pcm-word-delimiters "-_./:| ")
-  (completion-show-help nil)
-  (completion-ignore-case t)
-  (completions-format 'one-column)
-  (completions-detailed t)
-  (read-buffer-completion-ignore-case t)
-  (read-file-name-completion-ignore-case t)
-  (enable-recursive-minibuffers t)
-  (read-answer-short t)
-  (resize-mini-windows t)
-  (minibuffer-eldef-shorten-default t)
-  (file-name-shadow-mode 1)
-  (minibuffer-depth-indicate-mode 1)
-  (minibuffer-electric-default-mode 1)
-  (icomplete-delay-completions-threshold 100)
-  (icomplete-max-delay-chars 2)
-  (icomplete-compute-delay 0.2)
-  (icomplete-show-matches-on-no-input t)
-  (icomplete-hide-common-prefix nil)
-  (icomplete-prospects-height 1)
-  (icomplete-separator (propertize " · " 'face 'shadow))
-  (icomplete-with-completion-tables t)
-  (icomplete-tidy-shadowed-file-names t)
-  :config
-  (if (version< emacs-version "27")
-      (icomplete-mode)
-    (fido-mode)))
-
-(use-package recentf
-  :demand
-  :config
-  (recentf-mode 1)
-  (setq recentf-exclude '(;;".*init\.el"
-                          ;;".*\/my-.*\.el"
-                          "^/var/folders\\.*"
-                          "COMMIT_EDITMSG\\'"
-                          ".*-autoloads\\.el\\'"
-                          "[/\\]\\.elpa/"))
-  (setq recentf-max-menu-items 128)
-  (setq recentf-max-saved-items 256))
-
-(use-package savehist
-  :demand
-  :config
-  (savehist-mode 1)
-  (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-  (setq savehist-save-minibuffer-history 1))
-
 ;; Everything declared under here should be deferred.
 (use-package ansi-color
   :config
@@ -103,7 +47,6 @@
   (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
   (setq dired-recursive-copies 'always)
   (setq dired-recursive-deletes 'always))
-
 
 (use-package find-dired
   :after dired
@@ -173,21 +116,9 @@
   (shell-script-mode . hl-line-mode)
   (text-mode . hl-line-mode))
 
-(use-package imenu
-  :bind*
-  ("C-c i" . imenu)
-  :commands imenu
-  :config
-  (setq imenu-auto-rescan t))
-
 (use-package lisp-mode
   :hook
   (lisp-mode . (lambda () (add-hook 'after-save-hook 'check-parens nil t))))
-
-(use-package minibuffer
-  :hook
-  (minibuffer-exit . (lambda () (setq gc-cons-threshold 800000)))
-  (minibuffer-setup . (lambda () (setq gc-cons-threshold most-positive-fixnum))))
 
 (use-package org
   :bind*

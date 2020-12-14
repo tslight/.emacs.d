@@ -1,4 +1,4 @@
-;;; my-theme.el --- my-theme  -*- lexical-binding: t; -*-
+;;; init-theme.el --- init-theme  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -49,6 +49,7 @@
   "Disable all custom themes in one fail swoop."
   (interactive)
   (mapc #'disable-theme custom-enabled-themes))
+(global-set-key (kbd "C-c M-t C-t") 'my/disable-themes)
 
 (setq default-frame-alist
       '((fullscreen . maximized) (vertical-scroll-bars . nil)))
@@ -70,9 +71,9 @@
   "Disable theme before loading new one."
   (mapc #'disable-theme custom-enabled-themes))
 
-(provide 'my-theme)
+(provide 'init-theme)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-theme.el ends here
+;;; init-theme.el ends here

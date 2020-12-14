@@ -1,4 +1,4 @@
-;;; my-style.el --- style settings -*- lexical-binding: t; -*-
+;;; init-style.el --- style settings -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -26,9 +26,9 @@
 ;; make tab key do indent first then completion.
 (setq-default tab-always-indent 'complete)
 
-(provide 'my-style)
+(provide 'init-style)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-style.el ends here
+;;; init-style.el ends here

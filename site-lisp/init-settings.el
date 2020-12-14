@@ -1,4 +1,4 @@
-;;; my-settings.el --- my-settings  -*- lexical-binding: t; -*-
+;;; init-settings.el --- init-settings  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -111,9 +111,9 @@
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
 (setq confirm-kill-emacs 'y-or-n-p)
 
-(provide 'my-settings)
+(provide 'init-settings)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-settings.el ends here
+;;; init-settings.el ends here

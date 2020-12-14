@@ -17,12 +17,6 @@
   :after icomplete
   :hook (icomplete-minibuffer-setup . my/icomplete-styles)
   :bind* ("C-c r" . my/icomplete-recentf))(use-package my-registers :demand)
-(use-package my-keys :demand)
-(use-package my-settings :demand)
-(use-package my-style :demand)
-(use-package my-theme :demand
-  :bind*
-  ("C-c M-t C-t" . my/disable-themes))
 
 ;; Everything declared under here should be deferred.
 (use-package my-align

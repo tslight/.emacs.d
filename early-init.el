@@ -9,6 +9,10 @@
 
 ;;; Code:
 ;; Initialise installed packages
+;; load all files in site-lisp that start with the `init' prefix.
+(mapc (lambda (file) (load file))
+      (directory-files (concat user-emacs-directory "site-lisp") t "^init\-.*\.elc$"))
+
 (setq package-enable-at-startup t)
 ;; Allow loading from the package cache.
 (setq package-quickstart t)

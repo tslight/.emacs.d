@@ -11,7 +11,6 @@
 ;; Initialise installed packages
 (byte-recompile-directory (concat user-emacs-directory "site-lisp") 0) ; directory needs to be first
 (byte-recompile-file (concat user-emacs-directory "early-init.el") 'nil 0 'nil)
-(byte-recompile-file (concat user-emacs-directory "init.el") 'nil 0 'nil)
 
 (setq package-enable-at-startup 'nil)
 ;; Allow loading from the package cache.

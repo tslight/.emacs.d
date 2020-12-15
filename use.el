@@ -125,7 +125,8 @@
 ;;       (insert (completing-read "Yank: " kill-ring nil t))))
 ;;   (icomplete-vertical-mode))
 
-(use-package ibuffer-vc :ensure :hook
+(use-package ibuffer-vc :ensure
+  :hook
   (ibuffer . (lambda ()
                (ibuffer-vc-set-filter-groups-by-vc-root)
                (unless (eq ibuffer-sorting-mode 'alphabetic)

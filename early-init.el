@@ -9,12 +9,15 @@
 
 ;;; Code:
 ;; load all files ~/.emacs.d/early-init.d
-(byte-recompile-directory (concat user-emacs-directory "early-init.d") 0)
 (byte-recompile-file (concat user-emacs-directory "early-init.el") 'nil 0 'nil)
-
-(mapc (lambda (file) (load file))
-      (directory-files
-       (concat user-emacs-directory "early-init.d") t "^.*\.elc$"))
+;; Initialise installed packages
+(setq package-enable-at-startup t)
+;; Allow loading from the package cache.
+(setq package-quickstart t)
+(setq package--init-file-ensured t)
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+        ("gnu" . "https://elpa.gnu.org/packages/")))
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

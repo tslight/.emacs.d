@@ -12,11 +12,8 @@
       (gc-cons-threshold most-positive-fixnum)
       (gc-cons-percentage 0.8))
 
-  (mapc (lambda (directory) (byte-recompile-directory (concat user-emacs-directory directory) 0))
-        '("site-lisp")) ;; compile these directories under ~/.emacs.d
-
-  (mapc (lambda (file) (byte-recompile-file (concat user-emacs-directory file) 'nil 0 'nil))
-        '("init.el")) ;; compile these files in ~/.emacs.d
+  (byte-recompile-directory (concat user-emacs-directory "site-lisp") 0)
+  (byte-recompile-file (concat user-emacs-directory "init.el") 'nil 0 'nil)
 
   (mapc (lambda (file) (load file)) ;; load all files in ~/.emacs.d/site-lisp
         (directory-files (concat user-emacs-directory "site-lisp") t "^.*\.elc$"))

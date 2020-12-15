@@ -64,22 +64,6 @@
   :hook
   (before-save . my/push-mark-no-activate))
 
-(use-package my-eshell
-  :bind*
-  ("C-c C-e" . my/eshell-switcher)
-  ("C-c M-e" . my/eshell-here)
-  :bind
-  (:map eshell-mode-map
-        ("C-c R" . my/eshell-recent-dir)
-        ("C-c D" . my/eshell-directory-children)
-        ("M-r" . my/eshell-complete-history))
-  :commands eshell my/eshell-here
-  :config
-  (use-package em-smart)
-  :hook
-  (eshell-preoutput-filter-functions . ansi-color-apply)
-  (eshell-mode . (lambda () (eshell-smart-initialize))))
-
 (use-package my-files
   :bind*
   ("C-c f d" . my/delete-this-file)
@@ -87,13 +71,6 @@
   ("C-c f b" . my/make-backup-and-save)
   ("C-c f r" . my/rename-this-file-and-buffer)
   ("C-c f s" . my/sudoedit))
-
-(use-package my-isearch
-  :bind
-  (:map isearch-mode-map
-        ("RET" . my/isearch-exit)
-        ("C-w" . my/copy-to-isearch)
-        ("M-w" . my/kill-to-isearch)))
 
 (use-package my-misc
   :bind*
@@ -116,14 +93,6 @@
   :bind
   (:map ctl-x-map
         ("n" . smart/narrow-or-widen-dwim)))
-
-(use-package my-term
-  :bind*
-  ("C-c t t" . my/switch-to-ansi-term)
-  ("C-c t c" . (lambda () (interactive) (ansi-term (getenv "SHELL"))))
-  :commands ansi-term term
-  :hook
-  (term-exec . (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix))))
 
 (use-package my-windows
   :bind*

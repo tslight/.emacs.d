@@ -1,4 +1,4 @@
-;;; my-isearch.el --- isearch functions -*- lexical-binding: t; -*-
+;;; isearch.el --- isearch functions -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -32,9 +32,11 @@ When searching backward, kill to the beginning of the match."
   (my/isearch-exit)
   (call-interactively 'kill-region))
 
-(provide 'my-isearch)
+(define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
+(define-key isearch-mode-map (kbd "C-w") 'my/copy-to-isearch)
+(define-key isearch-mode-map (kbd "M-w") 'my/kill-to-isearch)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-isearch.el ends here
+;;; isearch.el ends here

@@ -120,14 +120,14 @@
      (sql . t)
      (sqlite . t)))
 
-  (global-set-key (kbd "C-c C-o a") 'org-agenda)
-  (global-set-key (kbd "C-c C-o c") 'org-capture)
-  (global-set-key (kbd "C-c C-o l") 'org-store-link)
-  (global-set-key (kbd "C-c C-o t") 'org-time-stamp)
-
   (add-hook 'org-mode-hook 'auto-fill-mode)
-  (add-hook 'org-mode-hook 'hl-line-mode))
-;; Local Variables:
+  (add-hook 'org-mode-hook 'hl-line-mode)
+  (message "Lazy loaded org :-)"))
+
+(global-set-key (kbd "C-c C-o a") 'org-agenda)
+(global-set-key (kbd "C-c C-o c") 'org-capture)
+(global-set-key (kbd "C-c C-o l") 'org-store-link)
+(global-set-key (kbd "C-c C-o t") 'org-time-stamp)
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:

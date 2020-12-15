@@ -31,6 +31,8 @@
       (byte-compile-file buffer-file-name t)
       (message (concat "Re-compiled " buffer-file-name)))))
 
+(setq compilation-scroll-output 'first-error)
+
 (add-hook 'after-save-hook 'my/auto-recompile)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

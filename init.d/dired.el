@@ -105,12 +105,6 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (autoload 'dired-omit-files "dired-x"
     "User regex to specify what files to omit." t)
 
-  (autoload 'dired-jump "dired-x"
-    "Jump to Dired buffer corresponding to current buffer." t)
-
-  (autoload 'dired-jump-other-window "dired-x"
-    "Like \\[dired-jump] (dired-jump) but in other window." t)
-
   (when (eq system-type 'berkeley-unix)
     (progn
       (setq dired-listing-switches "-alhpL")))
@@ -122,11 +116,6 @@ output file.  %i path(s) are relative, while %o is absolute.")
         dired-recursive-copies 'always
         dired-recursive-deletes 'always)
 
-  (global-set-key (kbd "C-x C-d") 'dired)
-  (global-set-key (kbd "C-x C-j") 'dired-jump)
-  (global-set-key (kbd "C-x 4 C-j") 'dired-jump)
-  (global-set-key (kbd "C-x d") 'dired-jump)
-  (global-set-key (kbd "C-x 4 d") 'dired-jump)
   (global-set-key (kbd "C-x M-d") 'list-directory)
 
   (define-key dired-mode-map "b" (lambda () (interactive (find-alternate-file ".."))))
@@ -142,7 +131,20 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
   (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
 
-  (message "Successfully loaded `dired' :-)"))
+  (message "Lazy loaded dired package :-)"))
+
+;; has to come outside of with-eval-after-load otherwise we have no dired-jump
+(autoload 'dired-jump "dired-x"
+  "Jump to Dired buffer corresponding to current buffer." t)
+
+(autoload 'dired-jump-other-window "dired-x"
+  "Like \\[dired-jump] (dired-jump) but in other window." t)
+
+(global-set-key (kbd "C-x C-d") 'dired)
+(global-set-key (kbd "C-x C-j") 'dired-jump)
+(global-set-key (kbd "C-x 4 C-j") 'dired-jump)
+(global-set-key (kbd "C-x d") 'dired-jump)
+(global-set-key (kbd "C-x 4 d") 'dired-jump)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

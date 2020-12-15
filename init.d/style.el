@@ -1,4 +1,4 @@
-;;; early-init-style.el --- style settings -*- lexical-binding: t; -*-
+;;; style.el --- style settings -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -22,15 +22,14 @@
 
 ;; make tab key call indent command or insert tab character, depending on cursor position
 ;; (setq-default tab-always-indent nil)
-
-(setq python-fill-docstring-style 'django)
+(with-eval-after-load 'python
+  (setq python-fill-docstring-style 'django)
+  (message "Lazy loaded python :-)"))
 
 ;; make tab key do indent first then completion.
 (setq-default tab-always-indent 'complete)
-
-(provide 'early-init-style)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; early-init-style.el ends here
+;;; style.el ends here

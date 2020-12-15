@@ -49,9 +49,14 @@
 (setq require-final-newline t) ;; useful for crontab
 (setq set-mark-command-repeat-pop t) ;; repeating C-SPC after popping, pops it
 
-(electric-indent-mode)
-(electric-pair-mode)
-(show-paren-mode 1)
+(with-eval-after-load 'electric
+  (electric-indent-mode)
+  (electric-pair-mode)
+  (message "Lazy loaded electric :-)"))
+
+(with-eval-after-load 'paren
+  (show-paren-mode 1)
+  (message "Lazy loaded paren :-)"))
 
 (setq epa-file-cache-passphrase-for-symmetric-encryption t)
 (setf epg-pinentry-mode 'loopback)
@@ -67,7 +72,6 @@
 
 (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
 
-(setq compilation-scroll-output 'first-error)
 (setq custom-file (make-temp-file "emacs-custom"))
 (setq disabled-command-function nil) ;; enable all "advanced" features
 (setq message-log-max 10000)
@@ -85,9 +89,11 @@
 (setq initial-scratch-message nil)
 (setq initial-major-mode 'fundamental-mode)
 
-(setq tramp-backup-directory-alist backup-directory-alist)
-(setq tramp-default-method "ssh")
-(setf tramp-persistency-file-name (concat temporary-file-directory "tramp-" (user-login-name)))
+(with-eval-after-load 'tramp
+  (setq tramp-backup-directory-alist backup-directory-alist)
+  (setq tramp-default-method "ssh")
+  (setf tramp-persistency-file-name (concat temporary-file-directory "tramp-" (user-login-name)))
+  (message "Lazy loaded tramp :-)"))
 
 ;; (setq password-cache t) ; enable password caching
 ;; (setq password-cache-expiry 3600) ; for one hour (time in secs)
@@ -99,9 +105,11 @@
 (setq user-full-name "Toby Slight")
 (setq user-mail-address "tslight@pm.me")
 
-(setq vc-follow-symlinks t)
-(setq vc-make-backup-files t)
-(setq version-control t)
+(with-eval-after-load 'vc
+  (setq vc-follow-symlinks t)
+  (setq vc-make-backup-files t)
+  (setq version-control t)
+  (message "Lazy loaded vc :-)"))
 
 (when (fboundp 'winner-mode) (winner-mode 1))
 (setq split-width-threshold 160)

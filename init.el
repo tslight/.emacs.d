@@ -25,7 +25,7 @@
 
   (load (concat user-emacs-directory "use")) ;; comment for no 3rd party packages
 
-  (message "HACKS AND GLORY AWAIT! :-)"))
+  (message "Hacks and glory await! :-)"))
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

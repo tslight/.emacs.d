@@ -49,6 +49,7 @@
   "Disable all custom themes in one fail swoop."
   (interactive)
   (mapc #'disable-theme custom-enabled-themes))
+
 (global-set-key (kbd "C-c M-t C-t") 'my/disable-themes)
 
 (setq default-frame-alist

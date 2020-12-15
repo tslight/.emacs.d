@@ -10,8 +10,17 @@
 #+END_SRC
 
 3) Open Emacs...
-4) Wait for all the packages declared [[file:site-lisp/use-melpa.el][here]], to download and install...
+4) Wait for all the packages declared [[file:use.el][here]], to download and install...
 5) ...Profit!
 
 *N.B.* If you don't want to wait for all the packages to download or just want
- a more vanilla setup, please switch to the =no-use-package= branch.
+a more vanilla setup, please comment out the following line in [[file:init.el][init.el]]:
+
+#+begin_src emacs-lisp
+(load (concat user-emacs-directory "use")) ;; comment for no 3rd party packages
+#+end_src>
+
+* Design
+
+- All built-in Emacs configuration lives in [[file:site-lisp/][site-lisp]].
+- All third party packages are setup using [[https://github.com/jwiegley/use-package][use-package]], in [[file:use.el][use.el]].

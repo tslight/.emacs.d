@@ -15,9 +15,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(setq use-package-enable-imenu-support t)
-;; (setq use-package-always-ensure t)
-(setq use-package-verbose t)
+(setq use-package-enable-imenu-support t
+      use-package-verbose t)
 (require 'use-package)
 
 (byte-recompile-directory (concat user-emacs-directory "use.d") 0)

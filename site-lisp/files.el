@@ -1,4 +1,4 @@
-;;; my-files.el --- file wrangling functions  -*- lexical-binding: t; -*-
+;;; files.el --- file wrangling functions  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -99,9 +99,13 @@ For detail, see `my/make-backup'."
                          (read-file-name "Find file (as root): ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
-(provide 'my-files)
+(global-set-key (kbd "C-c f d") 'my/delete-this-file)
+(global-set-key (kbd "C-c f c") 'my/copy-file-name-to-clipboard)
+(global-set-key (kbd "C-c f b") 'my/make-backup-and-save)
+(global-set-key (kbd "C-c f r") 'my/rename-this-file-and-buffer)
+(global-set-key (kbd "C-c f s") 'my/sudoedit)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-files.el ends here
+;;; files.el ends here

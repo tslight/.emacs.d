@@ -1,4 +1,4 @@
-;;; my-windows.el --- my-windows  -*- lexical-binding: t; -*-
+;;; windows.el --- windows  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -139,9 +139,20 @@ window to right."
             (set-window-buffer-start-and-point w1 b2 s2 p2)
             (set-window-buffer-start-and-point w2 b1 s1 p1)))))))
 
-(provide 'my-windows)
+(global-set-key (kbd "C-x O") 'my/prev-window)
+(global-set-key (kbd "C-c 3") 'my/vsplit-last-buffer)
+(global-set-key (kbd "C-c 2") 'my/hsplit-last-buffer)
+(global-set-key (kbd "C-M-<") 'my/top-of-window)
+(global-set-key (kbd "C-M->") 'my/bottom-of-window)
+(global-set-key (kbd "M-p") 'my/scroll-line-up)
+(global-set-key (kbd "M-n") 'my/scroll-line-down)
+
+(define-key ctl-x-4-map "k" 'my/kill-buffer-other-window)
+(define-key ctl-x-4-map "o" 'my/open-buffer-other-window)
+(define-key ctl-x-4-map "s" 'my/toggle-split)
+(define-key ctl-x-4-map "t" 'my/transpose-windows)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-windows.el ends here
+;;; windows.el ends here

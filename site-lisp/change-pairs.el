@@ -1,4 +1,4 @@
-;;; my-change-pairs.el --- change pairs -*- lexical-binding: t; -*-
+;;; change-pairs.el --- change pairs -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -118,9 +118,9 @@ If the string has length greater than 2, the rest are ignored."
                   (while (search-forward $fromRight nil t)
                     (replace-match $toRight "FIXEDCASE" "LITERAL")))))))))))
 
-(provide 'my-change-pairs)
+(global-set-key (kbd "C-c M-p") 'my/change-pairs)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-change-pairs.el ends here
+;;; change-pairs.el ends here

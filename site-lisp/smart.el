@@ -1,8 +1,8 @@
-;;; my-smarter.el --- smarter functions -*- lexical-binding: t; -*-
+;;; smart.el --- smart functions -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; smarter than the defaults
+;; smart than the defaults
 
 ;; Copyright (C) 2020 Toby Slight
 ;; Author: Toby Slight <tslight@pm.me>
@@ -86,9 +86,14 @@ respect `narrow-to-region')."
              (setq p2 (point-max))))
     (kill-region p1 p2)))
 
-(provide 'my-smarter)
+(global-set-key [remap fill-paragraph] 'smart/fill-or-unfill)
+(global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
+(global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
+(global-set-key [remap kill-region] 'smart/kill-region)
+
+(define-key ctl-x-map "n" 'smart/narrow-or-widen-dwim)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-smarter.el ends here
+;;; smart.el ends here

@@ -1,4 +1,4 @@
-;;; my-mark-mitigations.el --- Transient Mark Migigations -*- lexical-binding: t; -*-
+;;; marks.el --- Transient Mark Migigations -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -29,9 +29,13 @@ Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
   (push-mark (point) t nil)
   (message "Pushed mark to ring"))
 
-(provide 'my-mark-mitigations)
+(global-set-key (kbd "C-c SPC p") 'my/push-mark-no-activate)
+(global-set-key (kbd "C-c SPC j") 'my/jump-to-mark)
+(global-set-key (kbd "C-c SPC x") 'my/exchange-point-and-mark-no-activate)
+
+(add-hook 'before-save-hook 'my/push-mark-no-activate)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-mark-mitigations.el ends here
+;;; marks.el ends here

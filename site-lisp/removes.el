@@ -1,4 +1,4 @@
-;;; my-removes.el --- remove crap -*- lexical-binding: t; -*-
+;;; removes.el --- remove crap -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -41,9 +41,9 @@ Excluding ^I (tabs) and ^J (newlines)."
   (interactive)
   (my/remove-from-buffer "$"))
 
-(provide 'my-removes)
+(global-set-key (kbd "C-c k") 'my/remove-from-buffer)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-removes.el ends here
+;;; removes.el ends here

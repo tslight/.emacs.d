@@ -1,4 +1,4 @@
-;;; my-edits.el --- my-edits  -*- lexical-binding: t; -*-
+;;; edits.el --- edits  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -168,9 +168,14 @@ line."
   (interactive "p")
   (yank-pop (- arg)))
 
-(provide 'my-edits)
+(global-set-key (kbd "C-c d") 'my/delete-inside)
+(global-set-key (kbd "C-c u") 'my/underline-text)
+(global-set-key (kbd "M-s M-s") 'my/surround)
+(global-set-key (kbd "C-o") 'my/open-line-above)
+(global-set-key (kbd "C-S-o") 'my/open-line-below)
+(global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-edits.el ends here
+;;; edits.el ends here

@@ -8,36 +8,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(defun my/auto-recompile ()
-  "Automatically recompile Emacs Lisp files whenever they are saved."
-  (when (equal major-mode 'emacs-lisp-mode)
-    (progn
-      (byte-compile-file buffer-file-name t)
-      (message (concat "Re-compiled " buffer-file-name)))))
-
-(defvar my/directories-to-recompile
-  '("early-init.d" "init.d" "site-lisp" "use.d")
-  "Directories under `user-emacs-directory' that we use for configuration.")
-
-(defvar my/files-to-recompile
-  '("early-init.el" "init.el" "use.el")
-  "Directories under `user-emacs-directory' that we use for configuration.")
-
-(defun my/recompile-site-lisp ()
-  "Recompile everything in Emacs configuration."
-  (interactive)
-  (mapc (lambda (directory) (byte-recompile-directory (concat user-emacs-directory directory) 0 t))
-        my/directories-to-recompile)
-  (mapc (lambda (file) (byte-recompile-file (concat user-emacs-directory file) 0))
-        my/files-to-recompile))
-
-(defun my/convert-to-unix-coding-system ()
-  "Change the current buffer's file encoding to unix."
-  (interactive)
-  (let ((coding-str (symbol-name buffer-file-coding-system)))
-    (when (string-match "-\\(?:dos\\|mac\\)$" coding-str)
-      (set-buffer-file-coding-system 'unix))))
-
 (defun my/delete-inside ()
   "Deletes the text within parentheses, brackets or quotes."
   (interactive)
@@ -57,12 +27,6 @@
       (insert (concat (number-to-string x) char))
       (newline)
       (setq x (+ x 1)))))
-
-(defun my/hide-dos-eol ()
-  "Do not show ^M in files containing mixed UNIX and DOS line endings."
-  (interactive)
-  (setq buffer-display-table (make-display-table))
-  (aset buffer-display-table ?\^M []))
 
 (defun my/insert-date ()
   "Insert a timestamp according to locale's date and time format."

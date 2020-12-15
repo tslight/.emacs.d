@@ -53,14 +53,6 @@
 (electric-pair-mode)
 (show-paren-mode 1)
 
-(setq-default buffer-file-coding-system 'utf-8-unix)
-(setq-default default-buffer-file-coding-system 'utf-8-unix)
-(setq coding-system-for-read 'utf-8-unix)
-(setq coding-system-for-write 'utf-8-unix)
-(set-language-environment "UTF-8")
-(set-default-coding-systems 'utf-8-unix)
-(prefer-coding-system 'utf-8-unix)
-
 (setq epa-file-cache-passphrase-for-symmetric-encryption t)
 (setf epg-pinentry-mode 'loopback)
 

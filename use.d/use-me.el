@@ -45,16 +45,12 @@
 (use-package my-edits
   :commands my/untabify-buffer my/xml-pretty-print
   :bind*
-  ("C-x RET u" . my/convert-to-unix-coding-system)
   ("C-c d" . my/delete-inside)
   ("C-c u" . my/underline-text)
   ("M-s M-s" . my/surround)
   ("C-o" . my/open-line-above)
   ("C-S-o" . my/open-line-below)
-  ("C-M-y" . my/yank-pop-forwards)
-  :hook
-  (after-save . my/auto-recompile)
-  (find-file . my/hide-dos-eol))
+  ("C-M-y" . my/yank-pop-forwards))
 
 (use-package my-mark-mitigations
   :commands
@@ -74,7 +70,7 @@
   ("C-c M-e" . my/eshell-here)
   :bind
   (:map eshell-mode-map
-        ("C-c r" . my/eshell-recent-dir)
+        ("C-c R" . my/eshell-recent-dir)
         ("C-c D" . my/eshell-directory-children)
         ("M-r" . my/eshell-complete-history))
   :commands eshell my/eshell-here

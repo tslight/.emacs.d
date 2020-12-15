@@ -9,12 +9,12 @@
 
 ;;; Code:
 (defvar my/directories-to-recompile
-  '("early-init.d" "init.d" "site-lisp" "use.d")
+  '("site-lisp")
   "Directories under `user-emacs-directory' that we use for configuration.")
 
 (defvar my/files-to-recompile
   '("early-init.el" "init.el" "use.el")
-  "Directories under `user-emacs-directory' that we use for configuration.")
+  "Files under `user-emacs-directory' that we use for configuration.")
 
 (defun my/recompile-site-lisp ()
   "Recompile everything in Emacs configuration."

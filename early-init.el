@@ -8,10 +8,12 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; load all files ~/.emacs.d/early-init.d
-(byte-recompile-file (concat user-emacs-directory "early-init.el") 'nil 0 'nil)
 ;; Initialise installed packages
-(setq package-enable-at-startup t)
+(byte-recompile-directory (concat user-emacs-directory "site-lisp") 0) ; directory needs to be first
+(byte-recompile-file (concat user-emacs-directory "early-init.el") 'nil 0 'nil)
+(byte-recompile-file (concat user-emacs-directory "init.el") 'nil 0 'nil)
+
+(setq package-enable-at-startup 'nil)
 ;; Allow loading from the package cache.
 (setq package-quickstart t)
 (setq package--init-file-ensured t)

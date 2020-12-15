@@ -1,25 +1,23 @@
-;;; use.el --- use-package initialisation -*- lexical-binding: t; -*-
+;;; use.el --- use-package configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
-;; Use Package Startup
+;; Third Party Package configuration with the wonder of `use-package'.
 
 ;; Copyright (C) 2020 Toby Slight
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-;; install use-package
-;; `use-package' does all the heavy lifting in my config.
+(byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
+
 (require 'package)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-(setq use-package-enable-imenu-support t
-      use-package-verbose t)
-(require 'use-package)
-
-(byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
+  (setq use-package-enable-imenu-support t
+        use-package-verbose t)
+  (require 'use-package)
 
 (use-package anaconda-mode
   :ensure t

@@ -9,11 +9,6 @@
 
 ;;; Code:
 ;; This is only needed once, near the top of the file
-(with-eval-after-load 'diredx
-  (autoload 'dired-jump "dired-x" t)
-  (setq dired-omit-files (concat dired-omit-files "\\|^\\..+$"))
-  (define-key dired-mode-map ")" 'dired-omit-mode))
-
 (with-eval-after-load 'dired
   (defun my/dired-get-size ()
     "Get cumlative size of marked or current item."
@@ -102,10 +97,26 @@ corresponding command.
 Within CMD, %i denotes the input file(s), and %o denotes the
 output file.  %i path(s) are relative, while %o is absolute.")
 
+  (autoload 'find-ls-option "find-dired")
+
+  (autoload 'dired-omit-mode "dired-x"
+    "Omit files from dired listings." t)
+
+  (autoload 'dired-omit-files "dired-x"
+    "User regex to specify what files to omit." t)
+
+  (autoload 'dired-jump "dired-x"
+    "Jump to Dired buffer corresponding to current buffer." t)
+
+  (autoload 'dired-jump-other-window "dired-x"
+    "Like \\[dired-jump] (dired-jump) but in other window." t)
+
   (when (eq system-type 'berkeley-unix)
     (progn
       (setq dired-listing-switches "-alhpL")))
 
+  (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
+  (setq dired-omit-files "\\`[.]?#\\|\\`[.][.]?\\'\\|^\\..+$")
   (setq dired-dwim-target t
         dired-use-ls-dired nil
         dired-recursive-copies 'always
@@ -113,23 +124,23 @@ output file.  %i path(s) are relative, while %o is absolute.")
 
   (global-set-key (kbd "C-x C-d") 'dired)
   (global-set-key (kbd "C-x C-j") 'dired-jump)
+  (global-set-key (kbd "C-x 4 C-j") 'dired-jump)
   (global-set-key (kbd "C-x d") 'dired-jump)
+  (global-set-key (kbd "C-x 4 d") 'dired-jump)
   (global-set-key (kbd "C-x M-d") 'list-directory)
 
   (define-key dired-mode-map "b" (lambda () (interactive (find-alternate-file ".."))))
   (define-key dired-mode-map "f" 'dired-find-alternate-file)
   (define-key dired-mode-map "c" 'dired-do-compress-to)
-  (define-key dired-mode-map "?" 'my/dired-get-size)
-  (define-key dired-mode-map "s" 'my/dired-sort)
-  (define-key dired-mode-map (kbd "C-RET") 'my/dired-get-size)
-  (define-key dired-mode-map (kbd "o") 'my/dired-view-current)
+  (define-key dired-mode-map ")" 'dired-omit-mode)
   (define-key dired-mode-map (kbd "C-o") 'dired-find-file-other-window)
 
-  (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
-  (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom))
-
-(with-eval-after-load 'find-dired
-  (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld")))
+  (define-key dired-mode-map "o" 'my/dired-view-current)
+  (define-key dired-mode-map "s" 'my/dired-sort)
+  (define-key dired-mode-map "?" 'my/dired-get-size)
+  (define-key dired-mode-map (kbd "C-RET") 'my/dired-open-marked-files)
+  (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
+  (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top))
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

@@ -55,9 +55,6 @@
   (show-paren-mode 1)
   (message "Lazy loaded electric :-)"))
 
-(with-eval-after-load 'isearch
-  (require 'my-isearch))
-
 (setq epa-file-cache-passphrase-for-symmetric-encryption t)
 (setf epg-pinentry-mode 'loopback)
 

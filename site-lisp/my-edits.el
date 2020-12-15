@@ -15,14 +15,21 @@
       (byte-compile-file buffer-file-name t)
       (message (concat "Re-compiled " buffer-file-name)))))
 
+(defvar my/directories-to-recompile
+  '("early-init.d" "init.d" "site-lisp" "use.d")
+  "Directories under `user-emacs-directory' that we use for configuration.")
+
+(defvar my/files-to-recompile
+  '("early-init.el" "init.el" "use.el")
+  "Directories under `user-emacs-directory' that we use for configuration.")
+
 (defun my/recompile-site-lisp ()
   "Recompile everything in Emacs configuration."
   (interactive)
-  (byte-recompile-directory (concat user-emacs-directory "early-init") 0 t)
-  (byte-recompile-directory (concat user-emacs-directory "init") 0 t)
-  (byte-recompile-directory (concat user-emacs-directory "site-lisp") 0 t)
-  (byte-recompile-directory (concat user-emacs-directory "use") 0 t)
-  (byte-compile-file (concat user-emacs-directory "init.el") 0))
+  (mapc (lambda (directory) (byte-recompile-directory (concat user-emacs-directory directory) 0 t))
+        my/directories-to-recompile)
+  (mapc (lambda (file) (byte-recompile-file (concat user-emacs-directory file) 0))
+        my/files-to-recompile))
 
 (defun my/convert-to-unix-coding-system ()
   "Change the current buffer's file encoding to unix."

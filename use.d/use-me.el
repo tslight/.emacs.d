@@ -10,34 +10,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(use-package my-align
-  :bind*
-  ("C-c a" . my/align-symbol)
-  ("C-c =" . my/align-equals)
-  ("C-c :" . my/align-colon)
-  ("C-c #" . my/align-numbers))
-
-(use-package my-buffers
-  :bind*
-  ("C-c b b" . my/last-buffer)
-  ("C-c b t" . my/toggle-buffer)
-  ("C-<escape>" . my/last-buffer)
-  ("C-M-<escape>" . my/toggle-buffer)
-  ("C-c TAB" . my/indent-buffer)
-  ("C-c b i" . my/indent-buffer)
-  ("C-c z" . my/toggle-maximize-buffer)
-  ("C-c M-n" . my/nuke-buffers)
-  ("C-c s" . my/save-buffers-silently)
-  ("C-x k" . my/kill-this-buffer)
-  ("M-s s" . my/search-all-buffers)
-  ("C-c M-t m" . (lambda () (interactive) (my/toggle-buffer "*Messages*")))
-  ("C-c M-t s" . (lambda () (interactive) (my/toggle-buffer "*scratch*"))))
-
-(use-package my-change-numbers
-  :bind*
-  ("C-c +" . my/increment-number-at-point)
-  ("C-c -" . my/decrement-number-at-point))
-
 (use-package my-change-pairs
   :bind*
   ("C-c M-p" . my/change-pairs))
@@ -71,14 +43,6 @@
   ("C-c f b" . my/make-backup-and-save)
   ("C-c f r" . my/rename-this-file-and-buffer)
   ("C-c f s" . my/sudoedit))
-
-(use-package my-misc
-  :bind*
-  ("C-c M-g" . my/google)
-  ("C-c M-t l" . my/cycle-line-numbers)
-  ("C-c Q c" . my/chuck-norris-joke)
-  ("C-c Q k" . my/kanye-west-quote)
-  ("C-c Q f" . my/fortune))
 
 (use-package my-removes
   :bind*

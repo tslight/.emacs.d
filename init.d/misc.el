@@ -1,4 +1,4 @@
-;;; my-misc.el --- my-misc  -*- lexical-binding: t; -*-
+;;; misc.el --- misc  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -28,17 +28,17 @@
       (setq display-line-numbers t))))
 
 (defun my/fortune ()
-  "Insert a fortune into the minibuffer unless called with
-`prefix-arg', in which case - insert output of the fortune
-command into the buffer, before the point."
+  "Insert a fortune into the minibuffer.
+
+If called with `prefix-arg', insert output of the fortune command
+into the buffer, before the point."
   (interactive)
   (if current-prefix-arg
       (insert (shell-command-to-string "fortune"))
     (message (string-trim (shell-command-to-string "fortune -s -n 100")))))
 
 (defun my/google (arg)
-  "Googles a query or region.  With prefix ARG, wrap search query
-  in quotes."
+  "Googles a query or region.  With prefix ARG, wrap in quotes."
   (interactive "P")
   (let ((query
          (if (region-active-p)
@@ -64,9 +64,13 @@ command into the buffer, before the point."
      (url-insert-file-contents "https://api.chucknorris.io/jokes/random")
      (cdr (assoc 'value (json-read))))))
 
-(provide 'my-misc)
+(global-set-key (kbd "C-c M-g") 'my/google)
+(global-set-key (kbd "C-c M-t l") 'my/cycle-line-numbers)
+(global-set-key (kbd "C-c Q c") 'my/chuck-norris-joke)
+(global-set-key (kbd "C-c Q k") 'my/kanye-west-quote)
+(global-set-key (kbd "C-c Q f") 'my/fortune)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-misc.el ends here
+;;; misc.el ends here

@@ -1,4 +1,4 @@
-;;; my-buffers.el --- my-buffers  -*- lexical-binding: t; -*-
+;;; buffers.el --- buffers  -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -56,6 +56,16 @@
       (my/last-buffer)
     (switch-to-buffer buffer)))
 
+(defun my/toggle-messages ()
+  "Toggle *Messages* buffer."
+  (interactive)
+  (my/toggle-buffer "*Messages*"))
+
+(defun my/toggle-scratch ()
+  "Togggle *scratch* buffer."
+  (interactive)
+  (my/toggle-buffer "*scratch*"))
+
 (defun my/toggle-maximize-buffer ()
   "Temporarily maximize a buffer."
   (interactive)
@@ -65,9 +75,21 @@
       (window-configuration-to-register '_)
       (delete-other-windows))))
 
-(provide 'my-buffers)
+(global-set-key (kbd "C-c b b") 'my/last-buffer)
+(global-set-key (kbd "C-c b t") 'my/toggle-buffer)
+(global-set-key (kbd "C-<escape>") 'my/last-buffer)
+(global-set-key (kbd "C-M-<escape>") 'my/toggle-buffer)
+(global-set-key (kbd "C-c TAB") 'my/indent-buffer)
+(global-set-key (kbd "C-c b i") 'my/indent-buffer)
+(global-set-key (kbd "C-c z") 'my/toggle-maximize-buffer)
+(global-set-key (kbd "C-c M-n") 'my/nuke-buffers)
+(global-set-key (kbd "C-c s") 'my/save-buffers-silently)
+(global-set-key (kbd "C-x k") 'my/kill-this-buffer)
+(global-set-key (kbd "M-s s") 'my/search-all-buffers)
+(global-set-key (kbd "C-c M-t m") 'my/toggle-messages)
+(global-set-key (kbd "C-c M-t s") 'my/toggle-scratch)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-buffers.el ends here
+;;; buffers.el ends here

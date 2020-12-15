@@ -1,4 +1,4 @@
-;;; my-change-numbers.el --- change numbers -*- lexical-binding: t; -*-
+;;; change-numbers.el --- change numbers -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -29,9 +29,10 @@
   (interactive)
   (my/change-number-at-point '1-))
 
-(provide 'my-change-numbers)
+(global-set-key (kbd "C-c +") 'my/increment-number-at-point)
+(global-set-key (kbd "C-c -") 'my/decrement-number-at-point)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)
 ;; End:
-;;; my-change-numbers.el ends here
+;;; change-numbers.el ends here

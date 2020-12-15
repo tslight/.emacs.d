@@ -37,7 +37,6 @@
 (global-set-key (kbd "C-<f11>") 'toggle-frame-fullscreen)
 (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
 (global-set-key (kbd "C-s-m") 'toggle-frame-maximized)
-(global-set-key (kbd "C-c C-r") 'recentf-open-files)
 (global-set-key (kbd "C-c M-d r") 'desktop-read)
 (global-set-key (kbd "C-c M-d s") 'desktop-save)
 (global-set-key (kbd "S-<f10>") 'menu-bar-mode)

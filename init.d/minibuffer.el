@@ -8,23 +8,16 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(with-eval-after-load 'recenf
-  (recentf-mode 1)
-  (setq recentf-exclude '("^/var/folders\\.*"
-                          "COMMIT_EDITMSG\\'"
-                          ".*-autoloads\\.el\\'"
-                          "[/\\]\\.elpa/"))
-  (setq recentf-max-menu-items 128)
-  (setq recentf-max-saved-items 256))
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-exclude '("^/var/folders\\.*"
+                        "COMMIT_EDITMSG\\'"
+                        ".*-autoloads\\.el\\'"
+                        "[/\\]\\.elpa/"))
+(setq recentf-max-menu-items 128)
+(setq recentf-max-saved-items 256)
 
-(with-eval-after-load 'uniquify
-  (setq uniquify-buffer-name-style 'forward))
-
-(savehist-mode 1)
-(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-(setq savehist-save-minibuffer-history 1)
-
-(setq imenu-auto-rescan t)
+(global-set-key (kbd "C-c C-r") 'recentf-open-files)
 
 (defun my/completing-recentf ()
   "Show a list of recent files."
@@ -35,7 +28,17 @@
          (list3 (mapcar #'abbreviate-file-name list2))
          (list4 (cl-remove-duplicates list3 :test #'string-equal)))
     (find-file (completing-read "Recent Files: " list4 nil t))))
+
 (global-set-key (kbd "C-c r") 'my/completing-recentf)
+
+(with-eval-after-load 'uniquify
+  (setq uniquify-buffer-name-style 'forward))
+
+(savehist-mode 1)
+(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+(setq savehist-save-minibuffer-history 1)
+
+(setq imenu-auto-rescan t)
 
 (setq completion-category-defaults nil)
 (setq completion-cycle-threshold 3)

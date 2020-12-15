@@ -19,38 +19,28 @@
 
 (byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
 
-(use-package anaconda-mode
-  :ensure t
-  :after python-mode
+(use-package anaconda-mode :ensure
   :hook
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode))
 
-(use-package ansible
-  :ensure t
-  :defer t
+(use-package ansible :ensure :defer
   :config
   (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
 
-(use-package ansible-doc
-  :ensure t
-  :defer t
+(use-package ansible-doc :ensure :defer
   :config
   (add-hook 'yaml-mode-hook #'ansible-doc-mode))
 
-(use-package async
-  :ensure t
-  :defer t
+(use-package async :ensure :defer
   :config
   (async-bytecomp-package-mode 1))
 
-(use-package blacken
-  :ensure t
+(use-package blacken :ensure
   :hook
   (python-mode . blacken-mode))
 
-(use-package change-inner
-  :ensure t
+(use-package change-inner :ensure
   :bind
   ("M-i" . change-inner)
   ("M-o" . change-outer))
@@ -63,9 +53,7 @@
   ("C-M--" . default-text-scale-decrease)
   ("C-M-0" . default-text-scale-reset))
 
-(use-package diminish
-  :ensure t
-  :defer 2
+(use-package diminish :ensure :defer 2
   :diminish abbrev-mode
   :diminish auto-fill-function ;; wtf?!
   :diminish eldoc-mode
@@ -79,13 +67,10 @@
   (org-indent-mode . (lambda () (diminish 'org-indent-mode)))
   (hs-minor-mode . (lambda () (diminish 'hs-minor-mode))))
 
-(use-package docker
-  :ensure t
+(use-package docker :ensure
   :bind ("C-c C-d" . docker))
 
-(use-package dockerfile-mode
-  :ensure t
-  :defer t )
+(use-package dockerfile-mode :ensure :defer)
 
 (use-package exec-path-from-shell
   :if (not (eq system-type 'windows-nt))
@@ -98,22 +83,16 @@
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "PYTHONPATH"))
 
-(use-package flycheck
-  :ensure t
-  :defer t
+(use-package flycheck :ensure :defer
   :diminish flycheck-mode
   :hook
   (prog-mode . flycheck-mode)
   :config
   (flycheck-add-mode 'javascript-eslint 'web-mode))
 
-(use-package git-timemachine
-  :ensure t
-  :defer t)
+(use-package git-timemachine :ensure :defer)
 
-(use-package gitlab-ci-mode
-  :ensure t
-  :defer t
+(use-package gitlab-ci-mode :ensure :defer
   :mode
   "\\.gitlab-ci.yaml\\'"
   "\\.gitlab-ci.yml\\'"
@@ -121,17 +100,14 @@
   (yaml-mode . hs-minor-mode)
   (gitlab-ci-mode . (lambda () (setq display-line-numbers 'relative))))
 
-(use-package go-mode
-  :ensure t
-  :defer t
+(use-package go-mode :ensure :defer
   :config
   (add-hook 'go-mode-hook
             (lambda ()
               (setq indent-tabs-mode 1)
               (setq tab-width 2))))
 
-(use-package hungry-delete
-  :ensure t :defer 6
+(use-package hungry-delete :ensure t :defer 6
   :diminish hungry-delete-mode
   :config
   (global-hungry-delete-mode))
@@ -149,9 +125,7 @@
 ;;       (insert (completing-read "Yank: " kill-ring nil t))))
 ;;   (icomplete-vertical-mode))
 
-(use-package ibuffer-vc
-  :ensure
-  :hook
+(use-package ibuffer-vc :ensure :hook
   (ibuffer . (lambda ()
                (ibuffer-vc-set-filter-groups-by-vc-root)
                (unless (eq ibuffer-sorting-mode 'alphabetic)
@@ -169,16 +143,14 @@
                 " "
                 vc-relative-file))))
 
-(use-package js2-mode
-  :ensure t
+(use-package js2-mode :ensure
   :hook
   (js-mode . js2-minor-mode)
   (js2-mode . js2-imenu-extras-mode)
   :mode
   "\\.js\\'")
 
-(use-package js2-refactor
-  :ensure t
+(use-package js2-refactor :ensure
   :hook
   (js2-mode . js2-refactor-mode)
   :bind
@@ -187,9 +159,7 @@
   :config
   (js2r-add-keybindings-with-prefix "C-c C-j"))
 
-(use-package json-mode
-  :ensure t
-  :defer t
+(use-package json-mode :ensure :defer
   :config
   (add-to-list 'auto-mode-alist
                '("\\.json\\'" . (lambda ()
@@ -198,12 +168,9 @@
                                   (goto-char (point-min))
                                   (set-buffer-modified-p nil)))))
 
-(use-package json-navigator
-  :ensure t
-  :defer t)
+(use-package json-navigator :ensure :defer)
 
-(use-package magit
-  :ensure t
+(use-package magit :ensure
   :bind*
   ("C-x g" . magit-status)
   ("C-x C-g" . magit-dispatch)
@@ -221,21 +188,16 @@
   (setq magit-clone-set-remote.pushDefault t)
   (setq magit-completing-read-function 'magit-builtin-completing-read))
 
-(use-package markdown-mode
-  :ensure t
+(use-package markdown-mode :ensure
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode))
   :init (setq markdown-command "multimarkdown"))
 
-(use-package nix-mode
-  :ensure t
-  :defer t)
+(use-package nix-mode :ensure :defer)
 
-(use-package nodejs-repl
-  :ensure t
-  :defer t
+(use-package nodejs-repl :ensure :defer
   :bind
   (:map js2-mode-map
         ("C-x C-e" . nodejs-repl-send-last-expression)
@@ -245,26 +207,19 @@
         ("C-c C-f" . nodejs-repl-load-file)
         ("C-c C-z" . nodejs-repl-switch-to-repl)))
 
-(use-package org-bullets
-  :defer t
+(use-package org-bullets :ensure :defer
   :if window-system
-  :ensure t
   :hook
   (org-mode . org-bullets-mode))
 
 ;; source code syntax highlighting when html exporting
-(use-package htmlize
-  :defer t
-  :ensure t)
+(use-package htmlize :defer :ensure)
 
-(use-package toc-org
-  :defer t
-  :ensure t
+(use-package toc-org :defer :ensure
   :hook
   (org-mode . toc-org-enable))
 
-(use-package ox-latex
-  :defer t
+(use-package ox-latex :defer
   :config
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (setq org-latex-listings 'minted)
@@ -273,24 +228,17 @@
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
           "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
 
-(use-package pdf-tools
-  :ensure t
-  :defer t)
+(use-package pdf-tools :ensure :defer)
 
-(use-package powershell
-  :ensure t
+(use-package powershell :ensure
   :mode (("\\.ps1\\'" . powershell-mode)))
 
-(use-package powerline
-  :ensure t
-  :defer 4
+(use-package powerline :ensure :defer 4
   :config
   (if window-system
       (powerline-default-theme)))
 
-(use-package projectile
-  :ensure t
-  :diminish projectile-mode
+(use-package projectile :ensure :diminish projectile-mode
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :config
@@ -302,30 +250,26 @@
     ;; Optionally write to persistent `projectile-known-projects-file'
     (projectile-save-known-projects)))
 
-(use-package restclient
-  :ensure t
-  :defer t)
+(use-package restclient :ensure :defer)
 
-(use-package smartparens
-  :ensure t
-  :diminish t
+(use-package smartparens :ensure :diminish
   :hook
   (common-lisp-mode . smartparens-mode)
   (emacs-lisp-mode . smartparens-mode)
+  (eval-expression-minibuffer-setup . smartparens-mode)
+  (ielm-mode-hook . smartparens-mode)
+  (lisp-interaction-mode-hook . smartparens-mode)
   (lisp-mode . smartparens-mode)
+  (lisp-mode-hook . smartparens-mode)
+  (scheme-mode-hook . smartparens-mode)
   :config
   (sp-use-paredit-bindings))
 
-(use-package systemd
-  :ensure t
-  :defer t)
+(use-package systemd :ensure :defer)
 
-(use-package terraform-mode
-  :ensure t
-  :defer t)
+(use-package terraform-mode :ensure :defer)
 
-(use-package web-mode
-  :ensure t
+(use-package web-mode :ensure
   :mode
   "\\.phtml\\'"
   "\\.tpl\\.php\\'"
@@ -358,35 +302,23 @@
   (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
   (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil)))
 
-(use-package wgrep
-  :ensure t
-  :defer t)
+(use-package wgrep :ensure :defer)
 
-(use-package which-key
-  :ensure t
-  :defer 5
+(use-package which-key :ensure :defer 5
   :diminish which-key-mode
   :config
   (which-key-mode))
 
-(use-package yaml-mode
-  :ensure t
-  :defer t)
+(use-package yaml-mode :ensure :defer)
 
-(use-package yasnippet
-  :ensure t
-  :defer t
+(use-package yasnippet :ensure :defer
   :diminish yas-minor-mode
   :hook
   (prog-mode . yas-minor-mode))
 
-(use-package yasnippet-snippets
-  :ensure t
-  :defer t)
+(use-package yasnippet-snippets :ensure :defer)
 
-(use-package yasnippet-classic-snippets
-  :ensure t
-  :defer t)
+(use-package yasnippet-classic-snippets :ensure :defer)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

@@ -11,11 +11,14 @@
 ;; Initialise installed packages
 (byte-recompile-directory (concat user-emacs-directory "site-lisp") 0) ; directory needs to be first
 (byte-recompile-file (concat user-emacs-directory "early-init.el") 'nil 0 'nil)
+(byte-recompile-file (concat user-emacs-directory "init.el") 'nil 0 'nil)
 
-(setq package-enable-at-startup 'nil)
+;; This must be true otherwise use-package won't load!
+(setq package-enable-at-startup t)
 ;; Allow loading from the package cache.
 (setq package-quickstart t)
 (setq package--init-file-ensured t)
+
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
         ("gnu" . "https://elpa.gnu.org/packages/")))

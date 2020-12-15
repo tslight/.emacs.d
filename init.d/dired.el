@@ -140,7 +140,9 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (define-key dired-mode-map "?" 'my/dired-get-size)
   (define-key dired-mode-map (kbd "C-RET") 'my/dired-open-marked-files)
   (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
-  (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top))
+  (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
+
+  (message "Successfully loaded `dired' :-)"))
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

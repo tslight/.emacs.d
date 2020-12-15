@@ -8,19 +8,17 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-exclude '(;;".*init\.el"
-                        ;;".*\/my-.*\.el"
-                        "^/var/folders\\.*"
-                        "COMMIT_EDITMSG\\'"
-                        ".*-autoloads\\.el\\'"
-                        "[/\\]\\.elpa/"))
-(setq recentf-max-menu-items 128)
-(setq recentf-max-saved-items 256)
+(with-eval-after-load 'recenf
+  (recentf-mode 1)
+  (setq recentf-exclude '("^/var/folders\\.*"
+                          "COMMIT_EDITMSG\\'"
+                          ".*-autoloads\\.el\\'"
+                          "[/\\]\\.elpa/"))
+  (setq recentf-max-menu-items 128)
+  (setq recentf-max-saved-items 256))
 
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
+(with-eval-after-load 'uniquify
+  (setq uniquify-buffer-name-style 'forward))
 
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))

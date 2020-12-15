@@ -53,6 +53,13 @@
   (setq org-use-fast-todo-selection t)
   (setq org-use-speed-commands t)
 
+  (setq org-latex-listings 'minted)
+  (setq org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+
   (setq org-capture-templates
         '(("t" "TODO Entry"
            entry (file+headline "~/org/todo.org" "CURRENT")

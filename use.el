@@ -14,46 +14,42 @@
   (package-install 'use-package))
 
 (setq use-package-enable-imenu-support t
+      use-package-always-ensure t
       use-package-verbose t)
 (require 'use-package)
 
 (byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
 
-(use-package anaconda-mode :ensure
+(use-package anaconda-mode :defer
   :hook
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode))
 
-(use-package ansible :ensure :defer
-  :config
-  (add-hook 'yaml-mode-hook '(lambda () (ansible 1))))
+(use-package ansible :defer
+  :hook (yaml-mode . ansible))
 
-(use-package ansible-doc :ensure :defer
-  :config
-  (add-hook 'yaml-mode-hook #'ansible-doc-mode))
+(use-package ansible-doc :defer
+  :hook (yaml-mode . ansible-doc-mode))
 
-(use-package async :ensure :defer
-  :config
-  (async-bytecomp-package-mode 1))
+(use-package async :defer
+  :config (async-bytecomp-package-mode 1))
 
-(use-package blacken :ensure
-  :hook
-  (python-mode . blacken-mode))
+(use-package blacken :defer
+  :hook (python-mode . blacken-mode))
 
-(use-package change-inner :ensure
+(use-package change-inner
   :bind
   ("M-i" . change-inner)
   ("M-o" . change-outer))
 
 (use-package default-text-scale
   :if window-system
-  :ensure t
   :bind*
   ("C-M-=" . default-text-scale-increase)
   ("C-M--" . default-text-scale-decrease)
   ("C-M-0" . default-text-scale-reset))
 
-(use-package diminish :ensure :defer 2
+(use-package diminish :defer 2
   :diminish abbrev-mode
   :diminish auto-fill-function ;; wtf?!
   :diminish eldoc-mode
@@ -67,71 +63,51 @@
   (org-indent-mode . (lambda () (diminish 'org-indent-mode)))
   (hs-minor-mode . (lambda () (diminish 'hs-minor-mode))))
 
-(use-package docker :ensure
+(use-package docker
   :bind ("C-c C-d" . docker))
 
-(use-package dockerfile-mode :ensure :defer)
+(use-package dockerfile-mode :defer)
 
-(use-package exec-path-from-shell
+(use-package exec-path-from-shell :defer 10
   :if (not (eq system-type 'windows-nt))
-  :ensure t
   :commands exec-path-from-shell-initialize
-  :defer 10
   :init
   (setq exec-path-from-shell-check-startup-files 'nil)
   :config
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "PYTHONPATH"))
 
-(use-package flycheck :ensure :defer
+(use-package flycheck :defer
   :diminish flycheck-mode
-  :hook
-  (prog-mode . flycheck-mode)
-  :config
-  (flycheck-add-mode 'javascript-eslint 'web-mode))
+  :hook (prog-mode . flycheck-mode)
+  :config (flycheck-add-mode 'javascript-eslint 'web-mode))
 
-(use-package git-timemachine :ensure :defer)
+(use-package git-timemachine :defer)
 
-(use-package gitlab-ci-mode :ensure :defer
+(use-package gitlab-ci-mode :defer
   :mode
   "\\.gitlab-ci.yaml\\'"
   "\\.gitlab-ci.yml\\'"
   :hook
-  (yaml-mode . hs-minor-mode)
-  (gitlab-ci-mode . (lambda () (setq display-line-numbers 'relative))))
+  (yaml-mode . hs-minor-mode))
 
-(use-package go-mode :ensure :defer
+(use-package go-mode :defer
   :config
-  (add-hook 'go-mode-hook
-            (lambda ()
-              (setq indent-tabs-mode 1)
-              (setq tab-width 2))))
+  (defun my/go-indent ()
+    (setq indent-tabs-mode 1)
+    (setq tab-width 2))
+  :hook (go-mode . my/go-indent))
 
-(use-package hungry-delete :ensure t :defer 6
+(use-package hungry-delete :defer 6
   :diminish hungry-delete-mode
-  :config
-  (global-hungry-delete-mode))
+  :config (global-hungry-delete-mode))
 
-;; (use-package icomplete-vertical
-;;   :ensure :demand
-;;   :after (icomplete)
-;;   :bind*
-;;   ("C-c y" . my/icomplete-kill-ring)
-;;   :config
-;;   (defun my/icomplete-kill-ring ()
-;;     "Insert item from kill-ring, selected with completion."
-;;     (interactive)
-;;     (icomplete-vertical-do (:separator 'dotted-line :height 20)
-;;       (insert (completing-read "Yank: " kill-ring nil t))))
-;;   (icomplete-vertical-mode))
-
-(use-package ibuffer-vc :ensure
-  :hook
-  (ibuffer . (lambda ()
-               (ibuffer-vc-set-filter-groups-by-vc-root)
-               (unless (eq ibuffer-sorting-mode 'alphabetic)
-                 (ibuffer-do-sort-by-alphabetic))))
+(use-package ibuffer-vc :defer
   :config
+  (defun my/ibuffer-vc-setup ()
+    (ibuffer-vc-set-filter-groups-by-vc-root)
+    (unless (eq ibuffer-sorting-mode 'alphabetic)
+      (ibuffer-do-sort-by-alphabetic)))
   (setq ibuffer-formats
         '((mark modified read-only vc-status-mini " "
                 (name 18 18 :left :elide)
@@ -142,36 +118,36 @@
                 " "
                 (vc-status 16 16 :left)
                 " "
-                vc-relative-file))))
+                vc-relative-file)))
+  :hook
+  (ibuffer . my/ibuffer-vc-setup))
 
-(use-package js2-mode :ensure
+(use-package js2-mode :defer
   :hook
   (js-mode . js2-minor-mode)
   (js2-mode . js2-imenu-extras-mode)
   :mode
   "\\.js\\'")
 
-(use-package js2-refactor :ensure
-  :hook
-  (js2-mode . js2-refactor-mode)
-  :bind
-  (:map js2-mode-map
-        ("C-k" . js2r-kill))
-  :config
-  (js2r-add-keybindings-with-prefix "C-c C-j"))
+(use-package js2-refactor :defer
+  :hook (js2-mode . js2-refactor-mode)
+  :bind (:map js2-mode-map
+              ("C-k" . js2r-kill))
+  :config (js2r-add-keybindings-with-prefix "C-c C-j"))
 
-(use-package json-mode :ensure :defer
+(use-package json-mode :defer
   :config
+  (defun my/json-mode-setup ()
+    (json-mode)
+    (json-pretty-print (point-min) (point-max))
+    (goto-char (point-min))
+    (set-buffer-modified-p nil))
   (add-to-list 'auto-mode-alist
-               '("\\.json\\'" . (lambda ()
-                                  (json-mode)
-                                  (json-pretty-print (point-min) (point-max))
-                                  (goto-char (point-min))
-                                  (set-buffer-modified-p nil)))))
+               '("\\.json\\'" . 'my/json-mode-setup)))
 
-(use-package json-navigator :ensure :defer)
+(use-package json-navigator :defer)
 
-(use-package magit :ensure
+(use-package magit
   :bind*
   ("C-x g" . magit-status)
   ("C-x C-g" . magit-dispatch)
@@ -189,16 +165,16 @@
   (setq magit-clone-set-remote.pushDefault t)
   (setq magit-completing-read-function 'magit-builtin-completing-read))
 
-(use-package markdown-mode :ensure
+(use-package markdown-mode
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode))
   :init (setq markdown-command "multimarkdown"))
 
-(use-package nix-mode :ensure :defer)
+(use-package nix-mode :defer)
 
-(use-package nodejs-repl :ensure :defer
+(use-package nodejs-repl :defer
   :bind
   (:map js2-mode-map
         ("C-x C-e" . nodejs-repl-send-last-expression)
@@ -208,38 +184,26 @@
         ("C-c C-f" . nodejs-repl-load-file)
         ("C-c C-z" . nodejs-repl-switch-to-repl)))
 
-(use-package org-bullets :ensure :defer
-  :if window-system
-  :hook
-  (org-mode . org-bullets-mode))
+(use-package org-bullets :defer
+  :if window-system :hook (org-mode . org-bullets-mode))
 
 ;; source code syntax highlighting when html exporting
-(use-package htmlize :defer :ensure)
+(use-package htmlize :defer)
 
-(use-package toc-org :defer :ensure
-  :hook
-  (org-mode . toc-org-enable))
+(use-package toc-org :defer
+  :hook (org-mode . toc-org-enable))
 
-(use-package ox-latex :defer
-  :config
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
-  (setq org-latex-listings 'minted)
-  (setq org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+(use-package pdf-tools :defer)
 
-(use-package pdf-tools :ensure :defer)
-
-(use-package powershell :ensure
+(use-package powershell
   :mode (("\\.ps1\\'" . powershell-mode)))
 
-(use-package powerline :ensure :defer 4
+(use-package powerline :defer 4
   :config
-  (if window-system
+  (if window-system ; use-package if doesn't work for emacsclient
       (powerline-default-theme)))
 
-(use-package projectile :ensure :diminish projectile-mode
+(use-package projectile :diminish projectile-mode
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :config
@@ -251,9 +215,9 @@
     ;; Optionally write to persistent `projectile-known-projects-file'
     (projectile-save-known-projects)))
 
-(use-package restclient :ensure :defer)
+(use-package restclient :defer)
 
-(use-package smartparens :ensure :diminish
+(use-package smartparens :diminish :defer
   :hook
   (common-lisp-mode . smartparens-mode)
   (emacs-lisp-mode . smartparens-mode)
@@ -266,11 +230,11 @@
   :config
   (sp-use-paredit-bindings))
 
-(use-package systemd :ensure :defer)
+(use-package systemd :defer)
 
-(use-package terraform-mode :ensure :defer)
+(use-package terraform-mode :defer)
 
-(use-package web-mode :ensure
+(use-package web-mode
   :mode
   "\\.phtml\\'"
   "\\.tpl\\.php\\'"
@@ -303,23 +267,21 @@
   (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
   (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil)))
 
-(use-package wgrep :ensure :defer)
+(use-package wgrep :defer)
 
-(use-package which-key :ensure :defer 5
+(use-package which-key :defer 5
   :diminish which-key-mode
   :config
   (which-key-mode))
 
-(use-package yaml-mode :ensure :defer)
+(use-package yaml-mode :defer)
 
-(use-package yasnippet :ensure :defer
+(use-package yasnippet :defer
   :diminish yas-minor-mode
-  :hook
-  (prog-mode . yas-minor-mode))
+  :hook (prog-mode . yas-minor-mode))
 
-(use-package yasnippet-snippets :ensure :defer)
-
-(use-package yasnippet-classic-snippets :ensure :defer)
+(use-package yasnippet-snippets :defer)
+(use-package yasnippet-classic-snippets :defer)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

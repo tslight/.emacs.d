@@ -86,6 +86,10 @@
       (window-configuration-to-register '_)
       (delete-other-windows))))
 
+(with-eval-after-load 'uniquify
+  (setq uniquify-buffer-name-style 'forward)
+  (message "Lazy loaded uniquify :-)"))
+
 (global-set-key (kbd "C-c l") 'my/last-buffer)
 (global-set-key (kbd "C-c bb") 'my/last-buffer)
 (global-set-key (kbd "C-c bt") 'my/toggle-buffer)

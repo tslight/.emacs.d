@@ -36,7 +36,9 @@
 (global-set-key (kbd "C-c M-d r") 'desktop-read)
 (global-set-key (kbd "C-c M-d s") 'desktop-save)
 
-(global-set-key (kbd "C-c M-c") 'calc)
+(autoload 'calculator "calculator" nil t)
+(global-set-key (kbd "C-c M-c") 'calculator)
+(autoload 'calc "calc" nil t)
 (global-set-key (kbd "C-c c") 'calc)
 
 ;; for help modes, and simple/special modes

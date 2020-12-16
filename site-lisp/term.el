@@ -31,8 +31,12 @@ Otherwise switch to current one."
       (switch-to-buffer "*ansi-term*")
     (ansi-term (getenv "SHELL"))))
 
-(global-set-key (kbd "C-c t t") 'my/switch-to-ansi-term)
-(global-set-key (kbd "C-c t c") (lambda () (interactive) (ansi-term (getenv "SHELL"))))
+(defun my/ansi-term ()
+  (interactive)
+  (ansi-term (getenv "SHELL")))
+
+(global-set-key (kbd "C-c t") 'my/switch-to-ansi-term)
+(global-set-key (kbd "C-c C-t") 'my/ansi-term)
 
 (add-hook 'term-exec (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix)))
 ;; Local Variables:

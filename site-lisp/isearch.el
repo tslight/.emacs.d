@@ -32,6 +32,10 @@ When searching backward, kill to the beginning of the match."
   (my/isearch-exit)
   (call-interactively 'kill-region))
 
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "M-s b") 'multi-isearch-buffers-regexp)
+(global-set-key (kbd "M-s f") 'multi-isearch-files-regexp)
 (define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
 (define-key isearch-mode-map (kbd "C-w") 'my/copy-to-isearch)
 (define-key isearch-mode-map (kbd "M-w") 'my/kill-to-isearch)

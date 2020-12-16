@@ -51,7 +51,7 @@
   (message "Lazy loaded eshell :-)"))
 
 (add-hook 'eshell-mode 'eshell-smart-initialize)
-(global-set-key (kbd "C-c C-e") 'eshell)
+(global-set-key (kbd "C-c e") 'eshell)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

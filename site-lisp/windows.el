@@ -147,6 +147,10 @@ window to right."
 (global-set-key (kbd "M-p") 'my/scroll-line-up)
 (global-set-key (kbd "M-n") 'my/scroll-line-down)
 
+(global-set-key (kbd "C-c v") 'scroll-other-window-down)
+(global-set-key (kbd "C-c C-/") 'winner-undo)
+(global-set-key (kbd "C-c C-?") 'winner-redo)
+
 (define-key ctl-x-4-map "k" 'my/kill-buffer-other-window)
 (define-key ctl-x-4-map "o" 'my/open-buffer-other-window)
 (define-key ctl-x-4-map "s" 'my/toggle-split)

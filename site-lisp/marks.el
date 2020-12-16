@@ -33,6 +33,8 @@ Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
 (global-set-key (kbd "C-c SPC j") 'my/jump-to-mark)
 (global-set-key (kbd "C-c SPC x") 'my/exchange-point-and-mark-no-activate)
 
+(global-set-key (kbd "C-x p") 'pop-to-mark-command)
+
 (add-hook 'before-save-hook 'my/push-mark-no-activate)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

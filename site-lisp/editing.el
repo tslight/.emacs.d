@@ -174,6 +174,15 @@ line."
 (global-set-key (kbd "C-o") 'my/open-line-above)
 (global-set-key (kbd "C-S-o") 'my/open-line-below)
 (global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
+
+(global-set-key (kbd "C-c ;") 'comment-line)
+(global-set-key (kbd "C-z") 'zap-up-to-char)
+(global-set-key (kbd "M-z") 'zap-up-char)
+(global-set-key (kbd "C-x M-t") 'transpose-regions)
+(global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
+(global-set-key (kbd "M-SPC") 'cycle-spacing)
+(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "M-%") 'query-replace-regexp)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

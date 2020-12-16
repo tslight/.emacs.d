@@ -75,12 +75,9 @@
       (window-configuration-to-register '_)
       (delete-other-windows))))
 
-(global-set-key (kbd "C-c b b") 'my/last-buffer)
-(global-set-key (kbd "C-c b t") 'my/toggle-buffer)
-(global-set-key (kbd "C-<escape>") 'my/last-buffer)
-(global-set-key (kbd "C-M-<escape>") 'my/toggle-buffer)
-(global-set-key (kbd "C-c TAB") 'my/indent-buffer)
-(global-set-key (kbd "C-c b i") 'my/indent-buffer)
+(global-set-key (kbd "C-c bb") 'my/last-buffer)
+(global-set-key (kbd "C-c bt") 'my/toggle-buffer)
+(global-set-key (kbd "C-c bi") 'my/indent-buffer)
 (global-set-key (kbd "C-c z") 'my/toggle-maximize-buffer)
 (global-set-key (kbd "C-c M-n") 'my/nuke-buffers)
 (global-set-key (kbd "C-c s") 'my/save-buffers-silently)
@@ -88,6 +85,11 @@
 (global-set-key (kbd "M-s s") 'my/search-all-buffers)
 (global-set-key (kbd "C-c M-t m") 'my/toggle-messages)
 (global-set-key (kbd "C-c M-t s") 'my/toggle-scratch)
+
+(global-set-key (kbd "C-c be") 'eval-buffer)
+(global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x M-k") 'kill-buffer)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

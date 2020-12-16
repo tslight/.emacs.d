@@ -217,19 +217,6 @@
 
 (use-package restclient :defer)
 
-(use-package smartparens :diminish :defer
-  :hook
-  (common-lisp-mode . smartparens-mode)
-  (emacs-lisp-mode . smartparens-mode)
-  (eval-expression-minibuffer-setup . smartparens-mode)
-  (ielm-mode-hook . smartparens-mode)
-  (lisp-interaction-mode-hook . smartparens-mode)
-  (lisp-mode . smartparens-mode)
-  (lisp-mode-hook . smartparens-mode)
-  (scheme-mode-hook . smartparens-mode)
-  :config
-  (sp-use-paredit-bindings))
-
 (use-package systemd :defer)
 
 (use-package terraform-mode :defer)

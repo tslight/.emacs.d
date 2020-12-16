@@ -11,6 +11,7 @@
 (with-eval-after-load 'org
   (require 'org-tempo)
 
+  ;;;###autoload
   (defun my/org-recursive-sort ()
     "Sort all entries in the current buffer, recursively."
     (interactive)
@@ -20,6 +21,7 @@
            (org-sort-entries nil ?a)
          (user-error)))))
 
+  ;;;###autoload
   (defun my/org-tangle-block ()
     "Only tangle the block at point."
     (interactive)

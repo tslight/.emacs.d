@@ -8,6 +8,7 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/isearch-exit ()
   "Move point to the start of the matched string."
   (interactive)
@@ -15,6 +16,7 @@
     (goto-char isearch-other-end))
   (isearch-exit))
 
+;;;###autoload
 (defun my/copy-to-isearch ()
   "Copy up to the search match when searching forward.
 
@@ -24,6 +26,7 @@ When searching backward, copy to the start of the search match."
   (call-interactively 'kill-ring-save)
   (exchange-point-and-mark))
 
+;;;###autoload
 (defun my/kill-to-isearch ()
   "Kill up to the search match when searching forward.
 

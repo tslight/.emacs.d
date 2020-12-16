@@ -8,6 +8,7 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/change-number-at-point (change)
   "Change a number by CHANGE amount."
   (let ((number (number-at-point))
@@ -19,11 +20,13 @@
         (replace-match (number-to-string (funcall change number)))
         (goto-char point)))))
 
+;;;###autoload
 (defun my/increment-number-at-point ()
   "Increment number at point."
   (interactive)
   (my/change-number-at-point '1+))
 
+;;;###autoload
 (defun my/decrement-number-at-point ()
   "Decrement number at point."
   (interactive)

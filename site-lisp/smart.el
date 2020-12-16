@@ -8,6 +8,7 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun smart/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
   (interactive)
@@ -18,6 +19,7 @@
            fill-column)))
     (call-interactively #'fill-paragraph)))
 
+;;;###autoload
 (defun smart/narrow-or-widen-dwim (p)
   "If the buffer is narrowed, it widens, otherwise, it narrows intelligently.
 
@@ -42,6 +44,7 @@ narrowed."
                (t (org-narrow-to-subtree))))
         (t (narrow-to-defun))))
 
+;;;###autoload
 (defun smart/move-beginning-of-line ()
   "Move point back to indentation.
 
@@ -52,6 +55,7 @@ Otherwise point moves to beginning of line."
       (beginning-of-line)
     (back-to-indentation)))
 
+;;;###autoload
 (defun smart/kill-ring-save ()
   "Copy current line or text selection to kill ring.
 
@@ -69,6 +73,7 @@ respect `narrow-to-region')."
              (setq p2 (point-max))))
     (kill-ring-save p1 p2)))
 
+;;;###autoload
 (defun smart/kill-region ()
   "Cut current line, or text selection to kill ring.
 

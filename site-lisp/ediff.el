@@ -15,6 +15,7 @@
   (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
   ;; https://emacs.stackexchange.com/a/24602
+  ;;;###autoload
   (defun disable-y-or-n-p (orig-fun &rest args)
     "Advise ORIG-FUN with ARGS so it dynamically rebinds `y-or-n-p'."
     (cl-letf (((symbol-function 'y-or-n-p) (lambda () t)))

@@ -8,6 +8,7 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/after-make-frame (frame)
   "Add custom settings after making the FRAME."
   (select-frame frame)
@@ -45,6 +46,7 @@
     (add-hook 'after-make-frame-functions #'my/after-make-frame(selected-frame))
   (my/after-make-frame(selected-frame)))
 
+;;;###autoload
 (defun my/disable-themes ()
   "Disable all custom themes in one fail swoop."
   (interactive)

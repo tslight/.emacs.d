@@ -22,6 +22,7 @@
   (setq term-buffer-maximum-size 200000)
   (message "Lazy loaded term :-)"))
 
+;;;###autoload
 (defun my/switch-to-ansi-term ()
   "Open an `ansi-term' if it doesn't already exist.
 Otherwise switch to current one."
@@ -30,6 +31,7 @@ Otherwise switch to current one."
       (switch-to-buffer "*ansi-term*")
     (ansi-term (getenv "SHELL"))))
 
+;;;###autoload
 (defun my/ansi-term ()
   (interactive)
   (ansi-term (getenv "SHELL")))

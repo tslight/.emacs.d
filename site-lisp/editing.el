@@ -8,6 +8,7 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/delete-inside ()
   "Deletes the text within parentheses, brackets or quotes."
   (interactive)
@@ -19,6 +20,7 @@
     (backward-char)
     (kill-region lstart (point))))
 
+;;;###autoload
 (defun my/generate-numbered-list (start end char)
   "Create a numbered list from START to END.  Using CHAR as punctuation."
   (interactive "nStart number:\nnEnd number:\nsCharacter:")
@@ -28,11 +30,13 @@
       (newline)
       (setq x (+ x 1)))))
 
+;;;###autoload
 (defun my/insert-date ()
   "Insert a timestamp according to locale's date and time format."
   (interactive)
   (insert (format-time-string "%c" (current-time))))
 
+;;;###autoload
 (defun my/open-line-above ()
   "Insert an empty line above the current line.
 
@@ -55,6 +59,7 @@ mode."
     (forward-line -1)
     (indent-according-to-mode)))
 
+;;;###autoload
 (defun my/open-line-below (arg)
   "Insert an empty line after the current line.
 
@@ -66,12 +71,14 @@ mode.  With a prefix ARG open line above the current line."
     (move-end-of-line nil)
     (newline-and-indent)))
 
+;;;###autoload
 (defun my/sort-lines-nocase ()
   "Sort marked lines with case sensitivity."
   (interactive)
   (let ((sort-fold-case t))
     (call-interactively 'sort-lines)))
 
+;;;###autoload
 (defun my/surround (begin end open close)
   "Put OPEN at BEGIN and CLOSE at END of the region.
 
@@ -85,6 +92,7 @@ If you omit CLOSE, it will reuse OPEN."
     (goto-char begin)
     (insert open)))
 
+;;;###autoload
 (defun my/underline-text (arg)
   "Insert ARG under the current line.
 
@@ -151,11 +159,13 @@ line."
             (goto-char (re-search-forward "^"))
           (goto-char original-point))))))
 
+;;;###autoload
 (defun my/untabify-buffer ()
   "Convert all tabs to spaces in the buffer."
   (interactive)
   (untabify (point-min) (point-max)))
 
+;;;###autoload
 (defun my/xml-pretty-print ()
   "Reformat and indent XML."
   (interactive)
@@ -163,6 +173,7 @@ line."
     (sgml-pretty-print (point-min) (point-max))
     (indent-region (point-min) (point-max))))
 
+;;;###autoload
 (defun my/yank-pop-forwards (arg)
   "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
   (interactive "p")

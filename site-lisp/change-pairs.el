@@ -8,6 +8,7 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/change-pairs (from-chars to-chars)
   "Change pairs from FROM-CHARS to TO-CHARS.
 

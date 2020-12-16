@@ -15,9 +15,7 @@
   (mapc (lambda (file) (load file)) ;; load all files in ~/.emacs.d/site-lisp
         (directory-files (concat user-emacs-directory "site-lisp") t "^.*\.elc$"))
 
-  (load (concat user-emacs-directory "use")) ;; comment for no 3rd party packages
-
-  (message "Hacks and glory await! :-)"))
+  (load (concat user-emacs-directory "use")))
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

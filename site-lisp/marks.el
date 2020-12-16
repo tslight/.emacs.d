@@ -8,12 +8,14 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/exchange-point-and-mark-no-activate ()
   "Identical to \\[exchange-point-and-mark] but will not activate the region."
   (interactive)
   (exchange-point-and-mark)
   (deactivate-mark nil))
 
+;;;###autoload
 (defun my/jump-to-mark ()
   "Jump to the local mark, respecting the `mark-ring' order.
 
@@ -21,6 +23,7 @@ This is the same as using \\[set-mark-command] with the prefix argument."
   (interactive)
   (set-mark-command 1))
 
+;;;###autoload
 (defun my/push-mark-no-activate ()
   "Push `point' to `mark-ring', but do not activate the region.
 

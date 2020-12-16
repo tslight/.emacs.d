@@ -9,6 +9,7 @@
 
 ;;; Code:
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+;;;###autoload
 (defun colorize-compilation-buffer ()
   "ANSI color in compilation buffer."
   (ansi-color-apply-on-region compilation-filter-start (point)))

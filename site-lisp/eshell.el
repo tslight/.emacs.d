@@ -9,6 +9,7 @@
 
 ;;; Code:
 (with-eval-after-load 'eshell
+  ;;;###autoload
   (defun my/eshell-prompt ()
     "Custom eshell prompt."
     (concat

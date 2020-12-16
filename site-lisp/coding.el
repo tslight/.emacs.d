@@ -8,6 +8,7 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/convert-to-unix-coding-system ()
   "Change the current buffer's file encoding to unix."
   (interactive)
@@ -16,6 +17,7 @@
       (set-buffer-file-coding-system 'unix))))
 (global-set-key (kbd "C-x RET u") 'my/convert-to-unix-coding-system)
 
+;;;###autoload
 (defun my/hide-dos-eol ()
   "Do not show ^M in files containing mixed UNIX and DOS line endings."
   (interactive)

@@ -16,6 +16,7 @@
   '("early-init.el" "init.el" "use.el")
   "Files under `user-emacs-directory' that we use for configuration.")
 
+;;;###autoload
 (defun my/recompile-site-lisp ()
   "Recompile everything in Emacs configuration."
   (interactive)
@@ -24,6 +25,7 @@
   (mapc (lambda (file) (byte-recompile-file (concat user-emacs-directory file) 0))
         my/files-to-recompile))
 
+;;;###autoload
 (defun my/auto-recompile ()
   "Automatically recompile Emacs Lisp files whenever they are saved."
   (when (equal major-mode 'emacs-lisp-mode)

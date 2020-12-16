@@ -81,7 +81,9 @@
 (setq scroll-conservatively 8)
 (setq scroll-preserve-screen-position t)
 
-(setq inhibit-startup-echo-area-message t)
+(defun display-startup-echo-area-message ()
+  "Redefine this function to be more useful."
+  (message "Started in %s. Hacks & Glory await! :-)" (emacs-init-time)))
 (setq inhibit-startup-screen t)
 (setq initial-scratch-message nil)
 (setq initial-major-mode 'fundamental-mode)

@@ -10,6 +10,7 @@
 ;;; Code:
 (require 'windmove)
 
+;;;###autoload
 (defun my/three-way-split ()
   "Split the screen three ways."
   (interactive)
@@ -21,6 +22,7 @@
   (switch-to-next-buffer)
   (balance-windows))
 
+;;;###autoload
 (defun my/kill-buffer-other-window ()
   "Kill the buffer in the last used window."
   (interactive)
@@ -32,6 +34,7 @@
     (kill-this-buffer)
     (select-window current-window)))
 
+;;;###autoload
 (defun my/last-window ()
   "Switch back and forth between two windows easily."
   (interactive)
@@ -42,38 +45,45 @@
       (select-frame frame)
       (select-window win))))
 
+;;;###autoload
 (defun my/open-buffer-other-window (buffer)
   "Open a BUFFER in another window without switching to it."
   (interactive "BBuffer: ")
   (switch-to-buffer-other-window buffer)
   (other-window -1))
 
+;;;###autoload
 (defun my/prev-window ()
   "Go the previously used window, excluding other frames."
   (interactive)
   (other-window -1))
 
+;;;###autoload
 (defun my/top-of-window ()
   "Shift current line to the top of the window."
   (interactive)
   (set-window-start (selected-window) (point)))
 
+;;;###autoload
 (defun my/bottom-of-window ()
   "Shift current line to the bottom of the window."
   (interactive)
   (my/top-of-window)
   (scroll-down (- (window-height) 3)))
 
+;;;###autoload
 (defun my/scroll-line-up (n)
   "Scroll line up N lines.  Like Ctrl-e in Vim."
   (interactive "p")
   (scroll-up n))
 
+;;;###autoload
 (defun my/scroll-line-down (n)
   "Scroll line down N lines.  Ctrl-y in Vim."
   (interactive "p")
   (scroll-down n))
 
+;;;###autoload
 (defun my/hsplit-last-buffer (prefix)
   "Split the window vertically and display the previous buffer.
 With PREFIX stay in current buffer."
@@ -83,6 +93,7 @@ With PREFIX stay in current buffer."
   (if (= prefix 1)
       (switch-to-next-buffer)))
 
+;;;###autoload
 (defun my/vsplit-last-buffer (prefix)
   "Split the window horizontally and display the previous buffer.
 With PREFIX stay in current buffer."
@@ -91,6 +102,7 @@ With PREFIX stay in current buffer."
   (other-window 1 nil)
   (if (= prefix 1) (switch-to-next-buffer)))
 
+;;;###autoload
 (defun my/toggle-split ()
   "Switch window split from horizontally to vertically.
 
@@ -118,6 +130,7 @@ window to right."
                   (split-window-horizontally))
                 (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
 
+;;;###autoload
 (defun my/transpose-windows (arg)
   "Transpose windows.  Use prefix ARG to transpose in the other direction."
   (interactive "P")

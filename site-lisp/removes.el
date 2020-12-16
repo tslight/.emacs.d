@@ -8,6 +8,7 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/remove-from-buffer (string)
   "Remove all occurences of STRING from the whole buffer."
   (interactive "sString to remove: ")
@@ -20,6 +21,7 @@
           (replace-match "" nil nil))
         (message (format "%d %s removed from buffer." count string))))))
 
+;;;###autoload
 (defun my/remove-character-number (number)
   "Remove all occurences of a control character NUMBER.
 Excluding ^I (tabs) and ^J (newline)."
@@ -28,6 +30,7 @@ Excluding ^I (tabs) and ^J (newline)."
       (let ((character (string number)))
         (my/remove-from-buffer character))))
 
+;;;###autoload
 (defun my/remove-all-ctrl-characters ()
   "Remove all occurences of all control characters.
 Excluding ^I (tabs) and ^J (newlines)."
@@ -36,6 +39,7 @@ Excluding ^I (tabs) and ^J (newlines)."
             (my/remove-character-number n))
           (number-sequence 0 31)))
 
+;;;###autoload
 (defun my/remove-ctrl-m ()
   "Remove all ^M occurrences from EOL in a buffer."
   (interactive)

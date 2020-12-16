@@ -10,6 +10,7 @@
 ;;; Code:
 ;; This is only needed once, near the top of the file
 (with-eval-after-load 'dired
+  ;;;###autoload
   (defun my/dired-get-size ()
     "Get cumlative size of marked or current item."
     (interactive)
@@ -21,6 +22,7 @@
                    (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
                    (match-string 1))))))
 
+  ;;;###autoload
   (defun my/dired-open-marked-files ()
     "Open marked files."
     (interactive)
@@ -30,6 +32,7 @@
              (dired-get-file-for-visit)
              current-prefix-arg))))
 
+  ;;;###autoload
   (defun my/dired-sort ()
     "Sort dired dir listing in different ways.  Prompt for a choice."
     (interactive)
@@ -56,18 +59,21 @@
                 (t (error "Logic error 09535" )))))
       (dired-sort-other -arg )))
 
+  ;;;###autoload
   (defun my/dired-back-to-top ()
     "Go to first file in directory."
     (interactive)
     (goto-char (point-min))
     (dired-next-line 2))
 
+  ;;;###autoload
   (defun my/dired-jump-to-bottom ()
     "Go to last file in directory."
     (interactive)
     (goto-char (point-max))
     (dired-next-line -1))
 
+  ;;;###autoload
   (defun my/dired-view-current ()
     "View current file in read-only temporary buffer and other window."
     (interactive)

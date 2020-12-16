@@ -18,6 +18,7 @@
 
   (global-set-key (kbd "C-c C-r") 'recentf-open-files)
 
+  ;;;###autoload
   (defun my/completing-recentf ()
     "Show a list of recent files."
     (interactive)
@@ -65,6 +66,7 @@
 (setq read-file-name-completion-ignore-case t)
 (setq resize-mini-windows t)
 
+;;;###autoload
 (defun my/icomplete-styles ()
   "Set icomplete styles based on Emacs version."
   (if (version< emacs-version "27")

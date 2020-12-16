@@ -8,12 +8,14 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/substring (substring string)
   "Return SUBSTRING of a STRING."
   (let ((regex (concat  ".*\\(" substring "\\).*")))
     (string-match regex string)
     (match-string 1 string)))
 
+;;;###autoload
 (defun my/cycle-line-numbers ()
   "Cycle through all the line numbering configurations."
   (interactive)
@@ -27,6 +29,7 @@
         (setq display-line-numbers 'relative)
       (setq display-line-numbers t))))
 
+;;;###autoload
 (defun my/fortune ()
   "Insert a fortune into the minibuffer.
 
@@ -37,6 +40,7 @@ into the buffer, before the point."
       (insert (shell-command-to-string "fortune"))
     (message (string-trim (shell-command-to-string "fortune -s -n 100")))))
 
+;;;###autoload
 (defun my/google (arg)
   "Googles a query or region.  With prefix ARG, wrap in quotes."
   (interactive "P")
@@ -48,6 +52,7 @@ into the buffer, before the point."
     (browse-url
      (concat "http://www.google.com/search?ie=utf-8&oe=utf-8&q=" query))))
 
+;;;###autoload
 (defun my/kanye-west-quote ()
   "Get a random Kanye quote in the minibuffer."
   (interactive)
@@ -56,6 +61,7 @@ into the buffer, before the point."
      (url-insert-file-contents "https://api.kanye.rest/")
      (cdr (assoc 'quote (json-read))))))
 
+;;;###autoload
 (defun my/chuck-norris-joke ()
   "Get a random Chuck Norris joke in the minibuffer."
   (interactive)

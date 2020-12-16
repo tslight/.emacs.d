@@ -10,6 +10,7 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+;;;###autoload
 (defun my/delete-this-file ()
   "Delete the current file, and kill the buffer."
   (interactive)
@@ -19,6 +20,7 @@
     (delete-file (buffer-file-name))
     (kill-this-buffer)))
 
+;;;###autoload
 (defun my/copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
   (interactive)
@@ -29,6 +31,7 @@
       (kill-new filename)
       (message "Copied buffer file name '%s' to the clipboard." filename))))
 
+;;;###autoload
 (defun my/make-backup ()
   "Make a backup copy of current file or dired marked files.
 
@@ -50,6 +53,7 @@ If in dired, backup current file or marked files."
             (message "marked files backed up"))
         (user-error "Buffer not file nor dired")))))
 
+;;;###autoload
 (defun my/make-backup-and-save ()
   "Backup of current file and save, or backup dired marked files.
 For detail, see `my/make-backup'."
@@ -62,6 +66,7 @@ For detail, see `my/make-backup'."
     (progn
       (my/make-backup))))
 
+;;;###autoload
 (defun my/rename-this-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
   (interactive "FNew name: ")
@@ -77,18 +82,21 @@ For detail, see `my/make-backup'."
         (rename-buffer new-name)
         (set-visited-file-name new-name)))))
 
+;;;###autoload
 (defun my/read-file (file)
   "Return FILE content as a string."
   (with-temp-buffer
     (insert-file-contents file)
     (buffer-string)))
 
+;;;###autoload
 (defun my/read-lines (file)
   "Return a list of lines of a FILE."
   (with-temp-buffer
     (insert-file-contents file)
     (split-string (buffer-string) "\n" t)))
 
+;;;###autoload
 (defun my/sudoedit (&optional arg)
   "Open current or ARG file as root."
   (interactive "P")

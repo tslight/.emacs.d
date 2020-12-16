@@ -36,6 +36,8 @@ Otherwise switch to current one."
   (interactive)
   (ansi-term (getenv "SHELL")))
 
+(autoload 'term "term" nil t)
+(autoload 'ansi-term "term" nil t)
 (global-set-key (kbd "C-c t") 'my/switch-to-ansi-term)
 (global-set-key (kbd "C-c C-t") 'my/ansi-term)
 

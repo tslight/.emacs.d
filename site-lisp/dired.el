@@ -139,6 +139,8 @@ output file.  %i path(s) are relative, while %o is absolute.")
 
   (message "Lazy loaded dired package :-)"))
 
+(autoload 'dired "dired" nil t)
+
 ;; has to come outside of with-eval-after-load otherwise we have no dired-jump
 (autoload 'dired-jump "dired-x"
   "Jump to Dired buffer corresponding to current buffer." t)

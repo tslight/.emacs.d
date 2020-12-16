@@ -100,6 +100,7 @@
 
 (global-set-key (kbd "C-c be") 'eval-buffer)
 (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
+(autoload 'ibuffer "ibuffer" nil t)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x M-k") 'kill-buffer)
 ;; Local Variables:

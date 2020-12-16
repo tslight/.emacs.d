@@ -43,7 +43,11 @@
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
 (setq savehist-save-minibuffer-history 1)
 
-(setq imenu-auto-rescan t)
+(with-eval-after-load 'imenu
+  (setq imenu-auto-rescan t)
+  (message "Lazy loaded imenu :-)"))
+
+(autoload 'imenu "imenu" nil t)
 (global-set-key (kbd "C-c i") 'imenu)
 
 (setq completion-category-defaults nil)

@@ -22,6 +22,8 @@
   (setq gnus-thread-ignore-subject t)
 
   (message "Lazy loaded gnus :-)"))
+
+(autoload 'gnus "gnus" nil t)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

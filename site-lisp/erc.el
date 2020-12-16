@@ -21,6 +21,8 @@
   (setq erc-track-enable-keybindings t)
 
   (message "Lazy loaded erc :-)"))
+
+(autoload 'erc "erc" nil t)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

@@ -133,9 +133,14 @@
   (add-hook 'org-mode-hook 'hl-line-mode)
   (message "Lazy loaded org :-)"))
 
+(autoload 'org-mode "org-mode" nil t)
+(autoload 'org-agenda "org" nil t)
 (global-set-key (kbd "C-c C-o a") 'org-agenda)
+(autoload 'org-capture "org" nil t)
 (global-set-key (kbd "C-c C-o c") 'org-capture)
+(autoload 'org-store-link "org" nil t)
 (global-set-key (kbd "C-c C-o l") 'org-store-link)
+(autoload 'org-time-stamp "org" nil t)
 (global-set-key (kbd "C-c C-o t") 'org-time-stamp)
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

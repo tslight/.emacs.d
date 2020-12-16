@@ -52,6 +52,8 @@
   (message "Lazy loaded eshell :-)"))
 
 (add-hook 'eshell-mode 'eshell-smart-initialize)
+
+(autoload 'eshell "eshell" nil t)
 (global-set-key (kbd "C-c e") 'eshell)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

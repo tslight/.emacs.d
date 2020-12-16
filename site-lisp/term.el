@@ -8,7 +8,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-
 (with-eval-after-load 'term
   ;; get unicode characters in ansi-term - https://stackoverflow.com/a/7442266
   (defadvice ansi-term (after advise-ansi-term-coding-system)

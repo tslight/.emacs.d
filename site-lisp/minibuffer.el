@@ -43,6 +43,7 @@
 (setq savehist-save-minibuffer-history 1)
 
 (setq imenu-auto-rescan t)
+(global-set-key (kbd "C-c i") 'imenu)
 
 (setq completion-category-defaults nil)
 (setq completion-cycle-threshold 3)

@@ -175,6 +175,7 @@ line."
 (global-set-key (kbd "C-S-o") 'my/open-line-below)
 (global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
 
+(global-set-key (kbd "C-x C-e") 'pp-eval-last-sexp)
 (global-set-key (kbd "C-c ;") 'comment-line)
 (global-set-key (kbd "C-z") 'zap-up-to-char)
 (global-set-key (kbd "M-z") 'zap-up-char)

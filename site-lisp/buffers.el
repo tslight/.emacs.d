@@ -75,6 +75,7 @@
       (window-configuration-to-register '_)
       (delete-other-windows))))
 
+(global-set-key (kbd "C-c l") 'my/last-buffer)
 (global-set-key (kbd "C-c bb") 'my/last-buffer)
 (global-set-key (kbd "C-c bt") 'my/toggle-buffer)
 (global-set-key (kbd "C-c bi") 'my/indent-buffer)

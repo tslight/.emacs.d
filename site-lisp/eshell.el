@@ -51,10 +51,19 @@
   (add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply)
   (message "Lazy loaded eshell :-)"))
 
+;;;###autoload
+(defun my/eshell-other-window ()
+  "Open an `eshell' in another window."
+  (interactive)
+  (split-window-sensibly)
+  (other-window 1)
+  (eshell))
+
 (add-hook 'eshell-mode 'eshell-smart-initialize)
 
 (autoload 'eshell "eshell" nil t)
 (global-set-key (kbd "C-c e") 'eshell)
+(global-set-key (kbd "C-c 4 e") 'my/eshell-other-window)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

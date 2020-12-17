@@ -123,6 +123,7 @@ output file.  %i path(s) are relative, while %o is absolute.")
         dired-recursive-copies 'always
         dired-recursive-deletes 'always)
 
+
   (global-set-key (kbd "C-x M-d") 'list-directory)
 
   (define-key dired-mode-map "b" (lambda () (interactive (find-alternate-file ".."))))
@@ -138,20 +139,27 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
   (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
 
-  (message "Lazy loaded dired package :-)"))
+  (message "Lazy loaded dired :-)"))
 
 (with-eval-after-load 'dired-aux
   (setq dired-isearch-filenames 'dwim)
   ;; The following variables were introduced in Emacs 27.1
   (when (not (version< emacs-version "27.1"))
     (setq dired-create-destination-dirs 'ask)
-    (setq dired-vc-rename-file t)))
+    (setq dired-vc-rename-file t))
+  (message "Lazy loaded dired-aux :-)"))
 
 (with-eval-after-load 'find-dired
   ;; (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
   (setq find-ls-option
         '("-ls" . "-AGFhlv --group-directories-first --time-style=long-iso"))
-  (setq find-name-arg "-iname"))
+  (setq find-name-arg "-iname")
+  (message "Lazy loaded find-dired :-)"))
+
+(with-eval-after-load 'wdired
+  (setq wdired-allow-to-change-permissions t)
+  (setq wdired-create-parent-directories t)
+  (message "Lazy loaded wdired :-)"))
 
 (autoload 'dired "dired" nil t)
 
@@ -162,14 +170,9 @@ output file.  %i path(s) are relative, while %o is absolute.")
 (autoload 'dired-jump-other-window "dired-x"
   "Like \\[dired-jump] (dired-jump) but in other window." t)
 
-;; (global-set-key (kbd "C-x C-d") 'dired)
-;; (global-set-key (kbd "C-x 4 C-d") 'dired-other-window)
-(global-set-key (kbd "C-x C-j") 'dired-jump)
-(global-set-key (kbd "C-x 4 C-j") 'dired-jump-other-window)
-;; (global-set-key (kbd "C-x d") 'dired-jump)
-;; (global-set-key (kbd "C-x 4 d") 'dired-jump-other-window)
+(global-set-key (kbd "C-x j") 'dired-jump)
+(define-key ctl-x-4-map "j" 'dired-jump-other-window)
 
-;; (add-hook 'dired-mode-hook 'dired-hide-details-mode)
 (add-hook 'dired-mode-hook 'hl-line-mode)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

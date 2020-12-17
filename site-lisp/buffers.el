@@ -88,6 +88,8 @@
 
 (with-eval-after-load 'uniquify
   (setq uniquify-buffer-name-style 'forward)
+  (setq uniquify-strip-common-suffix t)
+  (setq uniquify-after-kill-buffer-p t)
   (message "Lazy loaded uniquify :-)"))
 
 (global-set-key (kbd "C-c l") 'my/last-buffer)

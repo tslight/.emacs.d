@@ -103,8 +103,6 @@ corresponding command.
 Within CMD, %i denotes the input file(s), and %o denotes the
 output file.  %i path(s) are relative, while %o is absolute.")
 
-  (autoload 'find-ls-option "find-dired")
-
   (autoload 'dired-omit-mode "dired-x"
     "Omit files from dired listings." t)
 
@@ -112,12 +110,15 @@ output file.  %i path(s) are relative, while %o is absolute.")
     "User regex to specify what files to omit." t)
 
   (when (eq system-type 'berkeley-unix)
-    (progn
-      (setq dired-listing-switches "-alhpL")))
+    (setq dired-listing-switches "-alhpL"))
 
-  (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
+  (when (eq system-type 'gnu/linux)
+    (setq dired-listing-switches
+          "-AGFhlv --group-directories-first --time-style=long-iso"))
+
   (setq dired-omit-files "\\`[.]?#\\|\\`[.][.]?\\'\\|^\\..+$")
   (setq dired-dwim-target t
+        delete-by-moving-to-trash t
         dired-use-ls-dired nil
         dired-recursive-copies 'always
         dired-recursive-deletes 'always)
@@ -139,6 +140,19 @@ output file.  %i path(s) are relative, while %o is absolute.")
 
   (message "Lazy loaded dired package :-)"))
 
+(with-eval-after-load 'dired-aux
+  (setq dired-isearch-filenames 'dwim)
+  ;; The following variables were introduced in Emacs 27.1
+  (when (not (version< emacs-version "27.1"))
+    (setq dired-create-destination-dirs 'ask)
+    (setq dired-vc-rename-file t)))
+
+(with-eval-after-load 'find-dired
+  ;; (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
+  (setq find-ls-option
+        '("-ls" . "-AGFhlv --group-directories-first --time-style=long-iso"))
+  (setq find-name-arg "-iname"))
+
 (autoload 'dired "dired" nil t)
 
 ;; has to come outside of with-eval-after-load otherwise we have no dired-jump
@@ -148,11 +162,15 @@ output file.  %i path(s) are relative, while %o is absolute.")
 (autoload 'dired-jump-other-window "dired-x"
   "Like \\[dired-jump] (dired-jump) but in other window." t)
 
-(global-set-key (kbd "C-x C-d") 'dired)
+;; (global-set-key (kbd "C-x C-d") 'dired)
+;; (global-set-key (kbd "C-x 4 C-d") 'dired-other-window)
 (global-set-key (kbd "C-x C-j") 'dired-jump)
-(global-set-key (kbd "C-x 4 C-j") 'dired-jump)
-(global-set-key (kbd "C-x d") 'dired-jump)
-(global-set-key (kbd "C-x 4 d") 'dired-jump)
+(global-set-key (kbd "C-x 4 C-j") 'dired-jump-other-window)
+;; (global-set-key (kbd "C-x d") 'dired-jump)
+;; (global-set-key (kbd "C-x 4 d") 'dired-jump-other-window)
+
+;; (add-hook 'dired-mode-hook 'dired-hide-details-mode)
+(add-hook 'dired-mode-hook 'hl-line-mode)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

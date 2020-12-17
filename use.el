@@ -37,7 +37,8 @@
 
 ;;;; Async
 (use-package async :defer
-  :config (async-bytecomp-package-mode 1))
+  :config (async-bytecomp-package-mode 1)
+  :hook (dired-mode-hook . dired-async-mode))
 
 ;;;; Blacken
 (use-package blacken :defer

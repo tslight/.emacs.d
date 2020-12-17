@@ -9,6 +9,7 @@
 
 ;;; Code:
 (with-eval-after-load 'sh-script
+  (add-hook 'shell-script-mode-hook 'hl-line-mode)
   (add-hook 'sh-script-hook 'display-line-numbers-mode)
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
   (add-to-list 'auto-mode-alist '("\\.sh\\'" . shell-script-mode))

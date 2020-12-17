@@ -41,6 +41,9 @@
 (autoload 'calc "calc" nil t)
 (global-set-key (kbd "C-c M-c") 'calc)
 
+(autoload 'grep "grep" nil t)
+(global-set-key (kbd "C-c g") 'grep)
+
 ;; for help modes, and simple/special modes
 (define-key special-mode-map "n" #'forward-button)
 (define-key special-mode-map "p" #'backward-button)

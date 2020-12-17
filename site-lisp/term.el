@@ -32,14 +32,33 @@ Otherwise switch to current one."
     (ansi-term (getenv "SHELL"))))
 
 ;;;###autoload
+(defun my/switch-to-ansi-term-other-window()
+  "Does what it states on the tin!"
+  (interactive)
+  (split-window-sensibly)
+  (other-window 1)
+  (my/switch-to-ansi-term))
+
+;;;###autoload
 (defun my/ansi-term ()
+  "Opens shell from $SHELL environmental variable in `ansi-term'."
   (interactive)
   (ansi-term (getenv "SHELL")))
+
+;;;###autoload
+(defun my/ansi-term-other-window ()
+  "Opens default $SHELL `ansi-term' in another window."
+  (interactive)
+  (split-window-sensibly)
+  (other-window 1)
+  (my/ansi-term))
 
 (autoload 'term "term" nil t)
 (autoload 'ansi-term "term" nil t)
 (global-set-key (kbd "C-c t") 'my/switch-to-ansi-term)
+(global-set-key (kbd "C-c 4 t") 'my/switch-to-ansi-term-other-window)
 (global-set-key (kbd "C-c C-t") 'my/ansi-term)
+(global-set-key (kbd "C-c 4 C-t") 'my/ansi-term-other-window)
 
 (add-hook 'term-exec (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix)))
 ;; Local Variables:

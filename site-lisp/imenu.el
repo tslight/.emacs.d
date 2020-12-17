@@ -9,9 +9,9 @@
 
 ;;; Code:
 (with-eval-after-load 'imenu
-  (defun try-to-add-imenu ()
-    (condition-case nil (imenu-add-to-menubar "Imenu") (error nil)))
-  (add-hook 'font-lock-mode-hook 'try-to-add-imenu)
+  ;; (defun try-to-add-imenu ()
+  ;;   (condition-case nil (imenu-add-to-menubar "Imenu") (error nil)))
+  ;; (add-hook 'font-lock-mode-hook 'try-to-add-imenu)
   (setq imenu-auto-rescan t)
   (message "Lazy loaded imenu :-)"))
 

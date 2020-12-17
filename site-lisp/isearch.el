@@ -39,6 +39,9 @@ When searching backward, kill to the beginning of the match."
     (call-interactively 'kill-region))
   (define-key isearch-mode-map (kbd "C-M-w") 'my/kill-to-isearch)
 
+  (define-key isearch-mode-map (kbd "M-/") 'isearch-complete)
+  (define-key minibuffer-local-isearch-map (kbd "M-/") 'isearch-complete-edit)
+
   (when (not (version< emacs-version "27.1"))
     (setq isearch-allow-scroll 'unlimited)
     (setq isearch-yank-on-move 't)
@@ -56,6 +59,10 @@ When searching backward, kill to the beginning of the match."
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
 (global-set-key (kbd "M-s b") 'multi-isearch-buffers-regexp)
 (global-set-key (kbd "M-s f") 'multi-isearch-files-regexp)
+(global-set-key (kbd "M-s M-o") 'multi-occur)
+
+(add-hook 'occur-mode-hook 'hl-line-mode)
+(define-key occur-mode-map "t" 'toggle-truncate-lines)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

@@ -195,6 +195,10 @@ line."
 (global-set-key (kbd "M-SPC") 'cycle-spacing)
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "M-%") 'query-replace-regexp)
+
+(global-set-key [remap capitalize-word] 'capitalize-dwim)
+(global-set-key [remap downcase-word] 'downcase-dwim)
+(global-set-key [remap upcase-word] 'upcase-dwim)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

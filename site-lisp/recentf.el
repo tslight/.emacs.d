@@ -9,7 +9,13 @@
 
 ;;; Code:
 (with-eval-after-load 'recentf
-  (setq recentf-exclude '("^/var/folders\\.*"
+  (setq recentf-exclude '(".gz"
+                          ".xz"
+                          ".zip"
+                          "/elpa/"
+                          "/ssh:"
+                          "/sudo:"
+                          "^/var/folders\\.*"
                           "COMMIT_EDITMSG\\'"
                           ".*-autoloads\\.el\\'"
                           "[/\\]\\.elpa/"))

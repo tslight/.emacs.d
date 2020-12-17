@@ -9,10 +9,14 @@
 
 ;;; Code:
 (with-eval-after-load 'imenu
-  ;; (defun try-to-add-imenu ()
-  ;;   (condition-case nil (imenu-add-to-menubar "Imenu") (error nil)))
-  ;; (add-hook 'font-lock-mode-hook 'try-to-add-imenu)
   (setq imenu-auto-rescan t)
+  (setq imenu-auto-rescan-maxout 600000)
+  (setq imenu-eager-completion-buffer t)
+  (setq imenu-level-separator "/")
+  (setq imenu-max-item-length 100)
+  (setq imenu-space-replacement " ")
+  (setq imenu-use-markers t)
+  (setq imenu-use-popup-menu nil)
   (message "Lazy loaded imenu :-)"))
 
 (autoload 'imenu "imenu" nil t)

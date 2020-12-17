@@ -8,10 +8,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(setq abbrev-file-name (concat user-emacs-directory "abbrevs"))
-(setq save-abbrevs 'silently)
-(add-hook 'text-mode-hook 'abbrev-mode)
-
 (setq auto-window-vscroll nil)
 
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))

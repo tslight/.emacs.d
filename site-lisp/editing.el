@@ -193,7 +193,6 @@ line."
 (global-set-key (kbd "C-x M-t") 'transpose-regions)
 (global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
 (global-set-key (kbd "M-SPC") 'cycle-spacing)
-(global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "M-%") 'query-replace-regexp)
 
 (global-set-key [remap capitalize-word] 'capitalize-dwim)

@@ -35,7 +35,14 @@
            (list4 (cl-remove-duplicates list3 :test #'string-equal)))
       (find-file (completing-read "Recent Files: " list4 nil t))))
 
+  (defun my/completing-recentf-other-window ()
+    (interactive)
+    (split-window-sensibly)
+    (other-window 1)
+    (my/completing-recentf))
+
   (global-set-key (kbd "C-c r") 'my/completing-recentf)
+  (global-set-key (kbd "C-c 4 r") 'my/completing-recentf-other-window)
 
   (message "Lazy loaded recentf :-)"))
 

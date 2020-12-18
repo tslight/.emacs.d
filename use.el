@@ -149,10 +149,35 @@
 
 (use-package json-navigator :defer)
 
+(use-package lazygitlab :ensure nil
+  :if (file-directory-p "~/src/gitlab/tspub/lisp/lazygit")
+  :load-path "~/src/gitlab/tspub/lisp/lazygit"
+  :bind
+  ("C-c g l a" . (lambda () (interactive) (lazygitlab-clone-or-pull-all "~/src/gitlab")))
+  ("C-c g l c" . lazygitlab-clone-or-pull-project)
+  ("C-c g l g" . lazygitlab-clone-or-pull-group)
+  ("C-c g l r" . lazygitlab-retriever)
+  :config
+  (defalias 'gl/api 'lazygitlab-retriever)
+  (defalias 'gl/all 'lazygitlab-clone-or-pull-all)
+  (defalias 'gl/grp 'lazygitlab-clone-or-pull-group)
+  (defalias 'gl/repo 'lazygitlab-clone-or-pull-project))
+
+(use-package lazygithub :ensure nil
+  :if (file-directory-p "~/src/gitlab/tspub/lisp/lazygit")
+  :load-path "~/src/gitlab/tspub/lisp/lazygit"
+  :bind
+  ("C-c g h a" . lazygithub-clone-or-pull-all)
+  ("C-c g h c" . lazygithub-clone-or-pull-repo)
+  ("C-c g h r" . lazygithub-retriever)
+  :config
+  (defalias 'gh/api 'lazygithub-retriever)
+  (defalias 'gh/all 'lazygithub-clone-or-pull-all)
+  (defalias 'gh/repo 'lazygithub-clone-or-pull-repo))
+
 (use-package magit
   :bind*
   ("C-x g" . magit-status)
-  ("C-c g" . magit-dispatch)
   :config
   (setq magit-clone-set-remote.pushDefault t)
   (setq magit-completing-read-function 'magit-builtin-completing-read))

@@ -9,6 +9,20 @@
 
 ;;; Code:
 (with-eval-after-load 'eshell
+
+  ;;;###autoload
+  (defun my/eshell-complete-recent-dir (&optional arg)
+    "Switch to a recent `eshell' directory using completion.
+With \\[universal-argument] also open the directory in a `dired'
+buffer."
+    (interactive "P")
+    (let* ((dirs (ring-elements eshell-last-dir-ring))
+           (dir (completing-read "Switch to recent dir: " dirs nil t)))
+      (insert dir)
+      (eshell-send-input)
+      (when arg
+        (dired dir))))
+
   ;;;###autoload
   (defun my/eshell-complete-history ()
     "Insert element from `eshell' history using completion."
@@ -58,7 +72,8 @@
   (add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply)
 
   (defun my/eshell-keys()
-    (define-key eshell-mode-map (kbd "M-r") 'my/eshell-complete-history))
+    (define-key eshell-mode-map (kbd "M-r") 'my/eshell-complete-history)
+    (define-key eshell-mode-map (kbd "C-=") 'my/eshell-complete-recent-dir))
 
   (add-hook 'eshell-mode-hook 'my/eshell-keys)
 

@@ -153,7 +153,7 @@
   :if (file-directory-p "~/src/gitlab/tspub/lisp/lazygit")
   :load-path "~/src/gitlab/tspub/lisp/lazygit"
   :bind
-  ("C-c g l a" . (lambda () (interactive) (lazygitlab-clone-or-pull-all "~/src/gitlab")))
+  ("C-c g l a" . lazygitlab-clone-or-pull-all)
   ("C-c g l c" . lazygitlab-clone-or-pull-project)
   ("C-c g l g" . lazygitlab-clone-or-pull-group)
   ("C-c g l r" . lazygitlab-retriever)

@@ -109,6 +109,8 @@
 (autoload 'ibuffer "ibuffer" nil t)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x M-k") 'kill-buffer)
+
+(add-hook 'before-save-hook 'my/indent-buffer)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

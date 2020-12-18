@@ -26,8 +26,8 @@
 (set-register ?b (cons 'file "~/src/oe-developers/be/"))
 (set-register ?d (cons 'file "~/src/oe-developers/be/devops"))
 
-(global-set-key (kbd "C-x C-j") 'jump-to-register)
-(define-key ctl-x-4-map (kbd "C-j") 'my/jump-to-register-other-window)
+(global-set-key (kbd "C-x j") 'jump-to-register)
+(define-key ctl-x-4-map "j" 'my/jump-to-register-other-window)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

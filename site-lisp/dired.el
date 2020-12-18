@@ -123,9 +123,6 @@ output file.  %i path(s) are relative, while %o is absolute.")
         dired-recursive-copies 'always
         dired-recursive-deletes 'always)
 
-
-  (global-set-key (kbd "C-x M-d") 'list-directory)
-
   (define-key dired-mode-map "b" (lambda () (interactive (find-alternate-file ".."))))
   (define-key dired-mode-map "f" 'dired-find-alternate-file)
   (define-key dired-mode-map "c" 'dired-do-compress-to)
@@ -161,17 +158,14 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (setq wdired-create-parent-directories t)
   (message "Lazy loaded wdired :-)"))
 
-(autoload 'dired "dired" nil t)
-
 ;; has to come outside of with-eval-after-load otherwise we have no dired-jump
-(autoload 'dired-jump "dired-x"
+(autoload 'dired-jump "dired-x" ;; bound to C-x C-j by default
   "Jump to Dired buffer corresponding to current buffer." t)
 
-(autoload 'dired-jump-other-window "dired-x"
+(autoload 'dired-jump-other-window "dired-x" ;; bound to C-x 4 C-j by default.
   "Like \\[dired-jump] (dired-jump) but in other window." t)
 
-(global-set-key (kbd "C-x j") 'dired-jump)
-(define-key ctl-x-4-map "j" 'dired-jump-other-window)
+(autoload 'dired "dired" nil t)
 
 (add-hook 'dired-mode-hook 'hl-line-mode)
 ;; Local Variables:

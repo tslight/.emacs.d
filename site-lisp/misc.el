@@ -70,6 +70,15 @@ into the buffer, before the point."
      (url-insert-file-contents "https://api.chucknorris.io/jokes/random")
      (cdr (assoc 'value (json-read))))))
 
+;;;###autoload
+(defmacro my/measure-time (&rest body)
+  "Measure and return the running time of BODY."
+  (declare (indent defun))
+  (let ((start (make-symbol "start")))
+    `(let ((,start (float-time)))
+       ,@body
+       (- (float-time) ,start))))
+
 (global-set-key (kbd "C-c M-g") 'my/google)
 (global-set-key (kbd "C-c M-t l") 'my/cycle-line-numbers)
 (global-set-key (kbd "C-c Q c") 'my/chuck-norris-joke)

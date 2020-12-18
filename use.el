@@ -21,36 +21,29 @@
 
 (byte-recompile-file (concat user-emacs-directory "use.el") 'nil 0 'nil)
 
-;;;; Anaconda
 (use-package anaconda-mode :defer
   :hook
   (python-mode . anaconda-mode)
   (python-mode . anaconda-eldoc-mode))
 
-;;;; Ansible
 (use-package ansible :defer
   :hook (yaml-mode . ansible))
 
-;;;; Ansible Doc
 (use-package ansible-doc :defer
   :hook (yaml-mode . ansible-doc-mode))
 
-;;;; Async
 (use-package async :defer
   :config (async-bytecomp-package-mode 1)
   :hook (dired-mode-hook . dired-async-mode))
 
-;;;; Blacken
 (use-package blacken :defer
   :hook (python-mode . blacken-mode))
 
-;;;; Change Inner
 (use-package change-inner
   :bind
   ("M-i" . change-inner)
   ("M-o" . change-outer))
 
-;;;; Default Text Scale
 (use-package default-text-scale
   :if window-system
   :bind*
@@ -58,7 +51,6 @@
   ("C-M--" . default-text-scale-decrease)
   ("C-M-0" . default-text-scale-reset))
 
-;;;; Diminish
 (use-package diminish :defer 2
   :diminish abbrev-mode
   :diminish auto-fill-function ;; wtf?!
@@ -73,14 +65,11 @@
   (org-indent-mode . (lambda () (diminish 'org-indent-mode)))
   (hs-minor-mode . (lambda () (diminish 'hs-minor-mode))))
 
-;;;; Docker
 (use-package docker
   :bind ("C-c C-d" . docker))
 
-;;;; Dockerfile
 (use-package dockerfile-mode :defer)
 
-;;;; Exec $PATH from Shell
 (use-package exec-path-from-shell :defer 10
   :if (not (eq system-type 'windows-nt))
   :commands exec-path-from-shell-initialize
@@ -90,16 +79,13 @@
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "PYTHONPATH"))
 
-;;;; Flycheck
 (use-package flycheck :defer
   :diminish flycheck-mode
   :hook (prog-mode . flycheck-mode)
   :config (flycheck-add-mode 'javascript-eslint 'web-mode))
 
-;;;; Git Timemachine
 (use-package git-timemachine :defer)
 
-;;;; Gitlab CI
 (use-package gitlab-ci-mode :defer
   :mode
   "\\.gitlab-ci.yaml\\'"
@@ -107,7 +93,6 @@
   :hook
   (yaml-mode . hs-minor-mode))
 
-;;;; Go Lang
 (use-package go-mode :defer
   :config
   (defun my/go-indent ()
@@ -115,12 +100,10 @@
     (setq tab-width 2))
   :hook (go-mode . my/go-indent))
 
-;;;; Hungry Delete
 (use-package hungry-delete :defer 6
   :diminish hungry-delete-mode
   :config (global-hungry-delete-mode))
 
-;;;; Ibuffer VC
 (use-package ibuffer-vc :defer
   :config
   (defun my/ibuffer-vc-setup ()
@@ -141,7 +124,6 @@
   :hook
   (ibuffer . my/ibuffer-vc-setup))
 
-;;;; JavaScript
 (use-package js2-mode :defer
   :hook
   (js-mode . js2-minor-mode)
@@ -155,7 +137,6 @@
               ("C-k" . js2r-kill))
   :config (js2r-add-keybindings-with-prefix "C-c C-j"))
 
-;;;; JSON
 (use-package json-mode :defer
   :config
   (defun my/json-mode-setup ()
@@ -168,7 +149,6 @@
 
 (use-package json-navigator :defer)
 
-;;;; Magit
 (use-package magit
   :bind*
   ("C-x g" . magit-status)
@@ -190,7 +170,6 @@
           ("Commit" 8 magit-repolist-column-flag t)
           ("Path" 99 magit-repolist-column-path))))
 
-;;;; Markdown
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
@@ -198,7 +177,6 @@
          ("\\.markdown\\'" . gfm-mode))
   :init (setq markdown-command "multimarkdown"))
 
-;;;; Node
 (use-package nodejs-repl :defer
   :bind
   (:map js2-mode-map
@@ -209,30 +187,24 @@
         ("C-c C-f" . nodejs-repl-load-file)
         ("C-c C-z" . nodejs-repl-switch-to-repl)))
 
-;;;; Org
 (use-package org-bullets :defer
   :if window-system :hook (org-mode . org-bullets-mode))
 
-;; source code syntax highlighting when html exporting
 (use-package htmlize :defer)
 
 (use-package toc-org :defer
   :hook (org-mode . toc-org-enable))
 
-;;;; PDF Tools
 (use-package pdf-tools :defer)
 
-;;;; Powershell
 (use-package powershell
   :mode (("\\.ps1\\'" . powershell-mode)))
 
-;;;; Powerline
 (use-package powerline :defer 4
   :config
   (if window-system ; use-package if doesn't work for emacsclient
       (powerline-default-theme)))
 
-;;;; Projectile
 (use-package projectile :diminish projectile-mode
   :bind-keymap
   ("C-c p" . projectile-command-map)
@@ -245,16 +217,12 @@
     ;; Optionally write to persistent `projectile-known-projects-file'
     (projectile-save-known-projects)))
 
-;;;; Restclient
 (use-package restclient :defer)
 
-;;;; systemd
 (use-package systemd :defer)
 
-;;;; Terraform
 (use-package terraform-mode :defer)
 
-;;;; Web
 (use-package web-mode
   :mode
   "\\.phtml\\'"
@@ -288,27 +256,24 @@
   (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
   (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil)))
 
-;;;; Wgrep
 (use-package wgrep :defer :commands wgrep
   :bind (:map grep-mode-map
               ("e" . wgrep-change-to-wgrep-mode)
               ("C-x C-q" . wgrep-change-to-wgrep-mode)))
 
-;;;; Which Key?
 (use-package which-key :defer 5
   :diminish which-key-mode
   :config
   (which-key-mode))
 
-;;;; YAML
 (use-package yaml-mode :defer)
 
-;;;; Yasnippet
 (use-package yasnippet :defer
   :diminish yas-minor-mode
   :hook (prog-mode . yas-minor-mode))
 
 (use-package yasnippet-snippets :defer)
+
 (use-package yasnippet-classic-snippets :defer)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

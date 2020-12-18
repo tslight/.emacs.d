@@ -8,8 +8,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(require 'windmove)
-
 ;;;###autoload
 (defun my/three-way-split ()
   "Split the screen three ways."
@@ -152,6 +150,20 @@ window to right."
             (set-window-buffer-start-and-point w1 b2 s2 p2)
             (set-window-buffer-start-and-point w2 b1 s1 p1)))))))
 
+(autoload 'windmove-left "windmove" nil t)
+(global-set-key (kbd "C-c w b") 'windmove-left)
+(autoload 'windmove-right "windmove" nil t)
+(global-set-key (kbd "C-c w f") 'windmove-right)
+(autoload 'windmove-up "windmove" nil t)
+(global-set-key (kbd "C-c w p") 'windmove-up)
+(autoload 'windmove-down "windmove" nil t)
+(global-set-key (kbd "C-c w n") 'windmove-down)
+(with-eval-after-load 'windmove
+  (setq windmove-wrap-around t)
+  (message "Lazy loaded windmove :-)"))
+
+(setq auto-window-vscroll nil)
+
 (global-set-key (kbd "C-x O") 'my/prev-window)
 (global-set-key (kbd "C-c 3") 'my/vsplit-last-buffer)
 (global-set-key (kbd "C-c 2") 'my/hsplit-last-buffer)
@@ -161,8 +173,8 @@ window to right."
 (global-set-key (kbd "M-n") 'my/scroll-line-down)
 
 (global-set-key (kbd "C-c v") 'scroll-other-window-down)
-(global-set-key (kbd "C-c C-/") 'winner-undo)
-(global-set-key (kbd "C-c C-?") 'winner-redo)
+(global-set-key (kbd "C-c w u") 'winner-undo)
+(global-set-key (kbd "C-c w r") 'winner-redo)
 
 (define-key ctl-x-4-map "k" 'my/kill-buffer-other-window)
 (define-key ctl-x-4-map "o" 'my/open-buffer-other-window)

@@ -8,7 +8,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-(setq auto-window-vscroll nil)
 
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 (setq auto-save-timeout 5)

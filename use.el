@@ -173,8 +173,13 @@
   :bind*
   ("C-x g" . magit-status)
   ("C-x C-g" . magit-dispatch)
-  ("C-c C-g" . magit-list-repositories)
-  :init
+  :config
+  (setq magit-clone-set-remote.pushDefault t)
+  (setq magit-completing-read-function 'magit-builtin-completing-read))
+
+(use-package magit-repos :ensure nil
+  :bind* ("C-c g" . magit-list-repositories)
+  :config
   (setq magit-repository-directories `(("~/" . 0)
                                        ("~/src/gitlab" . 10)))
   (setq magit-repolist-columns
@@ -182,11 +187,8 @@
           ;; ("Version" 25 magit-repolist-column-version)
           ("Pull" 5 magit-repolist-column-unpulled-from-upstream)
           ("Push" 5 magit-repolist-column-unpushed-to-upstream)
-          ("Commit" 8 magit-repolist-column-dirty t)
-          ("Path" 99 magit-repolist-column-path)))
-  :config
-  (setq magit-clone-set-remote.pushDefault t)
-  (setq magit-completing-read-function 'magit-builtin-completing-read))
+          ("Commit" 8 magit-repolist-column-flag t)
+          ("Path" 99 magit-repolist-column-path))))
 
 ;;;; Markdown
 (use-package markdown-mode

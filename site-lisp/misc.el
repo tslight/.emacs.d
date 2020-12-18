@@ -79,6 +79,13 @@ into the buffer, before the point."
        ,@body
        (- (float-time) ,start))))
 
+;;;###autoload
+(defmacro my/measure-time-2 (&rest body)
+  "Measure the time it takes to evaluate BODY."
+  `(let ((time (current-time)))
+     ,@body
+     (message "%.06f" (float-time (time-since time)))))
+
 (global-set-key (kbd "C-c M-g") 'my/google)
 (global-set-key (kbd "C-c M-t l") 'my/cycle-line-numbers)
 (global-set-key (kbd "C-c Q c") 'my/chuck-norris-joke)

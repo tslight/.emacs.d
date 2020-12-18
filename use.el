@@ -175,7 +175,8 @@
   ("C-x C-g" . magit-dispatch)
   ("C-c C-g" . magit-list-repositories)
   :init
-  (setq magit-repository-directories `(("~/src/gitlab" . 10)))
+  (setq magit-repository-directories `(("~/" . 0)
+                                       ("~/src/gitlab" . 10)))
   (setq magit-repolist-columns
         '(("Name" 25 magit-repolist-column-ident)
           ;; ("Version" 25 magit-repolist-column-version)

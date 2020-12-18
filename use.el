@@ -152,13 +152,13 @@
 (use-package magit
   :bind*
   ("C-x g" . magit-status)
-  ("C-x C-g" . magit-dispatch)
+  ("C-c g" . magit-dispatch)
   :config
   (setq magit-clone-set-remote.pushDefault t)
   (setq magit-completing-read-function 'magit-builtin-completing-read))
 
 (use-package magit-repos :ensure nil
-  :bind* ("C-c g" . magit-list-repositories)
+  :bind* ("C-x C-g" . magit-list-repositories)
   :config
   (setq magit-repository-directories `(("~/" . 0)
                                        ("~/src/gitlab" . 10)))

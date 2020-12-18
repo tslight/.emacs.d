@@ -17,7 +17,7 @@
 (setq package-enable-at-startup t)
 ;; Allow loading from the package cache.
 (setq package-quickstart t)
-;; Don't write to my init file!
+;; Don't write (package-initialize) to my init file!
 (setq package--init-file-ensured t)
 
 (setq package-archives

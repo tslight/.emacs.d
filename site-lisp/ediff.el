@@ -9,9 +9,13 @@
 
 ;;; Code:
 (with-eval-after-load 'ediff
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-  (setq ediff-split-window-function 'split-window-horizontally)
   (setq ediff-diff-options "-w")
+  (setq ediff-keep-variants nil)
+  (setq ediff-make-buffers-readonly-at-startup nil)
+  (setq ediff-merge-revisions-with-ancestor t)
+  (setq ediff-show-clashes-only t)
+  (setq ediff-split-window-function 'split-window-horizontally)
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
   (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
   ;; https://emacs.stackexchange.com/a/24602

@@ -179,6 +179,12 @@
   :bind*
   ("C-x g" . magit-status)
   :config
+  (when (eq system-type 'windows-nt)
+    (if (file-readable-p "C:/Program Files/Git/bin/git.exe")
+        (setq magit-git-executable "C:/Program Files/Git/bin/git.exe"))
+    (when (file-directory-p "C:/Program Files/Git/bin")
+      (setq exec-path (add-to-list 'exec-path "C:/Program Files/Git/bin"))
+      (setenv "PATH" (concat "C:\\Program Files\\Git\\bin;" (getenv "PATH")))))
   (setq magit-clone-set-remote.pushDefault t)
   (setq magit-completing-read-function 'magit-builtin-completing-read))
 

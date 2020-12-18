@@ -133,7 +133,7 @@
   (add-hook 'org-mode-hook 'hl-line-mode)
   (message "Lazy loaded org :-)"))
 
-(autoload 'org-mode "org-mode" nil t)
+(autoload 'org-mode "org" nil t)
 (autoload 'org-agenda "org" nil t)
 (global-set-key (kbd "C-c C-o a") 'org-agenda)
 (autoload 'org-capture "org" nil t)

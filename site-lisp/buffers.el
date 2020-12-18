@@ -92,10 +92,8 @@
   (setq uniquify-after-kill-buffer-p t)
   (message "Lazy loaded uniquify :-)"))
 
-(global-set-key (kbd "C-c l") 'my/last-buffer)
-(global-set-key (kbd "C-c bb") 'my/last-buffer)
-(global-set-key (kbd "C-c bt") 'my/toggle-buffer)
-(global-set-key (kbd "C-c bi") 'my/indent-buffer)
+(global-set-key (kbd "C-c b") 'my/last-buffer)
+(global-set-key (kbd "C-c C-b") 'my/toggle-buffer)
 (global-set-key (kbd "C-c z") 'my/toggle-maximize-buffer)
 (global-set-key (kbd "C-c M-n") 'my/nuke-buffers)
 (global-set-key (kbd "C-c s") 'my/save-buffers-silently)
@@ -104,7 +102,7 @@
 (global-set-key (kbd "C-c M-t m") 'my/toggle-messages)
 (global-set-key (kbd "C-c M-t s") 'my/toggle-scratch)
 
-(global-set-key (kbd "C-c be") 'eval-buffer)
+(global-set-key (kbd "C-x M-e") 'eval-buffer)
 (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
 (autoload 'ibuffer "ibuffer" nil t)
 (global-set-key (kbd "C-x C-b") 'ibuffer)

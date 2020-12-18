@@ -10,6 +10,14 @@
 ;;; Code:
 (with-eval-after-load 'eshell
   ;;;###autoload
+  (defun my/eshell-complete-history ()
+    "Insert element from `eshell' history using completion."
+    (interactive)
+    (let ((hist (ring-elements eshell-history-ring)))
+      (insert
+       (completing-read "Input history: " hist nil t))))
+
+  ;;;###autoload
   (defun my/eshell-prompt ()
     "Custom eshell prompt."
     (concat
@@ -47,8 +55,13 @@
    eshell-where-to-jump 'begin)
 
   (add-to-list 'eshell-modules-list 'eshell-tramp) ;; no sudo password with ~/.authinfo
-
   (add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply)
+
+  (defun my/eshell-keys()
+    (define-key eshell-mode-map (kbd "M-r") 'my/eshell-complete-history))
+
+  (add-hook 'eshell-mode-hook 'my/eshell-keys)
+
   (message "Lazy loaded eshell :-)"))
 
 ;;;###autoload
@@ -58,8 +71,6 @@
   (split-window-sensibly)
   (other-window 1)
   (eshell))
-
-(add-hook 'eshell-mode 'eshell-smart-initialize)
 
 (autoload 'eshell "eshell" nil t)
 (global-set-key (kbd "C-c e") 'eshell)

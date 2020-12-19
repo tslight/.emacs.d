@@ -74,11 +74,11 @@
     (dired-next-line -1))
 
   ;;;###autoload
-  (defun my/dired-view-current ()
+  (defun my/dired-view-file-other-window ()
     "View current file in read-only temporary buffer and other window."
     (interactive)
     (if (not (window-parent))
-        (split-window-horizontally))
+        (split-window-sensibly))
     (let ((file (dired-get-file-for-visit))
           (dbuffer (current-buffer)))
       (other-window 1)
@@ -90,6 +90,21 @@
             (switch-to-buffer filebuffer)
           (view-file file))
         (other-window -1))))
+
+  (defun my/dired-view-file-other-window-temporarily ()
+    (interactive)
+    (let ((buffer-count (length (buffer-list))))
+      (dired-find-file-other-window)
+      (other-window 1)
+      (isearch-unread (list (read-event)))
+      (if (= (length (buffer-list)) buffer-count)
+          (progn
+            (other-window 1)
+            (delete-window))
+        (progn
+          (other-window 1)
+          (kill-buffer-and-window)))
+      (other-window 1)))
 
   (defvar dired-compress-files-alist
     '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
@@ -127,9 +142,9 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (define-key dired-mode-map "f" 'dired-find-alternate-file)
   (define-key dired-mode-map "c" 'dired-do-compress-to)
   (define-key dired-mode-map ")" 'dired-omit-mode)
-  (define-key dired-mode-map (kbd "C-o") 'dired-find-file-other-window)
 
-  (define-key dired-mode-map "o" 'my/dired-view-current)
+  (define-key dired-mode-map (kbd "C-o") 'my/dired-view-file-other-window-temporarily)
+  (define-key dired-mode-map (kbd "M-o") 'my/dired-view-file-other-window)
   (define-key dired-mode-map "s" 'my/dired-sort)
   (define-key dired-mode-map "?" 'my/dired-get-size)
   (define-key dired-mode-map (kbd "C-RET") 'my/dired-open-marked-files)

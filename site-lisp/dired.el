@@ -139,6 +139,8 @@ Delete the visiting buffer as soon as another key is pressed."
       (define-key dired-mode-map "n" 'dired-next-line)
       (define-key dired-mode-map "p" 'dired-previous-line)))
 
+  (defalias 'ranger-mode 'my/dired-peep-mode)
+
   (defvar dired-compress-files-alist
     '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
       ("\\.zip\\'" . "zip %o -r --filesync %i"))
@@ -176,6 +178,7 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (define-key dired-mode-map "c" 'dired-do-compress-to)
   (define-key dired-mode-map ")" 'dired-omit-mode)
 
+  (define-key dired-mode-map "r" 'ranger-mode)
   (define-key dired-mode-map (kbd "C-o") 'my/dired-view-file-other-window-temporarily)
   (define-key dired-mode-map (kbd "M-o") 'my/dired-view-file-other-window)
   (define-key dired-mode-map "s" 'my/dired-sort)

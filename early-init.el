@@ -13,8 +13,6 @@
 (byte-recompile-file (concat user-emacs-directory "early-init.el") 'nil 0 'nil)
 (byte-recompile-file (concat user-emacs-directory "init.el") 'nil 0 'nil)
 
-(add-to-list 'load-path (concat user-emacs-directory "lisp"))
-
 ;; This must be true otherwise use-package won't load!
 (setq package-enable-at-startup t)
 ;; Allow loading from the package cache.

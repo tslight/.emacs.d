@@ -12,8 +12,6 @@
       (gc-cons-threshold most-positive-fixnum)
       (gc-cons-percentage 0.8))
 
-  (add-to-list 'load-path (concat user-emacs-directory "lisp"))
-
   (mapc (lambda (file) (load file)) ;; load all files in ~/.emacs.d/site-lisp
         (directory-files (concat user-emacs-directory "site-lisp") t "^.*\.elc$"))
 

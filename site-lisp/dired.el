@@ -10,7 +10,7 @@
 ;;; Code:
 ;; This is only needed once, near the top of the file
 (with-eval-after-load 'dired
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-get-size ()
     "Get cumlative size of marked or current item."
     (interactive)
@@ -22,7 +22,7 @@
                    (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
                    (match-string 1))))))
 
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-open-marked-files ()
     "Open marked files."
     (interactive)
@@ -32,7 +32,7 @@
              (dired-get-file-for-visit)
              current-prefix-arg))))
 
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-sort ()
     "Sort dired dir listing in different ways.  Prompt for a choice."
     (interactive)
@@ -59,21 +59,21 @@
                 (t (error "Logic error 09535" )))))
       (dired-sort-other -arg )))
 
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-back-to-top ()
     "Go to first file in directory."
     (interactive)
     (goto-char (point-min))
     (dired-next-line 2))
 
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-jump-to-bottom ()
     "Go to last file in directory."
     (interactive)
     (goto-char (point-max))
     (dired-next-line -1))
 
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-view-file-other-window ()
     "View current file in read-only temporary buffer and other window."
     (interactive)
@@ -91,7 +91,7 @@
           (view-file file))
         (other-window -1))))
 
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-view-file-other-window-temporarily ()
     "View current file in read-only temporary buffer and other window.
 Delete the visiting buffer as soon as another key is pressed."
@@ -102,6 +102,42 @@ Delete the visiting buffer as soon as another key is pressed."
     (other-window 1)
     (kill-buffer)
     (other-window 1))
+
+  (defgroup dired-peep nil
+    "See the file at point when browsing in a Dired buffer."
+    :group 'dired)
+
+  (setq dired-peep-next-current-buffer nil)
+
+;;;###autoload
+  (defun dired-peep-next ()
+    (interactive)
+    (next-line 1)
+    (dired-find-file-other-window)
+    (if dired-peep-next-current-buffer (kill-buffer dired-peep-next-current-buffer))
+    (setq dired-peep-next-current-buffer (current-buffer))
+    (other-window 1))
+
+;;;###autoload
+  (defun dired-peep-previous ()
+    (interactive)
+    (previous-line 1)
+    (dired-find-file-other-window)
+    (if dired-peep-next-current-buffer (kill-buffer dired-peep-next-current-buffer))
+    (setq dired-peep-next-current-buffer (current-buffer))
+    (other-window 1))
+
+;;;###autoload
+  (define-minor-mode dired-peep-mode
+    "Toggle preview of files when browsing in a Dired buffer."
+    :global t
+    :group 'dired-peep
+    (if dired-peep-mode
+        (progn
+          (define-key dired-mode-map "n" 'dired-peep-next)
+          (define-key dired-mode-map "p" 'dired-peep-previous))
+      (define-key dired-mode-map "n" 'dired-next-line)
+      (define-key dired-mode-map "p" 'dired-previous-line)))
 
   (defvar dired-compress-files-alist
     '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")

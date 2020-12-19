@@ -19,6 +19,25 @@
   (define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
 
   ;;;###autoload
+  (defun my/isearch-abort-dwim ()
+    "Delete failed `isearch' input, single char, or cancel search.
+
+This is a modified variant of `isearch-abort' that allows us to
+perform the following, based on the specifics of the case: (i)
+delete the entirety of a non-matching part, when present; (ii)
+delete a single character, when possible; (iii) exit current
+search if no character is present and go back to point where the
+search started."
+    (interactive)
+    (if (eq (length isearch-string) 0)
+        (isearch-cancel)
+      (isearch-del-char)
+      (while (or (not isearch-success) isearch-error)
+        (isearch-pop-state)))
+    (isearch-update))
+  (define-key isearch-mode-map (kbd "<backspace>") 'my/isearch-abort-dwim)
+
+  ;;;###autoload
   (defun my/copy-to-isearch ()
     "Copy up to the search match when searching forward.
 

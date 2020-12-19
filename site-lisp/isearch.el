@@ -16,7 +16,6 @@
     (when (eq isearch-forward t)
       (goto-char isearch-other-end))
     (isearch-exit))
-  (define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
 
   ;;;###autoload
   (defun my/isearch-abort-dwim ()
@@ -35,7 +34,6 @@ search started."
       (while (or (not isearch-success) isearch-error)
         (isearch-pop-state)))
     (isearch-update))
-  (define-key isearch-mode-map (kbd "<backspace>") 'my/isearch-abort-dwim)
 
   ;;;###autoload
   (defun my/copy-to-isearch ()
@@ -46,7 +44,6 @@ When searching backward, copy to the start of the search match."
     (my/isearch-exit)
     (call-interactively 'kill-ring-save)
     (exchange-point-and-mark))
-  (define-key isearch-mode-map (kbd "M-w") 'my/copy-to-isearch)
 
   ;;;###autoload
   (defun my/kill-to-isearch ()
@@ -56,10 +53,6 @@ When searching backward, kill to the beginning of the match."
     (interactive)
     (my/isearch-exit)
     (call-interactively 'kill-region))
-  (define-key isearch-mode-map (kbd "C-M-w") 'my/kill-to-isearch)
-
-  (define-key isearch-mode-map (kbd "M-/") 'isearch-complete)
-  (define-key minibuffer-local-isearch-map (kbd "M-/") 'isearch-complete-edit)
 
   (when (not (version< emacs-version "27.1"))
     (setq isearch-allow-scroll 'unlimited)
@@ -72,6 +65,14 @@ When searching backward, kill to the beginning of the match."
   (setq isearch-lax-whitespace t)
   (setq isearch-regexp-lax-whitespace nil)
   (setq isearch-lazy-highlight t)
+
+  (define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
+  (define-key isearch-mode-map (kbd "<backspace>") 'my/isearch-abort-dwim)
+  (define-key isearch-mode-map (kbd "M-w") 'my/copy-to-isearch)
+  (define-key isearch-mode-map (kbd "C-M-w") 'my/kill-to-isearch)
+  (define-key isearch-mode-map (kbd "M-/") 'isearch-complete)
+  (define-key minibuffer-local-isearch-map (kbd "M-/") 'isearch-complete-edit)
+
   (message "Lazy loaded isearch :-)"))
 
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)

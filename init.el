@@ -12,10 +12,13 @@
       (gc-cons-threshold most-positive-fixnum)
       (gc-cons-percentage 0.8))
 
-  (mapc (lambda (file) (load file)) ;; load all files in ~/.emacs.d/site-lisp
-        (directory-files (concat user-emacs-directory "site-lisp") t "^.*\.elc$"))
+  (mapc (lambda (file)
+          (load file)) ;; Load all files in ~/.emacs.d/site-lisp
+        (directory-files ;; Get all *.elc files in ~/.emacs/site-lisp
+         (expand-file-name "site-lisp" user-emacs-directory)
+         t "^.*\.elc$"))
 
-  (load (concat user-emacs-directory "use")))
+  (load (expand-file-name "use" user-emacs-directory)))
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

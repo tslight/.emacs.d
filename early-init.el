@@ -9,9 +9,15 @@
 
 ;;; Code:
 ;; Initialise installed packages
-(byte-recompile-directory (concat user-emacs-directory "site-lisp") 0) ; directory needs to be first
-(byte-recompile-file (concat user-emacs-directory "early-init.el") 'nil 0 'nil)
-(byte-recompile-file (concat user-emacs-directory "init.el") 'nil 0 'nil)
+(byte-recompile-directory
+ (expand-file-name "site-lisp" user-emacs-directory)
+ 0) ; directory needs to be first
+(byte-recompile-file
+ (expand-file-name "early-init.el" user-emacs-directory)
+ 'nil 0 'nil)
+(byte-recompile-file
+ (expand-file-name "init.el" user-emacs-directory)
+ 'nil 0 'nil)
 
 ;; This must be true otherwise use-package won't load!
 (setq package-enable-at-startup t)

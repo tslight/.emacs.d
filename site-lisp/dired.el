@@ -91,6 +91,7 @@
           (view-file file))
         (other-window -1))))
 
+  ;;;###autoload
   (defun my/dired-view-file-other-window-temporarily ()
     "View current file in read-only temporary buffer and other window.
 Delete the visiting buffer as soon as another key is pressed."

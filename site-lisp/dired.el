@@ -103,39 +103,39 @@ Delete the visiting buffer as soon as another key is pressed."
     (kill-buffer)
     (other-window 1))
 
-  (defgroup dired-peep nil
+  (defgroup my/dired-peep nil
     "See the file at point when browsing in a Dired buffer."
     :group 'dired)
 
-  (setq dired-peep-next-current-buffer nil)
+  (setq my/dired-peep-next-current-buffer nil)
 
 ;;;###autoload
-  (defun dired-peep-next ()
+  (defun my/dired-peep-next ()
     (interactive)
     (next-line 1)
     (dired-find-file-other-window)
-    (if dired-peep-next-current-buffer (kill-buffer dired-peep-next-current-buffer))
-    (setq dired-peep-next-current-buffer (current-buffer))
+    (if my/dired-peep-next-current-buffer (kill-buffer my/dired-peep-next-current-buffer))
+    (setq my/dired-peep-next-current-buffer (current-buffer))
     (other-window 1))
 
 ;;;###autoload
-  (defun dired-peep-previous ()
+  (defun my/dired-peep-previous ()
     (interactive)
     (previous-line 1)
     (dired-find-file-other-window)
-    (if dired-peep-next-current-buffer (kill-buffer dired-peep-next-current-buffer))
-    (setq dired-peep-next-current-buffer (current-buffer))
+    (if my/dired-peep-next-current-buffer (kill-buffer my/dired-peep-next-current-buffer))
+    (setq my/dired-peep-next-current-buffer (current-buffer))
     (other-window 1))
 
 ;;;###autoload
-  (define-minor-mode dired-peep-mode
+  (define-minor-mode my/dired-peep-mode
     "Toggle preview of files when browsing in a Dired buffer."
     :global t
-    :group 'dired-peep
-    (if dired-peep-mode
+    :group 'my/dired-peep
+    (if my/dired-peep-mode
         (progn
-          (define-key dired-mode-map "n" 'dired-peep-next)
-          (define-key dired-mode-map "p" 'dired-peep-previous))
+          (define-key dired-mode-map "n" 'my/dired-peep-next)
+          (define-key dired-mode-map "p" 'my/dired-peep-previous))
       (define-key dired-mode-map "n" 'dired-next-line)
       (define-key dired-mode-map "p" 'dired-previous-line)))
 

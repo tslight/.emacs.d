@@ -92,14 +92,15 @@
         (other-window -1))))
 
   (defun my/dired-view-file-other-window-temporarily ()
+    "View current file in read-only temporary buffer and other window.
+Delete the visiting buffer as soon as another key is pressed."
     (interactive)
-    (let ((buffer-count (length (buffer-list))))
-      (dired-find-file-other-window)
-      (other-window 1)
-      (isearch-unread (read-event))
-      (other-window 1)
-      (kill-buffer)
-      (other-window 1)))
+    (dired-find-file-other-window)
+    (other-window 1)
+    (isearch-unread (read-event))
+    (other-window 1)
+    (kill-buffer)
+    (other-window 1))
 
   (defvar dired-compress-files-alist
     '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")

@@ -173,7 +173,11 @@ output file.  %i path(s) are relative, while %o is absolute.")
         dired-recursive-copies 'always
         dired-recursive-deletes 'always)
 
-  (define-key dired-mode-map "b" (lambda () (interactive (find-alternate-file ".."))))
+  (defun my/dired-up-directory ()
+    (interactive)
+    (find-alternate-file ".."))
+
+  (define-key dired-mode-map "b" 'my/dired-up-directory)
   (define-key dired-mode-map "f" 'dired-find-alternate-file)
   (define-key dired-mode-map "c" 'dired-do-compress-to)
   (define-key dired-mode-map ")" 'dired-omit-mode)

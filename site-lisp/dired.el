@@ -96,14 +96,9 @@
     (let ((buffer-count (length (buffer-list))))
       (dired-find-file-other-window)
       (other-window 1)
-      (isearch-unread (list (read-event)))
-      (if (= (length (buffer-list)) buffer-count)
-          (progn
-            (other-window 1)
-            (delete-window))
-        (progn
-          (other-window 1)
-          (kill-buffer-and-window)))
+      (isearch-unread (read-event))
+      (other-window 1)
+      (kill-buffer)
       (other-window 1)))
 
   (defvar dired-compress-files-alist

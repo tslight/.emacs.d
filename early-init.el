@@ -2,8 +2,6 @@
 
 ;;; Commentary:
 
-;; Early Emacs Configuration
-
 ;; Copyright: (C) 2020 Toby Slight
 ;; Author: Toby Slight <tslight@pm.me>
 
@@ -29,6 +27,8 @@
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
         ("gnu" . "https://elpa.gnu.org/packages/")))
+
+(provide 'early-init)
 ;; Local Variables:
 ;; indent-tabs-mode: nil
 ;; byte-compile-warnings: (not free-vars noruntime)

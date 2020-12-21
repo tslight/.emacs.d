@@ -30,8 +30,9 @@ files, so make sure you've backed up anything you don't want to lose!
 
 * Contents:TOC_5_gh:
 - [[#early-init][Early Init]]
-- [[#avoid-garbage-collection-at-startup][Avoid garbage collection at startup]]
-- [[#unset-file-name-handler-alist-temporarily][Unset file-name-handler-alist temporarily]]
+- [[#doom-startup-speed-hacks-setup][Doom startup speed hacks setup]]
+  - [[#avoid-garbage-collection-at-startup][Avoid garbage collection at startup]]
+  - [[#unset-file-name-handler-alist-temporarily][Unset file-name-handler-alist temporarily]]
 - [[#ensure-init-files-are-byte-compiled][Ensure init files are byte compiled]]
 - [[#emacs-configuration-with-no-packages][Emacs configuration with no packages]]
   - [[#aligning-symbols][Aligning symbols]]
@@ -139,8 +140,9 @@ files, so make sure you've backed up anything you don't want to lose!
       - [[#emacs-lisp-snippets][Emacs Lisp snippets]]
         - [[#standard-elisp-boilerplate][Standard elisp boilerplate]]
         - [[#package-elisp-boilerplate][Package elisp boilerplate]]
-- [[#restore-garbage-collection][Restore garbage collection]]
-- [[#restore-original-file-name-handler-alist][Restore original file-name-handler-alist]]
+- [[#doom-startup-speed-hacks-teardown][Doom startup speed hacks teardown]]
+  - [[#restore-garbage-collection][Restore garbage collection]]
+  - [[#restore-original-file-name-handler-alist][Restore original file-name-handler-alist]]
 
 * Early Init
 
@@ -181,7 +183,11 @@ set up, which could make some customization fail to work.
           ("gnu" . "https://elpa.gnu.org/packages/")))
 #+end_src
 
-* Avoid garbage collection at startup
+* Doom startup speed hacks setup
+
+Stole this stuff from [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][here]].
+
+** Avoid garbage collection at startup
 
 The GC can easily double startup time, so we suppress it at startup by turning
 up gc-cons-threshold (and perhaps gc-cons-percentage) temporarily:
@@ -191,7 +197,7 @@ up gc-cons-threshold (and perhaps gc-cons-percentage) temporarily:
         gc-cons-percentage 0.6)
 #+end_src
 
-* Unset file-name-handler-alist temporarily
+** Unset file-name-handler-alist temporarily
 
 Emacs consults this variable every time a file is read or library loaded, or
 when certain functions in the file API are used (like expand-file-name or
@@ -3122,7 +3128,11 @@ party packages from [[https://melpa.org/][MELPA]].
   ;;; `(file-name-nondirectory (buffer-file-name))` ends here
 #+end_src
 
-* Restore garbage collection
+* Doom startup speed hacks teardown
+
+Stole this stuff from [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][here]].
+
+** Restore garbage collection
 
 It is important to reset the garbage collection settings eventually. Not doing
 so will cause garbage collection freezes during long-term interactive
@@ -3136,7 +3146,7 @@ stuttering. We use 16mb as our default.
   (add-hook 'emacs-startup-hook 'my/default-gc-cons-settings)
 #+end_src
 
-* Restore original file-name-handler-alist
+** Restore original file-name-handler-alist
 
 Don’t forget to restore file-name-handler-alist, otherwise TRAMP won’t work and
 compressed/encrypted files won’t open.

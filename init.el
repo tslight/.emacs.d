@@ -2050,7 +2050,7 @@ Otherwise switch to current one."
          (side . bottom)
          (slot . 0)
          (window-parameters . ((no-other-window . t))))
-        (".*\\(e?shell\\|ansi-term\\).*"
+        (".*\\(e?shell\\|.*term\\).*"
          (display-buffer-in-side-window)
          (window-height . 0.16)
          (side . bottom)

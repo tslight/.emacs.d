@@ -14,6 +14,10 @@ Probably won't work well on Emacs < 27.1 ...
 Quickest way to get setup is to back up your current config, then visit this
 file and run ~org-babel-tangle~ with ~C-c C-v t~.
 
+That will tangle this file and overwrite whatever you have in your
+~$HOME/.emacs.d/early-init.el~ and ~$HOME/.emacs.d/init.el~, so make sure
+you've backed up anything you don't want to lose!
+
 * Early Init
 
 From ~/etc/NEWS~
@@ -1591,6 +1595,8 @@ none of them are (typically) necessary at startup, so we disable them
         (when (file-readable-p (concat file "~"))
           (delete-file (concat file "~"))
           (message (concat "Deleted " file "~ backup file")))))
+    (add-hook 'org-babel-post-tangle-hook
+              (lambda () (my/org-babel-insert-elisp-boilerplate buffer-file-name)))
 
   ;;;###autoload
     (defun my/buffer-substring-p (string)
@@ -1605,6 +1611,7 @@ none of them are (typically) necessary at startup, so we disable them
                (my/buffer-substring-p
                 "^\\#\\+PROPERTY\\: header-args\\+ \\:tangle \\~\\/\\.emacs.d\\/init\\.el"))
           (org-babel-tangle)))
+    (add-hook 'after-save-hook 'my/org-babel-auto-tangle-init-file)
 
     (setq org-image-actual-width nil)
     (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
@@ -1709,9 +1716,6 @@ none of them are (typically) necessary at startup, so we disable them
 
     (add-hook 'org-mode-hook 'auto-fill-mode)
     (add-hook 'org-mode-hook 'hl-line-mode)
-    (add-hook 'after-save-hook 'my/org-babel-auto-tangle-init-file)
-    (add-hook 'org-babel-post-tangle-hook
-              (lambda () (my/org-babel-insert-elisp-boilerplate buffer-file-name)))
     (message "Lazy loaded org :-)"))
 
   (autoload 'org-mode "org" nil t)
@@ -2694,6 +2698,65 @@ none of them are (typically) necessary at startup, so we disable them
 
   (use-package yasnippet-classic-snippets :defer)
 #+end_src
+** Custom Yasnippet snippets
+
+*** Emacs Lisp snippets
+
+**** Standard elisp boilerplate
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/snippets/emacs-lisp-mode/boilerplate
+  # -*- mode: snippet -*-
+  # name: boilerplate
+  # key: bp
+  # --
+  ;;; `(file-name-nondirectory (buffer-file-name))` --- ${1:summary} -*- lexical-binding: t; -*-
+
+  ;;; Commentary:
+
+  ;; ${2:commentary}
+
+  ;; Copyright (C) `(format-time-string "%Y")` `user-full-name`
+  ;; Author: `user-full-name` <`user-mail-address`>
+
+  ;;; Code:
+  $0
+  (provide \'`(file-name-sans-extension (file-name-nondirectory (buffer-file-name)))`)
+  ;; Local Variables:
+  ;; indent-tabs-mode: nil
+  ;; byte-compile-warnings: (not free-vars noruntime)
+  ;; End:
+  ;;; `(file-name-nondirectory (buffer-file-name))` ends here
+#+end_src
+
+**** Package elisp boilerplate
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/snippets/emacs-lisp-mode/boilerplate-package
+  # -*- mode: snippet -*-
+  # name: boilerplate-package
+  # key: bpp
+  # --
+  ;;; `(file-name-nondirectory (buffer-file-name))` --- ${1:summary} -*- lexical-binding: t; -*-
+
+  ;;; Commentary:
+
+  ;; ${2:commentary}
+
+  ;; Copyright (C) `(format-time-string "%Y")` `user-full-name`
+  ;; Author: `user-full-name` `user-mail-address`
+  ;; Version: 0.0.1
+  ;; Package-Requires: ${3:depandancies}
+  ;; URL: https://github.com/tslight/${4:repo}
+
+  ;;; Code:
+  $0
+  (provide \'`(file-name-sans-extension (file-name-nondirectory (buffer-file-name)))`)
+  ;; Local Variables:
+  ;; indent-tabs-mode: nil
+  ;; byte-compile-warnings: (not free-vars noruntime)
+  ;; End:
+  ;;; `(file-name-nondirectory (buffer-file-name))` ends here
+#+end_src
+
 * Restore garbage collection
 
 It is important to reset the garbage collection settings eventually. Not doing

@@ -10,13 +10,6 @@
 * Early Init
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el
-  (byte-recompile-file
-   (expand-file-name "early-init.el" user-emacs-directory)
-   'nil 0 'nil)
-  (byte-recompile-file
-   (expand-file-name "init.el" user-emacs-directory)
-   'nil 0 'nil)
-
   ;; This must be true otherwise use-package won't load!
   (setq package-enable-at-startup t)
   ;; Allow loading from the package cache.
@@ -54,6 +47,16 @@ none of them are (typically) necessary at startup, so we disable them
   (setq file-name-handler-alist nil)
 #+end_src
 
+* Ensure init files are byte compiled
+#+begin_src emacs-lisp
+  (autoload 'byte-recompile-file "bytecomp")
+  (byte-recompile-file
+   (expand-file-name "early-init.el" user-emacs-directory)
+   'nil 0 'nil)
+  (byte-recompile-file
+   (expand-file-name "init.el" user-emacs-directory)
+   'nil 0 'nil)
+#+end_src
 * Aligning symbols
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -1518,7 +1521,7 @@ none of them are (typically) necessary at startup, so we disable them
   (with-eval-after-load 'org
     (require 'org-tempo)
 
-    ;;;###autoload
+  ;;;###autoload
     (defun my/org-recursive-sort ()
       "Sort all entries in the current buffer, recursively."
       (interactive)
@@ -1528,18 +1531,18 @@ none of them are (typically) necessary at startup, so we disable them
              (org-sort-entries nil ?a)
            (user-error)))))
 
-    ;;;###autoload
+  ;;;###autoload
     (defun my/org-tangle-block ()
       "Only tangle the block at point."
       (interactive)
       (let ((current-prefix-arg '(4)))
         (call-interactively 'org-babel-tangle)))
 
-    ;;;###autoload
+  ;;;###autoload
     (defun my/org-babel-insert-elisp-boilerplate (file)
       "Insert elisp documentation boilerplate into FILE, using COMMENTARY.
-    Return the file name, so that this function can be piped to other
-    functions."
+          Return the file name, so that this function can be piped to other
+          functions."
       (when (equal (file-name-extension file) "el")
         (with-current-buffer (find-file-noselect file)
           (let* ((filename (file-name-sans-extension (file-name-nondirectory file)))
@@ -1565,9 +1568,18 @@ none of them are (typically) necessary at startup, so we disable them
           (delete-file (concat file "~"))
           (message (concat "Deleted " file "~ backup file")))))
 
-    ;;;###autoload
+  ;;;###autoload
+    (defun my/buffer-substring-p (string)
+      (save-excursion
+        (save-match-data
+          (goto-char (point-min))
+          (if (re-search-forward string nil t) t nil))))
+
+  ;;;###autoload
     (defun my/org-babel-auto-tangle-init-file ()
-      (if (equal buffer-file-name (expand-file-name "README.org" user-emacs-directory))
+      (if (and (equal (buffer-name) "README.org")
+               (my/buffer-substring-p
+                "^\\#\\+PROPERTY\\: header-args\\+ \\:tangle \\~\\/\\.emacs.d\\/init\\.el"))
           (org-babel-tangle)))
 
     (setq org-image-actual-width nil)

@@ -12,7 +12,7 @@ A fairly standard [[https://en.wikipedia.org/wiki/Literate_programming][literate
 Quickest way to get setup is to back up your current config:
 
 #+begin_src shell :tangle no
-  mv ~/.emacs.d{,.bak}~
+  mv ~/.emacs.d{,.bak}
 #+end_src
 
 Then clone this repo to replace it:
@@ -207,6 +207,10 @@ none of them are (typically) necessary at startup, so we disable them
 #+end_src
 
 * Ensure init files are byte compiled
+
+This block will byte compile ~early-init.el~ and ~init.el~ if an existing
+~.elc~ file is not up to date with their contents.
+
 #+begin_src emacs-lisp
   (autoload 'byte-recompile-file "bytecomp")
   (byte-recompile-file
@@ -216,8 +220,21 @@ none of them are (typically) necessary at startup, so we disable them
    (expand-file-name "init.el" user-emacs-directory)
    'nil 0 'nil)
 #+end_src
+
 * Emacs configuration with no packages
+
+I like to split up my "vanilla" Emacs configuration and custom functions from
+the customisations provided by third party libraries that have been installed
+using ~package.el~ and ~use-package~.
+
+This way it makes it very easy to run a semi-stock Emacs without ~package.el~
+or any third party libraries, but still have some saner defaults and some extra
+functionality.
+
 ** Aligning symbols
+
+Some handy functions to make aligning symbols less painful.
+
 #+begin_src emacs-lisp
   ;;;###autoload
   (defun my/align-symbol (begin end symbol)
@@ -252,7 +269,11 @@ none of them are (typically) necessary at startup, so we disable them
     (let ((indent-tabs-mode nil))
       ad-do-it))
 #+end_src
+
 ** ANSI color
+
+Make compilation buffers more colorful
+
 #+begin_src emacs-lisp
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
   ;;;###autoload
@@ -262,7 +283,12 @@ none of them are (typically) necessary at startup, so we disable them
   (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 #+end_src
+
 ** Buffers
+
+A collection of useful functions for manipulating buffers in various ways that
+I've collected (stolen!) or written over the years.
+
 *** Fill Buffer
 
 #+begin_src emacs-lisp
@@ -2579,11 +2605,19 @@ none of them are (typically) necessary at startup, so we disable them
 #+end_src
 * Third party package configuration
 
-I'm using John Wiegley's awesome [[https://github.com/jwiegley/use-package][use-package]] to pull in and configure any third
-party packages from [[https://melpa.org/][MELPA]].
+I like to split up my "vanilla" Emacs configuration and custom functions from
+the customisations provided by third party libraries that have been installed
+using ~package.el~ and ~use-package~.
 
 If you want to go for a more vanilla setup, just prefix the ~COMMENT~ keyword
 to the tile above, and re-tangle the file.
+
+This way it makes it very easy to run a semi-stock Emacs without ~package.el~
+or any third party libraries, but still have some saner defaults and some extra
+functionality.
+
+I'm using John Wiegley's awesome [[https://github.com/jwiegley/use-package][use-package]] to pull in and configure any third
+party packages from [[https://melpa.org/][MELPA]].
 
 ** Setup package.el and use-package
 

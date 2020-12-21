@@ -1376,7 +1376,6 @@ into the buffer, before the point."
 
 (with-eval-after-load 'org
   (require 'org-tempo)
-
 ;;;###autoload
   (defun my/org-recursive-sort ()
     "Sort all entries in the current buffer, recursively."
@@ -1397,8 +1396,8 @@ into the buffer, before the point."
 ;;;###autoload
   (defun my/org-babel-insert-elisp-boilerplate (file)
     "Insert elisp documentation boilerplate into FILE, using COMMENTARY.
-        Return the file name, so that this function can be piped to other
-        functions."
+Return the file name, so that this function can be piped to other
+functions."
     (when (equal (file-name-extension file) "el")
       (with-current-buffer (find-file-noselect file)
         (let* ((filename (file-name-sans-extension (file-name-nondirectory file)))
@@ -1545,16 +1544,6 @@ into the buffer, before the point."
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'hl-line-mode)
   (message "Lazy loaded org :-)"))
-
-(autoload 'org-mode "org" nil t)
-(autoload 'org-agenda "org" nil t)
-(global-set-key (kbd "C-c C-o a") 'org-agenda)
-(autoload 'org-capture "org" nil t)
-(global-set-key (kbd "C-c C-o c") 'org-capture)
-(autoload 'org-store-link "org" nil t)
-(global-set-key (kbd "C-c C-o l") 'org-store-link)
-(autoload 'org-time-stamp "org" nil t)
-(global-set-key (kbd "C-c C-o t") 'org-time-stamp)
 
 (with-eval-after-load 'recentf
   (setq recentf-exclude '(".gz"
@@ -2024,63 +2013,17 @@ Otherwise switch to current one."
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
 (setq display-buffer-alist
-      '(;; top side window
-        ("\\*Messages.*"
-         (display-buffer-in-side-window)
-         (window-height . 0.16)
-         (side . top)
-         (slot . 1)
-         (window-parameters . ((no-other-window . t))))
-        ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+      '(("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
          (display-buffer-in-side-window)
          (window-height . 0.16)
          (side . top)
          (slot . 2)
          (window-parameters . ((no-other-window . t))))
-        ;; bottom side window
-        ("\\*\\(Output\\|Register Preview\\).*"
-         (display-buffer-in-side-window)
-         (window-width . 0.16)       ; See the :hook
-         (side . bottom)
-         (slot . -1)
-         (window-parameters . ((no-other-window . t))))
-        ("\\*\\(Completions\\|Embark Live Occur\\).*"
-         (display-buffer-in-side-window)
-         (window-height . 0.16)
-         (side . bottom)
-         (slot . 0)
-         (window-parameters . ((no-other-window . t))))
         (".*\\(e?shell\\|.*term\\).*"
          (display-buffer-in-side-window)
          (window-height . 0.16)
          (side . bottom)
-         (slot . 1))
-        ;; left side window
-        ("\\*Help.*"
-         (display-buffer-in-side-window)
-         (window-width . 0.20)       ; See the :hook
-         (side . left)
-         (slot . 0)
-         (window-parameters . ((no-other-window . t))))
-        ;; right side window
-        ("\\*Faces\\*"
-         (display-buffer-in-side-window)
-         (window-width . 0.25)
-         (side . right)
-         (slot . 0)
-         (window-parameters
-          . ((no-other-window . t)
-             (mode-line-format
-              . (" "
-                 mode-line-buffer-identification)))))
-        ("\\*Custom.*"
-         (display-buffer-in-side-window)
-         (window-width . 0.25)
-         (side . right)
-         (slot . 1))
-        ;; bottom buffer (NOT side window)
-        ("\\*\\vc-\\(incoming\\|outgoing\\).*"
-         (display-buffer-at-bottom))))
+         (slot . 1))))
 
 ;;;###autoload
 (defun my/kill-buffer-other-window ()

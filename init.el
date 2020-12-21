@@ -2023,17 +2023,64 @@ Otherwise switch to current one."
 
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-;;;###autoload
-(defun my/three-way-split ()
-  "Split the screen three ways."
-  (interactive)
-  (split-window-horizontally)
-  (other-window 1 nil)
-  (switch-to-next-buffer)
-  (split-window-horizontally)
-  (other-window 1 nil)
-  (switch-to-next-buffer)
-  (balance-windows))
+(setq display-buffer-alist
+      '(;; top side window
+        ("\\*Messages.*"
+         (display-buffer-in-side-window)
+         (window-height . 0.16)
+         (side . top)
+         (slot . 1)
+         (window-parameters . ((no-other-window . t))))
+        ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+         (display-buffer-in-side-window)
+         (window-height . 0.16)
+         (side . top)
+         (slot . 2)
+         (window-parameters . ((no-other-window . t))))
+        ;; bottom side window
+        ("\\*\\(Output\\|Register Preview\\).*"
+         (display-buffer-in-side-window)
+         (window-width . 0.16)       ; See the :hook
+         (side . bottom)
+         (slot . -1)
+         (window-parameters . ((no-other-window . t))))
+        ("\\*\\(Completions\\|Embark Live Occur\\).*"
+         (display-buffer-in-side-window)
+         (window-height . 0.16)
+         (side . bottom)
+         (slot . 0)
+         (window-parameters . ((no-other-window . t))))
+        (".*\\(e?shell\\|ansi-term\\).*"
+         (display-buffer-in-side-window)
+         (window-height . 0.16)
+         (side . bottom)
+         (slot . 1))
+        ;; left side window
+        ("\\*Help.*"
+         (display-buffer-in-side-window)
+         (window-width . 0.20)       ; See the :hook
+         (side . left)
+         (slot . 0)
+         (window-parameters . ((no-other-window . t))))
+        ;; right side window
+        ("\\*Faces\\*"
+         (display-buffer-in-side-window)
+         (window-width . 0.25)
+         (side . right)
+         (slot . 0)
+         (window-parameters
+          . ((no-other-window . t)
+             (mode-line-format
+              . (" "
+                 mode-line-buffer-identification)))))
+        ("\\*Custom.*"
+         (display-buffer-in-side-window)
+         (window-width . 0.25)
+         (side . right)
+         (slot . 1))
+        ;; bottom buffer (NOT side window)
+        ("\\*\\vc-\\(incoming\\|outgoing\\).*"
+         (display-buffer-at-bottom))))
 
 ;;;###autoload
 (defun my/kill-buffer-other-window ()
@@ -2190,6 +2237,7 @@ window to right."
 (global-set-key (kbd "C-c v") 'scroll-other-window-down)
 (global-set-key (kbd "C-c w u") 'winner-undo)
 (global-set-key (kbd "C-c w r") 'winner-redo)
+(global-set-key (kbd "C-c w w") 'window-toggle-side-windows)
 
 (define-key ctl-x-4-map "k" 'my/kill-buffer-other-window)
 (define-key ctl-x-4-map "o" 'my/open-buffer-other-window)

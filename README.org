@@ -98,6 +98,23 @@ files, so make sure you've backed up anything you don't want to lose!
   - [[#theme][Theme]]
   - [[#whitespace][Whitespace]]
   - [[#windows][Windows]]
+    - [[#window-rules][Window Rules]]
+    - [[#kill-buffer-other-window][Kill buffer other window]]
+    - [[#toggle-focus-to-last-window][Toggle focus to last window]]
+    - [[#open-a-buffer-in-another-window][Open a buffer in another window]]
+    - [[#switch-to-the-previous-window][Switch to the previous window]]
+    - [[#shift-current-line-to-top-of-the-window][Shift current line to top of the window]]
+    - [[#shift-current-line-to-bottom-of-the-window][Shift current line to bottom of the window]]
+    - [[#scroll-lines-up-like-ctrl-e-in-vim][Scroll lines up like Ctrl-e in Vim]]
+    - [[#scroll-lines-down-like-ctrl-y-in-vim][Scroll lines down like Ctrl-y in Vim]]
+    - [[#open-last-buffer-in-horizontal-split][Open last buffer in horizontal split]]
+    - [[#open-last-buffer-in-vertical-split][Open last buffer in vertical split]]
+    - [[#toggle-vertical---horizontal-splits][Toggle vertical -> horizontal splits]]
+    - [[#transpose-windows][Transpose windows]]
+    - [[#windmove-keybindings][Windmove keybindings]]
+    - [[#custom-window-function-keybindings][Custom window function keybindings]]
+    - [[#builtin-window-function-keybindings][Builtin window function keybindings]]
+    - [[#ctrl-x-4-map-bindings][Ctrl-x 4 map bindings]]
 - [[#third-party-package-configuration][Third party package configuration]]
   - [[#setup-packageel-and-use-package][Setup package.el and use-package]]
   - [[#ansible][Ansible]]
@@ -2428,19 +2445,72 @@ I've collected (stolen!) or written over the years.
   (add-hook 'before-save-hook 'whitespace-cleanup)
 #+end_src
 ** Windows
-#+begin_src emacs-lisp
-  ;;;###autoload
-  (defun my/three-way-split ()
-    "Split the screen three ways."
-    (interactive)
-    (split-window-horizontally)
-    (other-window 1 nil)
-    (switch-to-next-buffer)
-    (split-window-horizontally)
-    (other-window 1 nil)
-    (switch-to-next-buffer)
-    (balance-windows))
+*** Window Rules
 
+#+begin_src emacs-lisp
+  (setq display-buffer-alist
+        '(;; top side window
+          ("\\*Messages.*"
+           (display-buffer-in-side-window)
+           (window-height . 0.16)
+           (side . top)
+           (slot . 1)
+           (window-parameters . ((no-other-window . t))))
+          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+           (display-buffer-in-side-window)
+           (window-height . 0.16)
+           (side . top)
+           (slot . 2)
+           (window-parameters . ((no-other-window . t))))
+          ;; bottom side window
+          ("\\*\\(Output\\|Register Preview\\).*"
+           (display-buffer-in-side-window)
+           (window-width . 0.16)       ; See the :hook
+           (side . bottom)
+           (slot . -1)
+           (window-parameters . ((no-other-window . t))))
+          ("\\*\\(Completions\\|Embark Live Occur\\).*"
+           (display-buffer-in-side-window)
+           (window-height . 0.16)
+           (side . bottom)
+           (slot . 0)
+           (window-parameters . ((no-other-window . t))))
+          (".*\\(e?shell\\|ansi-term\\).*"
+           (display-buffer-in-side-window)
+           (window-height . 0.16)
+           (side . bottom)
+           (slot . 1))
+          ;; left side window
+          ("\\*Help.*"
+           (display-buffer-in-side-window)
+           (window-width . 0.20)       ; See the :hook
+           (side . left)
+           (slot . 0)
+           (window-parameters . ((no-other-window . t))))
+          ;; right side window
+          ("\\*Faces\\*"
+           (display-buffer-in-side-window)
+           (window-width . 0.25)
+           (side . right)
+           (slot . 0)
+           (window-parameters
+            . ((no-other-window . t)
+               (mode-line-format
+                . (" "
+                   mode-line-buffer-identification)))))
+          ("\\*Custom.*"
+           (display-buffer-in-side-window)
+           (window-width . 0.25)
+           (side . right)
+           (slot . 1))
+          ;; bottom buffer (NOT side window)
+          ("\\*\\vc-\\(incoming\\|outgoing\\).*"
+           (display-buffer-at-bottom))))
+#+end_src
+
+*** Kill buffer other window
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/kill-buffer-other-window ()
     "Kill the buffer in the last used window."
@@ -2452,7 +2522,11 @@ I've collected (stolen!) or written over the years.
       (select-window other-window)
       (kill-this-buffer)
       (select-window current-window)))
+#+end_src
 
+*** Toggle focus to last window
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/last-window ()
     "Switch back and forth between two windows easily."
@@ -2463,45 +2537,75 @@ I've collected (stolen!) or written over the years.
         (raise-frame frame)
         (select-frame frame)
         (select-window win))))
+#+end_src
 
+*** Open a buffer in another window
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/open-buffer-other-window (buffer)
     "Open a BUFFER in another window without switching to it."
     (interactive "BBuffer: ")
     (switch-to-buffer-other-window buffer)
     (other-window -1))
+#+end_src
 
+*** Switch to the previous window
+
+This is basically ~other-window~ backwards.
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/prev-window ()
     "Go the previously used window, excluding other frames."
     (interactive)
     (other-window -1))
+#+end_src
 
+*** Shift current line to top of the window
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/top-of-window ()
     "Shift current line to the top of the window."
     (interactive)
     (set-window-start (selected-window) (point)))
+#+end_src
 
+*** Shift current line to bottom of the window
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/bottom-of-window ()
     "Shift current line to the bottom of the window."
     (interactive)
     (my/top-of-window)
     (scroll-down (- (window-height) 3)))
+#+end_src
 
+*** Scroll lines up like Ctrl-e in Vim
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/scroll-line-up (n)
     "Scroll line up N lines.  Like Ctrl-e in Vim."
     (interactive "p")
     (scroll-up n))
+#+end_src
 
+*** Scroll lines down like Ctrl-y in Vim
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/scroll-line-down (n)
     "Scroll line down N lines.  Ctrl-y in Vim."
     (interactive "p")
     (scroll-down n))
+#+end_src
 
+*** Open last buffer in horizontal split
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/hsplit-last-buffer (prefix)
     "Split the window vertically and display the previous buffer.
@@ -2511,7 +2615,11 @@ I've collected (stolen!) or written over the years.
     (other-window 1 nil)
     (if (= prefix 1)
         (switch-to-next-buffer)))
+#+end_src
 
+*** Open last buffer in vertical split
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/vsplit-last-buffer (prefix)
     "Split the window horizontally and display the previous buffer.
@@ -2520,7 +2628,11 @@ I've collected (stolen!) or written over the years.
     (split-window-horizontally)
     (other-window 1 nil)
     (if (= prefix 1) (switch-to-next-buffer)))
+#+end_src
 
+*** Toggle vertical -> horizontal splits
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/toggle-split ()
     "Switch window split from horizontally to vertically.
@@ -2548,7 +2660,11 @@ I've collected (stolen!) or written over the years.
                       (split-window-vertically)
                     (split-window-horizontally))
                   (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
+#+end_src
 
+*** Transpose windows
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/transpose-windows (arg)
     "Transpose windows.  Use prefix ARG to transpose in the other direction."
@@ -2570,7 +2686,11 @@ I've collected (stolen!) or written over the years.
                    (p2 (window-point w2)))
               (set-window-buffer-start-and-point w1 b2 s2 p2)
               (set-window-buffer-start-and-point w2 b1 s1 p1)))))))
+#+end_src
 
+*** Windmove keybindings
+
+#+begin_src emacs-lisp
   (autoload 'windmove-left "windmove" nil t)
   (global-set-key (kbd "C-c w b") 'windmove-left)
   (autoload 'windmove-right "windmove" nil t)
@@ -2582,9 +2702,17 @@ I've collected (stolen!) or written over the years.
   (with-eval-after-load 'windmove
     (setq windmove-wrap-around t)
     (message "Lazy loaded windmove :-)"))
+#+end_src
 
+Non-nil means to automatically adjust ‘window-vscroll’ to view tall lines.
+
+#+begin_src emacs-lisp
   (setq auto-window-vscroll nil)
+#+end_src
 
+*** Custom window function keybindings
+
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-x O") 'my/prev-window)
   (global-set-key (kbd "C-c 3") 'my/vsplit-last-buffer)
   (global-set-key (kbd "C-c 2") 'my/hsplit-last-buffer)
@@ -2592,11 +2720,20 @@ I've collected (stolen!) or written over the years.
   (global-set-key (kbd "C-M->") 'my/bottom-of-window)
   (global-set-key (kbd "M-p") 'my/scroll-line-up)
   (global-set-key (kbd "M-n") 'my/scroll-line-down)
+#+end_src
 
+*** Builtin window function keybindings
+
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-c v") 'scroll-other-window-down)
   (global-set-key (kbd "C-c w u") 'winner-undo)
   (global-set-key (kbd "C-c w r") 'winner-redo)
+  (global-set-key (kbd "C-c w w") 'window-toggle-side-windows)
+#+end_src
 
+*** Ctrl-x 4 map bindings
+
+#+begin_src emacs-lisp
   (define-key ctl-x-4-map "k" 'my/kill-buffer-other-window)
   (define-key ctl-x-4-map "o" 'my/open-buffer-other-window)
   (define-key ctl-x-4-map "s" 'my/toggle-split)

@@ -2228,11 +2228,6 @@ window to right."
 (use-package blacken :defer
   :hook (python-mode . blacken-mode))
 
-(use-package change-inner
-  :bind
-  ("M-i" . change-inner)
-  ("M-o" . change-outer))
-
 (use-package default-text-scale
   :if window-system
   :bind*

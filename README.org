@@ -1,4 +1,4 @@
-#+TITLE: LETS GET THIS LISPARTY STARTED!
+#+TITLE: EMACS CONFIGURATION
 #+AUTHOR: Toby Slight
 #+PROPERTY: header-args :cache yes
 #+PROPERTY: header-args+ :mkdirp yes
@@ -7,7 +7,31 @@
 #+PROPERTY: header-args+ :tangle-mode (identity #o644)
 #+OPTIONS: toc:t
 
+A fairly standard literate Emacs configuration using [[https://orgmode.org/][Org mode]].
+
+Probably won't work well on Emacs < 27.1 ...
+
+Quickest way to get setup is to back up your current config, then visit this
+file and run ~org-babel-tangle~ with ~C-c C-v t~.
+
 * Early Init
+
+From ~/etc/NEWS~
+
+#+begin_quote
+Emacs can now be configured using an early init file. The file is called
+early-init.el, in user-emacs-directory. It is loaded very early in the startup
+process: before graphical elements such as the tool bar are initialized, and
+before the package manager is initialized. The primary purpose is to allow
+customizing how the package system is initialized given that initialization now
+happens before loading the regular init file (see below).
+
+We recommend against putting any customizations in this file that don't need to
+be set up before initializing installed add-on packages, because the early init
+file is read too early into the startup process, and some important parts of
+the Emacs session, such as 'window-system' and other GUI features, are not yet
+set up, which could make some customization fail to work.
+#+end_quote
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el
   ;; This must be true otherwise use-package won't load!

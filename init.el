@@ -2405,7 +2405,7 @@ window to right."
         ("C-c C-z" . nodejs-repl-switch-to-repl)))
 
 (use-package org-bullets :defer
-  :if window-system :hook (org-mode . org-bullets-mode))
+  :hook (org-mode . org-bullets-mode))
 
 (use-package htmlize :defer)
 

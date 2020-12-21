@@ -37,27 +37,41 @@ files, so make sure you've backed up anything you don't want to lose!
   - [[#aligning-symbols][Aligning symbols]]
   - [[#ansi-color][ANSI color]]
   - [[#buffers][Buffers]]
-  - [[#fill-buffer][Fill Buffer]]
-  - [[#indent-buffer][Indent Buffer]]
-  - [[#kill-this-buffer][Kill this buffer]]
-  - [[#last-buffer][Last buffer]]
-  - [[#nuke-buffers][Nuke buffers]]
-  - [[#save-buffers-silently][Save buffers silently]]
-  - [[#search-all-buffers][Search all buffers]]
-  - [[#toggle-buffer][Toggle buffer]]
-  - [[#toggle-messages-buffer][Toggle messages buffer]]
-  - [[#toggle-scratch-buffer][Toggle scratch buffer]]
-  - [[#toggle-maximize-buffer][Toggle maximize buffer]]
-  - [[#keybindings][Keybindings]]
-  - [[#uniquify][Uniquify]]
+    - [[#fill-buffer][Fill Buffer]]
+    - [[#indent-buffer][Indent Buffer]]
+    - [[#kill-this-buffer][Kill this buffer]]
+    - [[#last-buffer][Last buffer]]
+    - [[#nuke-buffers][Nuke buffers]]
+    - [[#save-buffers-silently][Save buffers silently]]
+    - [[#search-all-buffers][Search all buffers]]
+    - [[#toggle-buffer][Toggle buffer]]
+    - [[#toggle-messages-buffer][Toggle messages buffer]]
+    - [[#toggle-scratch-buffer][Toggle scratch buffer]]
+    - [[#toggle-maximize-buffer][Toggle maximize buffer]]
+    - [[#buffer-keybindings][Buffer keybindings]]
+    - [[#uniquify][Uniquify]]
   - [[#change-numbers][Change numbers]]
   - [[#change-pairs][Change pairs]]
-  - [[#coding][Coding]]
-  - [[#compile][Compile]]
+  - [[#file-encoding-stuff][File encoding stuff]]
+  - [[#complilation-related][Complilation related]]
   - [[#dabbrev][Dabbrev]]
   - [[#dired][Dired]]
   - [[#ediff][Ediff]]
   - [[#editing][Editing]]
+    - [[#delete-inside-delimiters][Delete inside delimiters]]
+    - [[#generate-a-numbered-list][Generate a numbered list]]
+    - [[#insert-a-timestamp-at-the-point][Insert a timestamp at the point]]
+    - [[#open-a-line-above-the-current-line][Open a line above the current line]]
+    - [[#open-a-line-below-the-current-line][Open a line below the current line]]
+    - [[#sort-lines-in-an-case-insensitive-manner][Sort lines in an case insensitive manner]]
+    - [[#surround-stuff][Surround stuff]]
+    - [[#underline-text][Underline text]]
+    - [[#untabify-a-buffer-fuck-spaces][Untabify a buffer (fuck spaces!)]]
+    - [[#xml-pretty-print][XML pretty print]]
+    - [[#yank-pop-forwards][Yank pop forwards]]
+    - [[#custom-editing-function-bindings][Custom editing function bindings]]
+    - [[#editing-related-keyboard-built-in-keybindings][Editing related keyboard built-in keybindings]]
+    - [[#dwim-replacements-for-changing-case][DWIM replacements for changing case]]
   - [[#erc][ERC]]
   - [[#eshell][Eshell]]
   - [[#files][Files]]
@@ -83,7 +97,7 @@ files, so make sure you've backed up anything you don't want to lose!
   - [[#whitespace][Whitespace]]
   - [[#windows][Windows]]
 - [[#third-party-package-configuration][Third party package configuration]]
-  - [[#setup][Setup]]
+  - [[#setup-packageel-and-use-package][Setup package.el and use-package]]
   - [[#ansible][Ansible]]
   - [[#async][Async]]
   - [[#blacken][Blacken]]
@@ -103,10 +117,11 @@ files, so make sure you've backed up anything you don't want to lose!
   - [[#magit][Magit]]
   - [[#markdown][Markdown]]
   - [[#node-js][Node JS]]
-  - [[#org-bullets][Org Bullets]]
-  - [[#htmlize][HTMLize]]
-  - [[#toc-org][Toc Org]]
-  - [[#pdf-tools][PDF Tools]]
+  - [[#org-1][Org]]
+    - [[#org-bullets][Org Bullets]]
+    - [[#htmlize][HTMLize]]
+    - [[#toc-org][Toc Org]]
+    - [[#pdf-tools][PDF Tools]]
   - [[#powershell][Powershell]]
   - [[#powerline][Powerline]]
   - [[#projectile][Projectile]]
@@ -248,7 +263,7 @@ none of them are (typically) necessary at startup, so we disable them
   (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 #+end_src
 ** Buffers
-** Fill Buffer
+*** Fill Buffer
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -258,7 +273,7 @@ none of them are (typically) necessary at startup, so we disable them
     (fill-region (point-min) (point-max)))
 #+end_src
 
-** Indent Buffer
+*** Indent Buffer
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -268,7 +283,7 @@ none of them are (typically) necessary at startup, so we disable them
     (indent-region (point-min) (point-max)))
 #+end_src
 
-** Kill this buffer
+*** Kill this buffer
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -278,7 +293,7 @@ none of them are (typically) necessary at startup, so we disable them
     (kill-buffer (current-buffer)))
 #+end_src
 
-** Last buffer
+*** Last buffer
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -288,7 +303,7 @@ none of them are (typically) necessary at startup, so we disable them
     (switch-to-buffer (other-buffer (current-buffer) 1)))
 #+end_src
 
-** Nuke buffers
+*** Nuke buffers
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -303,7 +318,7 @@ none of them are (typically) necessary at startup, so we disable them
         (delete-other-windows)))
 #+end_src
 
-** Save buffers silently
+*** Save buffers silently
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -314,7 +329,7 @@ none of them are (typically) necessary at startup, so we disable them
     (message "Saving all buffers..."))
 #+end_src
 
-** Search all buffers
+*** Search all buffers
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -324,7 +339,7 @@ none of them are (typically) necessary at startup, so we disable them
     (multi-occur-in-matching-buffers "." regexp t))
 #+end_src
 
-** Toggle buffer
+*** Toggle buffer
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -336,7 +351,7 @@ none of them are (typically) necessary at startup, so we disable them
       (switch-to-buffer buffer)))
 #+end_src
 
-** Toggle messages buffer
+*** Toggle messages buffer
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -346,7 +361,7 @@ none of them are (typically) necessary at startup, so we disable them
     (my/toggle-buffer "*Messages*"))
 #+end_src
 
-** Toggle scratch buffer
+*** Toggle scratch buffer
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -356,7 +371,7 @@ none of them are (typically) necessary at startup, so we disable them
     (my/toggle-buffer "*scratch*"))
 #+end_src
 
-** Toggle maximize buffer
+*** Toggle maximize buffer
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -370,7 +385,7 @@ none of them are (typically) necessary at startup, so we disable them
         (delete-other-windows))))
 #+end_src
 
-** Keybindings
+*** Buffer keybindings
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c b") 'my/last-buffer)
@@ -392,7 +407,7 @@ none of them are (typically) necessary at startup, so we disable them
   (add-hook 'before-save-hook 'my/indent-buffer)
 #+end_src
 
-** Uniquify
+*** Uniquify
 
 #+begin_src emacs-lisp
   (with-eval-after-load 'uniquify
@@ -546,7 +561,7 @@ none of them are (typically) necessary at startup, so we disable them
 
   (global-set-key (kbd "C-c M-p") 'my/change-pairs)
 #+end_src
-** Coding
+** File encoding stuff
 #+begin_src emacs-lisp
   ;;;###autoload
   (defun my/convert-to-unix-coding-system ()
@@ -573,7 +588,7 @@ none of them are (typically) necessary at startup, so we disable them
   (set-default-coding-systems 'utf-8-unix)
   (prefer-coding-system 'utf-8-unix)
 #+end_src
-** Compile
+** Complilation related
 #+begin_src emacs-lisp
   (defvar my/directories-to-recompile
     '("site-lisp")
@@ -903,6 +918,8 @@ none of them are (typically) necessary at startup, so we disable them
     (message "Lazy loaded ediff :-)"))
 #+end_src
 ** Editing
+*** Delete inside delimiters
+
 #+begin_src emacs-lisp
   ;;;###autoload
   (defun my/delete-inside ()
@@ -915,7 +932,11 @@ none of them are (typically) necessary at startup, so we disable them
       (search-forward-regexp "[]})>\"\']" (line-end-position))
       (backward-char)
       (kill-region lstart (point))))
+#+end_src
 
+*** Generate a numbered list
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/generate-numbered-list (start end char)
     "Create a numbered list from START to END.  Using CHAR as punctuation."
@@ -925,13 +946,21 @@ none of them are (typically) necessary at startup, so we disable them
         (insert (concat (number-to-string x) char))
         (newline)
         (setq x (+ x 1)))))
+#+end_src
 
+*** Insert a timestamp at the point
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/insert-date ()
     "Insert a timestamp according to locale's date and time format."
     (interactive)
     (insert (format-time-string "%c" (current-time))))
+#+end_src
 
+*** Open a line above the current line
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/open-line-above ()
     "Insert an empty line above the current line.
@@ -954,7 +983,11 @@ none of them are (typically) necessary at startup, so we disable them
       ;; Just use the current major-mode's indent facility.
       (forward-line -1)
       (indent-according-to-mode)))
+#+end_src
 
+*** Open a line below the current line
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/open-line-below (arg)
     "Insert an empty line after the current line.
@@ -966,14 +999,22 @@ none of them are (typically) necessary at startup, so we disable them
         (my/open-line-above)
       (move-end-of-line nil)
       (newline-and-indent)))
+#+end_src
 
+*** Sort lines in an case insensitive manner
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/sort-lines-nocase ()
     "Sort marked lines with case sensitivity."
     (interactive)
     (let ((sort-fold-case t))
       (call-interactively 'sort-lines)))
+#+end_src
 
+*** Surround stuff
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/surround (begin end open close)
     "Put OPEN at BEGIN and CLOSE at END of the region.
@@ -987,7 +1028,11 @@ none of them are (typically) necessary at startup, so we disable them
         (insert close))
       (goto-char begin)
       (insert open)))
+#+end_src
 
+*** Underline text
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/underline-text (arg)
     "Insert ARG under the current line.
@@ -1054,13 +1099,21 @@ none of them are (typically) necessary at startup, so we disable them
           (if original-point-is-eol
               (goto-char (re-search-forward "^"))
             (goto-char original-point))))))
+#+end_src
 
+*** Untabify a buffer (fuck spaces!)
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/untabify-buffer ()
     "Convert all tabs to spaces in the buffer."
     (interactive)
     (untabify (point-min) (point-max)))
+#+end_src
 
+*** XML pretty print
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/xml-pretty-print ()
     "Reformat and indent XML."
@@ -1068,20 +1121,32 @@ none of them are (typically) necessary at startup, so we disable them
     (save-excursion
       (sgml-pretty-print (point-min) (point-max))
       (indent-region (point-min) (point-max))))
+#+end_src
 
+*** Yank pop forwards
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/yank-pop-forwards (arg)
     "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
     (interactive "p")
     (yank-pop (- arg)))
+#+end_src
 
+*** Custom editing function bindings
+
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-c d") 'my/delete-inside)
   (global-set-key (kbd "C-c u") 'my/underline-text)
   (global-set-key (kbd "M-s M-s") 'my/surround)
   (global-set-key (kbd "C-o") 'my/open-line-above)
   (global-set-key (kbd "C-S-o") 'my/open-line-below)
   (global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
+#+end_src
 
+*** Editing related keyboard built-in keybindings
+
+#+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
   (global-set-key (kbd "M-;") 'comment-line)
   (global-set-key (kbd "C-z") 'zap-up-to-char)
@@ -1090,11 +1155,16 @@ none of them are (typically) necessary at startup, so we disable them
   (global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
   (global-set-key (kbd "M-SPC") 'cycle-spacing)
   (global-set-key (kbd "M-%") 'query-replace-regexp)
+#+end_src
 
+*** DWIM replacements for changing case
+
+#+begin_src emacs-lisp
   (global-set-key [remap capitalize-word] 'capitalize-dwim)
   (global-set-key [remap downcase-word] 'downcase-dwim)
   (global-set-key [remap upcase-word] 'upcase-dwim)
 #+end_src
+
 ** ERC
 #+begin_src emacs-lisp
   (with-eval-after-load 'erc
@@ -2515,7 +2585,7 @@ party packages from [[https://melpa.org/][MELPA]].
 If you want to go for a more vanilla setup, just prefix the ~COMMENT~ keyword
 to the tile above, and re-tangle the file.
 
-** Setup
+** Setup package.el and use-package
 
 #+begin_src emacs-lisp
   (require 'package)
@@ -2801,27 +2871,28 @@ to the tile above, and re-tangle the file.
           ("C-c C-z" . nodejs-repl-switch-to-repl)))
 #+end_src
 
-** Org Bullets
+** Org
+*** Org Bullets
 
 #+begin_src emacs-lisp
   (use-package org-bullets :defer
-    :if window-system :hook (org-mode . org-bullets-mode))
+    :hook (org-mode . org-bullets-mode))
 #+end_src
 
-** HTMLize
+*** HTMLize
 
 #+begin_src emacs-lisp
   (use-package htmlize :defer)
 #+end_src
 
-** Toc Org
+*** Toc Org
 
 #+begin_src emacs-lisp
   (use-package toc-org :defer
     :hook (org-mode . toc-org-enable))
 #+end_src
 
-** PDF Tools
+*** PDF Tools
 #+begin_src emacs-lisp
   (use-package pdf-tools :defer)
 #+end_src

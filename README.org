@@ -9,10 +9,15 @@
 
 A fairly standard [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration using [[https://orgmode.org/][Org mode]].
 
-Quickest way to get setup is to back up your current config ~mv
-~/.emacs.d{,.bak}~, then clone this repo to replace it:
+Quickest way to get setup is to back up your current config:
 
-#+begin_src shell
+#+begin_src shell :tangle no
+  mv ~/.emacs.d{,.bak}~
+#+end_src
+
+Then clone this repo to replace it:
+
+#+begin_src shell :tangle no
   git clone https://gitlab.com/tspub/lisp/emacs ~/.emacs.d
 #+end_src
 
@@ -43,6 +48,13 @@ set up, which could make some customization fail to work.
 #+end_quote
 
 #+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el
+  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (when (fboundp 'tooltip-mode) (tooltip-mode -1))
+
+  (setq frame-resize-pixelwise t) ;; jwm resize fix
+
   ;; This must be true otherwise use-package won't load!
   (setq package-enable-at-startup t)
   ;; Allow loading from the package cache.
@@ -2146,29 +2158,20 @@ none of them are (typically) necessary at startup, so we disable them
   (defun my/after-make-frame (frame)
     "Add custom settings after making the FRAME."
     (select-frame frame)
-    (when (eq system-type 'windows-nt)
-      (set-frame-font "Cascadia Mono 10" nil t))
-    (when (eq system-type 'darwin)
-      (set-frame-font "Monaco 10" nil t))
-    (when (or (eq system-type 'gnu/linux)
-              (eq system-type 'berkeley-unix))
-      (set-frame-font "Monospace 11" nil t))
     (if (display-graphic-p)
         (progn
-          (load-theme 'wombat)
-          (when (fboundp 'menu-bar-mode)
-            (menu-bar-mode -1))
-          (when (fboundp 'scroll-bar-mode)
-            (scroll-bar-mode -1))
-          (when (fboundp 'tool-bar-mode)
-            (tool-bar-mode -1))
-          (when (fboundp 'tooltip-mode)
-            (tooltip-mode -1)))
+          (when (eq system-type 'windows-nt)
+            (set-frame-font "Cascadia Mono 10" nil t))
+          (when (eq system-type 'darwin)
+            (set-frame-font "Monaco 10" nil t))
+          (when (or (eq system-type 'gnu/linux)
+                    (eq system-type 'berkeley-unix))
+            (set-frame-font "Monospace 11" nil t))
+          (load-theme 'wombat))
       (progn
         (load-theme 'manoj-dark)
         (xterm-mouse-mode 1)
         (mouse-avoidance-mode 'banish)
-        (menu-bar-mode -1)
         ;; (setq linum-format "%d ")
         (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
         (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
@@ -2190,8 +2193,6 @@ none of them are (typically) necessary at startup, so we disable them
 
   (setq default-frame-alist
         '((fullscreen . maximized) (vertical-scroll-bars . nil)))
-
-  (setq frame-resize-pixelwise t) ;; jwm resize fix
 
   ;; mode line stuff
   ;; (setq display-time-format "%H:%M %d/%m")

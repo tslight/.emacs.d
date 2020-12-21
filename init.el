@@ -6,8 +6,6 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
-git clone https://gitlab.com/tspub/lisp/emacs ~/.emacs.d
-
 (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
       gc-cons-percentage 0.6)
 
@@ -1961,29 +1959,20 @@ Otherwise switch to current one."
 (defun my/after-make-frame (frame)
   "Add custom settings after making the FRAME."
   (select-frame frame)
-  (when (eq system-type 'windows-nt)
-    (set-frame-font "Cascadia Mono 10" nil t))
-  (when (eq system-type 'darwin)
-    (set-frame-font "Monaco 10" nil t))
-  (when (or (eq system-type 'gnu/linux)
-            (eq system-type 'berkeley-unix))
-    (set-frame-font "Monospace 11" nil t))
   (if (display-graphic-p)
       (progn
-        (load-theme 'wombat)
-        (when (fboundp 'menu-bar-mode)
-          (menu-bar-mode -1))
-        (when (fboundp 'scroll-bar-mode)
-          (scroll-bar-mode -1))
-        (when (fboundp 'tool-bar-mode)
-          (tool-bar-mode -1))
-        (when (fboundp 'tooltip-mode)
-          (tooltip-mode -1)))
+        (when (eq system-type 'windows-nt)
+          (set-frame-font "Cascadia Mono 10" nil t))
+        (when (eq system-type 'darwin)
+          (set-frame-font "Monaco 10" nil t))
+        (when (or (eq system-type 'gnu/linux)
+                  (eq system-type 'berkeley-unix))
+          (set-frame-font "Monospace 11" nil t))
+        (load-theme 'wombat))
     (progn
       (load-theme 'manoj-dark)
       (xterm-mouse-mode 1)
       (mouse-avoidance-mode 'banish)
-      (menu-bar-mode -1)
       ;; (setq linum-format "%d ")
       (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
       (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
@@ -2005,8 +1994,6 @@ Otherwise switch to current one."
 
 (setq default-frame-alist
       '((fullscreen . maximized) (vertical-scroll-bars . nil)))
-
-(setq frame-resize-pixelwise t) ;; jwm resize fix
 
 ;; mode line stuff
 ;; (setq display-time-format "%H:%M %d/%m")

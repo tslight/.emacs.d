@@ -6,6 +6,13 @@
 ;; Author: Toby Slight <tslight@pm.me>
 
 ;;; Code:
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'tooltip-mode) (tooltip-mode -1))
+
+(setq frame-resize-pixelwise t) ;; jwm resize fix
+
 ;; This must be true otherwise use-package won't load!
 (setq package-enable-at-startup t)
 ;; Allow loading from the package cache.

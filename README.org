@@ -30,10 +30,11 @@ files, so make sure you've backed up anything you don't want to lose!
 
 * Contents:TOC_5_gh:
 - [[#early-init][Early Init]]
+  - [[#turn-off-unnecessary-ui-frills][Turn off unnecessary UI frills]]
+  - [[#setup-up-packageel][Setup up package.el]]
 - [[#doom-startup-speed-hacks-setup][Doom startup speed hacks setup]]
   - [[#avoid-garbage-collection-at-startup][Avoid garbage collection at startup]]
   - [[#unset-file-name-handler-alist-temporarily][Unset file-name-handler-alist temporarily]]
-- [[#ensure-init-files-are-byte-compiled][Ensure init files are byte compiled]]
 - [[#emacs-configuration-with-no-packages][Emacs configuration with no packages]]
   - [[#aligning-symbols][Aligning symbols]]
   - [[#ansi-color][ANSI color]]
@@ -140,6 +141,7 @@ files, so make sure you've backed up anything you don't want to lose!
       - [[#emacs-lisp-snippets][Emacs Lisp snippets]]
         - [[#standard-elisp-boilerplate][Standard elisp boilerplate]]
         - [[#package-elisp-boilerplate][Package elisp boilerplate]]
+- [[#ensure-init-files-are-byte-compiled][Ensure init files are byte compiled]]
 - [[#doom-startup-speed-hacks-teardown][Doom startup speed hacks teardown]]
   - [[#restore-garbage-collection][Restore garbage collection]]
   - [[#restore-original-file-name-handler-alist][Restore original file-name-handler-alist]]
@@ -163,6 +165,8 @@ the Emacs session, such as 'window-system' and other GUI features, are not yet
 set up, which could make some customization fail to work.
 #+end_quote
 
+** Turn off unnecessary UI frills
+
 #+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el
   (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
   (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -170,7 +174,11 @@ set up, which could make some customization fail to work.
   (when (fboundp 'tooltip-mode) (tooltip-mode -1))
 
   (setq frame-resize-pixelwise t) ;; jwm resize fix
+#+end_src
 
+** Setup up package.el
+
+#+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el
   ;; This must be true otherwise use-package won't load!
   (setq package-enable-at-startup t)
   ;; Allow loading from the package cache.
@@ -210,21 +218,6 @@ none of them are (typically) necessary at startup, so we disable them
 #+begin_src emacs-lisp
   (defvar my/default-file-name-handler-alist file-name-handler-alist)
   (setq file-name-handler-alist nil)
-#+end_src
-
-* Ensure init files are byte compiled
-
-This block will byte compile ~early-init.el~ and ~init.el~ if an existing
-~.elc~ file is not up to date with their contents.
-
-#+begin_src emacs-lisp
-  (autoload 'byte-recompile-file "bytecomp")
-  (byte-recompile-file
-   (expand-file-name "early-init.el" user-emacs-directory)
-   'nil 0 'nil)
-  (byte-recompile-file
-   (expand-file-name "init.el" user-emacs-directory)
-   'nil 0 'nil)
 #+end_src
 
 * Emacs configuration with no packages
@@ -3126,6 +3119,25 @@ party packages from [[https://melpa.org/][MELPA]].
   ;; byte-compile-warnings: (not free-vars noruntime)
   ;; End:
   ;;; `(file-name-nondirectory (buffer-file-name))` ends here
+#+end_src
+
+* Ensure init files are byte compiled
+
+This block will byte compile ~early-init.el~ and ~init.el~ if an existing
+~.elc~ file is not up to date with their contents.
+
+#+begin_quote
+(byte-recompile-file FILENAME &optional FORCE ARG LOAD)
+#+end_quote
+
+#+begin_src emacs-lisp
+  (autoload 'byte-recompile-file "bytecomp")
+  (byte-recompile-file
+   (expand-file-name "early-init.el" user-emacs-directory)
+   'nil 0 'nil)
+  (byte-recompile-file
+   (expand-file-name "init.el" user-emacs-directory)
+   'nil 0 'nil)
 #+end_src
 
 * Doom startup speed hacks teardown

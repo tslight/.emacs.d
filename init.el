@@ -12,14 +12,6 @@
 (defvar my/default-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
-(autoload 'byte-recompile-file "bytecomp")
-(byte-recompile-file
- (expand-file-name "early-init.el" user-emacs-directory)
- 'nil 0 'nil)
-(byte-recompile-file
- (expand-file-name "init.el" user-emacs-directory)
- 'nil 0 'nil)
-
 ;;;###autoload
 (defun my/align-symbol (begin end symbol)
   "Align any SYMBOL in region (between BEGIN and END)."
@@ -2492,6 +2484,14 @@ window to right."
 (use-package yasnippet-snippets :defer)
 
 (use-package yasnippet-classic-snippets :defer)
+
+(autoload 'byte-recompile-file "bytecomp")
+(byte-recompile-file
+ (expand-file-name "early-init.el" user-emacs-directory)
+ 'nil 0 'nil)
+(byte-recompile-file
+ (expand-file-name "init.el" user-emacs-directory)
+ 'nil 0 'nil)
 
 (defun my/default-gc-cons-settings ()
   (setq gc-cons-threshold 16777216 ; 16mb

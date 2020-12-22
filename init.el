@@ -1970,7 +1970,12 @@ window to right."
 
 (use-package async :defer
   :if (not (equal system-type 'windows-nt))
-  :config (async-bytecomp-package-mode 1)
+  :config
+  (unless (equal system-type 'windows-nt)
+    (setq async-bytecomp-allowed-packages '(all)))
+  (if (equal system-type 'windows-nt)
+      (async-bytecomp-package-mode -1)
+    (async-bytecomp-package-mode 1))
   :hook (dired-mode-hook . dired-async-mode))
 
 (use-package blacken :defer

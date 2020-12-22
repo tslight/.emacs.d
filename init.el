@@ -1963,6 +1963,7 @@ window to right."
   :hook (yaml-mode . ansible-doc-mode))
 
 (use-package async :defer
+  :if (not (equal system-type 'windows-nt))
   :config (async-bytecomp-package-mode 1)
   :hook (dired-mode-hook . dired-async-mode))
 
@@ -2111,7 +2112,9 @@ window to right."
         (setq magit-git-executable "C:/Program Files/Git/bin/git.exe"))
     (when (file-directory-p "C:/Program Files/Git/bin")
       (setq exec-path (add-to-list 'exec-path "C:/Program Files/Git/bin"))
-      (setenv "PATH" (concat "C:\\Program Files\\Git\\bin;" (getenv "PATH")))))
+      (setenv "PATH" (concat "C:\\Program Files\\Git\\bin;" (getenv "PATH"))))
+    (when (file-readable-p "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
+      (setq-default with-editor-emacsclient-executable "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")))
   (setq magit-clone-set-remote.pushDefault t)
   (setq magit-completing-read-function 'magit-builtin-completing-read))
 

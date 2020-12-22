@@ -1554,6 +1554,12 @@ Excluding ^I (tabs) and ^J (newlines)."
   (setq version-control t)
   (message "Lazy loaded vc :-)"))
 
+;; https://emacs.stackexchange.com/a/31061
+(when (equal system-type 'windows-nt)
+  (if (file-readable-p "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
+      (setq-default with-editor-emacsclient-executable "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
+    (setq-default with-editor-emacsclient-executable nil)))
+
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
 (setq confirm-kill-emacs 'y-or-n-p)
 
@@ -2112,9 +2118,7 @@ window to right."
         (setq magit-git-executable "C:/Program Files/Git/bin/git.exe"))
     (when (file-directory-p "C:/Program Files/Git/bin")
       (setq exec-path (add-to-list 'exec-path "C:/Program Files/Git/bin"))
-      (setenv "PATH" (concat "C:\\Program Files\\Git\\bin;" (getenv "PATH"))))
-    (when (file-readable-p "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
-      (setq-default with-editor-emacsclient-executable "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")))
+      (setenv "PATH" (concat "C:\\Program Files\\Git\\bin;" (getenv "PATH")))))
   (setq magit-clone-set-remote.pushDefault t)
   (setq magit-completing-read-function 'magit-builtin-completing-read))
 

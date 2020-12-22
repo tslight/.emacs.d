@@ -627,7 +627,6 @@ Function to recompile ~early-init.el~ and ~init.el~.
     (interactive)
     (mapc (lambda (file) (byte-recompile-file (concat user-emacs-directory file) 0))
           my/files-to-recompile))
-
 #+end_src
 
 Automatically recompile Emacs Lisp files after saving
@@ -2391,6 +2390,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 #+begin_src emacs-lisp
   (setq split-width-threshold 160)
   (setq split-height-threshold 80)
+  (setq auto-window-vscroll nil)
 #+end_src
 
 *** Kill buffer other window
@@ -2578,13 +2578,9 @@ This is basically ~other-window~ backwards.
     (message "Lazy loaded windmove :-)"))
 #+end_src
 
-Non-nil means to automatically adjust ‘window-vscroll’ to view tall lines.
-
-#+begin_src emacs-lisp
-  (setq auto-window-vscroll nil)
-#+end_src
-
 *** Winner mode
+
+[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Startup-Summary.html#Startup-Summary][Startup Summary]]
 
 #+begin_src emacs-lisp
   (add-hook 'window-setup-hook 'winner-mode)

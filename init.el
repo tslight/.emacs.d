@@ -1800,6 +1800,7 @@ Otherwise switch to current one."
 
 (setq split-width-threshold 160)
 (setq split-height-threshold 80)
+(setq auto-window-vscroll nil)
 
 ;;;###autoload
 (defun my/kill-buffer-other-window ()
@@ -1939,8 +1940,6 @@ window to right."
 (with-eval-after-load 'windmove
   (setq windmove-wrap-around t)
   (message "Lazy loaded windmove :-)"))
-
-(setq auto-window-vscroll nil)
 
 (add-hook 'window-setup-hook 'winner-mode)
 (global-set-key (kbd "C-c w u") 'winner-undo)

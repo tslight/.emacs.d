@@ -257,6 +257,27 @@ If the string has length greater than 2, the rest are ignored."
 
 (global-set-key (kbd "C-c M-p") 'my/change-pairs)
 
+(setq c-default-style "bsd")
+(setq c-basic-offset 4)
+(setq css-indent-offset 2)
+(setq js-indent-level 2)
+
+;; If indent-tabs-mode is t, it means it may use tab, resulting mixed space and
+;; tab
+(setq-default indent-tabs-mode nil)
+
+;; make tab key always call a indent command.
+;; (setq-default tab-always-indent t)
+
+;; make tab key call indent command or insert tab character, depending on cursor position
+;; (setq-default tab-always-indent nil)
+(with-eval-after-load 'python
+  (setq python-fill-docstring-style 'django)
+  (message "Lazy loaded python :-)"))
+
+;; make tab key do indent first then completion.
+(setq-default tab-always-indent 'complete)
+
 ;;;###autoload
 (defun my/convert-to-unix-coding-system ()
   "Change the current buffer's file encoding to unix."
@@ -1648,26 +1669,42 @@ respect `narrow-to-region')."
 (global-set-key [remap kill-region] 'smart/kill-region)
 (define-key ctl-x-map "n" 'smart/narrow-or-widen-dwim)
 
-(setq c-default-style "bsd")
-(setq c-basic-offset 4)
-(setq css-indent-offset 2)
-(setq js-indent-level 2)
+;;;###autoload
+(defun my/ansi-term ()
+  "Opens shell from $SHELL environmental variable in `ansi-term'."
+  (interactive)
+  ;; https://emacs.stackexchange.com/a/48481
+  (let ((switch-to-buffer-obey-display-actions))
+    (ansi-term (getenv "SHELL"))))
+(global-set-key (kbd "C-c tt") 'my/ansi-term)
 
-;; If indent-tabs-mode is t, it means it may use tab, resulting mixed space and
-;; tab
-(setq-default indent-tabs-mode nil)
+;;;###autoload
+(defun my/ansi-term-other-window ()
+  "Opens default $SHELL `ansi-term' in another window."
+  (interactive)
+  (split-window-sensibly)
+  (other-window 1)
+  (my/ansi-term))
+(global-set-key (kbd "C-c 4 tt") 'my/ansi-term-other-window)
 
-;; make tab key always call a indent command.
-;; (setq-default tab-always-indent t)
+;;;###autoload
+(defun my/switch-to-ansi-term ()
+  "Open an `ansi-term' if it doesn't already exist.
+Otherwise switch to current one."
+  (interactive)
+  (if (get-buffer "*ansi-term*")
+      (switch-to-buffer "*ansi-term*")
+    (ansi-term (getenv "SHELL"))))
+(global-set-key (kbd "C-c ts") 'my/switch-to-ansi-term)
 
-;; make tab key call indent command or insert tab character, depending on cursor position
-;; (setq-default tab-always-indent nil)
-(with-eval-after-load 'python
-  (setq python-fill-docstring-style 'django)
-  (message "Lazy loaded python :-)"))
-
-;; make tab key do indent first then completion.
-(setq-default tab-always-indent 'complete)
+;;;###autoload
+(defun my/switch-to-ansi-term-other-window()
+  "Does what it states on the tin!"
+  (interactive)
+  (split-window-sensibly)
+  (other-window 1)
+  (my/switch-to-ansi-term))
+(global-set-key (kbd "C-c 4 ts") 'my/switch-to-ansi-term-other-window)
 
 (with-eval-after-load 'term
   ;; get unicode characters in ansi-term - https://stackoverflow.com/a/7442266
@@ -1683,43 +1720,8 @@ respect `narrow-to-region')."
   (setq term-buffer-maximum-size 200000)
   (message "Lazy loaded term :-)"))
 
-;;;###autoload
-(defun my/switch-to-ansi-term ()
-  "Open an `ansi-term' if it doesn't already exist.
-Otherwise switch to current one."
-  (interactive)
-  (if (get-buffer "*ansi-term*")
-      (switch-to-buffer "*ansi-term*")
-    (ansi-term (getenv "SHELL"))))
-
-;;;###autoload
-(defun my/switch-to-ansi-term-other-window()
-  "Does what it states on the tin!"
-  (interactive)
-  (split-window-sensibly)
-  (other-window 1)
-  (my/switch-to-ansi-term))
-
-;;;###autoload
-(defun my/ansi-term ()
-  "Opens shell from $SHELL environmental variable in `ansi-term'."
-  (interactive)
-  (ansi-term (getenv "SHELL")))
-
-;;;###autoload
-(defun my/ansi-term-other-window ()
-  "Opens default $SHELL `ansi-term' in another window."
-  (interactive)
-  (split-window-sensibly)
-  (other-window 1)
-  (my/ansi-term))
-
 (autoload 'term "term" nil t)
 (autoload 'ansi-term "term" nil t)
-(global-set-key (kbd "C-c t") 'my/switch-to-ansi-term)
-(global-set-key (kbd "C-c 4 t") 'my/switch-to-ansi-term-other-window)
-(global-set-key (kbd "C-c C-t") 'my/ansi-term)
-(global-set-key (kbd "C-c 4 C-t") 'my/ansi-term-other-window)
 
 (add-hook 'term-exec (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix)))
 

@@ -129,7 +129,8 @@ files, so make sure you've backed up anything you don't want to lose!
     - [[#toggle-vertical---horizontal-splits][Toggle vertical -> horizontal splits]]
     - [[#transpose-windows][Transpose windows]]
     - [[#windmove-keybindings][Windmove keybindings]]
-    - [[#window-keybindings][Window keybindings]]
+    - [[#winner-mode][Winner mode]]
+    - [[#scroll-other-window-down][Scroll other window down]]
 - [[#third-party-package-configuration][Third party package configuration]]
   - [[#setup-packageel-and-use-package][Setup package.el and use-package]]
   - [[#ansible][Ansible]]
@@ -1927,9 +1928,8 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 
     (message "Lazy loaded recentf :-)"))
 
-  (recentf-mode 1)
-
   (global-set-key (kbd "C-c C-r") 'recentf-open-files)
+  (add-hook 'after-init-hook 'recentf-mode)
 #+end_src
 
 ** Registers
@@ -2584,14 +2584,19 @@ Non-nil means to automatically adjust ‘window-vscroll’ to view tall lines.
   (setq auto-window-vscroll nil)
 #+end_src
 
-*** Window keybindings
+*** Winner mode
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c v") 'scroll-other-window-down)
-  (when (fboundp 'winner-mode) (winner-mode 1))
+  (add-hook 'window-setup-hook 'winner-mode)
   (global-set-key (kbd "C-c w u") 'winner-undo)
   (global-set-key (kbd "C-c w r") 'winner-redo)
 #+end_src
+
+*** Scroll other window down
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c v") 'scroll-other-window-down)
+#+end_src>
 
 * Third party package configuration
 

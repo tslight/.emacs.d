@@ -1392,9 +1392,8 @@ functions."
 
   (message "Lazy loaded recentf :-)"))
 
-(recentf-mode 1)
-
 (global-set-key (kbd "C-c C-r") 'recentf-open-files)
+(add-hook 'after-init-hook 'recentf-mode)
 
 ;;;###autoload
 (defun my/jump-to-register-other-window ()
@@ -1943,8 +1942,7 @@ window to right."
 
 (setq auto-window-vscroll nil)
 
-(global-set-key (kbd "C-c v") 'scroll-other-window-down)
-(when (fboundp 'winner-mode) (winner-mode 1))
+(add-hook 'window-setup-hook 'winner-mode)
 (global-set-key (kbd "C-c w u") 'winner-undo)
 (global-set-key (kbd "C-c w r") 'winner-redo)
 

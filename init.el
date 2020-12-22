@@ -54,28 +54,26 @@
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;;;###autoload
-(defun my/fill-buffer ()
-  "Fill the contents of a buffer."
-  (interactive)
-  (fill-region (point-min) (point-max)))
-
-;;;###autoload
 (defun my/indent-buffer ()
   "Indent the contents of a buffer."
   (interactive)
   (indent-region (point-min) (point-max)))
+(global-set-key (kbd "C-c M-i") 'my/indent-buffer)
+(add-hook 'before-save-hook 'my/indent-buffer)
 
 ;;;###autoload
 (defun my/kill-this-buffer ()
   "Kill the current buffer - `kill-this-buffer' is unreliable."
   (interactive)
   (kill-buffer (current-buffer)))
+(global-set-key (kbd "C-x k") 'my/kill-this-buffer)
 
 ;;;###autoload
 (defun my/last-buffer ()
   "Switch back and forth between two buffers easily."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
+(global-set-key (kbd "C-c b") 'my/last-buffer)
 
 ;;;###autoload
 (defun my/nuke-buffers ()
@@ -87,39 +85,15 @@
    (buffer-list))
   (if current-prefix-arg
       (delete-other-windows)))
+(global-set-key (kbd "C-c M-n") 'my/nuke-buffers)
 
 ;;;###autoload
 (defun my/save-buffers-silently ()
   "Save all open buffers without prompting."
   (interactive)
   (save-some-buffers t)
-  (message "Saving all buffers..."))
-
-;;;###autoload
-(defun my/search-all-buffers (regexp)
-  "Search all buffers for REGEXP."
-  (interactive "sRegexp: ")
-  (multi-occur-in-matching-buffers "." regexp t))
-
-;;;###autoload
-(defun my/toggle-buffer (buffer)
-  "Toggle back & forth between BUFFER and the current buffer."
-  (interactive "BBuffer: ")
-  (if (equal (buffer-name) buffer)
-      (my/last-buffer)
-    (switch-to-buffer buffer)))
-
-;;;###autoload
-(defun my/toggle-messages ()
-  "Toggle *Messages* buffer."
-  (interactive)
-  (my/toggle-buffer "*Messages*"))
-
-;;;###autoload
-(defun my/toggle-scratch ()
-  "Togggle *scratch* buffer."
-  (interactive)
-  (my/toggle-buffer "*scratch*"))
+  (message "Saved all buffers :-)"))
+(global-set-key (kbd "C-c s") 'my/save-buffers-silently)
 
 ;;;###autoload
 (defun my/toggle-maximize-buffer ()
@@ -130,24 +104,13 @@
     (progn
       (window-configuration-to-register '_)
       (delete-other-windows))))
-
-(global-set-key (kbd "C-c b") 'my/last-buffer)
-(global-set-key (kbd "C-c C-b") 'my/toggle-buffer)
 (global-set-key (kbd "C-c z") 'my/toggle-maximize-buffer)
-(global-set-key (kbd "C-c M-n") 'my/nuke-buffers)
-(global-set-key (kbd "C-c s") 'my/save-buffers-silently)
-(global-set-key (kbd "C-x k") 'my/kill-this-buffer)
-(global-set-key (kbd "M-s s") 'my/search-all-buffers)
-(global-set-key (kbd "C-c M-t m") 'my/toggle-messages)
-(global-set-key (kbd "C-c M-t s") 'my/toggle-scratch)
 
 (global-set-key (kbd "C-x M-e") 'eval-buffer)
 (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
 (autoload 'ibuffer "ibuffer" nil t)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x M-k") 'kill-buffer)
-
-(add-hook 'before-save-hook 'my/indent-buffer)
 
 (with-eval-after-load 'uniquify
   (setq uniquify-buffer-name-style 'forward)
@@ -172,14 +135,13 @@
   "Increment number at point."
   (interactive)
   (my/change-number-at-point '1+))
+(global-set-key (kbd "C-c +") 'my/increment-number-at-point)
 
 ;;;###autoload
 (defun my/decrement-number-at-point ()
   "Decrement number at point."
   (interactive)
   (my/change-number-at-point '1-))
-
-(global-set-key (kbd "C-c +") 'my/increment-number-at-point)
 (global-set-key (kbd "C-c -") 'my/decrement-number-at-point)
 
 ;;;###autoload
@@ -320,39 +282,30 @@ If the string has length greater than 2, the rest are ignored."
 (set-default-coding-systems 'utf-8-unix)
 (prefer-coding-system 'utf-8-unix)
 
-(defvar my/directories-to-recompile
-  '("site-lisp")
-  "Directories under `user-emacs-directory' that we use for configuration.")
-
-(defvar my/files-to-recompile
-  '("early-init.el" "init.el" "use.el")
+(defvar my/files-to-recompile '("early-init.el" "init.el")
   "Files under `user-emacs-directory' that we use for configuration.")
 
 ;;;###autoload
-(defun my/recompile-site-lisp ()
+(defun my/recompile-config ()
   "Recompile everything in Emacs configuration."
   (interactive)
-  (mapc (lambda (directory) (byte-recompile-directory (concat user-emacs-directory directory) 0 t))
-        my/directories-to-recompile)
   (mapc (lambda (file) (byte-recompile-file (concat user-emacs-directory file) 0))
         my/files-to-recompile))
 
 ;;;###autoload
 (defun my/auto-recompile ()
   "Automatically recompile Emacs Lisp files whenever they are saved."
-  (when (equal major-mode 'emacs-lisp-mode)
-    (progn
-      (byte-compile-file buffer-file-name t)
-      (message (concat "Re-compiled " buffer-file-name)))))
+  (when (or (equal major-mode 'emacs-lisp-mode)
+            (string-match "^.*\\.el$" buffer-file-name))
+    (byte-compile-file buffer-file-name t)
+    (message (concat "Re-compiled " buffer-file-name " :-)"))))
+(add-hook 'after-save-hook 'my/auto-recompile)
 
 (setq compilation-scroll-output 'first-error)
-
-(add-hook 'after-save-hook 'my/auto-recompile)
 
 (with-eval-after-load 'dabbrev
   (setq abbrev-file-name (concat user-emacs-directory "abbrevs"))
   (setq save-abbrevs 'silently)
-
   (setq dabbrev-abbrev-char-regexp "\\sw\\|\\s_")
   (setq dabbrev-abbrev-skip-leading-regexp "[$*/=']")
   (setq dabbrev-backward-only nil)
@@ -362,7 +315,6 @@ If the string has length greater than 2, the rest are ignored."
   (setq dabbrev-check-other-buffers t)
   (setq dabbrev-eliminate-newlines t)
   (setq dabbrev-upcase-means-case-search t)
-
   (message "Lazy loaded dabbrev :-)"))
 
 ;;;###autoload
@@ -398,10 +350,9 @@ The optional argument can be generated with `make-hippie-expand-function'."
   "Offer `completing-read' for the word at point."
   (interactive)
   (my/hippie-complete-with 'hippie-expand))
-
-(add-hook 'text-mode-hook 'abbrev-mode)
-(global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "C-c /") 'my/hippie-expand-completing-read)
+
+(global-set-key (kbd "M-/") 'hippie-expand)
 
 (with-eval-after-load 'dired
 ;;;###autoload
@@ -575,7 +526,6 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (define-key dired-mode-map "f" 'dired-find-alternate-file)
   (define-key dired-mode-map "c" 'dired-do-compress-to)
   (define-key dired-mode-map ")" 'dired-omit-mode)
-
   (define-key dired-mode-map "r" 'ranger-mode)
   (define-key dired-mode-map (kbd "C-o") 'my/dired-view-file-other-window-temporarily)
   (define-key dired-mode-map (kbd "M-o") 'my/dired-view-file-other-window)
@@ -584,7 +534,6 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (define-key dired-mode-map (kbd "C-RET") 'my/dired-open-marked-files)
   (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
   (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
-
   (message "Lazy loaded dired :-)"))
 
 (with-eval-after-load 'dired-aux
@@ -662,47 +611,6 @@ output file.  %i path(s) are relative, while %o is absolute.")
       (insert (concat (number-to-string x) char))
       (newline)
       (setq x (+ x 1)))))
-
-;;;###autoload
-(defun my/insert-date ()
-  "Insert a timestamp according to locale's date and time format."
-  (interactive)
-  (insert (format-time-string "%c" (current-time))))
-
-;;;###autoload
-(defun my/open-line-above ()
-  "Insert an empty line above the current line.
-
-Position the cursor at its beginning, according to the current
-mode."
-  (interactive)
-  (move-beginning-of-line nil)
-  (insert "\n")
-  (if electric-indent-inhibit
-      ;; We can't use `indent-according-to-mode' in languages like Python,
-      ;; as there are multiple possible indentations with different meanings.
-      (let* ((indent-end (progn (move-to-mode-line-start) (point)))
-             (indent-start (progn (move-beginning-of-line nil) (point)))
-             (indent-chars (buffer-substring indent-start indent-end)))
-        (forward-line -1)
-        ;; This new line should be indented with the same characters as
-        ;; the current line.
-        (insert indent-chars))
-    ;; Just use the current major-mode's indent facility.
-    (forward-line -1)
-    (indent-according-to-mode)))
-
-;;;###autoload
-(defun my/open-line-below (arg)
-  "Insert an empty line after the current line.
-
-Position the cursor at its beginning, according to the current
-mode.  With a prefix ARG open line above the current line."
-  (interactive "P")
-  (if arg
-      (my/open-line-above)
-    (move-end-of-line nil)
-    (newline-and-indent)))
 
 ;;;###autoload
 (defun my/sort-lines-nocase ()
@@ -815,8 +723,6 @@ line."
 (global-set-key (kbd "C-c d") 'my/delete-inside)
 (global-set-key (kbd "C-c u") 'my/underline-text)
 (global-set-key (kbd "M-s M-s") 'my/surround)
-(global-set-key (kbd "C-o") 'my/open-line-above)
-(global-set-key (kbd "C-S-o") 'my/open-line-below)
 (global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
 
 (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
@@ -940,6 +846,7 @@ buffer."
                              (file-name-nondirectory buffer-file-name)))
     (delete-file (buffer-file-name))
     (kill-this-buffer)))
+(global-set-key (kbd "C-c f d") 'my/delete-this-file)
 
 ;;;###autoload
 (defun my/copy-file-name-to-clipboard ()
@@ -951,6 +858,7 @@ buffer."
     (when filename
       (kill-new filename)
       (message "Copied buffer file name '%s' to the clipboard." filename))))
+(global-set-key (kbd "C-c f w") 'my/copy-file-name-to-clipboard)
 
 ;;;###autoload
 (defun my/make-backup ()
@@ -986,6 +894,7 @@ For detail, see `my/make-backup'."
           (save-buffer)))
     (progn
       (my/make-backup))))
+(global-set-key (kbd "C-c f b") 'my/make-backup-and-save)
 
 ;;;###autoload
 (defun my/rename-this-file-and-buffer (new-name)
@@ -1002,20 +911,7 @@ For detail, see `my/make-backup'."
           (rename-file filename new-name 1))
         (rename-buffer new-name)
         (set-visited-file-name new-name)))))
-
-;;;###autoload
-(defun my/read-file (file)
-  "Return FILE content as a string."
-  (with-temp-buffer
-    (insert-file-contents file)
-    (buffer-string)))
-
-;;;###autoload
-(defun my/read-lines (file)
-  "Return a list of lines of a FILE."
-  (with-temp-buffer
-    (insert-file-contents file)
-    (split-string (buffer-string) "\n" t)))
+(global-set-key (kbd "C-c f r") 'my/rename-this-file-and-buffer)
 
 ;;;###autoload
 (defun my/sudoedit (&optional arg)
@@ -1025,11 +921,6 @@ For detail, see `my/make-backup'."
       (find-file (concat "/sudo:root@localhost:"
                          (read-file-name "Find file (as root): ")))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
-(global-set-key (kbd "C-c f d") 'my/delete-this-file)
-(global-set-key (kbd "C-c f c") 'my/copy-file-name-to-clipboard)
-(global-set-key (kbd "C-c f b") 'my/make-backup-and-save)
-(global-set-key (kbd "C-c f r") 'my/rename-this-file-and-buffer)
 (global-set-key (kbd "C-c f s") 'my/sudoedit)
 
 (with-eval-after-load 'gnus
@@ -1060,6 +951,10 @@ For detail, see `my/make-backup'."
 (add-hook 'yaml-mode-hook 'hs-minor-mode)
 (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
 
+(if (version< emacs-version "27")
+    (icomplete-mode)
+  (fido-mode))
+
 ;;;###autoload
 (defun my/icomplete-styles ()
   "Set icomplete styles based on Emacs version."
@@ -1067,10 +962,6 @@ For detail, see `my/make-backup'."
       (setq-local completion-styles '(initials partial-completion substring basic))
     (setq-local completion-styles '(initials partial-completion flex substring basic))))
 (add-hook 'icomplete-minibuffer-setup-hook 'my/icomplete-styles)
-
-(if (version< emacs-version "27")
-    (icomplete-mode)
-  (fido-mode))
 
 (setq icomplete-delay-completions-threshold 100)
 (setq icomplete-max-delay-chars 2)
@@ -1086,7 +977,6 @@ For detail, see `my/make-backup'."
 
 (if (version< emacs-version "27")
     (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-fido-exit))
-
 (define-key icomplete-minibuffer-map (kbd "M-j") 'exit-minibuffer)
 (define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
 (define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)
@@ -1173,7 +1063,6 @@ When searching backward, kill to the beginning of the match."
   (define-key isearch-mode-map (kbd "C-M-w") 'my/kill-to-isearch)
   (define-key isearch-mode-map (kbd "M-/") 'isearch-complete)
   (define-key minibuffer-local-isearch-map (kbd "M-/") 'isearch-complete-edit)
-
   (message "Lazy loaded isearch :-)"))
 
 (global-set-key (kbd "C-r") 'isearch-backward-regexp)
@@ -1185,25 +1074,11 @@ When searching backward, kill to the beginning of the match."
 (add-hook 'occur-mode-hook 'hl-line-mode)
 (define-key occur-mode-map "t" 'toggle-truncate-lines)
 
-(global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
-(global-set-key (kbd "C-c M-t d E") 'toggle-debug-on-entry)
-(global-set-key (kbd "C-c M-t d e") 'toggle-debug-on-error)
-(global-set-key (kbd "C-c M-t d q") 'toggle-debug-on-quit)
-(global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
-
 (global-set-key (kbd "C-c M-m") 'menu-bar-mode)
 (global-set-key (kbd "S-<f10>") 'menu-bar-mode)
 
 (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
 (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
-
-(when (version< emacs-version "27")
-  (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
-  (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
-  (global-set-key (kbd "C-x t k") 'tab-bar-close-tab)
-  (global-set-key (kbd "C-x t n") 'tab-bar-switch-to-next-tab)
-  (global-set-key (kbd "C-x t p") 'tab-bar-switch-to-prev-tab)
-  (global-set-key (kbd "C-x t l") 'tab-bar-switch-to-recent-tab))
 
 (global-set-key (kbd "C-<f10>") 'toggle-frame-maximized)
 (global-set-key (kbd "C-<f11>") 'toggle-frame-fullscreen)
@@ -1213,13 +1088,27 @@ When searching backward, kill to the beginning of the match."
 (global-set-key (kbd "C-c M-d r") 'desktop-read)
 (global-set-key (kbd "C-c M-d s") 'desktop-save)
 
+(autoload 'grep "grep" nil t)
+(global-set-key (kbd "C-c C-g") 'grep)
+
 (autoload 'calculator "calculator" nil t)
 (global-set-key (kbd "C-c c") 'calculator)
 (autoload 'calc "calc" nil t)
 (global-set-key (kbd "C-c M-c") 'calc)
 
-(autoload 'grep "grep" nil t)
-(global-set-key (kbd "C-c C-g") 'grep)
+(global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
+(global-set-key (kbd "C-c M-t d E") 'toggle-debug-on-entry)
+(global-set-key (kbd "C-c M-t d e") 'toggle-debug-on-error)
+(global-set-key (kbd "C-c M-t d q") 'toggle-debug-on-quit)
+(global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
+
+(when (version< emacs-version "27")
+  (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
+  (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
+  (global-set-key (kbd "C-x t k") 'tab-bar-close-tab)
+  (global-set-key (kbd "C-x t n") 'tab-bar-switch-to-next-tab)
+  (global-set-key (kbd "C-x t p") 'tab-bar-switch-to-prev-tab)
+  (global-set-key (kbd "C-x t l") 'tab-bar-switch-to-recent-tab))
 
 ;; for help modes, and simple/special modes
 (define-key special-mode-map "n" #'forward-button)
@@ -1230,38 +1119,6 @@ When searching backward, kill to the beginning of the match."
 (define-key special-mode-map "p" #'widget-backward)
 (define-key special-mode-map "f" #'widget-forward)
 (define-key special-mode-map "b" #'widget-backward)
-
-;;;###autoload
-(defun my/exchange-point-and-mark-no-activate ()
-  "Identical to \\[exchange-point-and-mark] but will not activate the region."
-  (interactive)
-  (exchange-point-and-mark)
-  (deactivate-mark nil))
-
-;;;###autoload
-(defun my/jump-to-mark ()
-  "Jump to the local mark, respecting the `mark-ring' order.
-
-This is the same as using \\[set-mark-command] with the prefix argument."
-  (interactive)
-  (set-mark-command 1))
-
-;;;###autoload
-(defun my/push-mark-no-activate ()
-  "Push `point' to `mark-ring', but do not activate the region.
-
-Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
-  (interactive)
-  (push-mark (point) t nil)
-  (message "Pushed mark to ring"))
-
-(global-set-key (kbd "C-c SPC p") 'my/push-mark-no-activate)
-(global-set-key (kbd "C-c SPC j") 'my/jump-to-mark)
-(global-set-key (kbd "C-c SPC x") 'my/exchange-point-and-mark-no-activate)
-
-(global-set-key (kbd "C-x p") 'pop-to-mark-command)
-
-(add-hook 'before-save-hook 'my/push-mark-no-activate)
 
 (savehist-mode 1)
 (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
@@ -1291,38 +1148,6 @@ Equivalent to \\[set-mark-command] when \\[transient-mark-mode] is disabled"
 (add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 16777216))) ; 16mb
 
 ;;;###autoload
-(defun my/substring (substring string)
-  "Return SUBSTRING of a STRING."
-  (let ((regex (concat  ".*\\(" substring "\\).*")))
-    (string-match regex string)
-    (match-string 1 string)))
-
-;;;###autoload
-(defun my/cycle-line-numbers ()
-  "Cycle through all the line numbering configurations."
-  (interactive)
-  (if display-line-numbers
-      (if current-prefix-arg
-          (if (eq display-line-numbers 'relative)
-              (setq display-line-numbers t)
-            (setq display-line-numbers 'relative))
-        (setq display-line-numbers nil))
-    (if current-prefix-arg
-        (setq display-line-numbers 'relative)
-      (setq display-line-numbers t))))
-
-;;;###autoload
-(defun my/fortune ()
-  "Insert a fortune into the minibuffer.
-
-If called with `prefix-arg', insert output of the fortune command
-into the buffer, before the point."
-  (interactive)
-  (if current-prefix-arg
-      (insert (shell-command-to-string "fortune"))
-    (message (string-trim (shell-command-to-string "fortune -s -n 100")))))
-
-;;;###autoload
 (defun my/google (arg)
   "Googles a query or region.  With prefix ARG, wrap in quotes."
   (interactive "P")
@@ -1333,46 +1158,14 @@ into the buffer, before the point."
     (when arg (setq query (concat "\"" query "\"")))
     (browse-url
      (concat "http://www.google.com/search?ie=utf-8&oe=utf-8&q=" query))))
-
-;;;###autoload
-(defun my/kanye-west-quote ()
-  "Get a random Kanye quote in the minibuffer."
-  (interactive)
-  (message
-   (with-temp-buffer
-     (url-insert-file-contents "https://api.kanye.rest/")
-     (cdr (assoc 'quote (json-read))))))
-
-;;;###autoload
-(defun my/chuck-norris-joke ()
-  "Get a random Chuck Norris joke in the minibuffer."
-  (interactive)
-  (message
-   (with-temp-buffer
-     (url-insert-file-contents "https://api.chucknorris.io/jokes/random")
-     (cdr (assoc 'value (json-read))))))
+(global-set-key (kbd "C-c M-g") 'my/google)
 
 ;;;###autoload
 (defmacro my/measure-time (&rest body)
-  "Measure and return the running time of BODY."
-  (declare (indent defun))
-  (let ((start (make-symbol "start")))
-    `(let ((,start (float-time)))
-       ,@body
-       (- (float-time) ,start))))
-
-;;;###autoload
-(defmacro my/measure-time-2 (&rest body)
   "Measure the time it takes to evaluate BODY."
   `(let ((time (current-time)))
      ,@body
      (message "%.06f" (float-time (time-since time)))))
-
-(global-set-key (kbd "C-c M-g") 'my/google)
-(global-set-key (kbd "C-c M-t l") 'my/cycle-line-numbers)
-(global-set-key (kbd "C-c Q c") 'my/chuck-norris-joke)
-(global-set-key (kbd "C-c Q k") 'my/kanye-west-quote)
-(global-set-key (kbd "C-c Q f") 'my/fortune)
 
 (with-eval-after-load 'org
   (require 'org-tempo)
@@ -1559,8 +1352,6 @@ functions."
   (setq recentf-max-menu-items 128)
   (setq recentf-max-saved-items 256)
 
-  (global-set-key (kbd "C-c C-r") 'recentf-open-files)
-
   ;;;###autoload
   (defun my/completing-recentf ()
     "Show a list of recent files."
@@ -1571,19 +1362,20 @@ functions."
            (list3 (mapcar #'abbreviate-file-name list2))
            (list4 (cl-remove-duplicates list3 :test #'string-equal)))
       (find-file (completing-read "Recent Files: " list4 nil t))))
+  (global-set-key (kbd "C-c r") 'my/completing-recentf)
 
   (defun my/completing-recentf-other-window ()
     (interactive)
     (split-window-sensibly)
     (other-window 1)
     (my/completing-recentf))
-
-  (global-set-key (kbd "C-c r") 'my/completing-recentf)
   (global-set-key (kbd "C-c 4 r") 'my/completing-recentf-other-window)
 
   (message "Lazy loaded recentf :-)"))
 
 (recentf-mode 1)
+
+(global-set-key (kbd "C-c C-r") 'recentf-open-files)
 
 ;;;###autoload
 (defun my/jump-to-register-other-window ()
@@ -1744,10 +1536,6 @@ Excluding ^I (tabs) and ^J (newlines)."
   (setq version-control t)
   (message "Lazy loaded vc :-)"))
 
-(when (fboundp 'winner-mode) (winner-mode 1))
-(setq split-width-threshold 160)
-(setq split-height-threshold 80)
-
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
 (setq confirm-kill-emacs 'y-or-n-p)
 
@@ -1858,7 +1646,6 @@ respect `narrow-to-region')."
 (global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
 (global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
 (global-set-key [remap kill-region] 'smart/kill-region)
-
 (define-key ctl-x-map "n" 'smart/narrow-or-widen-dwim)
 
 (setq c-default-style "bsd")
@@ -2012,11 +1799,15 @@ Otherwise switch to current one."
 
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
+(setq split-width-threshold 160)
+(setq split-height-threshold 80)
+
 (setq display-buffer-alist
       '(("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
          (display-buffer-in-side-window)
          (window-height . 0.16)
-         (side . top)
+         (window-width . 0.50)
+         (side . bottom)
          (slot . 2)
          (window-parameters . ((no-other-window . t))))
         (".*\\(e?shell\\|.*term\\).*"
@@ -2024,6 +1815,7 @@ Otherwise switch to current one."
          (window-height . 0.16)
          (side . bottom)
          (slot . 1))))
+(global-set-key (kbd "C-c w t") 'window-toggle-side-windows)
 
 ;;;###autoload
 (defun my/kill-buffer-other-window ()
@@ -2036,6 +1828,7 @@ Otherwise switch to current one."
     (select-window other-window)
     (kill-this-buffer)
     (select-window current-window)))
+(define-key ctl-x-4-map "k" 'my/kill-buffer-other-window)
 
 ;;;###autoload
 (defun my/last-window ()
@@ -2047,6 +1840,7 @@ Otherwise switch to current one."
       (raise-frame frame)
       (select-frame frame)
       (select-window win))))
+(global-set-key (kbd "C-c w w") 'my/last-window)
 
 ;;;###autoload
 (defun my/open-buffer-other-window (buffer)
@@ -2054,37 +1848,28 @@ Otherwise switch to current one."
   (interactive "BBuffer: ")
   (switch-to-buffer-other-window buffer)
   (other-window -1))
+(define-key ctl-x-4-map "o" 'my/open-buffer-other-window)
 
 ;;;###autoload
 (defun my/prev-window ()
   "Go the previously used window, excluding other frames."
   (interactive)
   (other-window -1))
-
-;;;###autoload
-(defun my/top-of-window ()
-  "Shift current line to the top of the window."
-  (interactive)
-  (set-window-start (selected-window) (point)))
-
-;;;###autoload
-(defun my/bottom-of-window ()
-  "Shift current line to the bottom of the window."
-  (interactive)
-  (my/top-of-window)
-  (scroll-down (- (window-height) 3)))
+(global-set-key (kbd "C-x O") 'my/prev-window)
 
 ;;;###autoload
 (defun my/scroll-line-up (n)
   "Scroll line up N lines.  Like Ctrl-e in Vim."
   (interactive "p")
   (scroll-up n))
+(global-set-key (kbd "M-p") 'my/scroll-line-up)
 
 ;;;###autoload
 (defun my/scroll-line-down (n)
   "Scroll line down N lines.  Ctrl-y in Vim."
   (interactive "p")
   (scroll-down n))
+(global-set-key (kbd "M-n") 'my/scroll-line-down)
 
 ;;;###autoload
 (defun my/hsplit-last-buffer (prefix)
@@ -2095,6 +1880,7 @@ With PREFIX stay in current buffer."
   (other-window 1 nil)
   (if (= prefix 1)
       (switch-to-next-buffer)))
+(global-set-key (kbd "C-c 2") 'my/hsplit-last-buffer)
 
 ;;;###autoload
 (defun my/vsplit-last-buffer (prefix)
@@ -2104,6 +1890,7 @@ With PREFIX stay in current buffer."
   (split-window-horizontally)
   (other-window 1 nil)
   (if (= prefix 1) (switch-to-next-buffer)))
+(global-set-key (kbd "C-c 3") 'my/vsplit-last-buffer)
 
 ;;;###autoload
 (defun my/toggle-split ()
@@ -2132,6 +1919,7 @@ window to right."
                     (split-window-vertically)
                   (split-window-horizontally))
                 (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
+(define-key ctl-x-4-map "s" 'my/toggle-split)
 
 ;;;###autoload
 (defun my/transpose-windows (arg)
@@ -2154,6 +1942,7 @@ window to right."
                  (p2 (window-point w2)))
             (set-window-buffer-start-and-point w1 b2 s2 p2)
             (set-window-buffer-start-and-point w2 b1 s1 p1)))))))
+(define-key ctl-x-4-map "t" 'my/transpose-windows)
 
 (autoload 'windmove-left "windmove" nil t)
 (global-set-key (kbd "C-c w b") 'windmove-left)
@@ -2169,23 +1958,10 @@ window to right."
 
 (setq auto-window-vscroll nil)
 
-(global-set-key (kbd "C-x O") 'my/prev-window)
-(global-set-key (kbd "C-c 3") 'my/vsplit-last-buffer)
-(global-set-key (kbd "C-c 2") 'my/hsplit-last-buffer)
-(global-set-key (kbd "C-M-<") 'my/top-of-window)
-(global-set-key (kbd "C-M->") 'my/bottom-of-window)
-(global-set-key (kbd "M-p") 'my/scroll-line-up)
-(global-set-key (kbd "M-n") 'my/scroll-line-down)
-
 (global-set-key (kbd "C-c v") 'scroll-other-window-down)
+(when (fboundp 'winner-mode) (winner-mode 1))
 (global-set-key (kbd "C-c w u") 'winner-undo)
 (global-set-key (kbd "C-c w r") 'winner-redo)
-(global-set-key (kbd "C-c w w") 'window-toggle-side-windows)
-
-(define-key ctl-x-4-map "k" 'my/kill-buffer-other-window)
-(define-key ctl-x-4-map "o" 'my/open-buffer-other-window)
-(define-key ctl-x-4-map "s" 'my/toggle-split)
-(define-key ctl-x-4-map "t" 'my/transpose-windows)
 
 (require 'package)
 (unless (package-installed-p 'use-package)

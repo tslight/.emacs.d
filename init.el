@@ -1806,7 +1806,6 @@ Otherwise switch to current one."
       '(("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
          (display-buffer-in-side-window)
          (window-height . 0.16)
-         (window-width . 0.50)
          (side . bottom)
          (slot . 2)
          (window-parameters . ((no-other-window . t))))

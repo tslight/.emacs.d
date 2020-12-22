@@ -1968,8 +1968,7 @@ window to right."
 (use-package ansible-doc :defer
   :hook (yaml-mode . ansible-doc-mode))
 
-(use-package async :defer
-  :if (not (equal system-type 'windows-nt))
+(use-package async :defer 5
   :commands (async-byte-compile-file
              async-bytecomp-package-mode)
   :init
@@ -2192,7 +2191,8 @@ window to right."
 
 (use-package restclient :defer)
 
-(use-package systemd :defer)
+(use-package systemd :defer
+  :if (not (equal system-type 'windows-nt)))
 
 (use-package terraform-mode :defer)
 

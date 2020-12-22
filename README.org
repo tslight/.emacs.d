@@ -2646,8 +2646,7 @@ party packages from [[https://melpa.org/][MELPA]].
 ** Async
 
 #+begin_src emacs-lisp
-  (use-package async :defer
-    :if (not (equal system-type 'windows-nt))
+  (use-package async :defer 5
     :commands (async-byte-compile-file
                async-bytecomp-package-mode)
     :init
@@ -2978,7 +2977,8 @@ party packages from [[https://melpa.org/][MELPA]].
 ** systemd
 
 #+begin_src emacs-lisp
-  (use-package systemd :defer)
+  (use-package systemd :defer
+    :if (not (equal system-type 'windows-nt)))
 #+end_src
 
 ** Terraform

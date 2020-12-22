@@ -1970,9 +1970,12 @@ window to right."
 
 (use-package async :defer
   :if (not (equal system-type 'windows-nt))
-  :config
+  :commands (async-byte-compile-file
+             async-bytecomp-package-mode)
+  :init
   (unless (equal system-type 'windows-nt)
     (setq async-bytecomp-allowed-packages '(all)))
+  :config
   (if (equal system-type 'windows-nt)
       (async-bytecomp-package-mode -1)
     (async-bytecomp-package-mode 1))

@@ -118,7 +118,6 @@ files, so make sure you've backed up anything you don't want to lose!
     - [[#cleanup-whitespace-on-save][Cleanup whitespace on save]]
   - [[#windows][Windows]]
     - [[#settings-1][Settings]]
-    - [[#window-rules][Window Rules]]
     - [[#kill-buffer-other-window][Kill buffer other window]]
     - [[#toggle-focus-to-last-window][Toggle focus to last window]]
     - [[#open-a-buffer-in-another-window][Open a buffer in another window]]
@@ -1166,8 +1165,7 @@ Place point at first error when running ~make~.
 ** Eshell
 #+begin_src emacs-lisp
   (with-eval-after-load 'eshell
-
-    ;;;###autoload
+  ;;;###autoload
     (defun my/eshell-complete-recent-dir (&optional arg)
       "Switch to a recent `eshell' directory using completion.
   With \\[universal-argument] also open the directory in a `dired'
@@ -1180,7 +1178,7 @@ Place point at first error when running ~make~.
         (when arg
           (dired dir))))
 
-    ;;;###autoload
+  ;;;###autoload
     (defun my/eshell-complete-history ()
       "Insert element from `eshell' history using completion."
       (interactive)
@@ -1188,7 +1186,7 @@ Place point at first error when running ~make~.
         (insert
          (completing-read "Input history: " hist nil t))))
 
-    ;;;###autoload
+  ;;;###autoload
     (defun my/eshell-prompt ()
       "Custom eshell prompt."
       (concat
@@ -1233,7 +1231,6 @@ Place point at first error when running ~make~.
       (define-key eshell-mode-map (kbd "C-=") 'my/eshell-complete-recent-dir))
 
     (add-hook 'eshell-mode-hook 'my/eshell-keys)
-
     (message "Lazy loaded eshell :-)"))
 
   ;;;###autoload
@@ -1248,6 +1245,7 @@ Place point at first error when running ~make~.
   (global-set-key (kbd "C-c e") 'eshell)
   (global-set-key (kbd "C-c 4 e") 'my/eshell-other-window)
 #+end_src
+
 ** Files
 *** Delete this file
 
@@ -2226,6 +2224,11 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 
 ** Term
 
+#+begin_src emacs-lisp
+  (autoload 'term "term" nil t)
+  (autoload 'ansi-term "term" nil t)
+#+end_src
+
 *** ANSI Term launcher
 
 #+begin_src emacs-lisp
@@ -2287,11 +2290,6 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 
     (setq term-buffer-maximum-size 200000)
     (message "Lazy loaded term :-)"))
-#+end_src
-
-#+begin_src emacs-lisp
-  (autoload 'term "term" nil t)
-  (autoload 'ansi-term "term" nil t)
 #+end_src
 
 *** Set term coding system to UTF-8
@@ -2393,24 +2391,6 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 #+begin_src emacs-lisp
   (setq split-width-threshold 160)
   (setq split-height-threshold 80)
-#+end_src
-
-*** Window Rules
-
-#+begin_src emacs-lisp
-  (setq display-buffer-alist
-        '(("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . bottom)
-           (slot . 2)
-           (window-parameters . ((no-other-window . t))))
-          (".*\\(e?shell\\|.*term\\).*"
-           (display-buffer-in-side-window)
-           (window-height . 0.16)
-           (side . bottom)
-           (slot . 1))))
-  (global-set-key (kbd "C-c w t") 'window-toggle-side-windows)
 #+end_src
 
 *** Kill buffer other window

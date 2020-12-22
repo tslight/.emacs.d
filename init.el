@@ -776,8 +776,7 @@ line."
 (autoload 'erc "erc" nil t)
 
 (with-eval-after-load 'eshell
-
-  ;;;###autoload
+;;;###autoload
   (defun my/eshell-complete-recent-dir (&optional arg)
     "Switch to a recent `eshell' directory using completion.
 With \\[universal-argument] also open the directory in a `dired'
@@ -790,7 +789,7 @@ buffer."
       (when arg
         (dired dir))))
 
-  ;;;###autoload
+;;;###autoload
   (defun my/eshell-complete-history ()
     "Insert element from `eshell' history using completion."
     (interactive)
@@ -798,7 +797,7 @@ buffer."
       (insert
        (completing-read "Input history: " hist nil t))))
 
-  ;;;###autoload
+;;;###autoload
   (defun my/eshell-prompt ()
     "Custom eshell prompt."
     (concat
@@ -843,7 +842,6 @@ buffer."
     (define-key eshell-mode-map (kbd "C-=") 'my/eshell-complete-recent-dir))
 
   (add-hook 'eshell-mode-hook 'my/eshell-keys)
-
   (message "Lazy loaded eshell :-)"))
 
 ;;;###autoload
@@ -1669,6 +1667,9 @@ respect `narrow-to-region')."
 (global-set-key [remap kill-region] 'smart/kill-region)
 (define-key ctl-x-map "n" 'smart/narrow-or-widen-dwim)
 
+(autoload 'term "term" nil t)
+(autoload 'ansi-term "term" nil t)
+
 ;;;###autoload
 (defun my/ansi-term ()
   "Opens shell from $SHELL environmental variable in `ansi-term'."
@@ -1719,9 +1720,6 @@ Otherwise switch to current one."
 
   (setq term-buffer-maximum-size 200000)
   (message "Lazy loaded term :-)"))
-
-(autoload 'term "term" nil t)
-(autoload 'ansi-term "term" nil t)
 
 (add-hook 'term-exec (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix)))
 
@@ -1803,20 +1801,6 @@ Otherwise switch to current one."
 
 (setq split-width-threshold 160)
 (setq split-height-threshold 80)
-
-(setq display-buffer-alist
-      '(("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
-         (display-buffer-in-side-window)
-         (window-height . 0.16)
-         (side . bottom)
-         (slot . 2)
-         (window-parameters . ((no-other-window . t))))
-        (".*\\(e?shell\\|.*term\\).*"
-         (display-buffer-in-side-window)
-         (window-height . 0.16)
-         (side . bottom)
-         (slot . 1))))
-(global-set-key (kbd "C-c w t") 'window-toggle-side-windows)
 
 ;;;###autoload
 (defun my/kill-buffer-other-window ()

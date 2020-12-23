@@ -55,6 +55,45 @@
 (global-set-key (kbd "C-c M-n") 'my/nuke-buffers)
 
 ;;;###autoload
+(defun my/remove-from-buffer (string)
+  "Remove all occurences of STRING from the whole buffer."
+  (interactive "sString to remove: ")
+  (save-match-data
+    (save-excursion
+      (let ((count 0))
+        (goto-char (point-min))
+        (while (re-search-forward string (point-max) t)
+          (setq count (+ count 1))
+          (replace-match "" nil nil))
+        (message (format "%d %s removed from buffer." count string))))))
+
+;;;###autoload
+(defun my/remove-character-number (number)
+  "Remove all occurences of a control character NUMBER.
+Excluding ^I (tabs) and ^J (newline)."
+  (if (and (>= number 0) (<= number 31)
+           (not (= number 9)) (not (= number 10)))
+      (let ((character (string number)))
+        (my/remove-from-buffer character))))
+
+;;;###autoload
+(defun my/remove-all-ctrl-characters ()
+  "Remove all occurences of all control characters.
+Excluding ^I (tabs) and ^J (newlines)."
+  (interactive)
+  (mapcar (lambda (n)
+            (my/remove-character-number n))
+          (number-sequence 0 31)))
+
+;;;###autoload
+(defun my/remove-ctrl-m ()
+  "Remove all ^M occurrences from EOL in a buffer."
+  (interactive)
+  (my/remove-from-buffer "$"))
+
+(global-set-key (kbd "C-c k") 'my/remove-from-buffer)
+
+;;;###autoload
 (defun my/save-buffers-silently ()
   "Save all open buffers without prompting."
   (interactive)
@@ -204,7 +243,7 @@ The optional argument can be generated with `make-hippie-expand-function'."
 (global-set-key (kbd "M-/") 'hippie-expand)
 
 (with-eval-after-load 'dired
-;;;###autoload
+  ;;;###autoload
   (defun my/dired-get-size ()
     "Get cumlative size of marked or current item."
     (interactive)
@@ -216,7 +255,7 @@ The optional argument can be generated with `make-hippie-expand-function'."
                    (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
                    (match-string 1))))))
 
-;;;###autoload
+  ;;;###autoload
   (defun my/dired-open-marked-files ()
     "Open marked files."
     (interactive)
@@ -226,76 +265,19 @@ The optional argument can be generated with `make-hippie-expand-function'."
              (dired-get-file-for-visit)
              current-prefix-arg))))
 
-;;;###autoload
-  (defun my/dired-sort ()
-    "Sort dired dir listing in different ways.  Prompt for a choice."
-    (interactive)
-    (let (-sort-by -arg)
-      (if (eq system-type 'berkeley-unix)
-          (progn
-            (setq -sort-by (completing-read
-                            "Sort by:" '( "date" "size" "name")))
-            (cond ((equal -sort-by "name") (setq -arg "-alhpL"))
-                  ((equal -sort-by "date") (setq -arg "-alhpLt"))
-                  ((equal -sort-by "size") (setq -arg "-alhpLS "))
-                  (t (error "Logic error 09535" ))))
-        (progn
-          (setq -sort-by (completing-read
-                          "Sort by:" '( "date" "size" "name" "dir")))
-          (cond ((equal -sort-by "name")
-                 (setq -arg "-Al --si --time-style long-iso "))
-                ((equal -sort-by "date")
-                 (setq -arg "-Al --si --time-style long-iso -t"))
-                ((equal -sort-by "size")
-                 (setq -arg "-Al --si --time-style long-iso -S"))
-                ((equal -sort-by "dir")
-                 (setq -arg "-Al --si --time-style long-iso --group-directories-first"))
-                (t (error "Logic error 09535" )))))
-      (dired-sort-other -arg )))
-
-;;;###autoload
+  ;;;###autoload
   (defun my/dired-back-to-top ()
     "Go to first file in directory."
     (interactive)
     (goto-char (point-min))
     (dired-next-line 2))
 
-;;;###autoload
+  ;;;###autoload
   (defun my/dired-jump-to-bottom ()
     "Go to last file in directory."
     (interactive)
     (goto-char (point-max))
     (dired-next-line -1))
-
-;;;###autoload
-  (defun my/dired-view-file-other-window ()
-    "View current file in read-only temporary buffer and other window."
-    (interactive)
-    (if (not (window-parent))
-        (split-window-sensibly))
-    (let ((file (dired-get-file-for-visit))
-          (dbuffer (current-buffer)))
-      (other-window 1)
-      (unless (equal dbuffer (current-buffer))
-        (if (or view-mode (equal major-mode 'dired-mode))
-            (kill-buffer)))
-      (let ((filebuffer (get-file-buffer file)))
-        (if filebuffer
-            (switch-to-buffer filebuffer)
-          (view-file file))
-        (other-window -1))))
-
-;;;###autoload
-  (defun my/dired-view-file-other-window-temporarily ()
-    "View current file in read-only temporary buffer and other window.
-Delete the visiting buffer as soon as another key is pressed."
-    (interactive)
-    (dired-find-file-other-window)
-    (other-window 1)
-    (isearch-unread (read-event))
-    (other-window 1)
-    (kill-buffer)
-    (other-window 1))
 
   (defgroup my/dired-peep nil
     "See the file at point when browsing in a Dired buffer."
@@ -303,7 +285,7 @@ Delete the visiting buffer as soon as another key is pressed."
 
   (setq my/dired-peep-next-current-buffer nil)
 
-;;;###autoload
+  ;;;###autoload
   (defun my/dired-peep-next ()
     (interactive)
     (next-line 1)
@@ -312,7 +294,7 @@ Delete the visiting buffer as soon as another key is pressed."
     (setq my/dired-peep-next-current-buffer (current-buffer))
     (other-window 1))
 
-;;;###autoload
+  ;;;###autoload
   (defun my/dired-peep-previous ()
     (interactive)
     (previous-line 1)
@@ -321,7 +303,7 @@ Delete the visiting buffer as soon as another key is pressed."
     (setq my/dired-peep-next-current-buffer (current-buffer))
     (other-window 1))
 
-;;;###autoload
+  ;;;###autoload
   (define-minor-mode my/dired-peep-mode
     "Toggle preview of files when browsing in a Dired buffer."
     :global t
@@ -330,8 +312,12 @@ Delete the visiting buffer as soon as another key is pressed."
         (progn
           (define-key dired-mode-map "n" 'my/dired-peep-next)
           (define-key dired-mode-map "p" 'my/dired-peep-previous))
-      (define-key dired-mode-map "n" 'dired-next-line)
-      (define-key dired-mode-map "p" 'dired-previous-line)))
+      (progn
+        (define-key dired-mode-map "n" 'dired-next-line)
+        (define-key dired-mode-map "p" 'dired-previous-line)
+        (other-window 1)
+        (kill-buffer)
+        (other-window 1))))
 
   (defalias 'ranger-mode 'my/dired-peep-mode)
 
@@ -340,12 +326,12 @@ Delete the visiting buffer as soon as another key is pressed."
       ("\\.zip\\'" . "zip %o -r --filesync %i"))
     "Control the compression shell command for `dired-do-compress-to'.
 
-Each element is (REGEXP . CMD), where REGEXP is the name of the
-archive to which you want to compress, and CMD the the
-corresponding command.
+  Each element is (REGEXP . CMD), where REGEXP is the name of the
+  archive to which you want to compress, and CMD the the
+  corresponding command.
 
-Within CMD, %i denotes the input file(s), and %o denotes the
-output file.  %i path(s) are relative, while %o is absolute.")
+  Within CMD, %i denotes the input file(s), and %o denotes the
+  output file.  %i path(s) are relative, while %o is absolute.")
 
   (autoload 'dired-omit-mode "dired-x"
     "Omit files from dired listings." t)
@@ -376,11 +362,7 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (define-key dired-mode-map "c" 'dired-do-compress-to)
   (define-key dired-mode-map ")" 'dired-omit-mode)
   (define-key dired-mode-map "r" 'ranger-mode)
-  (define-key dired-mode-map (kbd "C-o") 'my/dired-view-file-other-window-temporarily)
-  (define-key dired-mode-map (kbd "M-o") 'my/dired-view-file-other-window)
-  (define-key dired-mode-map "s" 'my/dired-sort)
   (define-key dired-mode-map "?" 'my/dired-get-size)
-  (define-key dired-mode-map (kbd "C-RET") 'my/dired-open-marked-files)
   (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
   (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
   (message "Lazy loaded dired :-)"))
@@ -509,6 +491,7 @@ output file.  %i path(s) are relative, while %o is absolute.")
     (search-forward-regexp "[]})>\"\']" (line-end-position))
     (backward-char)
     (kill-region lstart (point))))
+(global-set-key (kbd "C-c d") 'my/delete-inside)
 
 ;;;###autoload
 (defun my/generate-numbered-list (start end char)
@@ -521,45 +504,6 @@ output file.  %i path(s) are relative, while %o is absolute.")
       (setq x (+ x 1)))))
 
 ;;;###autoload
-(defun my/remove-from-buffer (string)
-  "Remove all occurences of STRING from the whole buffer."
-  (interactive "sString to remove: ")
-  (save-match-data
-    (save-excursion
-      (let ((count 0))
-        (goto-char (point-min))
-        (while (re-search-forward string (point-max) t)
-          (setq count (+ count 1))
-          (replace-match "" nil nil))
-        (message (format "%d %s removed from buffer." count string))))))
-
-;;;###autoload
-(defun my/remove-character-number (number)
-  "Remove all occurences of a control character NUMBER.
-Excluding ^I (tabs) and ^J (newline)."
-  (if (and (>= number 0) (<= number 31)
-           (not (= number 9)) (not (= number 10)))
-      (let ((character (string number)))
-        (my/remove-from-buffer character))))
-
-;;;###autoload
-(defun my/remove-all-ctrl-characters ()
-  "Remove all occurences of all control characters.
-Excluding ^I (tabs) and ^J (newlines)."
-  (interactive)
-  (mapcar (lambda (n)
-            (my/remove-character-number n))
-          (number-sequence 0 31)))
-
-;;;###autoload
-(defun my/remove-ctrl-m ()
-  "Remove all ^M occurrences from EOL in a buffer."
-  (interactive)
-  (my/remove-from-buffer "$"))
-
-(global-set-key (kbd "C-c k") 'my/remove-from-buffer)
-
-;;;###autoload
 (defun smart/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
   (interactive)
@@ -569,6 +513,7 @@ Excluding ^I (tabs) and ^J (newlines)."
                     (point-max))
            fill-column)))
     (call-interactively #'fill-paragraph)))
+(global-set-key [remap fill-paragraph] 'smart/fill-or-unfill)
 
 ;;;###autoload
 (defun smart/narrow-or-widen-dwim (p)
@@ -594,6 +539,7 @@ narrowed."
                 (org-narrow-to-block))
                (t (org-narrow-to-subtree))))
         (t (narrow-to-defun))))
+(define-key ctl-x-map "n" 'smart/narrow-or-widen-dwim)
 
 ;;;###autoload
 (defun smart/move-beginning-of-line ()
@@ -605,6 +551,7 @@ Otherwise point moves to beginning of line."
   (if (= (point) (save-excursion (back-to-indentation) (point)))
       (beginning-of-line)
     (back-to-indentation)))
+(global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
 
 ;;;###autoload
 (defun smart/kill-ring-save ()
@@ -623,6 +570,7 @@ respect `narrow-to-region')."
       (progn (setq p1 (point-min))
              (setq p2 (point-max))))
     (kill-ring-save p1 p2)))
+(global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
 
 ;;;###autoload
 (defun smart/kill-region ()
@@ -641,12 +589,7 @@ respect `narrow-to-region')."
       (progn (setq p1 (point-min))
              (setq p2 (point-max))))
     (kill-region p1 p2)))
-
-(global-set-key [remap fill-paragraph] 'smart/fill-or-unfill)
-(global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
-(global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
 (global-set-key [remap kill-region] 'smart/kill-region)
-(define-key ctl-x-map "n" 'smart/narrow-or-widen-dwim)
 
 ;;;###autoload
 (defun my/sort-lines-nocase ()
@@ -668,6 +611,7 @@ If you omit CLOSE, it will reuse OPEN."
       (insert close))
     (goto-char begin)
     (insert open)))
+(global-set-key (kbd "M-s M-s") 'my/surround)
 
 ;;;###autoload
 (defun my/untabify-buffer ()
@@ -688,16 +632,11 @@ If you omit CLOSE, it will reuse OPEN."
   "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
   (interactive "p")
   (yank-pop (- arg)))
-
-(global-set-key (kbd "C-c d") 'my/delete-inside)
-(global-set-key (kbd "C-c u") 'my/underline-text)
-(global-set-key (kbd "M-s M-s") 'my/surround)
 (global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
 
 (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
 (global-set-key (kbd "M-;") 'comment-line)
-(global-set-key (kbd "C-z") 'zap-up-to-char)
-(global-set-key (kbd "M-z") 'zap-up-char)
+(global-set-key (kbd "M-z") 'zap-up-to-char)
 (global-set-key (kbd "C-x M-t") 'transpose-regions)
 (global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
 (global-set-key (kbd "M-SPC") 'cycle-spacing)

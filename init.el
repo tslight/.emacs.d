@@ -1802,26 +1802,6 @@ window to right."
   :diminish hungry-delete-mode
   :config (global-hungry-delete-mode))
 
-(use-package ibuffer-vc :defer
-  :config
-  (defun my/ibuffer-vc-setup ()
-    (ibuffer-vc-set-filter-groups-by-vc-root)
-    (unless (eq ibuffer-sorting-mode 'alphabetic)
-      (ibuffer-do-sort-by-alphabetic)))
-  (setq ibuffer-formats
-        '((mark modified read-only vc-status-mini " "
-                (name 18 18 :left :elide)
-                " "
-                (size 9 -1 :right)
-                " "
-                (mode 16 16 :left :elide)
-                " "
-                (vc-status 16 16 :left)
-                " "
-                vc-relative-file)))
-  :hook
-  (ibuffer . my/ibuffer-vc-setup))
-
 (use-package js2-mode :defer
   :hook
   (js-mode . js2-minor-mode)

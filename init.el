@@ -12,39 +12,6 @@
 (defvar my/default-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
-;;;###autoload
-(defun my/align-symbol (begin end symbol)
-  "Align any SYMBOL in region (between BEGIN and END)."
-  (interactive "r\nsEnter align symbol: ")
-  (align-regexp begin end (concat "\\(\\s-*\\)" symbol) 1 1))
-(global-set-key (kbd "C-c a") 'my/align-symbol)
-
-;;;###autoload
-(defun my/align-equals (begin end)
-  "Align equals in region (between BEGIN and END)."
-  (interactive "r")
-  (my/align-symbol begin end "="))
-(global-set-key (kbd "C-c =") 'my/align-equals)
-
-;;;###autoload
-(defun my/align-colon (begin end)
-  "Align colons in region (between BEGIN and END)."
-  (interactive "r")
-  (my/align-symbol begin end ":"))
-(global-set-key (kbd "C-c :") 'my/align-colon)
-
-;;;###autoload
-(defun my/align-numbers (begin end)
-  "Align numbers in region (between BEGIN and END)."
-  (interactive "r")
-  (my/align-symbol begin end "[0-9]+"))
-(global-set-key (kbd "C-c #") 'my/align-numbers)
-
-(defadvice align-regexp (around align-regexp-with-spaces activate)
-  "Force alignment commands to use spaces, not tabs."
-  (let ((indent-tabs-mode nil))
-    ad-do-it))
-
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 ;;;###autoload
 (defun colorize-compilation-buffer ()
@@ -117,145 +84,6 @@
   (setq uniquify-strip-common-suffix t)
   (setq uniquify-after-kill-buffer-p t)
   (message "Lazy loaded uniquify :-)"))
-
-;;;###autoload
-(defun my/change-number-at-point (change)
-  "Change a number by CHANGE amount."
-  (let ((number (number-at-point))
-        (point (point)))
-    (when number
-      (progn
-        (forward-word)
-        (search-backward (number-to-string number))
-        (replace-match (number-to-string (funcall change number)))
-        (goto-char point)))))
-
-;;;###autoload
-(defun my/increment-number-at-point ()
-  "Increment number at point."
-  (interactive)
-  (my/change-number-at-point '1+))
-(global-set-key (kbd "C-c +") 'my/increment-number-at-point)
-
-;;;###autoload
-(defun my/decrement-number-at-point ()
-  "Decrement number at point."
-  (interactive)
-  (my/change-number-at-point '1-))
-(global-set-key (kbd "C-c -") 'my/decrement-number-at-point)
-
-;;;###autoload
-(defun my/change-pairs (from-chars to-chars)
-  "Change pairs from FROM-CHARS to TO-CHARS.
-
-When called in Lisp program, FROM-CHARS or TO-CHARS is a string
-of bracket pair, eg \"(paren)\", \"[bracket]\", etc.  The first
-and last characters are used.
-
-If the string contains “,2”, then the first 2 chars and last 2
-chars are used, for example \"[[bracket,2]]\".  If to-chars is
-equal to string “none”, the brackets are deleted.
-
-If the string has length greater than 2, the rest are ignored."
-  (interactive
-   (let (($bracketsList
-          '("(paren)"
-            "{brace}"
-            "<greater>"
-            "<<double greater,2>>"
-            "`emacs'"
-            "`markdown`"
-            "~tilde~"
-            "=equal="
-            "\"quote\""
-            "[square]"
-            "[[double square,2]]"
-            "'single quote'"
-            "none"
-            )))
-     (list
-      (completing-read "From:" $bracketsList )
-      (completing-read "To:" $bracketsList ))))
-  (let ( $p1 $p2 )
-    (if (use-region-p)
-        (progn
-          (setq $p1 (region-beginning))
-          (setq $p2 (region-end)))
-      (save-excursion
-        (if (re-search-backward "\n[ \t]*\n" nil "move")
-            (progn (re-search-forward "\n[ \t]*\n")
-                   (setq $p1 (point)))
-          (setq $p1 (point)))
-        (if (re-search-forward "\n[ \t]*\n" nil "move")
-            (progn (re-search-backward "\n[ \t]*\n")
-                   (setq $p2 (point)))
-          (setq $p2 (point)))))
-    (save-excursion
-      (save-restriction
-        (narrow-to-region $p1 $p2)
-        (let ( (case-fold-search nil)
-               $fromLeft
-               $fromRight
-               $toLeft
-               $toRight)
-          (cond
-           ((string-match ",2" from-chars  )
-            (progn
-              (setq $fromLeft (substring from-chars 0 2))
-              (setq $fromRight (substring from-chars -2))))
-           (t
-            (progn
-              (setq $fromLeft (substring from-chars 0 1))
-              (setq $fromRight (substring from-chars -1)))))
-          (cond
-           ((string-match ",2" to-chars)
-            (progn
-              (setq $toLeft (substring to-chars 0 2))
-              (setq $toRight (substring to-chars -2))))
-           ((string-match "none" to-chars)
-            (progn
-              (setq $toLeft "")
-              (setq $toRight "")))
-           (t
-            (progn
-              (setq $toLeft (substring to-chars 0 1))
-              (setq $toRight (substring to-chars -1)))))
-          (cond
-           ((string-match "markdown" from-chars)
-            (progn
-              (goto-char (point-min))
-              (while
-                  (re-search-forward "`\\([^`]+?\\)`" nil t)
-                (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-           ((string-match "tilde" from-chars)
-            (progn
-              (goto-char (point-min))
-              (while
-                  (re-search-forward "~\\([^~]+?\\)~" nil t)
-                (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-           ((string-match "ascii quote" from-chars)
-            (progn
-              (goto-char (point-min))
-              (while
-                  (re-search-forward "\"\\([^\"]+?\\)\"" nil t)
-                (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-           ((string-match "equal" from-chars)
-            (progn
-              (goto-char (point-min))
-              (while
-                  (re-search-forward "=\\([^=]+?\\)=" nil t)
-                (replace-match (concat $toLeft "\\1" $toRight ) "FIXEDCASE" ))))
-           (t (progn
-                (progn
-                  (goto-char (point-min))
-                  (while (search-forward $fromLeft nil t)
-                    (replace-match $toLeft "FIXEDCASE" "LITERAL")))
-                (progn
-                  (goto-char (point-min))
-                  (while (search-forward $fromRight nil t)
-                    (replace-match $toRight "FIXEDCASE" "LITERAL")))))))))))
-
-(global-set-key (kbd "C-c M-p") 'my/change-pairs)
 
 (setq c-default-style "bsd")
 (setq c-basic-offset 4)
@@ -612,6 +440,65 @@ output file.  %i path(s) are relative, while %o is absolute.")
   (message "Lazy loaded ediff :-)"))
 
 ;;;###autoload
+(defun my/align-symbol (begin end symbol)
+  "Align any SYMBOL in region (between BEGIN and END)."
+  (interactive "r\nsEnter align symbol: ")
+  (align-regexp begin end (concat "\\(\\s-*\\)" symbol) 1 1))
+(global-set-key (kbd "C-c a") 'my/align-symbol)
+
+;;;###autoload
+(defun my/align-equals (begin end)
+  "Align equals in region (between BEGIN and END)."
+  (interactive "r")
+  (my/align-symbol begin end "="))
+(global-set-key (kbd "C-c =") 'my/align-equals)
+
+;;;###autoload
+(defun my/align-colon (begin end)
+  "Align colons in region (between BEGIN and END)."
+  (interactive "r")
+  (my/align-symbol begin end ":"))
+(global-set-key (kbd "C-c :") 'my/align-colon)
+
+;;;###autoload
+(defun my/align-numbers (begin end)
+  "Align numbers in region (between BEGIN and END)."
+  (interactive "r")
+  (my/align-symbol begin end "[0-9]+"))
+(global-set-key (kbd "C-c #") 'my/align-numbers)
+
+(defadvice align-regexp (around align-regexp-with-spaces activate)
+  "Force alignment commands to use spaces, not tabs."
+  (let ((indent-tabs-mode nil))
+    ad-do-it))
+
+;;;###autoload
+(defun my/change-number-at-point (change)
+  "Change a number by CHANGE amount."
+  (let ((number (number-at-point))
+        (point (point)))
+    (when number
+      (progn
+        (forward-word)
+        (search-backward (number-to-string number))
+        (replace-match (number-to-string (funcall change number)))
+        (goto-char point)))))
+
+;;;###autoload
+(defun my/increment-number-at-point ()
+  "Increment number at point."
+  (interactive)
+  (my/change-number-at-point '1+))
+(global-set-key (kbd "C-c +") 'my/increment-number-at-point)
+
+;;;###autoload
+(defun my/decrement-number-at-point ()
+  "Decrement number at point."
+  (interactive)
+  (my/change-number-at-point '1-))
+(global-set-key (kbd "C-c -") 'my/decrement-number-at-point)
+
+;;;###autoload
 (defun my/delete-inside ()
   "Deletes the text within parentheses, brackets or quotes."
   (interactive)
@@ -634,6 +521,134 @@ output file.  %i path(s) are relative, while %o is absolute.")
       (setq x (+ x 1)))))
 
 ;;;###autoload
+(defun my/remove-from-buffer (string)
+  "Remove all occurences of STRING from the whole buffer."
+  (interactive "sString to remove: ")
+  (save-match-data
+    (save-excursion
+      (let ((count 0))
+        (goto-char (point-min))
+        (while (re-search-forward string (point-max) t)
+          (setq count (+ count 1))
+          (replace-match "" nil nil))
+        (message (format "%d %s removed from buffer." count string))))))
+
+;;;###autoload
+(defun my/remove-character-number (number)
+  "Remove all occurences of a control character NUMBER.
+Excluding ^I (tabs) and ^J (newline)."
+  (if (and (>= number 0) (<= number 31)
+           (not (= number 9)) (not (= number 10)))
+      (let ((character (string number)))
+        (my/remove-from-buffer character))))
+
+;;;###autoload
+(defun my/remove-all-ctrl-characters ()
+  "Remove all occurences of all control characters.
+Excluding ^I (tabs) and ^J (newlines)."
+  (interactive)
+  (mapcar (lambda (n)
+            (my/remove-character-number n))
+          (number-sequence 0 31)))
+
+;;;###autoload
+(defun my/remove-ctrl-m ()
+  "Remove all ^M occurrences from EOL in a buffer."
+  (interactive)
+  (my/remove-from-buffer "$"))
+
+(global-set-key (kbd "C-c k") 'my/remove-from-buffer)
+
+;;;###autoload
+(defun smart/fill-or-unfill ()
+  "Like `fill-paragraph', but unfill if used twice."
+  (interactive)
+  (let ((fill-column
+         (if (eq last-command 'smart/fill-or-unfill)
+             (progn (setq this-command nil)
+                    (point-max))
+           fill-column)))
+    (call-interactively #'fill-paragraph)))
+
+;;;###autoload
+(defun smart/narrow-or-widen-dwim (p)
+  "If the buffer is narrowed, it widens, otherwise, it narrows intelligently.
+
+Intelligently means: region, org-src-block, org-subtree, or
+defun, whichever applies first.
+
+Narrowing to org-src-block actually calls `org-edit-src-code'.
+With prefix P, don't widen, just narrow even if buffer is already
+narrowed."
+  (interactive "P")
+  (declare (interactive-only))
+  (cond ((and (buffer-narrowed-p) (not p)) (widen))
+        ((region-active-p)
+         (narrow-to-region (region-beginning) (region-end)))
+        ((derived-mode-p 'org-mode)
+         ;; `org-edit-src-code' is not a real narrowing command.
+         ;; Remove this first conditional if you don't want it.
+         (cond ((ignore-errors (org-edit-src-code))
+                (delete-other-windows))
+               ((org-at-block-p)
+                (org-narrow-to-block))
+               (t (org-narrow-to-subtree))))
+        (t (narrow-to-defun))))
+
+;;;###autoload
+(defun smart/move-beginning-of-line ()
+  "Move point back to indentation.
+
+If there is any non blank characters to the left of the cursor.
+Otherwise point moves to beginning of line."
+  (interactive)
+  (if (= (point) (save-excursion (back-to-indentation) (point)))
+      (beginning-of-line)
+    (back-to-indentation)))
+
+;;;###autoload
+(defun smart/kill-ring-save ()
+  "Copy current line or text selection to kill ring.
+
+When `universal-argument' is called first, copy whole buffer (but
+respect `narrow-to-region')."
+  (interactive)
+  (let (p1 p2)
+    (if (null current-prefix-arg)
+        (progn (if (use-region-p)
+                   (progn (setq p1 (region-beginning))
+                          (setq p2 (region-end)))
+                 (progn (setq p1 (line-beginning-position))
+                        (setq p2 (line-end-position)))))
+      (progn (setq p1 (point-min))
+             (setq p2 (point-max))))
+    (kill-ring-save p1 p2)))
+
+;;;###autoload
+(defun smart/kill-region ()
+  "Cut current line, or text selection to kill ring.
+
+When `universal-argument' is called first, cut whole buffer (but
+respect `narrow-to-region')."
+  (interactive)
+  (let (p1 p2)
+    (if (null current-prefix-arg)
+        (progn (if (use-region-p)
+                   (progn (setq p1 (region-beginning))
+                          (setq p2 (region-end)))
+                 (progn (setq p1 (line-beginning-position))
+                        (setq p2 (line-beginning-position 2)))))
+      (progn (setq p1 (point-min))
+             (setq p2 (point-max))))
+    (kill-region p1 p2)))
+
+(global-set-key [remap fill-paragraph] 'smart/fill-or-unfill)
+(global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
+(global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
+(global-set-key [remap kill-region] 'smart/kill-region)
+(define-key ctl-x-map "n" 'smart/narrow-or-widen-dwim)
+
+;;;###autoload
 (defun my/sort-lines-nocase ()
   "Sort marked lines with case sensitivity."
   (interactive)
@@ -653,73 +668,6 @@ If you omit CLOSE, it will reuse OPEN."
       (insert close))
     (goto-char begin)
     (insert open)))
-
-;;;###autoload
-(defun my/underline-text (arg)
-  "Insert ARG under the current line.
-
-Filled with a default underline character `='.
-
-If point had been at the end of the line, moves point to the
-beginning of the line directly following the underlining.
-
-It does not underline the line's leading whitespace, trailing
-whitespace, or comment symbols.
-
-With prefix prompts user for a custom underline character.
-
-With double prefix, does not underline whitespace embedded in the
-line."
-  (interactive "p")
-  (let* ((original-point (point))
-         (underline-char
-          (replace-regexp-in-string "[[:cntrl:][:space:]]" "="
-                                    (if (= arg 1)
-                                        "="
-                                      (char-to-string
-                                       (read-char "What character to underline with?")))))
-         (original-point-is-eol
-          (when (looking-at "$") t))
-         (original-point-is-eob
-          (= original-point (point-max))))
-    (beginning-of-line)
-    (unless
-        (when (looking-at "[[:space:]]*$")
-          (beginning-of-line 0)
-          (when (looking-at "[[:space:]]*$")
-            (goto-char original-point)
-            (message "nothing to do")))
-      (insert
-       (buffer-substring (line-beginning-position) (line-end-position))
-       "\n")
-      (save-restriction
-        (narrow-to-region
-         (progn
-           (goto-char (1- (re-search-forward "[^[:space:]]" nil t)))
-           (cond
-            ((looking-at ";+")   (match-end 0))
-            ((looking-at "#+")   (match-end 0))
-            ((looking-at "//+")  (match-end 0))
-            ((looking-at "/\\*+") (match-end 0))
-            (t (point))))
-         (1+ (progn
-               (goto-char (line-end-position))
-               (re-search-backward "[^[:space:]]" nil t))))
-        (untabify (point-min) (point-max))
-        (goto-char (point-min))
-        (if (= arg 16)
-            (while (re-search-forward "[^[:space:]]" nil t)
-              (replace-match underline-char nil))
-          (re-search-forward "[^[:space:]]" nil t)
-          (goto-char (1- (point)))
-          (while (re-search-forward "." nil t)
-            (replace-match underline-char nil)))
-        (widen))
-      (if original-point-is-eob
-          (goto-char (point-max))
-        (if original-point-is-eol
-            (goto-char (re-search-forward "^"))
-          (goto-char original-point))))))
 
 ;;;###autoload
 (defun my/untabify-buffer ()
@@ -1419,45 +1367,6 @@ functions."
 (global-set-key (kbd "C-x j") 'jump-to-register)
 (define-key ctl-x-4-map "j" 'my/jump-to-register-other-window)
 
-;;;###autoload
-(defun my/remove-from-buffer (string)
-  "Remove all occurences of STRING from the whole buffer."
-  (interactive "sString to remove: ")
-  (save-match-data
-    (save-excursion
-      (let ((count 0))
-        (goto-char (point-min))
-        (while (re-search-forward string (point-max) t)
-          (setq count (+ count 1))
-          (replace-match "" nil nil))
-        (message (format "%d %s removed from buffer." count string))))))
-
-;;;###autoload
-(defun my/remove-character-number (number)
-  "Remove all occurences of a control character NUMBER.
-Excluding ^I (tabs) and ^J (newline)."
-  (if (and (>= number 0) (<= number 31)
-           (not (= number 9)) (not (= number 10)))
-      (let ((character (string number)))
-        (my/remove-from-buffer character))))
-
-;;;###autoload
-(defun my/remove-all-ctrl-characters ()
-  "Remove all occurences of all control characters.
-Excluding ^I (tabs) and ^J (newlines)."
-  (interactive)
-  (mapcar (lambda (n)
-            (my/remove-character-number n))
-          (number-sequence 0 31)))
-
-;;;###autoload
-(defun my/remove-ctrl-m ()
-  "Remove all ^M occurrences from EOL in a buffer."
-  (interactive)
-  (my/remove-from-buffer "$"))
-
-(global-set-key (kbd "C-c k") 'my/remove-from-buffer)
-
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 (setq auto-save-timeout 5)
 
@@ -1582,95 +1491,6 @@ Excluding ^I (tabs) and ^J (newlines)."
   (add-to-list 'interpreter-mode-alist '("sh" . shell-script-mode))
   (add-to-list 'interpreter-mode-alist '("zsh" . shell-script-mode))
   (message "Lazy loaded shell-script-mode :-)"))
-
-;;;###autoload
-(defun smart/fill-or-unfill ()
-  "Like `fill-paragraph', but unfill if used twice."
-  (interactive)
-  (let ((fill-column
-         (if (eq last-command 'smart/fill-or-unfill)
-             (progn (setq this-command nil)
-                    (point-max))
-           fill-column)))
-    (call-interactively #'fill-paragraph)))
-
-;;;###autoload
-(defun smart/narrow-or-widen-dwim (p)
-  "If the buffer is narrowed, it widens, otherwise, it narrows intelligently.
-
-Intelligently means: region, org-src-block, org-subtree, or
-defun, whichever applies first.
-
-Narrowing to org-src-block actually calls `org-edit-src-code'.
-With prefix P, don't widen, just narrow even if buffer is already
-narrowed."
-  (interactive "P")
-  (declare (interactive-only))
-  (cond ((and (buffer-narrowed-p) (not p)) (widen))
-        ((region-active-p)
-         (narrow-to-region (region-beginning) (region-end)))
-        ((derived-mode-p 'org-mode)
-         ;; `org-edit-src-code' is not a real narrowing command.
-         ;; Remove this first conditional if you don't want it.
-         (cond ((ignore-errors (org-edit-src-code))
-                (delete-other-windows))
-               ((org-at-block-p)
-                (org-narrow-to-block))
-               (t (org-narrow-to-subtree))))
-        (t (narrow-to-defun))))
-
-;;;###autoload
-(defun smart/move-beginning-of-line ()
-  "Move point back to indentation.
-
-If there is any non blank characters to the left of the cursor.
-Otherwise point moves to beginning of line."
-  (interactive)
-  (if (= (point) (save-excursion (back-to-indentation) (point)))
-      (beginning-of-line)
-    (back-to-indentation)))
-
-;;;###autoload
-(defun smart/kill-ring-save ()
-  "Copy current line or text selection to kill ring.
-
-When `universal-argument' is called first, copy whole buffer (but
-respect `narrow-to-region')."
-  (interactive)
-  (let (p1 p2)
-    (if (null current-prefix-arg)
-        (progn (if (use-region-p)
-                   (progn (setq p1 (region-beginning))
-                          (setq p2 (region-end)))
-                 (progn (setq p1 (line-beginning-position))
-                        (setq p2 (line-end-position)))))
-      (progn (setq p1 (point-min))
-             (setq p2 (point-max))))
-    (kill-ring-save p1 p2)))
-
-;;;###autoload
-(defun smart/kill-region ()
-  "Cut current line, or text selection to kill ring.
-
-When `universal-argument' is called first, cut whole buffer (but
-respect `narrow-to-region')."
-  (interactive)
-  (let (p1 p2)
-    (if (null current-prefix-arg)
-        (progn (if (use-region-p)
-                   (progn (setq p1 (region-beginning))
-                          (setq p2 (region-end)))
-                 (progn (setq p1 (line-beginning-position))
-                        (setq p2 (line-beginning-position 2)))))
-      (progn (setq p1 (point-min))
-             (setq p2 (point-max))))
-    (kill-region p1 p2)))
-
-(global-set-key [remap fill-paragraph] 'smart/fill-or-unfill)
-(global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
-(global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
-(global-set-key [remap kill-region] 'smart/kill-region)
-(define-key ctl-x-map "n" 'smart/narrow-or-widen-dwim)
 
 (autoload 'term "term" nil t)
 (autoload 'ansi-term "term" nil t)

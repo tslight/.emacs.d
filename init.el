@@ -2239,7 +2239,9 @@ window to right."
   :config
   (which-key-mode))
 
-(use-package yaml-mode :defer)
+(use-package yaml-mode :defer
+  :config
+  (remove-hook 'before-save-hook 'my/indent-buffer))
 
 (use-package yasnippet :defer
   :diminish yas-minor-mode

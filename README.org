@@ -43,6 +43,7 @@ files, so make sure you've backed up anything you don't want to lose!
    - [[#line-numbers][Line numbers]]
    - [[#text-filling][Text filling]]
    - [[#delete-all-on-backspace][Delete all on backspace]]
+   - [[#emacsclient-executable][Emacsclient executable]]
    - [[#no-lockfiles][No lockfiles]]
    - [[#final-newline][Final newline]]
    - [[#pop-mark-on-repeat][Pop mark on repeat]]
@@ -58,13 +59,15 @@ files, so make sure you've backed up anything you don't want to lose!
    - [[#initial-startup][Initial startup]]
    - [[#passwords][Passwords]]
    - [[#undo-limits][Undo limits]]
+   - [[#uniquify][Uniquify]]
    - [[#user-info][User info]]
-   - [[#emacsclient-executable][Emacsclient executable]]
+   - [[#windows][Windows]]
    - [[#yes-or-no][Yes or no]]
 - [[#code-style][Code Style]]
-- [[#file-encoding-stuff][File encoding stuff]]
-- [[#miscellaneous-hooks][Miscellaneous Hooks]]
-- [[#extra-keybindings][Extra Keybindings]]
+- [[#encoding-stuff][Encoding stuff]]
+- [[#hooks][Hooks]]
+- [[#keybindings][Keybindings]]
+   - [[#buffer-keybindings][Buffer keybindings]]
    - [[#toggle-menu-bar][Toggle menu bar]]
    - [[#frame-maximizing-and-fullscreening][Frame maximizing and fullscreening]]
    - [[#desktop-read--save-bindings][Desktop read & save bindings]]
@@ -74,7 +77,7 @@ files, so make sure you've backed up anything you don't want to lose!
    - [[#tab-bar-mode-bindings-emacs-27][Tab-bar mode bindings (Emacs 27+)]]
    - [[#special-mode-keys-help-etc][Special mode keys (help, etc)]]
 - [[#registers][Registers]]
-- [[#theme-related][Theme Related]]
+- [[#themeui][Theme/UI]]
 - [[#buffer-functions][Buffer functions]]
    - [[#indent-buffer][Indent Buffer]]
    - [[#kill-this-buffer][Kill this buffer]]
@@ -83,8 +86,6 @@ files, so make sure you've backed up anything you don't want to lose!
    - [[#remove-stuff-from-a-buffer][Remove stuff from a buffer]]
    - [[#save-buffers-silently][Save buffers silently]]
    - [[#toggle-maximize-buffer][Toggle maximize buffer]]
-   - [[#buffer-keybindings][Buffer keybindings]]
-   - [[#uniquify][Uniquify]]
 - [[#complilation-related][Complilation related]]
 - [[#editing-functions][Editing functions]]
    - [[#aligning-symbols][Aligning symbols]]
@@ -112,7 +113,6 @@ files, so make sure you've backed up anything you don't want to lose!
    - [[#open-current-file-as-root][Open current file as root]]
 - [[#miscellaneous-functions][Miscellaneous functions]]
 - [[#window-manipulation-functions][Window manipulation functions]]
-   - [[#settings][Settings]]
    - [[#kill-buffer-other-window][Kill buffer other window]]
    - [[#toggle-focus-to-last-window][Toggle focus to last window]]
    - [[#open-a-buffer-in-another-window][Open a buffer in another window]]
@@ -275,8 +275,7 @@ stuttering. We use 16mb as our default.
 #+begin_src emacs-lisp
   (defun my/default-gc-cons-settings ()
     (setq gc-cons-threshold 16777216 ; 16mb
-          gc-cons-percentage 0.1)
-    (message "Restored gc-cons settings :-)"))
+          gc-cons-percentage 0.1))
   (add-hook 'emacs-startup-hook 'my/default-gc-cons-settings)
 #+end_src
 
@@ -300,8 +299,7 @@ compressed/encrypted files won’t open.
 
 #+begin_src emacs-lisp
   (defun my/restore-default-file-name-handler-alist ()
-    (setq file-name-handler-alist my/default-file-name-handler-alist)
-    (message "Restored default file-name-handler-alist :-)"))
+    (setq file-name-handler-alist my/default-file-name-handler-alist))
   (add-hook 'emacs-startup-hook 'my/restore-default-file-name-handler-alist)
 #+end_src
 
@@ -357,6 +355,16 @@ compressed/encrypted files won’t open.
 
 #+begin_src emacs-lisp
   (setq backward-delete-char-untabify-method 'all)
+#+end_src
+
+** Emacsclient executable
+
+#+begin_src emacs-lisp
+  ;; https://emacs.stackexchange.com/a/31061
+  (when (equal system-type 'windows-nt)
+    (if (file-readable-p "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
+        (setq-default with-editor-emacsclient-executable "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
+      (setq-default with-editor-emacsclient-executable nil)))
 #+end_src
 
 ** No lockfiles
@@ -461,6 +469,14 @@ compressed/encrypted files won’t open.
   (setq undo-strong-limit 90000000)
 #+end_src
 
+** Uniquify
+
+#+begin_src emacs-lisp
+  (setq uniquify-buffer-name-style 'forward)
+  (setq uniquify-strip-common-suffix t)
+  (setq uniquify-after-kill-buffer-p t)
+#+end_src
+
 ** User info
 
 #+begin_src emacs-lisp
@@ -468,16 +484,13 @@ compressed/encrypted files won’t open.
   (setq user-mail-address "tslight@pm.me")
 #+end_src
 
-** Emacsclient executable
+** Windows
 
 #+begin_src emacs-lisp
-  ;; https://emacs.stackexchange.com/a/31061
-  (when (equal system-type 'windows-nt)
-    (if (file-readable-p "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
-        (setq-default with-editor-emacsclient-executable "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
-      (setq-default with-editor-emacsclient-executable nil)))
+  (setq split-width-threshold 160)
+  (setq split-height-threshold 80)
+  (setq auto-window-vscroll nil)
 #+end_src
-
 ** Yes or no
 
 #+begin_src emacs-lisp
@@ -510,7 +523,7 @@ compressed/encrypted files won’t open.
   (setq-default tab-always-indent 'complete)
 #+end_src
 
-* File encoding stuff
+* Encoding stuff
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -539,7 +552,7 @@ compressed/encrypted files won’t open.
   (prefer-coding-system 'utf-8-unix)
 #+end_src
 
-* Miscellaneous Hooks
+* Hooks
 
 Miscellaneous hooks
 
@@ -555,9 +568,17 @@ Miscellaneous hooks
   (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
 #+end_src
 
-* Extra Keybindings
+* Keybindings
 
-Miscellanous keybindings
+** Buffer keybindings
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x M-e") 'eval-buffer)
+  (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
+  (autoload 'ibuffer "ibuffer" nil t)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "C-x M-k") 'kill-buffer)
+#+end_src
 
 ** Toggle menu bar
 
@@ -649,7 +670,8 @@ Miscellanous keybindings
   (define-key ctl-x-4-map "j" 'my/jump-to-register-other-window)
 #+end_src
 
-* Theme Related
+* Theme/UI
+
 #+begin_src emacs-lisp
   ;;;###autoload
   (defun my/after-make-frame (frame)
@@ -830,26 +852,6 @@ I've collected (stolen!) or written over the years.
         (window-configuration-to-register '_)
         (delete-other-windows))))
   (global-set-key (kbd "C-c z") 'my/toggle-maximize-buffer)
-#+end_src
-
-** Buffer keybindings
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-x M-e") 'eval-buffer)
-  (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
-  (autoload 'ibuffer "ibuffer" nil t)
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (global-set-key (kbd "C-x M-k") 'kill-buffer)
-#+end_src
-
-** Uniquify
-
-#+begin_src emacs-lisp
-  (with-eval-after-load 'uniquify
-    (setq uniquify-buffer-name-style 'forward)
-    (setq uniquify-strip-common-suffix t)
-    (setq uniquify-after-kill-buffer-p t)
-    (message "Lazy loaded uniquify :-)"))
 #+end_src
 
 * Complilation related
@@ -1341,14 +1343,6 @@ or just less than ideal way...
 #+end_src
 
 * Window manipulation functions
-** Settings
-
-#+begin_src emacs-lisp
-  (setq split-width-threshold 160)
-  (setq split-height-threshold 80)
-  (setq auto-window-vscroll nil)
-#+end_src
-
 ** Kill buffer other window
 
 #+begin_src emacs-lisp

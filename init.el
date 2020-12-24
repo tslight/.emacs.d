@@ -11,16 +11,14 @@
 
 (defun my/default-gc-cons-settings ()
   (setq gc-cons-threshold 16777216 ; 16mb
-        gc-cons-percentage 0.1)
-  (message "Restored gc-cons settings :-)"))
+        gc-cons-percentage 0.1))
 (add-hook 'emacs-startup-hook 'my/default-gc-cons-settings)
 
 (defvar my/default-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
 (defun my/restore-default-file-name-handler-alist ()
-  (setq file-name-handler-alist my/default-file-name-handler-alist)
-  (message "Restored default file-name-handler-alist :-)"))
+  (setq file-name-handler-alist my/default-file-name-handler-alist))
 (add-hook 'emacs-startup-hook 'my/restore-default-file-name-handler-alist)
 
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
@@ -47,6 +45,12 @@
 (add-hook 'text-mode-hook 'auto-fill-mode)
 
 (setq backward-delete-char-untabify-method 'all)
+
+;; https://emacs.stackexchange.com/a/31061
+(when (equal system-type 'windows-nt)
+  (if (file-readable-p "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
+      (setq-default with-editor-emacsclient-executable "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
+    (setq-default with-editor-emacsclient-executable nil)))
 
 (setq create-lockfiles nil) ;; prevent creation of .#myfile.ext
 
@@ -91,14 +95,16 @@
 (setq undo-limit 80000000)
 (setq undo-strong-limit 90000000)
 
+(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-strip-common-suffix t)
+(setq uniquify-after-kill-buffer-p t)
+
 (setq user-full-name "Toby Slight")
 (setq user-mail-address "tslight@pm.me")
 
-;; https://emacs.stackexchange.com/a/31061
-(when (equal system-type 'windows-nt)
-  (if (file-readable-p "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
-      (setq-default with-editor-emacsclient-executable "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
-    (setq-default with-editor-emacsclient-executable nil)))
+(setq split-width-threshold 160)
+(setq split-height-threshold 80)
+(setq auto-window-vscroll nil)
 
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
 (setq confirm-kill-emacs 'y-or-n-p)
@@ -158,6 +164,12 @@
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 (add-hook 'yaml-mode-hook 'hs-minor-mode)
 (add-hook 'yaml-mode-hook 'display-line-numbers-mode)
+
+(global-set-key (kbd "C-x M-e") 'eval-buffer)
+(global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
+(autoload 'ibuffer "ibuffer" nil t)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x M-k") 'kill-buffer)
 
 (global-set-key (kbd "C-c M-m") 'menu-bar-mode)
 (global-set-key (kbd "S-<f10>") 'menu-bar-mode)
@@ -359,18 +371,6 @@ Excluding ^I (tabs) and ^J (newlines)."
       (window-configuration-to-register '_)
       (delete-other-windows))))
 (global-set-key (kbd "C-c z") 'my/toggle-maximize-buffer)
-
-(global-set-key (kbd "C-x M-e") 'eval-buffer)
-(global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
-(autoload 'ibuffer "ibuffer" nil t)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "C-x M-k") 'kill-buffer)
-
-(with-eval-after-load 'uniquify
-  (setq uniquify-buffer-name-style 'forward)
-  (setq uniquify-strip-common-suffix t)
-  (setq uniquify-after-kill-buffer-p t)
-  (message "Lazy loaded uniquify :-)"))
 
 (defvar my/files-to-recompile '("early-init.el" "init.el")
   "Files under `user-emacs-directory' that we use for configuration.")
@@ -733,10 +733,6 @@ For detail, see `my/make-backup'."
   `(let ((time (current-time)))
      ,@body
      (message "%.06f" (float-time (time-since time)))))
-
-(setq split-width-threshold 160)
-(setq split-height-threshold 80)
-(setq auto-window-vscroll nil)
 
 ;;;###autoload
 (defun my/kill-buffer-other-window ()

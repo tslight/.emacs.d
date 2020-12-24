@@ -372,6 +372,20 @@ Excluding ^I (tabs) and ^J (newlines)."
       (delete-other-windows))))
 (global-set-key (kbd "C-c z") 'my/toggle-maximize-buffer)
 
+(setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
+
+(setq compilation-scroll-output 'first-error)
+
+(defun my/ensure-byte-compiled-init ()
+  (autoload 'byte-recompile-file "bytecomp")
+  (byte-recompile-file
+   (expand-file-name "early-init.el" user-emacs-directory)
+   'nil 0 'nil)
+  (byte-recompile-file
+   (expand-file-name "init.el" user-emacs-directory)
+   'nil 0 'nil))
+(add-hook 'after-init-hook 'my/ensure-byte-compiled-init)
+
 (defvar my/files-to-recompile '("early-init.el" "init.el")
   "Files under `user-emacs-directory' that we use for configuration.")
 
@@ -390,10 +404,6 @@ Excluding ^I (tabs) and ^J (newlines)."
     (byte-compile-file buffer-file-name t)
     (message (concat "Re-compiled " buffer-file-name " :-)"))))
 (add-hook 'after-save-hook 'my/auto-recompile)
-
-(setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
-
-(setq compilation-scroll-output 'first-error)
 
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 ;;;###autoload
@@ -1090,10 +1100,7 @@ window to right."
   (setq erc-nick "not2b")
   (setq erc-prompt-for-password t)
   (setq erc-track-enable-keybindings t)
-
   (message "Lazy loaded erc :-)"))
-
-(autoload 'erc "erc" nil t)
 
 (with-eval-after-load 'eshell
 ;;;###autoload
@@ -1189,16 +1196,13 @@ buffer."
   (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject)
   (setq gnus-thread-hide-subtree t)
   (setq gnus-thread-ignore-subject t)
-
   (message "Lazy loaded gnus :-)"))
 
-(autoload 'gnus "gnus" nil t)
-
-(with-eval-after-load 'highlight-changes-mode
-  (setq highlight-changes-visibility-initial-state nil)
+(with-eval-after-load 'highlight-changes
   (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
   (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
   (message "Lazy loaded highlight-changes-mode :-)"))
+(setq highlight-changes-visibility-initial-state nil)
 (add-hook 'emacs-startup-hook 'global-highlight-changes-mode)
 
 ;;;###autoload
@@ -1361,9 +1365,11 @@ When searching backward, kill to the beginning of the match."
 (add-hook 'occur-mode-hook 'hl-line-mode)
 (define-key occur-mode-map "t" 'toggle-truncate-lines)
 
-(savehist-mode 1)
-(setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-(setq savehist-save-minibuffer-history 1)
+(with-eval-after-load 'savehist
+  (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+  (setq savehist-save-minibuffer-history 1)
+  (message "Lazy loaded savehist :-)"))
+(add-hook 'after-init-hook 'savehist-mode)
 
 (setq completion-category-defaults nil)
 (setq completion-cycle-threshold 3)
@@ -1578,7 +1584,7 @@ functions."
 
 (add-hook 'after-init-hook 'show-paren-mode)
 
-(with-eval-after-load 'save-place-mode
+(with-eval-after-load 'save-place
   (setq save-place-file (concat user-emacs-directory "saveplace.el"))
   (message "Lazy loaded save-place-mode :-)"))
 (add-hook 'emacs-startup-hook 'save-place-mode)
@@ -1775,42 +1781,6 @@ Otherwise switch to current one."
   :hook
   (yaml-mode . hs-minor-mode))
 
-(use-package go-mode :defer
-  :config
-  (defun my/go-indent ()
-    (setq indent-tabs-mode 1)
-    (setq tab-width 2))
-  :hook (go-mode . my/go-indent))
-
-(use-package hungry-delete :defer 6
-  :diminish hungry-delete-mode
-  :config (global-hungry-delete-mode))
-
-(use-package js2-mode :defer
-  :hook
-  (js-mode . js2-minor-mode)
-  (js2-mode . js2-imenu-extras-mode)
-  :mode
-  "\\.js\\'")
-
-(use-package js2-refactor :defer
-  :hook (js2-mode . js2-refactor-mode)
-  :bind (:map js2-mode-map
-              ("C-k" . js2r-kill))
-  :config (js2r-add-keybindings-with-prefix "C-c C-j"))
-
-(use-package json-mode :defer
-  :config
-  (defun my/json-mode-setup ()
-    (json-mode)
-    (json-pretty-print (point-min) (point-max))
-    (goto-char (point-min))
-    (set-buffer-modified-p nil))
-  (add-to-list 'auto-mode-alist
-               '("\\.json\\'" . 'my/json-mode-setup)))
-
-(use-package json-navigator :defer)
-
 (use-package lazygitlab :ensure nil
   :if (file-directory-p (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
   :load-path (lambda () (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
@@ -1864,6 +1834,42 @@ Otherwise switch to current one."
           ("Push" 5 magit-repolist-column-unpushed-to-upstream)
           ("Commit" 8 magit-repolist-column-flag t)
           ("Path" 99 magit-repolist-column-path))))
+
+(use-package go-mode :defer
+  :config
+  (defun my/go-indent ()
+    (setq indent-tabs-mode 1)
+    (setq tab-width 2))
+  :hook (go-mode . my/go-indent))
+
+(use-package hungry-delete :defer 6
+  :diminish hungry-delete-mode
+  :config (global-hungry-delete-mode))
+
+(use-package js2-mode :defer
+  :hook
+  (js-mode . js2-minor-mode)
+  (js2-mode . js2-imenu-extras-mode)
+  :mode
+  "\\.js\\'")
+
+(use-package js2-refactor :defer
+  :hook (js2-mode . js2-refactor-mode)
+  :bind (:map js2-mode-map
+              ("C-k" . js2r-kill))
+  :config (js2r-add-keybindings-with-prefix "C-c C-j"))
+
+(use-package json-mode :defer
+  :config
+  (defun my/json-mode-setup ()
+    (json-mode)
+    (json-pretty-print (point-min) (point-max))
+    (goto-char (point-min))
+    (set-buffer-modified-p nil))
+  (add-to-list 'auto-mode-alist
+               '("\\.json\\'" . 'my/json-mode-setup)))
+
+(use-package json-navigator :defer)
 
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
@@ -1973,14 +1979,6 @@ Otherwise switch to current one."
 (use-package yasnippet-snippets :defer)
 
 (use-package yasnippet-classic-snippets :defer)
-
-(autoload 'byte-recompile-file "bytecomp")
-(byte-recompile-file
- (expand-file-name "early-init.el" user-emacs-directory)
- 'nil 0 'nil)
-(byte-recompile-file
- (expand-file-name "init.el" user-emacs-directory)
- 'nil 0 'nil)
 
 (provide 'init)
 ;; Local Variables:

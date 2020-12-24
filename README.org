@@ -87,6 +87,12 @@ files, so make sure you've backed up anything you don't want to lose!
    - [[#save-buffers-silently][Save buffers silently]]
    - [[#toggle-maximize-buffer][Toggle maximize buffer]]
 - [[#complilation-related][Complilation related]]
+   - [[#prefer-newer-over-compiled][Prefer newer over compiled]]
+   - [[#place-point-after-complilation-error][Place point after complilation error]]
+   - [[#ensure-init-files-are-byte-compiled][Ensure init files are byte compiled]]
+   - [[#recompile-config][Recompile config]]
+   - [[#auto-recompile-emacs-lisp][Auto recompile Emacs Lisp]]
+   - [[#make-compilation-buffers-more-colorful][Make compilation buffers more colorful]]
 - [[#editing-functions][Editing functions]]
    - [[#aligning-symbols][Aligning symbols]]
    - [[#change-numbers][Change numbers]]
@@ -164,7 +170,6 @@ files, so make sure you've backed up anything you don't want to lose!
    - [[#tramp][Tramp]]
    - [[#version-control][Version Control]]
    - [[#whitespace][Whitespace]]
-      - [[#cleanup-whitespace-on-save][Cleanup whitespace on save]]
 - [[#third-party-package-configuration][Third party package configuration]]
    - [[#setup-packageel-and-use-package][Setup package.el and use-package]]
    - [[#ansible][Ansible]]
@@ -175,14 +180,15 @@ files, so make sure you've backed up anything you don't want to lose!
    - [[#docker][Docker]]
    - [[#exec-path-from-shell][Exec path from shell]]
    - [[#flycheck][Flycheck]]
-   - [[#git-timemachine][Git Timemachine]]
-   - [[#gitlab-ci][Gitlab CI]]
+   - [[#git][Git]]
+      - [[#git-timemachine][Git Timemachine]]
+      - [[#gitlab-ci][Gitlab CI]]
+      - [[#lazygit][Lazygit]]
+      - [[#magit][Magit]]
    - [[#go-mode][Go mode]]
    - [[#hungry-delete][Hungry delete]]
    - [[#js2-mode][JS2 mode]]
    - [[#json][JSON]]
-   - [[#lazygit][Lazygit]]
-   - [[#magit][Magit]]
    - [[#markdown][Markdown]]
    - [[#node-js][Node JS]]
    - [[#org-1][Org]]
@@ -207,7 +213,6 @@ files, so make sure you've backed up anything you don't want to lose!
          - [[#emacs-lisp-snippets][Emacs Lisp snippets]]
             - [[#standard-elisp-boilerplate][Standard elisp boilerplate]]
             - [[#package-elisp-boilerplate][Package elisp boilerplate]]
-- [[#ensure-init-files-are-byte-compiled][Ensure init files are byte compiled]]
 
 * Early Init
 
@@ -855,8 +860,38 @@ I've collected (stolen!) or written over the years.
 #+end_src
 
 * Complilation related
+** Prefer newer over compiled
 
-Function to recompile ~early-init.el~ and ~init.el~.
+If init.elc is older, use newer ~init.el~.
+
+#+begin_src emacs-lisp
+  (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
+#+end_src
+
+** Place point after complilation error
+
+#+begin_src emacs-lisp
+  (setq compilation-scroll-output 'first-error)
+#+end_src
+
+** Ensure init files are byte compiled
+
+This block will byte compile ~early-init.el~ and ~init.el~ if an existing
+~.elc~ file is not up to date with their contents.
+
+#+begin_src emacs-lisp
+  (defun my/ensure-byte-compiled-init ()
+    (autoload 'byte-recompile-file "bytecomp")
+    (byte-recompile-file
+     (expand-file-name "early-init.el" user-emacs-directory)
+     'nil 0 'nil)
+    (byte-recompile-file
+     (expand-file-name "init.el" user-emacs-directory)
+     'nil 0 'nil))
+  (add-hook 'after-init-hook 'my/ensure-byte-compiled-init)
+#+end_src
+
+** Recompile config
 
 #+begin_src emacs-lisp
   (defvar my/files-to-recompile '("early-init.el" "init.el")
@@ -869,6 +904,8 @@ Function to recompile ~early-init.el~ and ~init.el~.
     (mapc (lambda (file) (byte-recompile-file (concat user-emacs-directory file) 0))
           my/files-to-recompile))
 #+end_src
+
+** Auto recompile Emacs Lisp
 
 Automatically recompile Emacs Lisp files after saving
 
@@ -883,19 +920,7 @@ Automatically recompile Emacs Lisp files after saving
   (add-hook 'after-save-hook 'my/auto-recompile)
 #+end_src
 
-If init.elc is older, use newer ~init.el~.
-
-#+begin_src emacs-lisp
-  (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
-#+end_src
-
-Place point at first error when running ~make~.
-
-#+begin_src emacs-lisp
-  (setq compilation-scroll-output 'first-error)
-#+end_src
-
-Make compilation buffers more colorful
+** Make compilation buffers more colorful
 
 #+begin_src emacs-lisp
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
@@ -1769,6 +1794,7 @@ This is basically ~other-window~ backwards.
 #+end_src
 
 ** ERC
+
 #+begin_src emacs-lisp
   (with-eval-after-load 'erc
     (setq erc-autojoin-channels-alist '(("freenode.net"
@@ -1781,12 +1807,11 @@ This is basically ~other-window~ backwards.
     (setq erc-nick "not2b")
     (setq erc-prompt-for-password t)
     (setq erc-track-enable-keybindings t)
-
     (message "Lazy loaded erc :-)"))
-
-  (autoload 'erc "erc" nil t)
 #+end_src
+
 ** Eshell
+
 #+begin_src emacs-lisp
   (with-eval-after-load 'eshell
   ;;;###autoload
@@ -1856,7 +1881,9 @@ This is basically ~other-window~ backwards.
 
     (add-hook 'eshell-mode-hook 'my/eshell-keys)
     (message "Lazy loaded eshell :-)"))
+#+end_src
 
+#+begin_src emacs-lisp
   ;;;###autoload
   (defun my/eshell-other-window ()
     "Open an `eshell' in another window."
@@ -1871,6 +1898,7 @@ This is basically ~other-window~ backwards.
 #+end_src
 
 ** Gnus
+
 #+begin_src emacs-lisp
   (with-eval-after-load 'gnus
     (require 'nnir)
@@ -1885,19 +1913,17 @@ This is basically ~other-window~ backwards.
     (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject)
     (setq gnus-thread-hide-subtree t)
     (setq gnus-thread-ignore-subject t)
-
     (message "Lazy loaded gnus :-)"))
-
-  (autoload 'gnus "gnus" nil t)
 #+end_src
+
 ** Highlight changes
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'highlight-changes-mode
-    (setq highlight-changes-visibility-initial-state nil)
+  (with-eval-after-load 'highlight-changes
     (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
     (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
     (message "Lazy loaded highlight-changes-mode :-)"))
+  (setq highlight-changes-visibility-initial-state nil)
   (add-hook 'emacs-startup-hook 'global-highlight-changes-mode)
 #+end_src
 
@@ -1941,6 +1967,7 @@ This is basically ~other-window~ backwards.
 
   (global-set-key (kbd "M-/") 'hippie-expand)
 #+end_src
+
 ** Icomplete
 
 Turn on ~fido-mode~ if we are on Emacs 27+
@@ -2098,9 +2125,11 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 *** Save history mode
 
 #+begin_src emacs-lisp
-  (savehist-mode 1)
-  (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-  (setq savehist-save-minibuffer-history 1)
+  (with-eval-after-load 'savehist
+    (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+    (setq savehist-save-minibuffer-history 1)
+    (message "Lazy loaded savehist :-)"))
+  (add-hook 'after-init-hook 'savehist-mode)
 #+end_src
 
 *** Completion framework settings
@@ -2363,7 +2392,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 ** Saveplace
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'save-place-mode
+  (with-eval-after-load 'save-place
     (setq save-place-file (concat user-emacs-directory "saveplace.el"))
     (message "Lazy loaded save-place-mode :-)"))
   (add-hook 'emacs-startup-hook 'save-place-mode)
@@ -2484,6 +2513,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (setf tramp-persistency-file-name (concat temporary-file-directory "tramp-" (user-login-name)))
     (message "Lazy loaded tramp :-)"))
 #+end_src
+
 ** Version Control
 
 #+begin_src emacs-lisp
@@ -2493,6 +2523,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (setq version-control t)
     (message "Lazy loaded vc :-)"))
 #+end_src
+
 ** Whitespace
 
 #+begin_src emacs-lisp
@@ -2516,7 +2547,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (message "Lazy loaded whitespace :-)"))
 #+end_src
 
-*** Cleanup whitespace on save
+Cleanup whitespace on save
 
 #+begin_src emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
@@ -2647,14 +2678,14 @@ party packages from [[https://melpa.org/][MELPA]].
     :hook (prog-mode . flycheck-mode)
     :config (flycheck-add-mode 'javascript-eslint 'web-mode))
 #+end_src
-
-** Git Timemachine
+** Git
+*** Git Timemachine
 
 #+begin_src emacs-lisp
   (use-package git-timemachine :defer)
 #+end_src
 
-** Gitlab CI
+*** Gitlab CI
 
 #+begin_src emacs-lisp
   (use-package gitlab-ci-mode :defer
@@ -2663,6 +2694,72 @@ party packages from [[https://melpa.org/][MELPA]].
     "\\.gitlab-ci.yml\\'"
     :hook
     (yaml-mode . hs-minor-mode))
+#+end_src
+
+*** Lazygit
+
+#+begin_src emacs-lisp
+  (use-package lazygitlab :ensure nil
+    :if (file-directory-p (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
+    :load-path (lambda () (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
+    :bind
+    ("C-c g l a" . lazygitlab-clone-or-pull-all)
+    ("C-c g l c" . lazygitlab-clone-or-pull-project)
+    ("C-c g l g" . lazygitlab-clone-or-pull-group)
+    ("C-c g l r" . lazygitlab-retriever)
+    :config
+    (setq lazygit-token-file (expand-file-name "~/.lazygit.el"))
+    (defalias 'gl/api 'lazygitlab-retriever)
+    (defalias 'gl/all 'lazygitlab-clone-or-pull-all)
+    (defalias 'gl/grp 'lazygitlab-clone-or-pull-group)
+    (defalias 'gl/repo 'lazygitlab-clone-or-pull-project))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package lazygithub :ensure nil
+    :if (file-directory-p (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
+    :load-path (lambda () (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
+    :bind
+    ("C-c g h a" . lazygithub-clone-or-pull-all)
+    ("C-c g h c" . lazygithub-clone-or-pull-repo)
+    ("C-c g h r" . lazygithub-retriever)
+    :config
+    (setq lazygit-token-file (expand-file-name "~/.lazygit.el"))
+    (defalias 'gh/api 'lazygithub-retriever)
+    (defalias 'gh/all 'lazygithub-clone-or-pull-all)
+    (defalias 'gh/repo 'lazygithub-clone-or-pull-repo))
+#+end_src
+
+*** Magit
+
+#+begin_src emacs-lisp
+  (use-package magit
+    :bind*
+    ("C-x g" . magit-status)
+    :config
+    (when (eq system-type 'windows-nt)
+      (if (file-readable-p "C:/Program Files/Git/bin/git.exe")
+          (setq magit-git-executable "C:/Program Files/Git/bin/git.exe"))
+      (when (file-directory-p "C:/Program Files/Git/bin")
+        (setq exec-path (add-to-list 'exec-path "C:/Program Files/Git/bin"))
+        (setenv "PATH" (concat "C:\\Program Files\\Git\\bin;" (getenv "PATH")))))
+    (setq magit-clone-set-remote.pushDefault t)
+    (setq magit-completing-read-function 'magit-builtin-completing-read))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package magit-repos :ensure nil
+    :bind* ("C-x C-g" . magit-list-repositories)
+    :config
+    (setq magit-repository-directories `(("~/" . 0)
+                                         ("~/src/gitlab" . 10)))
+    (setq magit-repolist-columns
+          '(("Name" 25 magit-repolist-column-ident)
+            ;; ("Version" 25 magit-repolist-column-version)
+            ("Pull" 5 magit-repolist-column-unpulled-from-upstream)
+            ("Push" 5 magit-repolist-column-unpushed-to-upstream)
+            ("Commit" 8 magit-repolist-column-flag t)
+            ("Path" 99 magit-repolist-column-path))))
 #+end_src
 
 ** Go mode
@@ -2715,72 +2812,6 @@ party packages from [[https://melpa.org/][MELPA]].
                  '("\\.json\\'" . 'my/json-mode-setup)))
 
   (use-package json-navigator :defer)
-#+end_src
-
-** Lazygit
-
-#+begin_src emacs-lisp
-  (use-package lazygitlab :ensure nil
-    :if (file-directory-p (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
-    :load-path (lambda () (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
-    :bind
-    ("C-c g l a" . lazygitlab-clone-or-pull-all)
-    ("C-c g l c" . lazygitlab-clone-or-pull-project)
-    ("C-c g l g" . lazygitlab-clone-or-pull-group)
-    ("C-c g l r" . lazygitlab-retriever)
-    :config
-    (setq lazygit-token-file (expand-file-name "~/.lazygit.el"))
-    (defalias 'gl/api 'lazygitlab-retriever)
-    (defalias 'gl/all 'lazygitlab-clone-or-pull-all)
-    (defalias 'gl/grp 'lazygitlab-clone-or-pull-group)
-    (defalias 'gl/repo 'lazygitlab-clone-or-pull-project))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package lazygithub :ensure nil
-    :if (file-directory-p (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
-    :load-path (lambda () (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
-    :bind
-    ("C-c g h a" . lazygithub-clone-or-pull-all)
-    ("C-c g h c" . lazygithub-clone-or-pull-repo)
-    ("C-c g h r" . lazygithub-retriever)
-    :config
-    (setq lazygit-token-file (expand-file-name "~/.lazygit.el"))
-    (defalias 'gh/api 'lazygithub-retriever)
-    (defalias 'gh/all 'lazygithub-clone-or-pull-all)
-    (defalias 'gh/repo 'lazygithub-clone-or-pull-repo))
-#+end_src
-
-** Magit
-
-#+begin_src emacs-lisp
-  (use-package magit
-    :bind*
-    ("C-x g" . magit-status)
-    :config
-    (when (eq system-type 'windows-nt)
-      (if (file-readable-p "C:/Program Files/Git/bin/git.exe")
-          (setq magit-git-executable "C:/Program Files/Git/bin/git.exe"))
-      (when (file-directory-p "C:/Program Files/Git/bin")
-        (setq exec-path (add-to-list 'exec-path "C:/Program Files/Git/bin"))
-        (setenv "PATH" (concat "C:\\Program Files\\Git\\bin;" (getenv "PATH")))))
-    (setq magit-clone-set-remote.pushDefault t)
-    (setq magit-completing-read-function 'magit-builtin-completing-read))
-#+end_src
-
-#+begin_src emacs-lisp
-  (use-package magit-repos :ensure nil
-    :bind* ("C-x C-g" . magit-list-repositories)
-    :config
-    (setq magit-repository-directories `(("~/" . 0)
-                                         ("~/src/gitlab" . 10)))
-    (setq magit-repolist-columns
-          '(("Name" 25 magit-repolist-column-ident)
-            ;; ("Version" 25 magit-repolist-column-version)
-            ("Pull" 5 magit-repolist-column-unpulled-from-upstream)
-            ("Push" 5 magit-repolist-column-unpushed-to-upstream)
-            ("Commit" 8 magit-repolist-column-flag t)
-            ("Path" 99 magit-repolist-column-path))))
 #+end_src
 
 ** Markdown
@@ -3023,19 +3054,4 @@ party packages from [[https://melpa.org/][MELPA]].
   ;; byte-compile-warnings: (not free-vars noruntime)
   ;; End:
   ;;; `(file-name-nondirectory (buffer-file-name))` ends here
-#+end_src
-
-* Ensure init files are byte compiled
-
-This block will byte compile ~early-init.el~ and ~init.el~ if an existing
-~.elc~ file is not up to date with their contents.
-
-#+begin_src emacs-lisp
-  (autoload 'byte-recompile-file "bytecomp")
-  (byte-recompile-file
-   (expand-file-name "early-init.el" user-emacs-directory)
-   'nil 0 'nil)
-  (byte-recompile-file
-   (expand-file-name "init.el" user-emacs-directory)
-   'nil 0 'nil)
 #+end_src

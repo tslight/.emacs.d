@@ -1695,7 +1695,7 @@ Otherwise switch to current one."
 (use-package dockerfile-mode :defer)
 
 (use-package exec-path-from-shell :defer 10
-  :if (not (eq system-type 'windows-nt))
+  :unless (eq system-type 'windows-nt)
   :commands exec-path-from-shell-initialize
   :init
   (setq exec-path-from-shell-check-startup-files 'nil)
@@ -1851,8 +1851,7 @@ Otherwise switch to current one."
 
 (use-package restclient :defer)
 
-(use-package systemd :defer
-  :if (not (equal system-type 'windows-nt)))
+(use-package systemd :unless (equal system-type 'windows-nt) :defer)
 
 (use-package terraform-mode :defer)
 

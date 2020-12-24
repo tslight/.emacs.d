@@ -2449,7 +2449,7 @@ party packages from [[https://melpa.org/][MELPA]].
 
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell :defer 10
-    :if (not (eq system-type 'windows-nt))
+    :unless (eq system-type 'windows-nt)
     :commands exec-path-from-shell-initialize
     :init
     (setq exec-path-from-shell-check-startup-files 'nil)
@@ -2688,8 +2688,7 @@ party packages from [[https://melpa.org/][MELPA]].
 ** systemd
 
 #+begin_src emacs-lisp
-  (use-package systemd :defer
-    :if (not (equal system-type 'windows-nt)))
+  (use-package systemd :unless (equal system-type 'windows-nt) :defer)
 #+end_src
 
 ** Terraform

@@ -1772,6 +1772,8 @@ Otherwise switch to current one."
           ("Commit" 8 magit-repolist-column-flag t)
           ("Path" 99 magit-repolist-column-path))))
 
+(use-package forge :after magit)
+
 (use-package go-mode :defer
   :config
   (defun my/go-indent ()

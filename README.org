@@ -434,9 +434,6 @@ Miscellaneous hooks
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
-  (global-set-key (kbd "C-c M-t d E") 'toggle-debug-on-entry)
-  (global-set-key (kbd "C-c M-t d e") 'toggle-debug-on-error)
-  (global-set-key (kbd "C-c M-t d q") 'toggle-debug-on-quit)
   (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
 #+end_src
 
@@ -512,32 +509,41 @@ Miscellaneous hooks
   (if (daemonp)
       (add-hook 'after-make-frame-functions #'my/after-make-frame(selected-frame))
     (my/after-make-frame(selected-frame)))
+#+end_src
 
-  ;;;###autoload
-  (defun my/disable-themes ()
-    "Disable all custom themes in one fail swoop."
-    (interactive)
-    (mapc #'disable-theme custom-enabled-themes))
+Modeline configuration
 
-  (global-set-key (kbd "C-c M-t C-t") 'my/disable-themes)
-
-  (setq default-frame-alist
-        '((fullscreen . maximized) (vertical-scroll-bars . nil)))
-
-  ;; mode line stuff
+#+begin_src emacs-lisp
   ;; (setq display-time-format "%H:%M %d/%m")
   ;; (setq display-time-default-load-average 'nil)
   (column-number-mode t)
   ;; (display-time-mode t)
   ;; (display-battery-mode t)
   ;; (size-indication-mode t)
+#+end_src
 
-  (setq prettify-symbols-unprettify-at-point 'right-edge)
-  (global-prettify-symbols-mode 1)
+Disable the current theme, before loading a new one.
 
+#+begin_src emacs-lisp
   (defadvice load-theme (before theme-dont-propagate activate)
     "Disable theme before loading new one."
     (mapc #'disable-theme custom-enabled-themes))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;;;###autoload
+  (defun my/disable-themes ()
+    "Disable all custom themes in one fail swoop."
+    (interactive)
+    (mapc #'disable-theme custom-enabled-themes))
+  (global-set-key (kbd "C-c M-t C-t") 'my/disable-themes)
+#+end_src
+
+Maximize the frame on launch and disable scroll bars
+
+#+begin_src emacs-lisp
+  (setq default-frame-alist
+        '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 #+end_src
 
 * Buffer functions
@@ -1525,30 +1531,11 @@ This is basically ~other-window~ backwards.
     (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
     (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
     (message "Lazy loaded dired :-)"))
+#+end_src
 
-  (with-eval-after-load 'dired-aux
-    (setq dired-isearch-filenames 'dwim)
-    ;; The following variables were introduced in Emacs 27.1
-    (when (not (version< emacs-version "27.1"))
-      (setq dired-create-destination-dirs 'ask)
-      (setq dired-vc-rename-file t))
-    (message "Lazy loaded dired-aux :-)"))
+Has to come outside of with-eval-after-load otherwise we have no dired-jump
 
-  (with-eval-after-load 'find-dired
-    ;; (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
-    (setq find-ls-option
-          '("-ls" . "-AGFhlv --group-directories-first --time-style=long-iso"))
-    (setq find-name-arg "-iname")
-    (message "Lazy loaded find-dired :-)"))
-
-  (with-eval-after-load 'wdired
-    (setq wdired-allow-to-change-permissions t)
-    (setq wdired-create-parent-directories t)
-    (message "Lazy loaded wdired :-)"))
-
-  (autoload 'dired "dired" nil t)
-
-  ;; has to come outside of with-eval-after-load otherwise we have no dired-jump
+#+begin_src emacs-lisp
   (autoload 'dired-jump "dired-x" ;; bound to C-x C-j by default
     "Jump to Dired buffer corresponding to current buffer." t)
   (global-set-key (kbd "C-x C-j") 'dired-jump)
@@ -1556,9 +1543,46 @@ This is basically ~other-window~ backwards.
   (autoload 'dired-jump-other-window "dired-x" ;; bound to C-x 4 C-j by default.
     "Like \\[dired-jump] (dired-jump) but in other window." t)
   (define-key ctl-x-4-map "C-j" 'dired-jump-other-window)
+#+end_src
 
+Turn on hl-line-mode
+
+#+begin_src emacs-lisp
   (add-hook 'dired-mode-hook 'hl-line-mode)
 #+end_src
+
+*** Dired AUX
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'dired-aux
+    (setq dired-isearch-filenames 'dwim)
+    ;; The following variables were introduced in Emacs 27.1
+    (when (not (version< emacs-version "27.1"))
+      (setq dired-create-destination-dirs 'ask)
+      (setq dired-vc-rename-file t))
+    (message "Lazy loaded dired-aux :-)"))
+#+end_src
+
+*** Find Dired
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'find-dired
+    ;; (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))
+    (setq find-ls-option
+          '("-ls" . "-AGFhlv --group-directories-first --time-style=long-iso"))
+    (setq find-name-arg "-iname")
+    (message "Lazy loaded find-dired :-)"))
+#+end_src
+
+*** Writeable Dired
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'wdired
+    (setq wdired-allow-to-change-permissions t)
+    (setq wdired-create-parent-directories t)
+    (message "Lazy loaded wdired :-)"))
+#+end_src
+
 ** Doc View
 
 #+begin_src emacs-lisp
@@ -2145,6 +2169,15 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook 'pending-delete-mode 1) ;; remove selected region if typing
+#+end_src
+
+** Prettify Symbols
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'prettify-symbols
+    (setq prettify-symbols-unprettify-at-point 'right-edge)
+    (message "Lazy loaded prettify-symbols :-)"))
+  (add-hook 'emacs-startup-hook 'global-prettify-symbols-mode)
 #+end_src
 
 ** Recentf

@@ -183,9 +183,6 @@
 (global-set-key (kbd "C-c M-c") 'calc)
 
 (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
-(global-set-key (kbd "C-c M-t d E") 'toggle-debug-on-entry)
-(global-set-key (kbd "C-c M-t d e") 'toggle-debug-on-error)
-(global-set-key (kbd "C-c M-t d q") 'toggle-debug-on-quit)
 (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
 
 (when (version< emacs-version "27")
@@ -246,18 +243,6 @@
     (add-hook 'after-make-frame-functions #'my/after-make-frame(selected-frame))
   (my/after-make-frame(selected-frame)))
 
-;;;###autoload
-(defun my/disable-themes ()
-  "Disable all custom themes in one fail swoop."
-  (interactive)
-  (mapc #'disable-theme custom-enabled-themes))
-
-(global-set-key (kbd "C-c M-t C-t") 'my/disable-themes)
-
-(setq default-frame-alist
-      '((fullscreen . maximized) (vertical-scroll-bars . nil)))
-
-;; mode line stuff
 ;; (setq display-time-format "%H:%M %d/%m")
 ;; (setq display-time-default-load-average 'nil)
 (column-number-mode t)
@@ -265,12 +250,19 @@
 ;; (display-battery-mode t)
 ;; (size-indication-mode t)
 
-(setq prettify-symbols-unprettify-at-point 'right-edge)
-(global-prettify-symbols-mode 1)
-
 (defadvice load-theme (before theme-dont-propagate activate)
   "Disable theme before loading new one."
   (mapc #'disable-theme custom-enabled-themes))
+
+;;;###autoload
+(defun my/disable-themes ()
+  "Disable all custom themes in one fail swoop."
+  (interactive)
+  (mapc #'disable-theme custom-enabled-themes))
+(global-set-key (kbd "C-c M-t C-t") 'my/disable-themes)
+
+(setq default-frame-alist
+      '((fullscreen . maximized) (vertical-scroll-bars . nil)))
 
 ;;;###autoload
 (defun my/indent-buffer ()
@@ -1020,6 +1012,16 @@ window to right."
   (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
   (message "Lazy loaded dired :-)"))
 
+(autoload 'dired-jump "dired-x" ;; bound to C-x C-j by default
+  "Jump to Dired buffer corresponding to current buffer." t)
+(global-set-key (kbd "C-x C-j") 'dired-jump)
+
+(autoload 'dired-jump-other-window "dired-x" ;; bound to C-x 4 C-j by default.
+  "Like \\[dired-jump] (dired-jump) but in other window." t)
+(define-key ctl-x-4-map "C-j" 'dired-jump-other-window)
+
+(add-hook 'dired-mode-hook 'hl-line-mode)
+
 (with-eval-after-load 'dired-aux
   (setq dired-isearch-filenames 'dwim)
   ;; The following variables were introduced in Emacs 27.1
@@ -1039,19 +1041,6 @@ window to right."
   (setq wdired-allow-to-change-permissions t)
   (setq wdired-create-parent-directories t)
   (message "Lazy loaded wdired :-)"))
-
-(autoload 'dired "dired" nil t)
-
-;; has to come outside of with-eval-after-load otherwise we have no dired-jump
-(autoload 'dired-jump "dired-x" ;; bound to C-x C-j by default
-  "Jump to Dired buffer corresponding to current buffer." t)
-(global-set-key (kbd "C-x C-j") 'dired-jump)
-
-(autoload 'dired-jump-other-window "dired-x" ;; bound to C-x 4 C-j by default.
-  "Like \\[dired-jump] (dired-jump) but in other window." t)
-(define-key ctl-x-4-map "C-j" 'dired-jump-other-window)
-
-(add-hook 'dired-mode-hook 'hl-line-mode)
 
 (with-eval-after-load 'doc-view-mode
   (setq doc-view-continuous t)
@@ -1535,6 +1524,11 @@ functions."
   (message "Lazy loaded org :-)"))
 
 (add-hook 'after-init-hook 'pending-delete-mode 1) ;; remove selected region if typing
+
+(with-eval-after-load 'prettify-symbols
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
+  (message "Lazy loaded prettify-symbols :-)"))
+(add-hook 'emacs-startup-hook 'global-prettify-symbols-mode)
 
 (with-eval-after-load 'recentf
   (setq recentf-exclude '(".gz"

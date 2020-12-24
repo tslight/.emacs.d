@@ -372,13 +372,12 @@ Excluding ^I (tabs) and ^J (newlines)."
 (setq compilation-scroll-output 'first-error)
 
 (defun my/ensure-byte-compiled-init ()
+  "Run `byte-recompile-file' on config files with 'nil' FORCE and ARG 0.
+This means we don't compile if .elc is up to date but we always
+create a new .elc file if it doesn't already exist."
   (autoload 'byte-recompile-file "bytecomp")
-  (byte-recompile-file
-   (expand-file-name "early-init.el" user-emacs-directory)
-   'nil 0 'nil)
-  (byte-recompile-file
-   (expand-file-name "init.el" user-emacs-directory)
-   'nil 0 'nil))
+  (byte-recompile-file (expand-file-name "early-init.el" user-emacs-directory) 'nil 0)
+  (byte-recompile-file (expand-file-name "init.el" user-emacs-directory) 'nil 0))
 (add-hook 'after-init-hook 'my/ensure-byte-compiled-init)
 
 (defvar my/files-to-recompile '("early-init.el" "init.el")
@@ -396,7 +395,7 @@ Excluding ^I (tabs) and ^J (newlines)."
   "Automatically recompile Emacs Lisp files whenever they are saved."
   (when (or (equal major-mode 'emacs-lisp-mode)
             (string-match "^.*\\.el$" buffer-file-name))
-    (byte-compile-file buffer-file-name t)
+    (byte-compile-file buffer-file-name)
     (message (concat "Re-compiled " buffer-file-name " :-)"))))
 (add-hook 'after-save-hook 'my/auto-recompile)
 
@@ -901,18 +900,20 @@ window to right."
   (define-key dired-mode-map "?" 'my/dired-get-size)
 
 ;;;###autoload
-  (defun my/dired-back-to-top ()
+  (defun my/dired-beginning-of-buffer ()
     "Go to first file in directory."
     (interactive)
     (goto-char (point-min))
     (dired-next-line 2))
+  (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-beginning-of-buffer)
 
 ;;;###autoload
-  (defun my/dired-jump-to-bottom ()
+  (defun my/dired-end-of-buffer ()
     "Go to last file in directory."
     (interactive)
     (goto-char (point-max))
     (dired-next-line -1))
+  (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-end-of-buffer)
 
   (defvar dired-compress-files-alist
     '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
@@ -931,6 +932,7 @@ window to right."
 
   (autoload 'dired-omit-files "dired-x"
     "User regex to specify what files to omit." t)
+  (setq dired-omit-files "\\`[.]?#\\|\\`[.][.]?\\'\\|^\\..+$")
 
   (when (eq system-type 'berkeley-unix)
     (setq dired-listing-switches "-alhpL"))
@@ -939,7 +941,6 @@ window to right."
     (setq dired-listing-switches
           "-AGFhlv --group-directories-first --time-style=long-iso"))
 
-  (setq dired-omit-files "\\`[.]?#\\|\\`[.][.]?\\'\\|^\\..+$")
   (setq dired-dwim-target t
         delete-by-moving-to-trash t
         dired-use-ls-dired nil
@@ -954,8 +955,6 @@ window to right."
   (define-key dired-mode-map "f" 'dired-find-alternate-file)
   (define-key dired-mode-map "c" 'dired-do-compress-to)
   (define-key dired-mode-map ")" 'dired-omit-mode)
-  (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
-  (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
   (message "Lazy loaded dired :-)"))
 
 (autoload 'dired-jump "dired-x" ;; bound to C-x C-j by default
@@ -1385,7 +1384,7 @@ functions."
         (org-babel-tangle)))
   (add-hook 'after-save-hook 'my/org-babel-auto-tangle-init-file)
 
-    (setq org-image-actual-width nil)
+  (setq org-image-actual-width nil)
   (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
   (setq org-emphasis-regexp-components '(" \t('\"{" "- \t.,:!?;'\")}\\" " \t\r\n,\"'" "." 300))
   (setq org-confirm-babel-evaluate t)

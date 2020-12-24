@@ -887,7 +887,7 @@ window to right."
   (message "Lazy loaded dabbrev :-)"))
 
 (with-eval-after-load 'dired
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-get-size ()
     "Get cumlative size of marked or current item."
     (interactive)
@@ -898,72 +898,21 @@ window to right."
                  (progn
                    (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
                    (match-string 1))))))
+  (define-key dired-mode-map "?" 'my/dired-get-size)
 
-  ;;;###autoload
-  (defun my/dired-open-marked-files ()
-    "Open marked files."
-    (interactive)
-    (let ((distinguish-one-marked nil))
-      (mapc 'find-file
-            (dired-map-over-marks
-             (dired-get-file-for-visit)
-             current-prefix-arg))))
-
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-back-to-top ()
     "Go to first file in directory."
     (interactive)
     (goto-char (point-min))
     (dired-next-line 2))
 
-  ;;;###autoload
+;;;###autoload
   (defun my/dired-jump-to-bottom ()
     "Go to last file in directory."
     (interactive)
     (goto-char (point-max))
     (dired-next-line -1))
-
-  (defgroup my/dired-peep nil
-    "See the file at point when browsing in a Dired buffer."
-    :group 'dired)
-
-  (setq my/dired-peep-next-current-buffer nil)
-
-  ;;;###autoload
-  (defun my/dired-peep-next ()
-    (interactive)
-    (next-line 1)
-    (dired-find-file-other-window)
-    (if my/dired-peep-next-current-buffer (kill-buffer my/dired-peep-next-current-buffer))
-    (setq my/dired-peep-next-current-buffer (current-buffer))
-    (other-window 1))
-
-  ;;;###autoload
-  (defun my/dired-peep-previous ()
-    (interactive)
-    (previous-line 1)
-    (dired-find-file-other-window)
-    (if my/dired-peep-next-current-buffer (kill-buffer my/dired-peep-next-current-buffer))
-    (setq my/dired-peep-next-current-buffer (current-buffer))
-    (other-window 1))
-
-  ;;;###autoload
-  (define-minor-mode my/dired-peep-mode
-    "Toggle preview of files when browsing in a Dired buffer."
-    :global t
-    :group 'my/dired-peep
-    (if my/dired-peep-mode
-        (progn
-          (define-key dired-mode-map "n" 'my/dired-peep-next)
-          (define-key dired-mode-map "p" 'my/dired-peep-previous))
-      (progn
-        (define-key dired-mode-map "n" 'dired-next-line)
-        (define-key dired-mode-map "p" 'dired-previous-line)
-        (other-window 1)
-        (kill-buffer)
-        (other-window 1))))
-
-  (defalias 'ranger-mode 'my/dired-peep-mode)
 
   (defvar dired-compress-files-alist
     '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
@@ -1000,13 +949,11 @@ window to right."
   (defun my/dired-up-directory ()
     (interactive)
     (find-alternate-file ".."))
-
   (define-key dired-mode-map "b" 'my/dired-up-directory)
+
   (define-key dired-mode-map "f" 'dired-find-alternate-file)
   (define-key dired-mode-map "c" 'dired-do-compress-to)
   (define-key dired-mode-map ")" 'dired-omit-mode)
-  (define-key dired-mode-map "r" 'ranger-mode)
-  (define-key dired-mode-map "?" 'my/dired-get-size)
   (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-jump-to-bottom)
   (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-back-to-top)
   (message "Lazy loaded dired :-)"))
@@ -1432,13 +1379,13 @@ functions."
 
 ;;;###autoload
   (defun my/org-babel-auto-tangle-init-file ()
-    (if (and (equal (buffer-name) "README.org")
+    (if (and (string-match "^.*README\\.org$" (buffer-file-name))
              (my/buffer-substring-p
               "^\\#\\+PROPERTY\\: header-args\\+ \\:tangle \\~\\/\\.emacs.d\\/init\\.el"))
         (org-babel-tangle)))
   (add-hook 'after-save-hook 'my/org-babel-auto-tangle-init-file)
 
-  (setq org-image-actual-width nil)
+    (setq org-image-actual-width nil)
   (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
   (setq org-emphasis-regexp-components '(" \t('\"{" "- \t.,:!?;'\")}\\" " \t\r\n,\"'" "." 300))
   (setq org-confirm-babel-evaluate t)
@@ -1638,7 +1585,7 @@ Otherwise switch to current one."
   ;; get unicode characters in ansi-term - https://stackoverflow.com/a/7442266
   (defadvice ansi-term (after advise-ansi-term-coding-system)
     "Get unicode characters in `ansi-term'."
-    (set-buffer-process-coding-system 'utf-8-unix 'utf-8-unix))
+    (set-process-coding-system 'utf-8-unix 'utf-8-unix))
   (ad-activate 'ansi-term)
 
   (defadvice term-handle-exit (after term-kill-buffer-on-exit activate)
@@ -1735,6 +1682,13 @@ Otherwise switch to current one."
   :hook
   (org-indent-mode . (lambda () (diminish 'org-indent-mode)))
   (hs-minor-mode . (lambda () (diminish 'hs-minor-mode))))
+
+(use-package dired-peep :ensure nil
+  :if (file-directory-p (expand-file-name "~/src/gitlab/tspub/lisp/dired-peep"))
+  :bind (:map dired-mode-map
+              ("r" . ranger-mode)
+              ("M-o" . dired-peep)
+              ("C-o" . dired-peep-temporarily)))
 
 (use-package docker
   :bind ("C-c C-d" . docker))
@@ -1862,14 +1816,13 @@ Otherwise switch to current one."
   :init (setq markdown-command "multimarkdown"))
 
 (use-package nodejs-repl :defer
-  :bind
-  (:map js2-mode-map
-        ("C-x C-e" . nodejs-repl-send-last-expression)
-        ("C-c C-j" . nodejs-repl-send-line)
-        ("C-c SPC" . nodejs-repl-send-region)
-        ("C-c C-b" . nodejs-repl-send-buffer)
-        ("C-c C-f" . nodejs-repl-load-file)
-        ("C-c C-z" . nodejs-repl-switch-to-repl)))
+  :bind (:map js2-mode-map
+              ("C-x C-e" . nodejs-repl-send-last-expression)
+              ("C-c C-j" . nodejs-repl-send-line)
+              ("C-c SPC" . nodejs-repl-send-region)
+              ("C-c C-b" . nodejs-repl-send-buffer)
+              ("C-c C-f" . nodejs-repl-load-file)
+              ("C-c C-z" . nodejs-repl-switch-to-repl)))
 
 (use-package org-bullets :defer
   :hook (org-mode . org-bullets-mode))

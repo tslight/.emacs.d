@@ -9,8 +9,19 @@
 (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
       gc-cons-percentage 0.6)
 
+(defun my/default-gc-cons-settings ()
+  (setq gc-cons-threshold 16777216 ; 16mb
+        gc-cons-percentage 0.1)
+  (message "Restored gc-cons settings :-)"))
+(add-hook 'emacs-startup-hook 'my/default-gc-cons-settings)
+
 (defvar my/default-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
+
+(defun my/restore-default-file-name-handler-alist ()
+  (setq file-name-handler-alist my/default-file-name-handler-alist)
+  (message "Restored default file-name-handler-alist :-)"))
+(add-hook 'emacs-startup-hook 'my/restore-default-file-name-handler-alist)
 
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 (setq auto-save-timeout 5)
@@ -31,45 +42,32 @@
 
 (setq display-line-numbers 'relative)
 
-(setq doc-view-continuous t)
-(setq doc-view-resolution 300)
-
-(global-subword-mode 1) ;; move by camel case, etc
-(global-auto-revert-mode 1) ;; reload if file changed on disk
-(pending-delete-mode 1) ;; remove selected region if typing
-
 (setq-default fill-column 79)
 (set-default 'truncate-lines t)
 (add-hook 'text-mode-hook 'auto-fill-mode)
 
 (setq backward-delete-char-untabify-method 'all)
-(setq create-lockfiles nil) ;; prevent creation of .#myfile.ext
-(setq require-final-newline t) ;; useful for crontab
-(setq set-mark-command-repeat-pop t) ;; repeating C-SPC after popping, pops it
 
-(with-eval-after-load 'electric
-  (electric-indent-mode)
-  (electric-pair-mode)
-  (show-paren-mode 1)
-  (message "Lazy loaded electric :-)"))
+(setq create-lockfiles nil) ;; prevent creation of .#myfile.ext
+
+(setq require-final-newline t) ;; useful for crontab
+
+(setq set-mark-command-repeat-pop t) ;; repeating C-SPC after popping, pops it
 
 (setq epa-file-cache-passphrase-for-symmetric-encryption t)
 (setf epg-pinentry-mode 'loopback)
 
-(global-highlight-changes-mode)
-(setq highlight-changes-visibility-initial-state nil)
-
 (setq history-length t)
 (setq history-delete-duplicates t)
-(setq bookmark-save-flag 1) ;; always save bookmarks to file
-(save-place-mode 1)
-(setq save-place-file (concat user-emacs-directory "saveplace.el"))
 
-(setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
+(setq bookmark-save-flag 1) ;; always save bookmarks to file
 
 (setq custom-file (make-temp-file "emacs-custom"))
+
 (setq disabled-command-function nil) ;; enable all "advanced" features
+
 (setq message-log-max 10000)
+
 (setq apropos-do-all t) ;; doesn't seem to be documented anywhere..
 
 (setq mouse-yank-at-point t)
@@ -86,12 +84,6 @@
 (setq initial-scratch-message nil)
 (setq initial-major-mode 'fundamental-mode)
 
-(with-eval-after-load 'tramp
-  (setq tramp-backup-directory-alist backup-directory-alist)
-  (setq tramp-default-method "ssh")
-  (setf tramp-persistency-file-name (concat temporary-file-directory "tramp-" (user-login-name)))
-  (message "Lazy loaded tramp :-)"))
-
 ;; (setq password-cache t) ; enable password caching
 ;; (setq password-cache-expiry 3600) ; for one hour (time in secs)
 
@@ -101,12 +93,6 @@
 
 (setq user-full-name "Toby Slight")
 (setq user-mail-address "tslight@pm.me")
-
-(with-eval-after-load 'vc
-  (setq vc-follow-symlinks t)
-  (setq vc-make-backup-files t)
-  (setq version-control t)
-  (message "Lazy loaded vc :-)"))
 
 ;; https://emacs.stackexchange.com/a/31061
 (when (equal system-type 'windows-nt)
@@ -175,9 +161,6 @@
 
 (global-set-key (kbd "C-c M-m") 'menu-bar-mode)
 (global-set-key (kbd "S-<f10>") 'menu-bar-mode)
-
-(global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
-(global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
 
 (global-set-key (kbd "C-<f10>") 'toggle-frame-maximized)
 (global-set-key (kbd "C-<f11>") 'toggle-frame-fullscreen)
@@ -407,6 +390,8 @@ Excluding ^I (tabs) and ^J (newlines)."
     (byte-compile-file buffer-file-name t)
     (message (concat "Re-compiled " buffer-file-name " :-)"))))
 (add-hook 'after-save-hook 'my/auto-recompile)
+
+(setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
 
 (setq compilation-scroll-output 'first-error)
 
@@ -896,6 +881,8 @@ window to right."
 (global-set-key (kbd "C-c w u") 'winner-undo)
 (global-set-key (kbd "C-c w r") 'winner-redo)
 
+(add-hook 'after-init-hook 'global-auto-revert-mode) ;; reload if file changed on disk
+
 (with-eval-after-load 'dabbrev
   (setq abbrev-file-name (concat user-emacs-directory "abbrevs"))
   (setq save-abbrevs 'silently)
@@ -1068,6 +1055,11 @@ window to right."
 
 (add-hook 'dired-mode-hook 'hl-line-mode)
 
+(with-eval-after-load 'doc-view-mode
+  (setq doc-view-continuous t)
+  (setq doc-view-resolution 300)
+  (message "Lazy loaded doc-view-mode :-)"))
+
 (with-eval-after-load 'ediff
   (setq ediff-diff-options "-w")
   (setq ediff-keep-variants nil)
@@ -1086,8 +1078,10 @@ window to right."
       (apply orig-fun args)))
 
   (advice-add 'ediff-quit :around #'disable-y-or-n-p)
-
   (message "Lazy loaded ediff :-)"))
+
+(add-hook 'after-init-hook 'electric-indent-mode)
+(add-hook 'after-init-hook 'electric-pair-mode)
 
 (with-eval-after-load 'erc
   (setq erc-autojoin-channels-alist '(("freenode.net"
@@ -1203,6 +1197,13 @@ buffer."
   (message "Lazy loaded gnus :-)"))
 
 (autoload 'gnus "gnus" nil t)
+
+(with-eval-after-load 'highlight-changes-mode
+  (setq highlight-changes-visibility-initial-state nil)
+  (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
+  (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
+  (message "Lazy loaded highlight-changes-mode :-)"))
+(add-hook 'emacs-startup-hook 'global-highlight-changes-mode)
 
 ;;;###autoload
 (defun my/hippie-expand-completions (&optional hippie-expand-function)
@@ -1539,6 +1540,8 @@ functions."
   (add-hook 'org-mode-hook 'hl-line-mode)
   (message "Lazy loaded org :-)"))
 
+(add-hook 'after-init-hook 'pending-delete-mode 1) ;; remove selected region if typing
+
 (with-eval-after-load 'recentf
   (setq recentf-exclude '(".gz"
                           ".xz"
@@ -1577,6 +1580,13 @@ functions."
 (global-set-key (kbd "C-c C-r") 'recentf-open-files)
 (add-hook 'after-init-hook 'recentf-mode)
 
+(add-hook 'after-init-hook 'show-paren-mode)
+
+(with-eval-after-load 'save-place-mode
+  (setq save-place-file (concat user-emacs-directory "saveplace.el"))
+  (message "Lazy loaded save-place-mode :-)"))
+(add-hook 'emacs-startup-hook 'save-place-mode)
+
 (with-eval-after-load 'sh-script
   (add-hook 'shell-script-mode-hook 'hl-line-mode)
   (add-hook 'sh-script-hook 'display-line-numbers-mode)
@@ -1596,6 +1606,8 @@ functions."
   (add-to-list 'interpreter-mode-alist '("sh" . shell-script-mode))
   (add-to-list 'interpreter-mode-alist '("zsh" . shell-script-mode))
   (message "Lazy loaded shell-script-mode :-)"))
+
+(add-hook 'after-init-hook 'global-subword-mode) ;; move by camel case, etc
 
 (autoload 'term "term" nil t)
 (autoload 'ansi-term "term" nil t)
@@ -1652,6 +1664,18 @@ Otherwise switch to current one."
   (message "Lazy loaded term :-)"))
 
 (add-hook 'term-exec (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix)))
+
+(with-eval-after-load 'tramp
+  (setq tramp-backup-directory-alist backup-directory-alist)
+  (setq tramp-default-method "ssh")
+  (setf tramp-persistency-file-name (concat temporary-file-directory "tramp-" (user-login-name)))
+  (message "Lazy loaded tramp :-)"))
+
+(with-eval-after-load 'vc
+  (setq vc-follow-symlinks t)
+  (setq vc-make-backup-files t)
+  (setq version-control t)
+  (message "Lazy loaded vc :-)"))
 
 (with-eval-after-load 'whitespace
   (setq whitespace-line-column 120)
@@ -1961,15 +1985,6 @@ Otherwise switch to current one."
 (byte-recompile-file
  (expand-file-name "init.el" user-emacs-directory)
  'nil 0 'nil)
-
-(defun my/default-gc-cons-settings ()
-  (setq gc-cons-threshold 16777216 ; 16mb
-        gc-cons-percentage 0.1))
-(add-hook 'emacs-startup-hook 'my/default-gc-cons-settings)
-
-(defun my/restore-default-file-name-handler-alist ()
-  (setq file-name-handler-alist my/default-file-name-handler-alist))
-(add-hook 'emacs-startup-hook 'my/restore-default-file-name-handler-alist)
 
 (provide 'init)
 ;; Local Variables:

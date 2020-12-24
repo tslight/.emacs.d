@@ -30,153 +30,184 @@ files, so make sure you've backed up anything you don't want to lose!
 
 * Contents:TOC_5_gh:
 - [[#early-init][Early Init]]
-  - [[#turn-off-unnecessary-ui-frills][Turn off unnecessary UI frills]]
-  - [[#setup-up-packageel][Setup up package.el]]
+   - [[#turn-off-unnecessary-ui-frills][Turn off unnecessary UI frills]]
+   - [[#setup-up-packageel][Setup up package.el]]
 - [[#doom-startup-speed-hacks-setup][Doom startup speed hacks setup]]
-  - [[#avoid-garbage-collection-at-startup][Avoid garbage collection at startup]]
-  - [[#unset-file-name-handler-alist-temporarily][Unset file-name-handler-alist temporarily]]
+   - [[#avoid-garbage-collection-at-startup][Avoid garbage collection at startup]]
+   - [[#unset-file-name-handler-alist-temporarily][Unset file-name-handler-alist temporarily]]
 - [[#general-settings][General Settings]]
+   - [[#auto-save][Auto-save]]
+   - [[#backups][Backups]]
+   - [[#bell][Bell]]
+   - [[#clipboard][Clipboard]]
+   - [[#line-numbers][Line numbers]]
+   - [[#text-filling][Text filling]]
+   - [[#delete-all-on-backspace][Delete all on backspace]]
+   - [[#no-lockfiles][No lockfiles]]
+   - [[#final-newline][Final newline]]
+   - [[#pop-mark-on-repeat][Pop mark on repeat]]
+   - [[#encryption][Encryption]]
+   - [[#history][History]]
+   - [[#bookmarks][Bookmarks]]
+   - [[#custom-settings-in-tmp][Custom settings in /tmp]]
+   - [[#enable-all-advanced-features][Enable all advanced features]]
+   - [[#increase-message-logging-max][Increase message logging max]]
+   - [[#more-extensive-apropos][More extensive apropos]]
+   - [[#mouse-yank-at-point][Mouse yank at point]]
+   - [[#scrolling][Scrolling]]
+   - [[#initial-startup][Initial startup]]
+   - [[#passwords][Passwords]]
+   - [[#undo-limits][Undo limits]]
+   - [[#user-info][User info]]
+   - [[#emacsclient-executable][Emacsclient executable]]
+   - [[#yes-or-no][Yes or no]]
 - [[#code-style][Code Style]]
 - [[#file-encoding-stuff][File encoding stuff]]
 - [[#miscellaneous-hooks][Miscellaneous Hooks]]
 - [[#extra-keybindings][Extra Keybindings]]
-  - [[#toggle-menu-bar][Toggle menu bar]]
-  - [[#highlight-changes-movement][Highlight changes movement]]
-  - [[#frame-maximizing-and-fullscreening][Frame maximizing and fullscreening]]
-  - [[#desktop-read--save-bindings][Desktop read & save bindings]]
-  - [[#grep-binding][Grep binding]]
-  - [[#calculatorcalc-bindings][Calculator/Calc bindings]]
-  - [[#toggle-stuff][Toggle stuff]]
-  - [[#tab-bar-mode-bindings-emacs-27][Tab-bar mode bindings (Emacs 27+)]]
-  - [[#special-mode-keys-help-etc][Special mode keys (help, etc)]]
+   - [[#toggle-menu-bar][Toggle menu bar]]
+   - [[#frame-maximizing-and-fullscreening][Frame maximizing and fullscreening]]
+   - [[#desktop-read--save-bindings][Desktop read & save bindings]]
+   - [[#grep-binding][Grep binding]]
+   - [[#calculatorcalc-bindings][Calculator/Calc bindings]]
+   - [[#toggle-stuff][Toggle stuff]]
+   - [[#tab-bar-mode-bindings-emacs-27][Tab-bar mode bindings (Emacs 27+)]]
+   - [[#special-mode-keys-help-etc][Special mode keys (help, etc)]]
 - [[#registers][Registers]]
 - [[#theme-related][Theme Related]]
 - [[#buffer-functions][Buffer functions]]
-  - [[#indent-buffer][Indent Buffer]]
-  - [[#kill-this-buffer][Kill this buffer]]
-  - [[#last-buffer][Last buffer]]
-  - [[#nuke-buffers][Nuke buffers]]
-  - [[#remove-stuff-from-a-buffer][Remove stuff from a buffer]]
-  - [[#save-buffers-silently][Save buffers silently]]
-  - [[#toggle-maximize-buffer][Toggle maximize buffer]]
-  - [[#buffer-keybindings][Buffer keybindings]]
-  - [[#uniquify][Uniquify]]
+   - [[#indent-buffer][Indent Buffer]]
+   - [[#kill-this-buffer][Kill this buffer]]
+   - [[#last-buffer][Last buffer]]
+   - [[#nuke-buffers][Nuke buffers]]
+   - [[#remove-stuff-from-a-buffer][Remove stuff from a buffer]]
+   - [[#save-buffers-silently][Save buffers silently]]
+   - [[#toggle-maximize-buffer][Toggle maximize buffer]]
+   - [[#buffer-keybindings][Buffer keybindings]]
+   - [[#uniquify][Uniquify]]
 - [[#complilation-related][Complilation related]]
 - [[#editing-functions][Editing functions]]
-  - [[#aligning-symbols][Aligning symbols]]
-  - [[#change-numbers][Change numbers]]
-  - [[#delete-inside-delimiters][Delete inside delimiters]]
-  - [[#generate-a-numbered-list][Generate a numbered list]]
-  - [[#smart-that-the-default-functions][Smart that the default functions]]
-    - [[#fill-or-unfill][Fill or unfill]]
-    - [[#narrow-or-widen-dwim][Narrow or widen DWIM]]
-    - [[#beginning-of-line][Beginning of line]]
-    - [[#kill-ring-save][Kill ring save]]
-    - [[#kill-region][Kill region]]
-  - [[#case-insensitive-sort-lines][Case insensitive sort-lines]]
-  - [[#surround-stuff][Surround stuff]]
-  - [[#untabify-a-buffer][Untabify a buffer]]
-  - [[#xml-pretty-print][XML pretty print]]
-  - [[#yank-pop-forwards][Yank pop forwards]]
-  - [[#editing-related-keyboard-built-in-keybindings][Editing related keyboard built-in keybindings]]
-  - [[#dwim-replacements-for-changing-case][DWIM replacements for changing case]]
+   - [[#aligning-symbols][Aligning symbols]]
+   - [[#change-numbers][Change numbers]]
+   - [[#delete-inside-delimiters][Delete inside delimiters]]
+   - [[#generate-a-numbered-list][Generate a numbered list]]
+   - [[#smart-that-the-default-functions][Smart that the default functions]]
+      - [[#fill-or-unfill][Fill or unfill]]
+      - [[#narrow-or-widen-dwim][Narrow or widen DWIM]]
+      - [[#beginning-of-line][Beginning of line]]
+      - [[#kill-ring-save][Kill ring save]]
+      - [[#kill-region][Kill region]]
+   - [[#case-insensitive-sort-lines][Case insensitive sort-lines]]
+   - [[#surround-stuff][Surround stuff]]
+   - [[#untabify-a-buffer][Untabify a buffer]]
+   - [[#xml-pretty-print][XML pretty print]]
+   - [[#yank-pop-forwards][Yank pop forwards]]
+   - [[#editing-related-keyboard-built-in-keybindings][Editing related keyboard built-in keybindings]]
+   - [[#dwim-replacements-for-changing-case][DWIM replacements for changing case]]
 - [[#file-manipulation-functions][File manipulation functions]]
-  - [[#delete-this-file][Delete this file]]
-  - [[#yank-current-file-name-to-kill-ring][Yank current file name to kill ring]]
-  - [[#make-backup-of-current-file][Make backup of current file]]
-  - [[#rename-file-and-buffer][Rename file and buffer]]
-  - [[#open-current-file-as-root][Open current file as root]]
+   - [[#delete-this-file][Delete this file]]
+   - [[#yank-current-file-name-to-kill-ring][Yank current file name to kill ring]]
+   - [[#make-backup-of-current-file][Make backup of current file]]
+   - [[#rename-file-and-buffer][Rename file and buffer]]
+   - [[#open-current-file-as-root][Open current file as root]]
 - [[#miscellaneous-functions][Miscellaneous functions]]
 - [[#window-manipulation-functions][Window manipulation functions]]
-  - [[#settings][Settings]]
-  - [[#kill-buffer-other-window][Kill buffer other window]]
-  - [[#toggle-focus-to-last-window][Toggle focus to last window]]
-  - [[#open-a-buffer-in-another-window][Open a buffer in another window]]
-  - [[#switch-to-the-previous-window][Switch to the previous window]]
-  - [[#scroll-lines-up-like-ctrl-e-in-vim][Scroll lines up like Ctrl-e in Vim]]
-  - [[#scroll-lines-down-like-ctrl-y-in-vim][Scroll lines down like Ctrl-y in Vim]]
-  - [[#open-last-buffer-in-horizontal-split][Open last buffer in horizontal split]]
-  - [[#open-last-buffer-in-vertical-split][Open last buffer in vertical split]]
-  - [[#toggle-vertical---horizontal-splits][Toggle vertical -> horizontal splits]]
-  - [[#transpose-windows][Transpose windows]]
-  - [[#windmove-keybindings][Windmove keybindings]]
-  - [[#winner-mode][Winner mode]]
-  - [[#scroll-other-window-down][Scroll other window down]]
+   - [[#settings][Settings]]
+   - [[#kill-buffer-other-window][Kill buffer other window]]
+   - [[#toggle-focus-to-last-window][Toggle focus to last window]]
+   - [[#open-a-buffer-in-another-window][Open a buffer in another window]]
+   - [[#switch-to-the-previous-window][Switch to the previous window]]
+   - [[#scroll-lines-up-like-ctrl-e-in-vim][Scroll lines up like Ctrl-e in Vim]]
+   - [[#scroll-lines-down-like-ctrl-y-in-vim][Scroll lines down like Ctrl-y in Vim]]
+   - [[#open-last-buffer-in-horizontal-split][Open last buffer in horizontal split]]
+   - [[#open-last-buffer-in-vertical-split][Open last buffer in vertical split]]
+   - [[#toggle-vertical---horizontal-splits][Toggle vertical -> horizontal splits]]
+   - [[#transpose-windows][Transpose windows]]
+   - [[#windmove-keybindings][Windmove keybindings]]
+   - [[#winner-mode][Winner mode]]
+   - [[#scroll-other-window-down][Scroll other window down]]
 - [[#emacs-built-in-package-configuration][Emacs built in package configuration]]
-  - [[#dabbrev-setup][Dabbrev setup]]
-  - [[#dired][Dired]]
-  - [[#ediff][Ediff]]
-  - [[#erc][ERC]]
-  - [[#eshell][Eshell]]
-  - [[#gnus][Gnus]]
-  - [[#hippie-expand][Hippie Expand]]
-  - [[#icomplete][Icomplete]]
-    - [[#change-completion-styles][Change completion styles]]
-    - [[#icomplete-settings][Icomplete settings]]
-    - [[#icomplete-keybindings][Icomplete keybindings]]
-  - [[#imenu][Imenu]]
-  - [[#isearch][Isearch]]
-  - [[#minibuffer][Minibuffer]]
-    - [[#save-history-mode][Save history mode]]
-    - [[#completion-framework-settings][Completion framework settings]]
-    - [[#misc-minibuffer-settings][Misc Minibuffer settings]]
-  - [[#org][Org]]
-    - [[#org-global-bindings][Org global bindings]]
-  - [[#recentf][Recentf]]
-  - [[#shell-script][Shell script]]
-  - [[#term][Term]]
-    - [[#ansi-term-launcher][ANSI Term launcher]]
-    - [[#switch-to-ansi-term][Switch to ANSI Term]]
-    - [[#lazy-load][Lazy load]]
-    - [[#set-term-coding-system-to-utf-8][Set term coding system to UTF-8]]
-  - [[#whitespace][Whitespace]]
-    - [[#cleanup-whitespace-on-save][Cleanup whitespace on save]]
+   - [[#auto-revert][Auto-revert]]
+   - [[#dabbrev][Dabbrev]]
+   - [[#dired][Dired]]
+   - [[#doc-view][Doc View]]
+   - [[#ediff][Ediff]]
+   - [[#electric][Electric]]
+   - [[#erc][ERC]]
+   - [[#eshell][Eshell]]
+   - [[#gnus][Gnus]]
+   - [[#highlight-changes][Highlight changes]]
+   - [[#hippie-expand][Hippie Expand]]
+   - [[#icomplete][Icomplete]]
+      - [[#change-completion-styles][Change completion styles]]
+      - [[#icomplete-settings][Icomplete settings]]
+      - [[#icomplete-keybindings][Icomplete keybindings]]
+   - [[#imenu][Imenu]]
+   - [[#isearch][Isearch]]
+   - [[#minibuffer][Minibuffer]]
+      - [[#save-history-mode][Save history mode]]
+      - [[#completion-framework-settings][Completion framework settings]]
+      - [[#misc-minibuffer-settings][Misc Minibuffer settings]]
+   - [[#org][Org]]
+      - [[#org-global-bindings][Org global bindings]]
+   - [[#pending-delete][Pending delete]]
+   - [[#recentf][Recentf]]
+   - [[#show-paren][Show paren]]
+   - [[#saveplace][Saveplace]]
+   - [[#shell-script][Shell script]]
+   - [[#subword][Subword]]
+   - [[#term][Term]]
+      - [[#ansi-term-launcher][ANSI Term launcher]]
+      - [[#switch-to-ansi-term][Switch to ANSI Term]]
+      - [[#lazy-load][Lazy load]]
+      - [[#set-term-coding-system-to-utf-8][Set term coding system to UTF-8]]
+   - [[#tramp][Tramp]]
+   - [[#version-control][Version Control]]
+   - [[#whitespace][Whitespace]]
+      - [[#cleanup-whitespace-on-save][Cleanup whitespace on save]]
 - [[#third-party-package-configuration][Third party package configuration]]
-  - [[#setup-packageel-and-use-package][Setup package.el and use-package]]
-  - [[#ansible][Ansible]]
-  - [[#async][Async]]
-  - [[#blacken][Blacken]]
-  - [[#default-text-scaling][Default text scaling]]
-  - [[#diminish][Diminish]]
-  - [[#docker][Docker]]
-  - [[#exec-path-from-shell][Exec path from shell]]
-  - [[#flycheck][Flycheck]]
-  - [[#git-timemachine][Git Timemachine]]
-  - [[#gitlab-ci][Gitlab CI]]
-  - [[#go-mode][Go mode]]
-  - [[#hungry-delete][Hungry delete]]
-  - [[#js2-mode][JS2 mode]]
-  - [[#json][JSON]]
-  - [[#lazygit][Lazygit]]
-  - [[#magit][Magit]]
-  - [[#markdown][Markdown]]
-  - [[#node-js][Node JS]]
-  - [[#org-1][Org]]
-    - [[#org-bullets][Org Bullets]]
-    - [[#htmlize][HTMLize]]
-    - [[#toc-org][Toc Org]]
-    - [[#pdf-tools][PDF Tools]]
-  - [[#powershell][Powershell]]
-  - [[#powerline][Powerline]]
-  - [[#projectile][Projectile]]
-  - [[#restclient][RESTClient]]
-  - [[#systemd][systemd]]
-  - [[#terraform][Terraform]]
-  - [[#web-mode][Web Mode]]
-  - [[#writeable-grep][Writeable Grep]]
-  - [[#which-key][Which Key]]
-  - [[#yaml][YAML]]
-  - [[#yasnippet][Yasnippet]]
-    - [[#snippets][Snippets]]
-    - [[#classic-snippets][Classic snippets]]
-    - [[#custom-yasnippet-snippets][Custom Yasnippet snippets]]
-      - [[#emacs-lisp-snippets][Emacs Lisp snippets]]
-        - [[#standard-elisp-boilerplate][Standard elisp boilerplate]]
-        - [[#package-elisp-boilerplate][Package elisp boilerplate]]
+   - [[#setup-packageel-and-use-package][Setup package.el and use-package]]
+   - [[#ansible][Ansible]]
+   - [[#async][Async]]
+   - [[#blacken][Blacken]]
+   - [[#default-text-scaling][Default text scaling]]
+   - [[#diminish][Diminish]]
+   - [[#docker][Docker]]
+   - [[#exec-path-from-shell][Exec path from shell]]
+   - [[#flycheck][Flycheck]]
+   - [[#git-timemachine][Git Timemachine]]
+   - [[#gitlab-ci][Gitlab CI]]
+   - [[#go-mode][Go mode]]
+   - [[#hungry-delete][Hungry delete]]
+   - [[#js2-mode][JS2 mode]]
+   - [[#json][JSON]]
+   - [[#lazygit][Lazygit]]
+   - [[#magit][Magit]]
+   - [[#markdown][Markdown]]
+   - [[#node-js][Node JS]]
+   - [[#org-1][Org]]
+      - [[#org-bullets][Org Bullets]]
+      - [[#htmlize][HTMLize]]
+      - [[#toc-org][Toc Org]]
+      - [[#pdf-tools][PDF Tools]]
+   - [[#powershell][Powershell]]
+   - [[#powerline][Powerline]]
+   - [[#projectile][Projectile]]
+   - [[#restclient][RESTClient]]
+   - [[#systemd][systemd]]
+   - [[#terraform][Terraform]]
+   - [[#web-mode][Web Mode]]
+   - [[#writeable-grep][Writeable Grep]]
+   - [[#which-key][Which Key]]
+   - [[#yaml][YAML]]
+   - [[#yasnippet][Yasnippet]]
+      - [[#snippets][Snippets]]
+      - [[#classic-snippets][Classic snippets]]
+      - [[#custom-yasnippet-snippets][Custom Yasnippet snippets]]
+         - [[#emacs-lisp-snippets][Emacs Lisp snippets]]
+            - [[#standard-elisp-boilerplate][Standard elisp boilerplate]]
+            - [[#package-elisp-boilerplate][Package elisp boilerplate]]
 - [[#ensure-init-files-are-byte-compiled][Ensure init files are byte compiled]]
-- [[#doom-startup-speed-hacks-teardown][Doom startup speed hacks teardown]]
-  - [[#restore-garbage-collection][Restore garbage collection]]
-  - [[#restore-original-file-name-handler-alist][Restore original file-name-handler-alist]]
 
 * Early Init
 
@@ -236,6 +267,19 @@ up gc-cons-threshold (and perhaps gc-cons-percentage) temporarily:
         gc-cons-percentage 0.6)
 #+end_src
 
+It is important to reset the garbage collection settings eventually. Not doing
+so will cause garbage collection freezes during long-term interactive
+use. Conversely, a gc-cons-threshold that is too small will cause
+stuttering. We use 16mb as our default.
+
+#+begin_src emacs-lisp
+  (defun my/default-gc-cons-settings ()
+    (setq gc-cons-threshold 16777216 ; 16mb
+          gc-cons-percentage 0.1)
+    (message "Restored gc-cons settings :-)"))
+  (add-hook 'emacs-startup-hook 'my/default-gc-cons-settings)
+#+end_src
+
 ** Unset file-name-handler-alist temporarily
 
 Emacs consults this variable every time a file is read or library loaded, or
@@ -250,114 +294,197 @@ none of them are (typically) necessary at startup, so we disable them
   (defvar my/default-file-name-handler-alist file-name-handler-alist)
   (setq file-name-handler-alist nil)
 #+end_src
+
+Don’t forget to restore file-name-handler-alist, otherwise TRAMP won’t work and
+compressed/encrypted files won’t open.
+
+#+begin_src emacs-lisp
+  (defun my/restore-default-file-name-handler-alist ()
+    (setq file-name-handler-alist my/default-file-name-handler-alist)
+    (message "Restored default file-name-handler-alist :-)"))
+  (add-hook 'emacs-startup-hook 'my/restore-default-file-name-handler-alist)
+#+end_src
+
 * General Settings
+** Auto-save
 
 #+begin_src emacs-lisp
   (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
   (setq auto-save-timeout 5)
+#+end_src
 
+** Backups
+
+#+begin_src emacs-lisp
   (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
   (setq backup-by-copying t) ;; copy files, don't rename them.
   (setq delete-old-versions t)
   (setq kept-new-versions 12)
   (setq kept-old-versions 12)
+#+end_src
 
+** Bell
+
+#+begin_src emacs-lisp
   (setq ring-bell-function 'ignore)
   (setq visible-bell 1)
+#+end_src
 
+** Clipboard
+
+#+begin_src emacs-lisp
   (setq select-enable-clipboard t)
   (setq select-enable-primary t)
   (setq x-select-enable-clipboard-manager nil)
   (setq save-interprogram-paste-before-kill t)
+#+end_src
 
+** Line numbers
+
+#+begin_src emacs-lisp
   (setq display-line-numbers 'relative)
+#+end_src
 
-  (setq doc-view-continuous t)
-  (setq doc-view-resolution 300)
+** Text filling
 
-  (global-subword-mode 1) ;; move by camel case, etc
-  (global-auto-revert-mode 1) ;; reload if file changed on disk
-  (pending-delete-mode 1) ;; remove selected region if typing
-
+#+begin_src emacs-lisp
   (setq-default fill-column 79)
   (set-default 'truncate-lines t)
   (add-hook 'text-mode-hook 'auto-fill-mode)
+#+end_src
 
+** Delete all on backspace
+
+#+begin_src emacs-lisp
   (setq backward-delete-char-untabify-method 'all)
+#+end_src
+
+** No lockfiles
+
+#+begin_src emacs-lisp
   (setq create-lockfiles nil) ;; prevent creation of .#myfile.ext
+#+end_src
+
+** Final newline
+
+#+begin_src emacs-lisp
   (setq require-final-newline t) ;; useful for crontab
+#+end_src
+
+** Pop mark on repeat
+
+#+begin_src emacs-lisp
   (setq set-mark-command-repeat-pop t) ;; repeating C-SPC after popping, pops it
+#+end_src
 
-  (with-eval-after-load 'electric
-    (electric-indent-mode)
-    (electric-pair-mode)
-    (show-paren-mode 1)
-    (message "Lazy loaded electric :-)"))
+** Encryption
 
+#+begin_src emacs-lisp
   (setq epa-file-cache-passphrase-for-symmetric-encryption t)
   (setf epg-pinentry-mode 'loopback)
+#+end_src
 
-  (global-highlight-changes-mode)
-  (setq highlight-changes-visibility-initial-state nil)
+** History
 
+#+begin_src emacs-lisp
   (setq history-length t)
   (setq history-delete-duplicates t)
+#+end_src
+
+** Bookmarks
+
+#+begin_src emacs-lisp
   (setq bookmark-save-flag 1) ;; always save bookmarks to file
-  (save-place-mode 1)
-  (setq save-place-file (concat user-emacs-directory "saveplace.el"))
+#+end_src
 
-  (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
+** Custom settings in /tmp
 
+#+begin_src emacs-lisp
   (setq custom-file (make-temp-file "emacs-custom"))
+#+end_src
+
+** Enable all advanced features
+
+#+begin_src emacs-lisp
   (setq disabled-command-function nil) ;; enable all "advanced" features
+#+end_src
+
+** Increase message logging max
+
+#+begin_src emacs-lisp
   (setq message-log-max 10000)
+#+end_src
+
+** More extensive apropos
+
+#+begin_src emacs-lisp
   (setq apropos-do-all t) ;; doesn't seem to be documented anywhere..
+#+end_src
 
+** Mouse yank at point
+
+#+begin_src emacs-lisp
   (setq mouse-yank-at-point t)
+#+end_src
 
+** Scrolling
+
+#+begin_src emacs-lisp
   (setq scroll-step 4)
   (setq scroll-margin 6)
   (setq scroll-conservatively 8)
   (setq scroll-preserve-screen-position t)
+#+end_src
 
+** Initial startup
+#+begin_src emacs-lisp
   (defun display-startup-echo-area-message ()
     "Redefine this function to be more useful."
     (message "Started in %s. Hacks & Glory await! :-)" (emacs-init-time)))
   (setq inhibit-startup-screen t)
   (setq initial-scratch-message nil)
   (setq initial-major-mode 'fundamental-mode)
+#+end_src
 
-  (with-eval-after-load 'tramp
-    (setq tramp-backup-directory-alist backup-directory-alist)
-    (setq tramp-default-method "ssh")
-    (setf tramp-persistency-file-name (concat temporary-file-directory "tramp-" (user-login-name)))
-    (message "Lazy loaded tramp :-)"))
+** Passwords
 
+#+begin_src emacs-lisp
   ;; (setq password-cache t) ; enable password caching
   ;; (setq password-cache-expiry 3600) ; for one hour (time in secs)
+#+end_src
 
+** Undo limits
+
+#+begin_src emacs-lisp
   ;; http://www.dr-qubit.org/Lost_undo-tree_history.html
   (setq undo-limit 80000000)
   (setq undo-strong-limit 90000000)
+#+end_src
 
+** User info
+
+#+begin_src emacs-lisp
   (setq user-full-name "Toby Slight")
   (setq user-mail-address "tslight@pm.me")
+#+end_src
 
-  (with-eval-after-load 'vc
-    (setq vc-follow-symlinks t)
-    (setq vc-make-backup-files t)
-    (setq version-control t)
-    (message "Lazy loaded vc :-)"))
+** Emacsclient executable
 
+#+begin_src emacs-lisp
   ;; https://emacs.stackexchange.com/a/31061
   (when (equal system-type 'windows-nt)
     (if (file-readable-p "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
         (setq-default with-editor-emacsclient-executable "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
       (setq-default with-editor-emacsclient-executable nil)))
+#+end_src
 
+** Yes or no
+
+#+begin_src emacs-lisp
   (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
   (setq confirm-kill-emacs 'y-or-n-p)
 #+end_src
+
 * Code Style
 
 #+begin_src emacs-lisp
@@ -437,13 +564,6 @@ Miscellanous keybindings
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c M-m") 'menu-bar-mode)
   (global-set-key (kbd "S-<f10>") 'menu-bar-mode)
-#+end_src
-
-** Highlight changes movement
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
-  (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
 #+end_src
 
 ** Frame maximizing and fullscreening
@@ -759,6 +879,12 @@ Automatically recompile Emacs Lisp files after saving
       (byte-compile-file buffer-file-name t)
       (message (concat "Re-compiled " buffer-file-name " :-)"))))
   (add-hook 'after-save-hook 'my/auto-recompile)
+#+end_src
+
+If init.elc is older, use newer ~init.el~.
+
+#+begin_src emacs-lisp
+  (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
 #+end_src
 
 Place point at first error when running ~make~.
@@ -1424,7 +1550,13 @@ This is basically ~other-window~ backwards.
 (global-set-key (kbd "C-c v") 'scroll-other-window-down)
 #+end_src>
 * Emacs built in package configuration
-** Dabbrev setup
+** Auto-revert
+
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook 'global-auto-revert-mode) ;; reload if file changed on disk
+#+end_src
+
+** Dabbrev
 
 #+begin_src emacs-lisp
   (with-eval-after-load 'dabbrev
@@ -1602,6 +1734,15 @@ This is basically ~other-window~ backwards.
 
   (add-hook 'dired-mode-hook 'hl-line-mode)
 #+end_src
+** Doc View
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'doc-view-mode
+    (setq doc-view-continuous t)
+    (setq doc-view-resolution 300)
+    (message "Lazy loaded doc-view-mode :-)"))
+#+end_src
+
 ** Ediff
 
 #+begin_src emacs-lisp
@@ -1623,8 +1764,14 @@ This is basically ~other-window~ backwards.
         (apply orig-fun args)))
 
     (advice-add 'ediff-quit :around #'disable-y-or-n-p)
-
     (message "Lazy loaded ediff :-)"))
+#+end_src
+
+** Electric
+
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook 'electric-indent-mode)
+  (add-hook 'after-init-hook 'electric-pair-mode)
 #+end_src
 
 ** ERC
@@ -1749,6 +1896,17 @@ This is basically ~other-window~ backwards.
 
   (autoload 'gnus "gnus" nil t)
 #+end_src
+** Highlight changes
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'highlight-changes-mode
+    (setq highlight-changes-visibility-initial-state nil)
+    (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
+    (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
+    (message "Lazy loaded highlight-changes-mode :-)"))
+  (add-hook 'emacs-startup-hook 'global-highlight-changes-mode)
+#+end_src
+
 ** Hippie Expand
 
 #+begin_src emacs-lisp
@@ -2154,6 +2312,12 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
   (global-set-key (kbd "C-c C-o t") 'org-time-stamp)
 #+end_src
 
+** Pending delete
+
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook 'pending-delete-mode 1) ;; remove selected region if typing
+#+end_src
+
 ** Recentf
 
 #+begin_src emacs-lisp
@@ -2196,6 +2360,21 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
   (add-hook 'after-init-hook 'recentf-mode)
 #+end_src
 
+** Show paren
+
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook 'show-paren-mode)
+#+end_src
+
+** Saveplace
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'save-place-mode
+    (setq save-place-file (concat user-emacs-directory "saveplace.el"))
+    (message "Lazy loaded save-place-mode :-)"))
+  (add-hook 'emacs-startup-hook 'save-place-mode)
+#+end_src
+
 ** Shell script
 
 #+begin_src emacs-lisp
@@ -2218,6 +2397,12 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (add-to-list 'interpreter-mode-alist '("sh" . shell-script-mode))
     (add-to-list 'interpreter-mode-alist '("zsh" . shell-script-mode))
     (message "Lazy loaded shell-script-mode :-)"))
+#+end_src
+
+** Subword
+
+#+begin_src emacs-lisp
+  (add-hook 'after-init-hook 'global-subword-mode) ;; move by camel case, etc
 #+end_src
 
 ** Term
@@ -2296,6 +2481,24 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
   (add-hook 'term-exec (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix)))
 #+end_src
 
+** Tramp
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'tramp
+    (setq tramp-backup-directory-alist backup-directory-alist)
+    (setq tramp-default-method "ssh")
+    (setf tramp-persistency-file-name (concat temporary-file-directory "tramp-" (user-login-name)))
+    (message "Lazy loaded tramp :-)"))
+#+end_src
+** Version Control
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'vc
+    (setq vc-follow-symlinks t)
+    (setq vc-make-backup-files t)
+    (setq version-control t)
+    (message "Lazy loaded vc :-)"))
+#+end_src
 ** Whitespace
 
 #+begin_src emacs-lisp
@@ -2833,10 +3036,6 @@ party packages from [[https://melpa.org/][MELPA]].
 This block will byte compile ~early-init.el~ and ~init.el~ if an existing
 ~.elc~ file is not up to date with their contents.
 
-#+begin_quote
-(byte-recompile-file FILENAME &optional FORCE ARG LOAD)
-#+end_quote
-
 #+begin_src emacs-lisp
   (autoload 'byte-recompile-file "bytecomp")
   (byte-recompile-file
@@ -2845,33 +3044,4 @@ This block will byte compile ~early-init.el~ and ~init.el~ if an existing
   (byte-recompile-file
    (expand-file-name "init.el" user-emacs-directory)
    'nil 0 'nil)
-#+end_src
-
-* Doom startup speed hacks teardown
-
-Stole this stuff from [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][here]].
-
-** Restore garbage collection
-
-It is important to reset the garbage collection settings eventually. Not doing
-so will cause garbage collection freezes during long-term interactive
-use. Conversely, a gc-cons-threshold that is too small will cause
-stuttering. We use 16mb as our default.
-
-#+begin_src emacs-lisp
-  (defun my/default-gc-cons-settings ()
-    (setq gc-cons-threshold 16777216 ; 16mb
-          gc-cons-percentage 0.1))
-  (add-hook 'emacs-startup-hook 'my/default-gc-cons-settings)
-#+end_src
-
-** Restore original file-name-handler-alist
-
-Don’t forget to restore file-name-handler-alist, otherwise TRAMP won’t work and
-compressed/encrypted files won’t open.
-
-#+begin_src emacs-lisp
-  (defun my/restore-default-file-name-handler-alist ()
-    (setq file-name-handler-alist my/default-file-name-handler-alist))
-  (add-hook 'emacs-startup-hook 'my/restore-default-file-name-handler-alist)
 #+end_src

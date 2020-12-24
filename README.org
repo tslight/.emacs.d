@@ -29,7 +29,7 @@ That will copy all the source code blocks in this file and overwrite whatever
 you have in your ~$HOME/.emacs.d/early-init.el~ and ~$HOME/.emacs.d/init.el~
 files, so make sure you've backed up anything you don't want to lose!
 
-* Early Init
+* Early Init (Emacs 27+)
 
 From ~/etc/NEWS~
 
@@ -381,46 +381,6 @@ Miscellaneous hooks
 #+end_src
 
 * Keybindings
-** Buffer keybindings
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-x M-e") 'eval-buffer)
-  (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
-  (autoload 'ibuffer "ibuffer" nil t)
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (global-set-key (kbd "C-x M-k") 'kill-buffer)
-#+end_src
-
-** Toggle menu bar
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c M-m") 'menu-bar-mode)
-  (global-set-key (kbd "S-<f10>") 'menu-bar-mode)
-#+end_src
-
-** Frame maximizing and fullscreening
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-<f10>") 'toggle-frame-maximized)
-  (global-set-key (kbd "C-<f11>") 'toggle-frame-fullscreen)
-  (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
-  (global-set-key (kbd "C-s-m") 'toggle-frame-maximized)
-#+end_src
-
-** Desktop read & save bindings
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c M-d r") 'desktop-read)
-  (global-set-key (kbd "C-c M-d s") 'desktop-save)
-#+end_src
-
-** Grep binding
-
-#+begin_src emacs-lisp
-  (autoload 'grep "grep" nil t)
-  (global-set-key (kbd "C-c C-g") 'grep)
-#+end_src
-
 ** Calculator/Calc bindings
 
 #+begin_src emacs-lisp
@@ -430,26 +390,62 @@ Miscellaneous hooks
   (global-set-key (kbd "C-c M-c") 'calc)
 #+end_src
 
-** Toggle stuff
+** Buffers
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
-  (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
+  (global-set-key (kbd "C-x M-e") 'eval-buffer)
+  (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
+  (autoload 'ibuffer "ibuffer" nil t)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "C-x M-k") 'kill-buffer)
 #+end_src
 
-** Tab-bar mode bindings (Emacs 27+)
+** Desktop read/save
 
 #+begin_src emacs-lisp
-  (when (version< emacs-version "27")
-    (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
-    (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
-    (global-set-key (kbd "C-x t k") 'tab-bar-close-tab)
-    (global-set-key (kbd "C-x t n") 'tab-bar-switch-to-next-tab)
-    (global-set-key (kbd "C-x t p") 'tab-bar-switch-to-prev-tab)
-    (global-set-key (kbd "C-x t l") 'tab-bar-switch-to-recent-tab))
+  (global-set-key (kbd "C-c M-d r") 'desktop-read)
+  (global-set-key (kbd "C-c M-d s") 'desktop-save)
 #+end_src
 
-** Special mode keys (help, etc)
+** Editing
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
+  (global-set-key (kbd "M-;") 'comment-line)
+  (global-set-key (kbd "M-z") 'zap-up-to-char)
+  (global-set-key (kbd "C-x M-t") 'transpose-regions)
+  (global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
+  (global-set-key (kbd "M-SPC") 'cycle-spacing)
+  (global-set-key (kbd "M-%") 'query-replace-regexp)
+  (global-set-key [remap capitalize-word] 'capitalize-dwim)
+  (global-set-key [remap downcase-word] 'downcase-dwim)
+  (global-set-key [remap upcase-word] 'upcase-dwim)
+#+end_src
+
+** Frames
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-<f10>") 'toggle-frame-maximized)
+  (global-set-key (kbd "C-<f11>") 'toggle-frame-fullscreen)
+  (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
+  (global-set-key (kbd "C-s-m") 'toggle-frame-maximized)
+#+end_src
+
+** Grep binding
+
+#+begin_src emacs-lisp
+  (autoload 'grep "grep" nil t)
+  (global-set-key (kbd "C-c C-g") 'grep)
+#+end_src
+
+** Menu bar
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c M-m") 'menu-bar-mode)
+  (global-set-key (kbd "S-<f10>") 'menu-bar-mode)
+#+end_src
+
+** Special mode
 
 #+begin_src emacs-lisp
   ;; for help modes, and simple/special modes
@@ -461,6 +457,25 @@ Miscellaneous hooks
   (define-key special-mode-map "p" #'widget-backward)
   (define-key special-mode-map "f" #'widget-forward)
   (define-key special-mode-map "b" #'widget-backward)
+#+end_src
+
+** Toggle filling
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
+  (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
+#+end_src
+
+** Tabs (Emacs 27+)
+
+#+begin_src emacs-lisp
+  (when (version< emacs-version "27")
+    (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
+    (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
+    (global-set-key (kbd "C-x t k") 'tab-bar-close-tab)
+    (global-set-key (kbd "C-x t n") 'tab-bar-switch-to-next-tab)
+    (global-set-key (kbd "C-x t p") 'tab-bar-switch-to-prev-tab)
+    (global-set-key (kbd "C-x t l") 'tab-bar-switch-to-recent-tab))
 #+end_src
 
 * Registers
@@ -1026,26 +1041,6 @@ or just less than ideal way...
   (global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
 #+end_src
 
-** Editing related keyboard built-in keybindings
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
-  (global-set-key (kbd "M-;") 'comment-line)
-  (global-set-key (kbd "M-z") 'zap-up-to-char)
-  (global-set-key (kbd "C-x M-t") 'transpose-regions)
-  (global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
-  (global-set-key (kbd "M-SPC") 'cycle-spacing)
-  (global-set-key (kbd "M-%") 'query-replace-regexp)
-#+end_src
-
-** DWIM replacements for changing case
-
-#+begin_src emacs-lisp
-  (global-set-key [remap capitalize-word] 'capitalize-dwim)
-  (global-set-key [remap downcase-word] 'downcase-dwim)
-  (global-set-key [remap upcase-word] 'upcase-dwim)
-#+end_src
-
 * File manipulation functions
 ** Delete this file
 
@@ -1373,12 +1368,6 @@ This is basically ~other-window~ backwards.
   (add-hook 'window-setup-hook 'winner-mode)
   (global-set-key (kbd "C-c w u") 'winner-undo)
   (global-set-key (kbd "C-c w r") 'winner-redo)
-#+end_src
-
-** Scroll other window down
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c v") 'scroll-other-window-down)
 #+end_src
 
 * Emacs built in package configuration

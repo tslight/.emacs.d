@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <title>Emacs Configuration</title>
-<!-- 2020-12-24 Thu 05:37 -->
+<!-- 2020-12-24 Thu 05:54 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Org-mode">
@@ -195,7 +195,7 @@ $(function() {
 <div class="row"><div class="col-md-3 col-md-push-9"><nav id="table-of-contents">
 <div id="text-table-of-contents" class="bs-docs-sidebar">
 <ul class="nav">
-<li><a href="#sec-1">1. Early Init</a>
+<li><a href="#sec-1">1. Early Init (Emacs 27+)</a>
 <ul class="nav">
 <li><a href="#sec-1-1">1.1. Turn off unnecessary UI frills</a></li>
 <li><a href="#sec-1-2">1.2. Setup up package.el</a></li>
@@ -243,15 +243,16 @@ $(function() {
 <li><a href="#sec-6">6. Hooks</a></li>
 <li><a href="#sec-7">7. Keybindings</a>
 <ul class="nav">
-<li><a href="#sec-7-1">7.1. Buffer keybindings</a></li>
-<li><a href="#sec-7-2">7.2. Toggle menu bar</a></li>
-<li><a href="#sec-7-3">7.3. Frame maximizing and fullscreening</a></li>
-<li><a href="#sec-7-4">7.4. Desktop read &amp; save bindings</a></li>
-<li><a href="#sec-7-5">7.5. Grep binding</a></li>
-<li><a href="#sec-7-6">7.6. Calculator/Calc bindings</a></li>
-<li><a href="#sec-7-7">7.7. Toggle stuff</a></li>
-<li><a href="#sec-7-8">7.8. Tab-bar mode bindings (Emacs 27+)</a></li>
-<li><a href="#sec-7-9">7.9. Special mode keys (help, etc)</a></li>
+<li><a href="#sec-7-1">7.1. Calculator/Calc bindings</a></li>
+<li><a href="#sec-7-2">7.2. Buffers</a></li>
+<li><a href="#sec-7-3">7.3. Desktop read/save</a></li>
+<li><a href="#sec-7-4">7.4. Editing</a></li>
+<li><a href="#sec-7-5">7.5. Frames</a></li>
+<li><a href="#sec-7-6">7.6. Grep binding</a></li>
+<li><a href="#sec-7-7">7.7. Menu bar</a></li>
+<li><a href="#sec-7-8">7.8. Special mode</a></li>
+<li><a href="#sec-7-9">7.9. Toggle filling</a></li>
+<li><a href="#sec-7-10">7.10. Tabs (Emacs 27+)</a></li>
 </ul>
 </li>
 <li><a href="#sec-8">8. Registers</a></li>
@@ -297,8 +298,6 @@ $(function() {
 <li><a href="#sec-12-8">12.8. Untabify a buffer</a></li>
 <li><a href="#sec-12-9">12.9. XML pretty print</a></li>
 <li><a href="#sec-12-10">12.10. Yank pop forwards</a></li>
-<li><a href="#sec-12-11">12.11. Editing related keyboard built-in keybindings</a></li>
-<li><a href="#sec-12-12">12.12. DWIM replacements for changing case</a></li>
 </ul>
 </li>
 <li><a href="#sec-13">13. File manipulation functions</a>
@@ -325,7 +324,6 @@ $(function() {
 <li><a href="#sec-15-10">15.10. Transpose windows</a></li>
 <li><a href="#sec-15-11">15.11. Windmove keybindings</a></li>
 <li><a href="#sec-15-12">15.12. Winner mode</a></li>
-<li><a href="#sec-15-13">15.13. Scroll other window down</a></li>
 </ul>
 </li>
 <li><a href="#sec-16">16. Emacs built in package configuration</a>
@@ -479,7 +477,7 @@ files, so make sure you've backed up anything you don't want to lose!
 </p>
 
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Early Init</h2>
+<h2 id="sec-1"><span class="section-number-2">1</span> Early Init (Emacs 27+)</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 From <code>/etc/NEWS</code>
@@ -1037,8 +1035,22 @@ Miscellaneous hooks
 <h2 id="sec-7"><span class="section-number-2">7</span> Keybindings</h2>
 <div class="outline-text-2" id="text-7">
 </div><div id="outline-container-sec-7-1" class="outline-3">
-<h3 id="sec-7-1"><span class="section-number-3">7.1</span> Buffer keybindings</h3>
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> Calculator/Calc bindings</h3>
 <div class="outline-text-3" id="text-7-1">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(autoload 'calculator <span style="color: #95e454;">"calculator"</span> nil t)
+(global-set-key (kbd <span style="color: #95e454;">"C-c c"</span>) 'calculator)
+(autoload 'calc <span style="color: #95e454;">"calc"</span> nil t)
+(global-set-key (kbd <span style="color: #95e454;">"C-c M-c"</span>) 'calc)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="section-number-3">7.2</span> Buffers</h3>
+<div class="outline-text-3" id="text-7-2">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-x M-e"</span>) 'eval-buffer)
@@ -1051,21 +1063,41 @@ Miscellaneous hooks
 </div>
 </div>
 
-<div id="outline-container-sec-7-2" class="outline-3">
-<h3 id="sec-7-2"><span class="section-number-3">7.2</span> Toggle menu bar</h3>
-<div class="outline-text-3" id="text-7-2">
+<div id="outline-container-sec-7-3" class="outline-3">
+<h3 id="sec-7-3"><span class="section-number-3">7.3</span> Desktop read/save</h3>
+<div class="outline-text-3" id="text-7-3">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-c M-m"</span>) 'menu-bar-mode)
-(global-set-key (kbd <span style="color: #95e454;">"S-&lt;f10&gt;"</span>) 'menu-bar-mode)
+<pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-c M-d r"</span>) 'desktop-read)
+(global-set-key (kbd <span style="color: #95e454;">"C-c M-d s"</span>) 'desktop-save)
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-sec-7-3" class="outline-3">
-<h3 id="sec-7-3"><span class="section-number-3">7.3</span> Frame maximizing and fullscreening</h3>
-<div class="outline-text-3" id="text-7-3">
+<div id="outline-container-sec-7-4" class="outline-3">
+<h3 id="sec-7-4"><span class="section-number-3">7.4</span> Editing</h3>
+<div class="outline-text-3" id="text-7-4">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-c C-e"</span>) 'pp-eval-last-sexp)
+(global-set-key (kbd <span style="color: #95e454;">"M-;"</span>) 'comment-line)
+(global-set-key (kbd <span style="color: #95e454;">"M-z"</span>) 'zap-up-to-char)
+(global-set-key (kbd <span style="color: #95e454;">"C-x M-t"</span>) 'transpose-regions)
+(global-set-key (kbd <span style="color: #95e454;">"C-x M-p"</span>) 'transpose-paragraphs)
+(global-set-key (kbd <span style="color: #95e454;">"M-SPC"</span>) 'cycle-spacing)
+(global-set-key (kbd <span style="color: #95e454;">"M-%"</span>) 'query-replace-regexp)
+(global-set-key [remap capitalize-word] 'capitalize-dwim)
+(global-set-key [remap downcase-word] 'downcase-dwim)
+(global-set-key [remap upcase-word] 'upcase-dwim)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7-5" class="outline-3">
+<h3 id="sec-7-5"><span class="section-number-3">7.5</span> Frames</h3>
+<div class="outline-text-3" id="text-7-5">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-&lt;f10&gt;"</span>) 'toggle-frame-maximized)
@@ -1077,21 +1109,9 @@ Miscellaneous hooks
 </div>
 </div>
 
-<div id="outline-container-sec-7-4" class="outline-3">
-<h3 id="sec-7-4"><span class="section-number-3">7.4</span> Desktop read &amp; save bindings</h3>
-<div class="outline-text-3" id="text-7-4">
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-c M-d r"</span>) 'desktop-read)
-(global-set-key (kbd <span style="color: #95e454;">"C-c M-d s"</span>) 'desktop-save)
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-7-5" class="outline-3">
-<h3 id="sec-7-5"><span class="section-number-3">7.5</span> Grep binding</h3>
-<div class="outline-text-3" id="text-7-5">
+<div id="outline-container-sec-7-6" class="outline-3">
+<h3 id="sec-7-6"><span class="section-number-3">7.6</span> Grep binding</h3>
+<div class="outline-text-3" id="text-7-6">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp">(autoload 'grep <span style="color: #95e454;">"grep"</span> nil t)
@@ -1101,52 +1121,21 @@ Miscellaneous hooks
 </div>
 </div>
 
-<div id="outline-container-sec-7-6" class="outline-3">
-<h3 id="sec-7-6"><span class="section-number-3">7.6</span> Calculator/Calc bindings</h3>
-<div class="outline-text-3" id="text-7-6">
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(autoload 'calculator <span style="color: #95e454;">"calculator"</span> nil t)
-(global-set-key (kbd <span style="color: #95e454;">"C-c c"</span>) 'calculator)
-(autoload 'calc <span style="color: #95e454;">"calc"</span> nil t)
-(global-set-key (kbd <span style="color: #95e454;">"C-c M-c"</span>) 'calc)
-</pre>
-</div>
-</div>
-</div>
-
 <div id="outline-container-sec-7-7" class="outline-3">
-<h3 id="sec-7-7"><span class="section-number-3">7.7</span> Toggle stuff</h3>
+<h3 id="sec-7-7"><span class="section-number-3">7.7</span> Menu bar</h3>
 <div class="outline-text-3" id="text-7-7">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-c M-t a"</span>) 'toggle-text-mode-autofill)
-(global-set-key (kbd <span style="color: #95e454;">"C-c M-t t"</span>) 'toggle-truncate-lines)
+<pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-c M-m"</span>) 'menu-bar-mode)
+(global-set-key (kbd <span style="color: #95e454;">"S-&lt;f10&gt;"</span>) 'menu-bar-mode)
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-sec-7-8" class="outline-3">
-<h3 id="sec-7-8"><span class="section-number-3">7.8</span> Tab-bar mode bindings (Emacs 27+)</h3>
+<h3 id="sec-7-8"><span class="section-number-3">7.8</span> Special mode</h3>
 <div class="outline-text-3" id="text-7-8">
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(<span style="color: #8ac6f2; font-weight: bold;">when</span> (version&lt; emacs-version <span style="color: #95e454;">"27"</span>)
-  (global-set-key (kbd <span style="color: #95e454;">"C-x t t"</span>) 'tab-bar-select-tab-by-name)
-  (global-set-key (kbd <span style="color: #95e454;">"C-x t c"</span>) 'tab-bar-new-tab)
-  (global-set-key (kbd <span style="color: #95e454;">"C-x t k"</span>) 'tab-bar-close-tab)
-  (global-set-key (kbd <span style="color: #95e454;">"C-x t n"</span>) 'tab-bar-switch-to-next-tab)
-  (global-set-key (kbd <span style="color: #95e454;">"C-x t p"</span>) 'tab-bar-switch-to-prev-tab)
-  (global-set-key (kbd <span style="color: #95e454;">"C-x t l"</span>) 'tab-bar-switch-to-recent-tab))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-7-9" class="outline-3">
-<h3 id="sec-7-9"><span class="section-number-3">7.9</span> Special mode keys (help, etc)</h3>
-<div class="outline-text-3" id="text-7-9">
 <div class="org-src-container">
 
 <pre class="src src-emacs-lisp"><span style="color: #99968b;">;; </span><span style="color: #99968b;">for help modes, and simple/special modes</span>
@@ -1158,6 +1147,35 @@ Miscellaneous hooks
 (define-key special-mode-map <span style="color: #95e454;">"p"</span> #'widget-backward)
 (define-key special-mode-map <span style="color: #95e454;">"f"</span> #'widget-forward)
 (define-key special-mode-map <span style="color: #95e454;">"b"</span> #'widget-backward)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7-9" class="outline-3">
+<h3 id="sec-7-9"><span class="section-number-3">7.9</span> Toggle filling</h3>
+<div class="outline-text-3" id="text-7-9">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-c M-t a"</span>) 'toggle-text-mode-autofill)
+(global-set-key (kbd <span style="color: #95e454;">"C-c M-t t"</span>) 'toggle-truncate-lines)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-7-10" class="outline-3">
+<h3 id="sec-7-10"><span class="section-number-3">7.10</span> Tabs (Emacs 27+)</h3>
+<div class="outline-text-3" id="text-7-10">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #8ac6f2; font-weight: bold;">when</span> (version&lt; emacs-version <span style="color: #95e454;">"27"</span>)
+  (global-set-key (kbd <span style="color: #95e454;">"C-x t t"</span>) 'tab-bar-select-tab-by-name)
+  (global-set-key (kbd <span style="color: #95e454;">"C-x t c"</span>) 'tab-bar-new-tab)
+  (global-set-key (kbd <span style="color: #95e454;">"C-x t k"</span>) 'tab-bar-close-tab)
+  (global-set-key (kbd <span style="color: #95e454;">"C-x t n"</span>) 'tab-bar-switch-to-next-tab)
+  (global-set-key (kbd <span style="color: #95e454;">"C-x t p"</span>) 'tab-bar-switch-to-prev-tab)
+  (global-set-key (kbd <span style="color: #95e454;">"C-x t l"</span>) 'tab-bar-switch-to-recent-tab))
 </pre>
 </div>
 </div>
@@ -1912,36 +1930,6 @@ or just less than ideal way&#x2026;
 </div>
 </div>
 </div>
-
-<div id="outline-container-sec-12-11" class="outline-3">
-<h3 id="sec-12-11"><span class="section-number-3">12.11</span> Editing related keyboard built-in keybindings</h3>
-<div class="outline-text-3" id="text-12-11">
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-c C-e"</span>) 'pp-eval-last-sexp)
-(global-set-key (kbd <span style="color: #95e454;">"M-;"</span>) 'comment-line)
-(global-set-key (kbd <span style="color: #95e454;">"M-z"</span>) 'zap-up-to-char)
-(global-set-key (kbd <span style="color: #95e454;">"C-x M-t"</span>) 'transpose-regions)
-(global-set-key (kbd <span style="color: #95e454;">"C-x M-p"</span>) 'transpose-paragraphs)
-(global-set-key (kbd <span style="color: #95e454;">"M-SPC"</span>) 'cycle-spacing)
-(global-set-key (kbd <span style="color: #95e454;">"M-%"</span>) 'query-replace-regexp)
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-12-12" class="outline-3">
-<h3 id="sec-12-12"><span class="section-number-3">12.12</span> DWIM replacements for changing case</h3>
-<div class="outline-text-3" id="text-12-12">
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(global-set-key [remap capitalize-word] 'capitalize-dwim)
-(global-set-key [remap downcase-word] 'downcase-dwim)
-(global-set-key [remap upcase-word] 'upcase-dwim)
-</pre>
-</div>
-</div>
-</div>
 </div>
 
 <div id="outline-container-sec-13" class="outline-2">
@@ -2369,17 +2357,6 @@ This is basically <code>other-window</code> backwards.
 <pre class="src src-emacs-lisp">(add-hook 'window-setup-hook 'winner-mode)
 (global-set-key (kbd <span style="color: #95e454;">"C-c w u"</span>) 'winner-undo)
 (global-set-key (kbd <span style="color: #95e454;">"C-c w r"</span>) 'winner-redo)
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-15-13" class="outline-3">
-<h3 id="sec-15-13"><span class="section-number-3">15.13</span> Scroll other window down</h3>
-<div class="outline-text-3" id="text-15-13">
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #95e454;">"C-c v"</span>) 'scroll-other-window-down)
 </pre>
 </div>
 </div>
@@ -4280,7 +4257,7 @@ party packages from <a href="https://melpa.org/">MELPA</a>.
 </div></div></div>
 <footer id="postamble" class="">
 <div><p class="author">Author: Toby Slight</p>
-<p class="date">Created: 2020-12-24 Thu 05:37</p>
+<p class="date">Created: 2020-12-24 Thu 05:54</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 27.1 (<a href="http://orgmode.org">Org-mode</a> 9.3)</p>
 </div>
 </footer>

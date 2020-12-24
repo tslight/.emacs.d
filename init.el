@@ -157,30 +157,51 @@
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
+(autoload 'calculator "calculator" nil t)
+(global-set-key (kbd "C-c c") 'calculator)
+(autoload 'calc "calc" nil t)
+(global-set-key (kbd "C-c M-c") 'calc)
+
 (global-set-key (kbd "C-x M-e") 'eval-buffer)
 (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
 (autoload 'ibuffer "ibuffer" nil t)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x M-k") 'kill-buffer)
 
-(global-set-key (kbd "C-c M-m") 'menu-bar-mode)
-(global-set-key (kbd "S-<f10>") 'menu-bar-mode)
+(global-set-key (kbd "C-c M-d r") 'desktop-read)
+(global-set-key (kbd "C-c M-d s") 'desktop-save)
+
+(global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
+(global-set-key (kbd "M-;") 'comment-line)
+(global-set-key (kbd "M-z") 'zap-up-to-char)
+(global-set-key (kbd "C-x M-t") 'transpose-regions)
+(global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
+(global-set-key (kbd "M-SPC") 'cycle-spacing)
+(global-set-key (kbd "M-%") 'query-replace-regexp)
+(global-set-key [remap capitalize-word] 'capitalize-dwim)
+(global-set-key [remap downcase-word] 'downcase-dwim)
+(global-set-key [remap upcase-word] 'upcase-dwim)
 
 (global-set-key (kbd "C-<f10>") 'toggle-frame-maximized)
 (global-set-key (kbd "C-<f11>") 'toggle-frame-fullscreen)
 (global-set-key (kbd "C-s-f") 'toggle-frame-fullscreen)
 (global-set-key (kbd "C-s-m") 'toggle-frame-maximized)
 
-(global-set-key (kbd "C-c M-d r") 'desktop-read)
-(global-set-key (kbd "C-c M-d s") 'desktop-save)
-
 (autoload 'grep "grep" nil t)
 (global-set-key (kbd "C-c C-g") 'grep)
 
-(autoload 'calculator "calculator" nil t)
-(global-set-key (kbd "C-c c") 'calculator)
-(autoload 'calc "calc" nil t)
-(global-set-key (kbd "C-c M-c") 'calc)
+(global-set-key (kbd "C-c M-m") 'menu-bar-mode)
+(global-set-key (kbd "S-<f10>") 'menu-bar-mode)
+
+;; for help modes, and simple/special modes
+(define-key special-mode-map "n" #'forward-button)
+(define-key special-mode-map "p" #'backward-button)
+(define-key special-mode-map "f" #'forward-button)
+(define-key special-mode-map "b" #'backward-button)
+(define-key special-mode-map "n" #'widget-forward)
+(define-key special-mode-map "p" #'widget-backward)
+(define-key special-mode-map "f" #'widget-forward)
+(define-key special-mode-map "b" #'widget-backward)
 
 (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
 (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
@@ -192,16 +213,6 @@
   (global-set-key (kbd "C-x t n") 'tab-bar-switch-to-next-tab)
   (global-set-key (kbd "C-x t p") 'tab-bar-switch-to-prev-tab)
   (global-set-key (kbd "C-x t l") 'tab-bar-switch-to-recent-tab))
-
-;; for help modes, and simple/special modes
-(define-key special-mode-map "n" #'forward-button)
-(define-key special-mode-map "p" #'backward-button)
-(define-key special-mode-map "f" #'forward-button)
-(define-key special-mode-map "b" #'backward-button)
-(define-key special-mode-map "n" #'widget-forward)
-(define-key special-mode-map "p" #'widget-backward)
-(define-key special-mode-map "f" #'widget-forward)
-(define-key special-mode-map "b" #'widget-backward)
 
 ;;;###autoload
 (defun my/jump-to-register-other-window ()
@@ -610,18 +621,6 @@ If you omit CLOSE, it will reuse OPEN."
   (yank-pop (- arg)))
 (global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
 
-(global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
-(global-set-key (kbd "M-;") 'comment-line)
-(global-set-key (kbd "M-z") 'zap-up-to-char)
-(global-set-key (kbd "C-x M-t") 'transpose-regions)
-(global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
-(global-set-key (kbd "M-SPC") 'cycle-spacing)
-(global-set-key (kbd "M-%") 'query-replace-regexp)
-
-(global-set-key [remap capitalize-word] 'capitalize-dwim)
-(global-set-key [remap downcase-word] 'downcase-dwim)
-(global-set-key [remap upcase-word] 'upcase-dwim)
-
 ;;;###autoload
 (defun my/delete-this-file ()
   "Delete the current file, and kill the buffer."
@@ -870,8 +869,6 @@ window to right."
 (add-hook 'window-setup-hook 'winner-mode)
 (global-set-key (kbd "C-c w u") 'winner-undo)
 (global-set-key (kbd "C-c w r") 'winner-redo)
-
-(global-set-key (kbd "C-c v") 'scroll-other-window-down)
 
 (add-hook 'after-init-hook 'global-auto-revert-mode) ;; reload if file changed on disk
 

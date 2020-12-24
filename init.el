@@ -871,6 +871,8 @@ window to right."
 (global-set-key (kbd "C-c w u") 'winner-undo)
 (global-set-key (kbd "C-c w r") 'winner-redo)
 
+(global-set-key (kbd "C-c v") 'scroll-other-window-down)
+
 (add-hook 'after-init-hook 'global-auto-revert-mode) ;; reload if file changed on disk
 
 (with-eval-after-load 'dabbrev

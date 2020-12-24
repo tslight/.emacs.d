@@ -73,7 +73,7 @@ set up, which could make some customization fail to work.
           ("gnu" . "https://elpa.gnu.org/packages/")))
 #+end_src
 
-* Doom startup speed hacks setup
+* Doom startup speed hacks
 
 Stole this stuff from [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][here]].
 
@@ -172,7 +172,6 @@ compressed/encrypted files won’t open.
 #+begin_src emacs-lisp
   (setq-default fill-column 79)
   (set-default 'truncate-lines t)
-  (add-hook 'text-mode-hook 'auto-fill-mode)
 #+end_src
 
 ** Delete all on backspace
@@ -269,6 +268,7 @@ compressed/encrypted files won’t open.
 #+end_src
 
 ** Initial startup
+
 #+begin_src emacs-lisp
   (defun display-startup-echo-area-message ()
     "Redefine this function to be more useful."
@@ -315,6 +315,7 @@ compressed/encrypted files won’t open.
   (setq split-height-threshold 80)
   (setq auto-window-vscroll nil)
 #+end_src
+
 ** Yes or no
 
 #+begin_src emacs-lisp
@@ -341,7 +342,7 @@ compressed/encrypted files won’t open.
   (setq-default tab-always-indent 'complete)
 #+end_src
 
-* Encoding stuff
+* File Encoding
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -372,8 +373,6 @@ compressed/encrypted files won’t open.
 
 * Hooks
 
-Miscellaneous hooks
-
 #+begin_src emacs-lisp
   (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
   (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
@@ -382,6 +381,7 @@ Miscellaneous hooks
   (add-hook 'text-mode-hook 'hl-line-mode)
   (add-hook 'prog-mode-hook 'hs-minor-mode)
   (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+  (add-hook 'text-mode-hook 'auto-fill-mode)
 #+end_src
 
 * Keybindings
@@ -435,14 +435,14 @@ Miscellaneous hooks
   (global-set-key (kbd "C-s-m") 'toggle-frame-maximized)
 #+end_src
 
-** Grep binding
+** Grep
 
 #+begin_src emacs-lisp
   (autoload 'grep "grep" nil t)
   (global-set-key (kbd "C-c C-g") 'grep)
 #+end_src
 
-** Menu bar
+** Menubar
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c M-m") 'menu-bar-mode)
@@ -659,7 +659,6 @@ I've collected (stolen!) or written over the years.
     "Remove all ^M occurrences from EOL in a buffer."
     (interactive)
     (my/remove-from-buffer "$"))
-
   (global-set-key (kbd "C-c k") 'my/remove-from-buffer)
 #+end_src
 

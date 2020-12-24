@@ -42,7 +42,6 @@
 
 (setq-default fill-column 79)
 (set-default 'truncate-lines t)
-(add-hook 'text-mode-hook 'auto-fill-mode)
 
 (setq backward-delete-char-untabify-method 'all)
 
@@ -156,6 +155,7 @@
 (add-hook 'text-mode-hook 'hl-line-mode)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(add-hook 'text-mode-hook 'auto-fill-mode)
 
 (autoload 'calculator "calculator" nil t)
 (global-set-key (kbd "C-c c") 'calculator)
@@ -345,7 +345,6 @@ Excluding ^I (tabs) and ^J (newlines)."
   "Remove all ^M occurrences from EOL in a buffer."
   (interactive)
   (my/remove-from-buffer "$"))
-
 (global-set-key (kbd "C-c k") 'my/remove-from-buffer)
 
 ;;;###autoload

@@ -1837,11 +1837,6 @@ Otherwise switch to current one."
 (use-package powershell
   :mode (("\\.ps1\\'" . powershell-mode)))
 
-(use-package powerline :defer 4
-  :config
-  (if window-system ; use-package if doesn't work for emacsclient
-      (powerline-default-theme)))
-
 (use-package projectile :diminish projectile-mode
   :bind-keymap
   ("C-c p" . projectile-command-map)

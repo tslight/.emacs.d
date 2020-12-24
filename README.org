@@ -2428,8 +2428,9 @@ party packages from [[https://melpa.org/][MELPA]].
 ** Dired Peep
 
 #+begin_src emacs-lisp
-  (use-package dired-peep :ensure nil
+  (use-package dired-peep :ensure nil :after dired
     :if (file-directory-p (expand-file-name "~/src/gitlab/tspub/lisp/dired-peep"))
+    :load-path (lambda () (expand-file-name "~/src/gitlab/tspub/lisp/dired-peep"))
     :bind (:map dired-mode-map
                 ("r" . ranger-mode)
                 ("M-o" . dired-peep)

@@ -1683,8 +1683,9 @@ Otherwise switch to current one."
   (org-indent-mode . (lambda () (diminish 'org-indent-mode)))
   (hs-minor-mode . (lambda () (diminish 'hs-minor-mode))))
 
-(use-package dired-peep :ensure nil
+(use-package dired-peep :ensure nil :after dired
   :if (file-directory-p (expand-file-name "~/src/gitlab/tspub/lisp/dired-peep"))
+  :load-path (lambda () (expand-file-name "~/src/gitlab/tspub/lisp/dired-peep"))
   :bind (:map dired-mode-map
               ("r" . ranger-mode)
               ("M-o" . dired-peep)

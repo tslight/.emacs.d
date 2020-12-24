@@ -156,8 +156,6 @@
 (add-hook 'text-mode-hook 'hl-line-mode)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-(add-hook 'yaml-mode-hook 'hs-minor-mode)
-(add-hook 'yaml-mode-hook 'display-line-numbers-mode)
 
 (global-set-key (kbd "C-x M-e") 'eval-buffer)
 (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
@@ -1963,6 +1961,9 @@ Otherwise switch to current one."
   (which-key-mode))
 
 (use-package yaml-mode :defer
+  :hook
+  (yaml-mode . hs-minor-mode)
+  (yaml-mode . display-line-numbers-mode)
   :config
   (remove-hook 'before-save-hook 'my/indent-buffer))
 

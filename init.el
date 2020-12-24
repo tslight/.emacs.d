@@ -114,15 +114,9 @@
 (setq css-indent-offset 2)
 (setq js-indent-level 2)
 
-;; If indent-tabs-mode is t, it means it may use tab, resulting mixed space and
-;; tab
+;; If indent-tabs-mode is t, it may use tab, resulting in mixed spaces and tabs
 (setq-default indent-tabs-mode nil)
 
-;; make tab key always call a indent command.
-;; (setq-default tab-always-indent t)
-
-;; make tab key call indent command or insert tab character, depending on cursor position
-;; (setq-default tab-always-indent nil)
 (with-eval-after-load 'python
   (setq python-fill-docstring-style 'django)
   (message "Lazy loaded python :-)"))

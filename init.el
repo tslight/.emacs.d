@@ -1181,11 +1181,9 @@ buffer."
   (setq gnus-thread-ignore-subject t)
   (message "Lazy loaded gnus :-)"))
 
-(with-eval-after-load 'highlight-changes
-  (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
-  (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
-  (message "Lazy loaded highlight-changes-mode :-)"))
 (setq highlight-changes-visibility-initial-state nil)
+(global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
+(global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
 (add-hook 'emacs-startup-hook 'global-highlight-changes-mode)
 
 ;;;###autoload
@@ -1913,7 +1911,7 @@ Otherwise switch to current one."
 
 (use-package terraform-mode :defer)
 
-(use-package web-mode
+(use-package web-mode :defer
   :mode
   "\\.phtml\\'"
   "\\.tpl\\.php\\'"

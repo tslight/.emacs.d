@@ -1378,7 +1378,7 @@ This is basically ~other-window~ backwards.
 ** Scroll other window down
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-c v") 'scroll-other-window-down)
+  (global-set-key (kbd "C-c v") 'scroll-other-window-down)
 #+end_src
 
 * Emacs built in package configuration
@@ -1750,11 +1750,9 @@ Turn on hl-line-mode
 ** Highlight changes
 
 #+begin_src emacs-lisp
-  (with-eval-after-load 'highlight-changes
-    (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
-    (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
-    (message "Lazy loaded highlight-changes-mode :-)"))
   (setq highlight-changes-visibility-initial-state nil)
+  (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
+  (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
   (add-hook 'emacs-startup-hook 'global-highlight-changes-mode)
 #+end_src
 
@@ -2737,7 +2735,7 @@ party packages from [[https://melpa.org/][MELPA]].
       (projectile-save-known-projects)))
 #+end_src
 
-** RESTClient
+** Restclient
 
 #+begin_src emacs-lisp
   (use-package restclient :defer)
@@ -2759,7 +2757,7 @@ party packages from [[https://melpa.org/][MELPA]].
 ** Web Mode
 
 #+begin_src emacs-lisp
-  (use-package web-mode
+  (use-package web-mode :defer
     :mode
     "\\.phtml\\'"
     "\\.tpl\\.php\\'"
@@ -2840,61 +2838,4 @@ party packages from [[https://melpa.org/][MELPA]].
 
 #+begin_src emacs-lisp
   (use-package yasnippet-classic-snippets :defer)
-#+end_src
-
-*** Custom Yasnippet snippets
-**** Emacs Lisp snippets
-***** Standard elisp boilerplate
-
-#+begin_src emacs-lisp :tangle ~/.emacs.d/snippets/emacs-lisp-mode/boilerplate
-  # -*- mode: snippet -*-
-  # name: boilerplate
-  # key: bp
-  # --
-  ;;; `(file-name-nondirectory (buffer-file-name))` --- ${1:summary} -*- lexical-binding: t; -*-
-
-  ;;; Commentary:
-
-  ;; ${2:commentary}
-
-  ;; Copyright (C) `(format-time-string "%Y")` `user-full-name`
-  ;; Author: `user-full-name` <`user-mail-address`>
-
-  ;;; Code:
-  $0
-  (provide \'`(file-name-sans-extension (file-name-nondirectory (buffer-file-name)))`)
-  ;; Local Variables:
-  ;; indent-tabs-mode: nil
-  ;; byte-compile-warnings: (not free-vars noruntime)
-  ;; End:
-  ;;; `(file-name-nondirectory (buffer-file-name))` ends here
-#+end_src
-
-***** Package elisp boilerplate
-
-#+begin_src emacs-lisp :tangle ~/.emacs.d/snippets/emacs-lisp-mode/boilerplate-package
-  # -*- mode: snippet -*-
-  # name: boilerplate-package
-  # key: bpp
-  # --
-  ;;; `(file-name-nondirectory (buffer-file-name))` --- ${1:summary} -*- lexical-binding: t; -*-
-
-  ;;; Commentary:
-
-  ;; ${2:commentary}
-
-  ;; Copyright (C) `(format-time-string "%Y")` `user-full-name`
-  ;; Author: `user-full-name` `user-mail-address`
-  ;; Version: 0.0.1
-  ;; Package-Requires: ${3:depandancies}
-  ;; URL: https://github.com/tslight/${4:repo}
-
-  ;;; Code:
-  $0
-  (provide \'`(file-name-sans-extension (file-name-nondirectory (buffer-file-name)))`)
-  ;; Local Variables:
-  ;; indent-tabs-mode: nil
-  ;; byte-compile-warnings: (not free-vars noruntime)
-  ;; End:
-  ;;; `(file-name-nondirectory (buffer-file-name))` ends here
 #+end_src

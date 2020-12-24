@@ -1835,8 +1835,7 @@ Otherwise switch to current one."
 
 (use-package pdf-tools :defer)
 
-(use-package powershell
-  :mode (("\\.ps1\\'" . powershell-mode)))
+(use-package powershell :mode (("\\.ps1\\'" . powershell-mode)))
 
 (use-package projectile :diminish projectile-mode
   :bind-keymap
@@ -1897,8 +1896,7 @@ Otherwise switch to current one."
 
 (use-package which-key :defer 5
   :diminish which-key-mode
-  :config
-  (which-key-mode))
+  :config (which-key-mode))
 
 (use-package yaml-mode :defer
   :hook

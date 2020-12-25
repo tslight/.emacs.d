@@ -1645,6 +1645,28 @@ Otherwise switch to current one."
 
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
+(add-to-list 'load-path (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
+
+(with-eval-after-load 'lazygitlab
+  (setq lazygit-directory (expand-file-name "~/src/gitlab"))
+  (message "Lazy loaded lazygitlab :-)"))
+
+(autoload 'lazygitlab-clone-or-pull-project "lazygitlab" nil t)
+(global-set-key (kbd "C-c g l p") 'lazygitlab-clone-or-pull-project)
+
+(with-eval-after-load 'lazygithub
+  (setq lazygit-directory (expand-file-name "~/src/github"))
+  (message "Lazy loaded lazygithub :-)"))
+
+(autoload 'lazygithub-clone-or-pull-repo "lazygithub" nil t)
+(global-set-key (kbd "C-c g h r") 'lazygithub-clone-or-pull-repo)
+
+(add-to-list 'load-path (expand-file-name "~/src/gitlab/tspub/lisp/dired-peep"))
+
+(with-eval-after-load 'dired
+  (autoload 'dired-peep-mode "dired-peep")
+  (define-key dired-mode-map "r" 'dired-peep-mode))
+
 (provide 'init)
 ;; Local Variables:
 ;; indent-tabs-mode: nil

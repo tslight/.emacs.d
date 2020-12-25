@@ -1604,16 +1604,9 @@ Otherwise switch to current one."
 (global-set-key (kbd "C-c 4 ts") 'my/switch-to-ansi-term-other-window)
 
 (with-eval-after-load 'term
-  ;; get unicode characters in ansi-term - https://stackoverflow.com/a/7442266
-  (defadvice ansi-term (after advise-ansi-term-coding-system)
-    "Get unicode characters in `ansi-term'."
-    (set-process-coding-system 'utf-8-unix 'utf-8-unix))
-  (ad-activate 'ansi-term)
-
   (defadvice term-handle-exit (after term-kill-buffer-on-exit activate)
     "Kill term when shell exits."
     (kill-buffer))
-
   (setq term-buffer-maximum-size 200000)
   (message "Lazy loaded term :-)"))
 

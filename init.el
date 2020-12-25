@@ -1481,6 +1481,21 @@ functions."
   (message "Lazy loaded prettify-symbols :-)"))
 (add-hook 'emacs-startup-hook 'global-prettify-symbols-mode)
 
+(with-eval-after-load 'project
+  (setq project-switch-commands
+        '((?b "Buffer" project-switch-to-buffer)
+          (?c "Compile" project-compile)
+          (?d "Dired" project-dired)
+          (?e "Eshell" project-eshell)
+          (?f "File" project-find-file)
+          (?g "Grep" project-find-regexp)
+          (?q "Query replace" project-query-replace-regexp)
+          (?s "Run command" project-async-shell-command)
+          (?s "Search" project-search)
+          (?v "VC dir" project-vc-dir)))
+  (global-set-key ("C-x p q") 'project-query-replace-regexp)
+  (message "Lazy loaded project :-)"))
+
 (with-eval-after-load 'recentf
   (setq recentf-exclude '(".gz"
                           ".xz"

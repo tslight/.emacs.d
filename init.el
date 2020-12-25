@@ -1493,7 +1493,7 @@ functions."
           (?s "Run command" project-async-shell-command)
           (?s "Search" project-search)
           (?v "VC dir" project-vc-dir)))
-  (global-set-key ("C-x p q") 'project-query-replace-regexp)
+  (global-set-key (kbd "C-x p q") 'project-query-replace-regexp)
   (message "Lazy loaded project :-)"))
 
 (with-eval-after-load 'recentf

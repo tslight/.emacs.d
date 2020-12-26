@@ -1488,7 +1488,7 @@ When searching backward, kill to the beginning of the match."
   (message "Lazy loaded prettify-symbols :-)"))
 (add-hook 'emacs-startup-hook 'global-prettify-symbols-mode)
 
-(setq my/project-roots '("~/src/gitlab"))
+(setq my/project-roots '("~" "~/src/gitlab"))
 
 ;;;###autoload
 (defun my/project--git-repo-p (directory)
@@ -1507,6 +1507,8 @@ When searching backward, kill to the beginning of the match."
          (current-directory-list
           (directory-files directory t directory-files-no-dot-files-regexp)))
     ;; while we are in the current directory
+    (if (my/project--git-repo-p directory)
+        (setq git-repos (cons (file-truename (expand-file-name directory)) git-repos)))
     (while current-directory-list
       (let ((f (car current-directory-list)))
         (cond ((and (file-directory-p f)
@@ -1538,7 +1540,7 @@ When searching backward, kill to the beginning of the match."
 ;;;###autoload
 (defun my/project-update-projects ()
   "Overwrite `project--list' using `my/project--list-projects'.
-  WARNING: This will destroy & replace the contents of `project-list-file'."
+    WARNING: This will destroy & replace the contents of `project-list-file'."
   (interactive)
   (autoload 'project--ensure-read-project-list "project" nil t)
   (project--ensure-read-project-list)
@@ -1558,7 +1560,7 @@ When searching backward, kill to the beginning of the match."
           (?f "File" project-find-file)
           (?g "Grep" project-find-regexp)
           (?q "Query replace" project-query-replace-regexp)
-          (?s "Run command" project-async-shell-command)
+          (?r "Run command" project-async-shell-command)
           (?s "Search" project-search)
           (?v "VC dir" project-vc-dir)))
   (message "Lazy loaded project :-)"))

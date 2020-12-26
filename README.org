@@ -2090,7 +2090,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 ** Project
 
 #+begin_src emacs-lisp
-  (setq my/project-roots '("~/src/gitlab"))
+  (setq my/project-roots '("~" "~/src/gitlab"))
 
   ;;;###autoload
   (defun my/project--git-repo-p (directory)
@@ -2109,6 +2109,8 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
            (current-directory-list
             (directory-files directory t directory-files-no-dot-files-regexp)))
       ;; while we are in the current directory
+      (if (my/project--git-repo-p directory)
+          (setq git-repos (cons (file-truename (expand-file-name directory)) git-repos)))
       (while current-directory-list
         (let ((f (car current-directory-list)))
           (cond ((and (file-directory-p f)
@@ -2140,7 +2142,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
   ;;;###autoload
   (defun my/project-update-projects ()
     "Overwrite `project--list' using `my/project--list-projects'.
-    WARNING: This will destroy & replace the contents of `project-list-file'."
+      WARNING: This will destroy & replace the contents of `project-list-file'."
     (interactive)
     (autoload 'project--ensure-read-project-list "project" nil t)
     (project--ensure-read-project-list)
@@ -2160,7 +2162,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
             (?f "File" project-find-file)
             (?g "Grep" project-find-regexp)
             (?q "Query replace" project-query-replace-regexp)
-            (?s "Run command" project-async-shell-command)
+            (?r "Run command" project-async-shell-command)
             (?s "Search" project-search)
             (?v "VC dir" project-vc-dir)))
     (message "Lazy loaded project :-)"))

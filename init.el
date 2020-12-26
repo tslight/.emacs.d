@@ -394,17 +394,21 @@ create a new .elc file if it doesn't already exist."
   "Recompile everything in Emacs configuration."
   (interactive)
   (mapc (lambda (file)
-          (if (file-readable-p file)
-              (byte-recompile-file (concat user-emacs-directory file) 0)))
+          (let ((path (expand-file-name file user-emacs-directory)))
+            (when (file-readable-p path)
+              (byte-recompile-file path t 0)
+              (load (file-name-sans-extension path))
+              (message "Re-compiled & loaded %s :-)" path))))
         my/files-to-recompile))
 
 ;;;###autoload
 (defun my/auto-recompile ()
   "Automatically recompile Emacs Lisp files whenever they are saved."
-  (when (or (equal major-mode 'emacs-lisp-mode)
-            (string-match "^.*\\.el$" buffer-file-name))
+  (when (or (equal (file-name-extension buffer-file-name) "el")
+            (equal major-mode 'emacs-lisp-mode))
     (byte-compile-file buffer-file-name)
-    (message (concat "Re-compiled " buffer-file-name " :-)"))))
+    (load (file-name-sans-extension buffer-file-name))
+    (message "Re-compiled & loaded %s :-)" buffer-file-name)))
 (add-hook 'after-save-hook 'my/auto-recompile)
 
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
@@ -1347,9 +1351,7 @@ When searching backward, kill to the beginning of the match."
 
 ;;;###autoload
   (defun my/org-babel-insert-elisp-boilerplate (file)
-    "Insert elisp documentation boilerplate into FILE, using COMMENTARY.
-Return the file name, so that this function can be piped to other
-functions."
+    "Insert Emacs Lisp documentation comments into FILE and add lexical binding."
     (when (equal (file-name-extension file) "el")
       (with-current-buffer (find-file-noselect file)
         (let* ((filename (file-name-sans-extension (file-name-nondirectory file)))
@@ -1367,13 +1369,18 @@ functions."
                                ";; End:\n"
                                ";;; " filename ".el ends here")))
           (goto-char (point-min)) (insert header)
+          (message "Inserted header comments into %s" file)
           (goto-char (point-max)) (insert footer)
+          (message "Inserted footer comments into %s" file)
           (add-file-local-variable-prop-line 'lexical-binding t)
-          (save-buffer) (kill-buffer)
-          (message (concat "Inserted boilerplate into " file))))
+          (message "Added lexical binding to %s" file)
+          (save-buffer)
+          (kill-buffer)
+          (message "Saved %s :-)" file)))
       (when (file-readable-p (concat file "~"))
         (delete-file (concat file "~"))
-        (message (concat "Deleted " file "~ backup file")))))
+        (message "Deleted %s~ backup file!" %s))))
+
   (add-hook 'org-babel-post-tangle-hook
             (lambda () (my/org-babel-insert-elisp-boilerplate buffer-file-name)))
 
@@ -1624,6 +1631,18 @@ Otherwise switch to current one."
   (setq version-control t)
   (message "Lazy loaded vc :-)"))
 
+;;;###autoload
+(defun my/vc-dir (&optional arg)
+  "Run `vc-dir' for the current project or directory.
+With optional ARG (\\[universal-argument]), use the present
+working directory, else default to the root of the current
+project, as defined by `vc-root-dir'."
+  (interactive "P")
+  (let ((dir (if arg default-directory (vc-root-dir))))
+    (vc-dir dir)))
+
+(global-set-key (kbd "C-x v d") 'my/vc-dir)
+
 (with-eval-after-load 'whitespace
   (setq whitespace-line-column 120)
   (setq whitespace-style '(face
@@ -1645,27 +1664,38 @@ Otherwise switch to current one."
 
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
-(add-to-list 'load-path (expand-file-name "~/src/gitlab/tspub/lisp/lazygit"))
+(let ((lazygit-directory (expand-file-name "~/src/gitlab/tspub/lisp/lazygit")))
+  (when (file-directory-p lazygit-directory)
+    (add-to-list 'load-path lazygit-directory)
 
-(with-eval-after-load 'lazygitlab
-  (setq lazygit-directory (expand-file-name "~/src/gitlab"))
-  (message "Lazy loaded lazygitlab :-)"))
+    (with-eval-after-load 'lazygitlab
+      (setq lazygit-directory (expand-file-name "~/src/gitlab"))
+      (message "Lazy loaded lazygitlab :-)"))
 
-(autoload 'lazygitlab-clone-or-pull-project "lazygitlab" nil t)
-(global-set-key (kbd "C-c g l p") 'lazygitlab-clone-or-pull-project)
+    (autoload 'lazygitlab-clone-or-pull-all "lazygitlab" nil t)
+    (global-set-key (kbd "C-c g l a") 'lazygitlab-clone-or-pull-all)
+    (autoload 'lazygitlab-clone-or-pull-group "lazygitlab" nil t)
+    (global-set-key (kbd "C-c g l g") 'lazygitlab-clone-or-pull-group)
+    (autoload 'lazygitlab-clone-or-pull-project "lazygitlab" nil t)
+    (global-set-key (kbd "C-c g l p") 'lazygitlab-clone-or-pull-project)
 
-(with-eval-after-load 'lazygithub
-  (setq lazygit-directory (expand-file-name "~/src/github"))
-  (message "Lazy loaded lazygithub :-)"))
+    (with-eval-after-load 'lazygithub
+      (setq lazygit-directory (expand-file-name "~/src/github"))
+      (message "Lazy loaded lazygithub :-)"))
 
-(autoload 'lazygithub-clone-or-pull-repo "lazygithub" nil t)
-(global-set-key (kbd "C-c g h r") 'lazygithub-clone-or-pull-repo)
+    (autoload 'lazygithub-clone-or-pull-all "lazygithub" nil t)
+    (global-set-key (kbd "C-c g h a") 'lazygithub-clone-or-pull-all)
+    (autoload 'lazygithub-clone-or-pull-repo "lazygithub" nil t)
+    (global-set-key (kbd "C-c g h r") 'lazygithub-clone-or-pull-repo)))
 
-(add-to-list 'load-path (expand-file-name "~/src/gitlab/tspub/lisp/dired-peep"))
-
-(with-eval-after-load 'dired
-  (autoload 'dired-peep-mode "dired-peep")
-  (define-key dired-mode-map "r" 'dired-peep-mode))
+(let ((dired-peep-directory (expand-file-name "~/src/gitlab/tspub/lisp/dired-peep")))
+  (when (file-directory-p dired-peep-directory)
+    (add-to-list 'load-path dired-peep-directory)
+    (with-eval-after-load 'dired
+      (autoload 'dired-peep-mode "dired-peep")
+      (define-key dired-mode-map "r" 'dired-peep-mode)
+      (define-key dired-mode-map (kbd "C-o") 'dired-peep-temporarily)
+      (define-key dired-mode-map (kbd "M-o") 'dired-peep))))
 
 (provide 'init)
 ;; Local Variables:

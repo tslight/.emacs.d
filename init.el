@@ -173,7 +173,8 @@
 
 (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
 (global-set-key (kbd "M-;") 'comment-line)
-(global-set-key (kbd "M-z") 'zap-up-to-char)
+(global-set-key (kbd "C-z") 'zap-up-to-char) ;; suspend is still bound to C-x C-z
+(global-set-key (kbd "M-z") 'zap-to-char)
 (global-set-key (kbd "C-x M-t") 'transpose-regions)
 (global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
 (global-set-key (kbd "M-SPC") 'cycle-spacing)
@@ -286,7 +287,7 @@
   "Indent the contents of a buffer."
   (interactive)
   (indent-region (point-min) (point-max)))
-(global-set-key (kbd "C-c M-i") 'my/indent-buffer)
+(global-set-key (kbd "M-i") 'my/indent-buffer)
 (add-hook 'before-save-hook 'my/indent-buffer)
 
 ;;;###autoload
@@ -737,6 +738,13 @@ For detail, see `my/make-backup'."
   `(let ((time (current-time)))
      ,@body
      (message "%.06f" (float-time (time-since time)))))
+
+(defun my/scroll-other-window (arg)
+  "Scroll up other window when called with prefix."
+  (interactive "P")
+  (if arg (scroll-other-window-down) (scroll-other-window)))
+
+(global-set-key [remap scroll-other-window] 'my/scroll-other-window)
 
 ;;;###autoload
 (defun my/kill-buffer-other-window ()

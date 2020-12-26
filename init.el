@@ -1526,11 +1526,15 @@ When searching backward, kill to the beginning of the match."
 ;;;###autoload
   (defun my/project--list-projects ()
     "Produce list of projects in `my/project-roots'."
-    (delete-dups (mapcan (lambda (directory)
-                           (my/project--git-repos-recursive
-                            (expand-file-name directory)
-                            10))
-                         my/project-roots)))
+    (let ((cands (delete-dups (mapcan (lambda (directory)
+                                        (my/project--git-repos-recursive
+                                         (expand-file-name directory)
+                                         10))
+                                      my/project-roots))))
+      ;; needs to be a list of lists
+      (mapcar (lambda (d)
+                (list (abbreviate-file-name d)))
+              cands)))
 
   ;; FIXME: this is fragile since we do not store the original value of
   ;; `project--list' and may risk losing data.

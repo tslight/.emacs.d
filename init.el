@@ -1556,8 +1556,9 @@ When searching backward, kill to the beginning of the match."
   (project--write-project-list)
   (message "Updated project list in %s" project-list-file))
 
-(add-hook 'emacs-startup-hook 'my/project-update-projects)
-(global-set-key (kbd "C-x p u") 'my/project-update-projects)
+(when (not (version< emacs-version "28"))
+  (add-hook 'emacs-startup-hook 'my/project-update-projects)
+  (global-set-key (kbd "C-x p u") 'my/project-update-projects))
 
 (with-eval-after-load 'project
   (setq project-switch-commands

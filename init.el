@@ -1565,8 +1565,6 @@ When searching backward, kill to the beginning of the match."
           (?v "VC dir" project-vc-dir)))
   (message "Lazy loaded project :-)"))
 
-(global-set-key (kbd "C-x p q") 'project-query-replace-regexp)
-
 (with-eval-after-load 'recentf
   (setq recentf-exclude '(".gz"
                           ".xz"

@@ -1710,7 +1710,9 @@ project, as defined by `vc-root-dir'."
   (let ((dir (if arg default-directory (vc-root-dir))))
     (vc-dir dir)))
 
-(global-set-key (kbd "C-x v d") 'my/vc-dir)
+(if (version< emacs-version "28")
+    (global-set-key (kbd "C-x v d") 'my/vc-dir)
+  (global-set-key (kbd "C-x v d") 'vc-dir-root))
 
 (with-eval-after-load 'whitespace
   (setq whitespace-line-column 120)

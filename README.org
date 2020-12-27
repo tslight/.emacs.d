@@ -2370,7 +2370,9 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (let ((dir (if arg default-directory (vc-root-dir))))
       (vc-dir dir)))
 
-  (global-set-key (kbd "C-x v d") 'my/vc-dir)
+  (if (version< emacs-version "28")
+      (global-set-key (kbd "C-x v d") 'my/vc-dir)
+    (global-set-key (kbd "C-x v d") 'vc-dir-root))
 #+end_src
 
 ** Whitespace

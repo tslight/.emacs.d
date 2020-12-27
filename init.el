@@ -261,12 +261,12 @@
     (add-hook 'after-make-frame-functions #'my/after-make-frame(selected-frame))
   (my/after-make-frame(selected-frame)))
 
-;; (setq display-time-format "%H:%M %d/%m")
-;; (setq display-time-default-load-average 'nil)
+(setq display-time-format "%H:%M %d/%m")
+(setq display-time-default-load-average 'nil)
 (column-number-mode t)
-;; (display-time-mode t)
-;; (display-battery-mode t)
-;; (size-indication-mode t)
+(display-time-mode t)
+(display-battery-mode t)
+(size-indication-mode t)
 
 (defadvice load-theme (before theme-dont-propagate activate)
   "Disable theme before loading new one."
@@ -1496,83 +1496,83 @@ When searching backward, kill to the beginning of the match."
   (message "Lazy loaded prettify-symbols :-)"))
 (add-hook 'emacs-startup-hook 'global-prettify-symbols-mode)
 
-(setq my/project-roots '("~" "~/src/gitlab"))
-
-;;;###autoload
-(defun my/project--git-repo-p (directory)
-  "Return non-nil if there is a git repository in DIRECTORY."
-  (and
-   (file-directory-p (concat directory "/.git"))
-   (file-directory-p (concat directory "/.git/info"))
-   (file-directory-p (concat directory "/.git/objects"))
-   (file-directory-p (concat directory "/.git/refs"))
-   (file-regular-p (concat directory "/.git/HEAD"))))
-
-;;;###autoload
-(defun my/project--git-repos-recursive (directory maxdepth)
-  "List git repos in under DIRECTORY recursively to MAXDEPTH."
-  (let* ((git-repos '())
-         (current-directory-list
-          (directory-files directory t directory-files-no-dot-files-regexp)))
-    ;; while we are in the current directory
-    (if (my/project--git-repo-p directory)
-        (setq git-repos (cons (file-truename (expand-file-name directory)) git-repos)))
-    (while current-directory-list
-      (let ((f (car current-directory-list)))
-        (cond ((and (file-directory-p f)
-                    (file-readable-p f)
-                    (> maxdepth 0)
-                    (not (my/project--git-repo-p f)))
-               (setq git-repos
-                     (append git-repos
-                             (my/project--git-repos-recursive f (- maxdepth 1)))))
-              ((my/project--git-repo-p f)
-               (setq git-repos (cons
-                                (file-truename (expand-file-name f)) git-repos))))
-        (setq current-directory-list (cdr current-directory-list))))
-    (delete-dups git-repos)))
-
-;;;###autoload
-(defun my/project--list-projects ()
-  "Produce list of projects in `my/project-roots'."
-  (let ((cands (delete-dups (mapcan (lambda (directory)
-                                      (my/project--git-repos-recursive
-                                       (expand-file-name directory)
-                                       10))
-                                    my/project-roots))))
-    ;; needs to be a list of lists
-    (mapcar (lambda (d)
-              (list (abbreviate-file-name d)))
-            cands)))
-
-;;;###autoload
-(defun my/project-update-projects ()
-  "Overwrite `project--list' using `my/project--list-projects'.
-    WARNING: This will destroy & replace the contents of `project-list-file'."
-  (interactive)
-  (autoload 'project--ensure-read-project-list "project" nil t)
-  (project--ensure-read-project-list)
-  (setq project--list (my/project--list-projects))
-  (project--write-project-list)
-  (message "Updated project list in %s" project-list-file))
-
 (when (not (version< emacs-version "28"))
-  (add-hook 'emacs-startup-hook 'my/project-update-projects)
-  (global-set-key (kbd "C-x p u") 'my/project-update-projects))
+  (setq my/project-roots '("~" "~/src/gitlab"))
 
-(with-eval-after-load 'project
-  (setq project-switch-commands
-        '((?b "Buffer" project-switch-to-buffer)
-          (?c "Compile" project-compile)
-          (?d "Dired" project-dired)
-          (?e "Eshell" project-eshell)
-          (?f "File" project-find-file)
-          (?g "Grep" project-find-regexp)
-          (?q "Query replace" project-query-replace-regexp)
-          (?r "Run command" project-async-shell-command)
-          (?s "Search" project-search)
-          (?v "VC dir" project-vc-dir)))
-  (message "Lazy loaded project :-)"))
+;;;###autoload
+  (defun my/project--git-repo-p (directory)
+    "Return non-nil if there is a git repository in DIRECTORY."
+    (and
+     (file-directory-p (concat directory "/.git"))
+     (file-directory-p (concat directory "/.git/info"))
+     (file-directory-p (concat directory "/.git/objects"))
+     (file-directory-p (concat directory "/.git/refs"))
+     (file-regular-p (concat directory "/.git/HEAD"))))
+
+;;;###autoload
+  (defun my/project--git-repos-recursive (directory maxdepth)
+    "List git repos in under DIRECTORY recursively to MAXDEPTH."
+    (let* ((git-repos '())
+           (current-directory-list
+            (directory-files directory t directory-files-no-dot-files-regexp)))
+      ;; while we are in the current directory
+      (if (my/project--git-repo-p directory)
+          (setq git-repos (cons (file-truename (expand-file-name directory)) git-repos)))
+      (while current-directory-list
+        (let ((f (car current-directory-list)))
+          (cond ((and (file-directory-p f)
+                      (file-readable-p f)
+                      (> maxdepth 0)
+                      (not (my/project--git-repo-p f)))
+                 (setq git-repos
+                       (append git-repos
+                               (my/project--git-repos-recursive f (- maxdepth 1)))))
+                ((my/project--git-repo-p f)
+                 (setq git-repos (cons
+                                  (file-truename (expand-file-name f)) git-repos))))
+          (setq current-directory-list (cdr current-directory-list))))
+      (delete-dups git-repos)))
+
+;;;###autoload
+  (defun my/project--list-projects ()
+    "Produce list of projects in `my/project-roots'."
+    (let ((cands (delete-dups (mapcan (lambda (directory)
+                                        (my/project--git-repos-recursive
+                                         (expand-file-name directory)
+                                         10))
+                                      my/project-roots))))
+      ;; needs to be a list of lists
+      (mapcar (lambda (d)
+                (list (abbreviate-file-name d)))
+              cands)))
+
+;;;###autoload
+  (defun my/project-update-projects ()
+    "Overwrite `project--list' using `my/project--list-projects'.
+    WARNING: This will destroy & replace the contents of `project-list-file'."
+    (interactive)
+    (autoload 'project--ensure-read-project-list "project" nil t)
+    (project--ensure-read-project-list)
+    (setq project--list (my/project--list-projects))
+    (project--write-project-list)
+    (message "Updated project list in %s" project-list-file))
+
+  ;; (add-hook 'emacs-startup-hook 'my/project-update-projects)
+  (global-set-key (kbd "C-x p u") 'my/project-update-projects)
+
+  (with-eval-after-load 'project
+    (setq project-switch-commands
+          '((?b "Buffer" project-switch-to-buffer)
+            (?c "Compile" project-compile)
+            (?d "Dired" project-dired)
+            (?e "Eshell" project-eshell)
+            (?f "File" project-find-file)
+            (?g "Grep" project-find-regexp)
+            (?q "Query replace" project-query-replace-regexp)
+            (?r "Run command" project-async-shell-command)
+            (?s "Search" project-search)
+            (?v "VC dir" project-vc-dir)))
+    (message "Lazy loaded project :-)")))
 
 (with-eval-after-load 'recentf
   (setq recentf-exclude '(".gz"

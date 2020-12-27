@@ -976,13 +976,12 @@ window to right."
   (define-key dired-mode-map ")" 'dired-omit-mode)
   (message "Lazy loaded dired :-)"))
 
-(autoload 'dired-jump "dired-x" ;; bound to C-x C-j by default
-  "Jump to Dired buffer corresponding to current buffer." t)
-(global-set-key (kbd "C-x C-j") 'dired-jump)
-
-(autoload 'dired-jump-other-window "dired-x" ;; bound to C-x 4 C-j by default.
-  "Like \\[dired-jump] (dired-jump) but in other window." t)
-(define-key ctl-x-4-map "C-j" 'dired-jump-other-window)
+;; This is in `dired' not `dired-jump' in Emacs 28
+(when (version< emacs-version "28")
+  (autoload 'dired-jump "dired-x" nil t)
+  (global-set-key (kbd "C-x C-j") 'dired-jump)
+  (autoload 'dired-jump-other-window "dired-x" nil t)
+  (define-key ctl-x-4-map "C-j" 'dired-jump-other-window))
 
 (add-hook 'dired-mode-hook 'hl-line-mode)
 

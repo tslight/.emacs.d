@@ -288,7 +288,6 @@
   (interactive)
   (indent-region (point-min) (point-max)))
 (global-set-key (kbd "M-i") 'my/indent-buffer)
-(add-hook 'before-save-hook 'my/indent-buffer)
 
 ;;;###autoload
 (defun my/kill-this-buffer ()

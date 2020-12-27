@@ -332,7 +332,7 @@
 ;;;###autoload
 (defun my/remove-character-number (number)
   "Remove all occurences of a control character NUMBER.
-Excluding ^I (tabs) and ^J (newline)."
+  Excluding ^I (tabs) and ^J (newline)."
   (if (and (>= number 0) (<= number 31)
            (not (= number 9)) (not (= number 10)))
       (let ((character (string number)))
@@ -341,7 +341,7 @@ Excluding ^I (tabs) and ^J (newline)."
 ;;;###autoload
 (defun my/remove-all-ctrl-characters ()
   "Remove all occurences of all control characters.
-Excluding ^I (tabs) and ^J (newlines)."
+  Excluding ^I (tabs) and ^J (newlines)."
   (interactive)
   (mapcar (lambda (n)
             (my/remove-character-number n))

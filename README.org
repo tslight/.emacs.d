@@ -10,23 +10,13 @@
 
 A fairly standard [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration using [[https://orgmode.org/][Org mode]].
 
-Quickest way to get setup is to back up your current config, then clone this
-repo to replace it:
-
-#+begin_src shell :tangle no
-  mv ~/.emacs.d{,.bak} && git clone https://github.com/tslight/.emacs.d ~/.emacs.d
-#+end_src
+Quickest way to get setup is to back up your current config, clone this repo
+and open visit this file with Emacs.
 
 *WARNING: JUST VISITING THIS FILE IN EMACS WILL OVERWRITE YOUR CONFIG!*
 
-This is because I have added the following ~eval~ elisp snippet [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][file variables]]
-at the bottom of this file:
-
-#+begin_src emacs-lisp :tangle no
-  (setq init-file (expand-file-name "init.el" user-emacs-directory))
-  (setq early-init (expand-file-name "early-init.el" user-emacs-directory))
-  (org-babel-tangle)
-#+end_src
+This is because I have added ~org-babel-tangle~ as an ~eval~ [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][file variable]]
+at the bottom of this file.
 
 * Doom startup speed hacks
 
@@ -2930,9 +2920,12 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 #+begin_src emacs-lisp
   (use-package yasnippet-classic-snippets :defer)
 #+end_src
-
+* Local Variables
 # Local Variables:
+# eval: (setq custom-file (make-temp-file "emacs-custom"))
 # eval: (setq init-file (expand-file-name "init.el" user-emacs-directory))
 # eval: (setq early-init (expand-file-name "early-init.el" user-emacs-directory))
 # eval: (org-babel-tangle)
+# eval: (load (file-name-sans-extension early-init))
+# eval: (load (file-name-sans-extension init-file))
 # End:

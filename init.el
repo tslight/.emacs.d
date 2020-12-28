@@ -1134,7 +1134,6 @@ buffer."
 (global-set-key (kbd "C-c 4 e") 'my/eshell-other-window)
 
 (with-eval-after-load 'gnus
-  (require 'nnir)
   (setq gnus-init-file "~/.emacs.d/init.el")
   (setq gnus-home-directory "~/.emacs.d/")
   (setq message-directory "~/.emacs.d/mail")

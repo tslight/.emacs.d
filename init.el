@@ -308,6 +308,33 @@
 (global-set-key (kbd "C-c b") 'my/last-buffer)
 
 ;;;###autoload
+(defun my/narrow-or-widen-dwim (p)
+  "If the buffer is narrowed, it widens, otherwise, it narrows intelligently.
+
+Intelligently means: region, org-src-block, org-subtree, or
+defun, whichever applies first.
+
+Narrowing to org-src-block actually calls `org-edit-src-code'.
+With prefix P, don't widen, just narrow even if buffer is already
+narrowed."
+  (interactive "P")
+  (declare (interactive-only))
+  (cond ((and (buffer-narrowed-p) (not p)) (widen))
+        ((region-active-p)
+         (narrow-to-region (region-beginning) (region-end)))
+        ((derived-mode-p 'org-mode)
+         ;; `org-edit-src-code' is not a real narrowing command.
+         ;; Remove this first conditional if you don't want it.
+         (cond ((ignore-errors (org-edit-src-code))
+                (delete-other-windows))
+               ((org-at-block-p)
+                (org-narrow-to-block))
+               (t (org-narrow-to-subtree))))
+        (t (narrow-to-defun))))
+(define-key ctl-x-map "n" 'my/narrow-or-widen-dwim)
+(define-key org-mode-map (kbd "C-x n") 'my/narrow-or-widen-dwim)
+
+;;;###autoload
 (defun my/nuke-buffers ()
   "Kill all buffers, leaving *scratch* only."
   (interactive)
@@ -516,32 +543,6 @@ create a new .elc file if it doesn't already exist."
            fill-column)))
     (call-interactively #'fill-paragraph)))
 (global-set-key [remap fill-paragraph] 'smart/fill-or-unfill)
-
-;;;###autoload
-(defun smart/narrow-or-widen-dwim (p)
-  "If the buffer is narrowed, it widens, otherwise, it narrows intelligently.
-
-Intelligently means: region, org-src-block, org-subtree, or
-defun, whichever applies first.
-
-Narrowing to org-src-block actually calls `org-edit-src-code'.
-With prefix P, don't widen, just narrow even if buffer is already
-narrowed."
-  (interactive "P")
-  (declare (interactive-only))
-  (cond ((and (buffer-narrowed-p) (not p)) (widen))
-        ((region-active-p)
-         (narrow-to-region (region-beginning) (region-end)))
-        ((derived-mode-p 'org-mode)
-         ;; `org-edit-src-code' is not a real narrowing command.
-         ;; Remove this first conditional if you don't want it.
-         (cond ((ignore-errors (org-edit-src-code))
-                (delete-other-windows))
-               ((org-at-block-p)
-                (org-narrow-to-block))
-               (t (org-narrow-to-subtree))))
-        (t (narrow-to-defun))))
-(define-key ctl-x-map "n" 'smart/narrow-or-widen-dwim)
 
 ;;;###autoload
 (defun smart/move-beginning-of-line ()
@@ -1406,6 +1407,22 @@ When searching backward, kill to the beginning of the match."
         (org-babel-tangle)))
   (add-hook 'after-save-hook 'my/org-babel-auto-tangle-init-file)
 
+  (defun my/org-narrow-to-parent ()
+    "Narrow buffer to the current subtree."
+    (interactive)
+    (widen)
+    (org-up-element)
+    (save-excursion
+      (save-match-data
+        (org-with-limited-levels
+         (narrow-to-region
+          (progn
+            (org-back-to-heading t) (point))
+          (progn (org-end-of-subtree t t)
+                 (when (and (org-at-heading-p) (not (eobp))) (backward-char 1))
+                 (point)))))))
+  (define-key org-mode-map (kbd "C-c p") 'my/org-narrow-to-parent)
+
   (setq org-image-actual-width nil)
   (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
   (setq org-emphasis-regexp-components '(" \t('\"{" "- \t.,:!?;'\")}\\" " \t\r\n,\"'" "." 300))
@@ -1415,6 +1432,9 @@ When searching backward, kill to the beginning of the match."
   (setq org-default-notes-file "~/org/notes.org")
   (setq org-directory "~/org")
   (setq org-export-with-toc t)
+  (setq org-imenu-depth 12)
+  (setq org-goto-interface 'outline-path-completionp)
+  (setq org-outline-path-complete-in-steps nil)
   (setq org-indent-indentation-per-level 1)
   (setq org-list-allow-alphabetical t)
   (setq org-list-indent-offset 1)

@@ -1,5 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Toby Slight
+#+PROPERTY: header-args:emacs-lisp :lexical t
 #+PROPERTY: header-args+ :cache yes
 #+PROPERTY: header-args+ :comments yes
 #+PROPERTY: header-args+ :mkdirp yes
@@ -22,6 +23,16 @@ at the [[*Local Variables][bottom of this file]].
 * Doom startup speed hacks
 
 Stole this stuff from [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][here]].
+
+** Lexical Binding
+
+This must come at the beginning of the file
+
+[[https://nullprogram.com/blog/2016/12/22/][Some Performance Advantages of Lexical Scope]]
+
+#+begin_src emacs-lisp :comments no
+  ;; -*- lexical-binding: t; -*-
+#+end_src
 
 ** Avoid garbage collection at startup
 
@@ -103,9 +114,9 @@ compressed/encrypted files won’t open.
   (setq save-interprogram-paste-before-kill t)
 #+end_src
 
-** Line numbers
+** COMMENT Line numbers
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (setq display-line-numbers 'relative)
 #+end_src
 
@@ -475,7 +486,6 @@ Don't tangle this block on ~emacs-version~ < 27.
           (load-theme 'modus-vivendi))
         (xterm-mouse-mode 1)
         (mouse-avoidance-mode 'banish)
-        ;; (setq linum-format "%d ")
         (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
         (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
         (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -1942,56 +1952,6 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
       (let ((current-prefix-arg '(4)))
         (call-interactively 'org-babel-tangle)))
 
-  ;;;###autoload
-    (defun my/org-babel-insert-elisp-boilerplate (file)
-      "Insert Emacs Lisp documentation comments into FILE and add lexical binding."
-      (when (equal (file-name-extension file) "el")
-        (with-current-buffer (find-file-noselect file)
-          (let* ((filename (file-name-sans-extension (file-name-nondirectory file)))
-                 (copyright (concat (format-time-string "%Y") " " user-full-name))
-                 (author (concat user-full-name " <"user-mail-address">"))
-                 (header (concat ";;; " filename ".el --- " filename"\n\n"
-                                 ";;; Commentary:\n\n"
-                                 ";; Copyright: (C) " copyright "\n"
-                                 ";; Author: " author "\n\n"
-                                 ";;; Code:\n"))
-                 (footer (concat "\n(provide '" filename ")\n"
-                                 ";; Local Variables:\n"
-                                 ";; indent-tabs-mode: nil\n"
-                                 ";; byte-compile-warnings: (not free-vars noruntime)\n"
-                                 ";; End:\n"
-                                 ";;; " filename ".el ends here")))
-            (goto-char (point-min)) (insert header)
-            (message "Inserted header comments into %s" file)
-            (goto-char (point-max)) (insert footer)
-            (message "Inserted footer comments into %s" file)
-            (add-file-local-variable-prop-line 'lexical-binding t)
-            (message "Added lexical binding to %s" file)
-            (save-buffer)
-            (kill-buffer)
-            (message "Saved %s :-)" file)))
-        (when (file-readable-p (concat file "~"))
-          (delete-file (concat file "~"))
-          (message "Deleted %s~ backup file!" %s))))
-
-    (add-hook 'org-babel-post-tangle-hook
-              (lambda () (my/org-babel-insert-elisp-boilerplate buffer-file-name)))
-
-  ;;;###autoload
-    (defun my/buffer-substring-p (string)
-      (save-excursion
-        (save-match-data
-          (goto-char (point-min))
-          (if (re-search-forward string nil t) t nil))))
-
-  ;;;###autoload
-    (defun my/org-babel-auto-tangle-init-file ()
-      (if (and (string-match "^.*README\\.org$" (buffer-file-name))
-               (my/buffer-substring-p
-                "^\\#\\+PROPERTY\\: header-args\\+ \\:tangle.*init\\.el.*"))
-          (org-babel-tangle)))
-    (add-hook 'after-save-hook 'my/org-babel-auto-tangle-init-file)
-
     (defun my/org-narrow-to-parent ()
       "Narrow buffer to the current subtree."
       (interactive)
@@ -2921,12 +2881,11 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 #+begin_src emacs-lisp
   (use-package yasnippet-classic-snippets :defer)
 #+end_src
+
 * Local Variables
 # Local Variables:
 # eval: (setq init-file (expand-file-name "init.el" user-emacs-directory))
 # eval: (setq early-init (expand-file-name "early-init.el" user-emacs-directory))
-# eval: (org-babel-tangle)
-# eval: (load (file-name-sans-extension early-init))
-# eval: (load (file-name-sans-extension init-file))
 # eval: (if (file-readable-p (expand-file-name "~/.emacs")) (delete-file (expand-file-name "~/.emacs")))
+# eval: (add-hook 'after-save-hook 'org-babel-tangle nil t) ; Last t is for local
 # End:

@@ -1085,9 +1085,6 @@ buffer."
      (if (string= (eshell/pwd) (getenv "HOME"))
          (propertize "~" 'face `(:foreground "magenta"))
        (propertize (eshell/basename (eshell/pwd)) 'face `(:foreground "magenta")))
-     (propertize (ignore-errors (format " (%s)"
-                                        (vc-responsible-backend default-directory)))
-                 'face `(:foreground "cyan"))
      "\n"
      (if (= (user-uid) 0)
          (propertize "#" 'face `(:foreground "red"))
@@ -1095,21 +1092,20 @@ buffer."
      (propertize " " 'face `(:foreground "white"))))
 
   ;; https://www.emacswiki.org/emacs/EshellPrompt
-  (setq
-   eshell-cd-on-directory t
-   eshell-destroy-buffer-when-process-dies t
-   eshell-highlight-prompt nil
-   eshell-hist-ignoredups t
-   eshell-history-size 4096
-   eshell-ls-use-colors t
-   eshell-prefer-lisp-functions t
-   eshell-prefer-lisp-variables t
-   eshell-prompt-regexp "^[^#$\n]*[#$] "
-   eshell-prompt-function 'my/eshell-prompt
-   eshell-review-quick-commands nil
-   eshell-save-history-on-exit t
-   eshell-smart-space-goes-to-end t
-   eshell-where-to-jump 'begin)
+  (setq eshell-cd-on-directory t
+        eshell-destroy-buffer-when-process-dies t
+        eshell-highlight-prompt nil
+        eshell-hist-ignoredups t
+        eshell-history-size 4096
+        eshell-ls-use-colors t
+        eshell-prefer-lisp-functions t
+        eshell-prefer-lisp-variables t
+        eshell-prompt-regexp "^[^#$\n]*[#$] "
+        eshell-prompt-function 'my/eshell-prompt
+        eshell-review-quick-commands nil
+        eshell-save-history-on-exit t
+        eshell-smart-space-goes-to-end t
+        eshell-where-to-jump 'begin)
 
   (add-to-list 'eshell-modules-list 'eshell-tramp) ;; no sudo password with ~/.authinfo
   (add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply)
@@ -1214,7 +1210,7 @@ The optional argument can be generated with `make-hippie-expand-function'."
 (setq icomplete-in-buffer t)
 
 (unless (version< emacs-version "27")
-    (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-fido-exit))
+  (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-fido-exit))
 (define-key icomplete-minibuffer-map (kbd "M-j") 'exit-minibuffer)
 (define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
 (define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)

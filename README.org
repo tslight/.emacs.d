@@ -2461,7 +2461,7 @@ Get the source from [[https://gitlab.com/tspub/lisp/dired-peep][here]].
         (define-key dired-mode-map (kbd "M-o") 'dired-peep))))
 #+end_src
 
-* COMMENT Third party packages
+* Third party packages
 
 I like to split up my "vanilla" Emacs configuration and custom functions from
 the customisations provided by third party libraries that have been installed
@@ -2474,13 +2474,15 @@ This way it makes it very easy to run a semi-stock Emacs without ~package.el~
 or any third party libraries, but still have some saner defaults and some extra
 functionality.
 
-
 I'm using John Wiegley's awesome [[https://github.com/jwiegley/use-package][use-package]] to pull in and configure any third
 party packages from [[https://melpa.org/][MELPA]].
 
-** Setup up package.el in early-init.el
+** Setup up package.el
 
-#+begin_src emacs-lisp :tangle ~/.emacs.d/early-init.el
+If we are on an Emacs version lower than "27" this will go in ~init.el~,
+otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][~early-init.el~]] for faster starup.
+
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") "yes" "~/.emacs.d/early-init.el")
   ;; This must be true otherwise use-package won't load!
   (setq package-enable-at-startup t)
   ;; Allow loading from the package cache.
@@ -2511,13 +2513,11 @@ party packages from [[https://melpa.org/][MELPA]].
 ** Ansible
 
 #+begin_src emacs-lisp
-  (use-package ansible :defer
-               :hook (yaml-mode . ansible))
+  (use-package ansible :defer :hook (yaml-mode . ansible))
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package ansible-doc :defer
-               :hook (yaml-mode . ansible-doc-mode))
+  (use-package ansible-doc :defer :hook (yaml-mode . ansible-doc-mode))
 #+end_src
 
 ** Async
@@ -2539,8 +2539,7 @@ party packages from [[https://melpa.org/][MELPA]].
 ** Blacken
 
 #+begin_src emacs-lisp
-  (use-package blacken :defer
-               :hook (python-mode . blacken-mode))
+  (use-package blacken :defer :hook (python-mode . blacken-mode))
 #+end_src
 
 ** Default text scaling
@@ -2575,15 +2574,16 @@ party packages from [[https://melpa.org/][MELPA]].
 ** Docker
 
 #+begin_src emacs-lisp
-  (use-package docker
-               :bind ("C-c C-d" . docker))
+  (use-package docker :bind ("C-c C-d" . docker))
+#+end_src
 
+#+begin_src emacs-lisp
   (use-package dockerfile-mode :defer)
 #+end_src
 
 ** Exec path from shell
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (when (eq system-type 'windows-nt) "no")
   (use-package exec-path-from-shell :defer 10
                :unless (eq system-type 'windows-nt)
                :commands exec-path-from-shell-initialize
@@ -2653,7 +2653,7 @@ party packages from [[https://melpa.org/][MELPA]].
                        ("Path" 99 magit-repolist-column-path))))
 #+end_src
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (unless (eq system-type 'windows-nt) "yes")
   (use-package forge :unless (equal system-type 'windows-nt) :after magit)
 #+end_src
 
@@ -2705,7 +2705,9 @@ party packages from [[https://melpa.org/][MELPA]].
                  (set-buffer-modified-p nil))
                (add-to-list 'auto-mode-alist
                             '("\\.json\\'" . 'my/json-mode-setup)))
+#+end_src
 
+#+begin_src emacs-lisp
   (use-package json-navigator :defer)
 #+end_src
 
@@ -2737,8 +2739,7 @@ party packages from [[https://melpa.org/][MELPA]].
 *** Org Bullets
 
 #+begin_src emacs-lisp
-  (use-package org-bullets :defer
-               :hook (org-mode . org-bullets-mode))
+  (use-package org-bullets :defer :hook (org-mode . org-bullets-mode))
 #+end_src
 
 *** HTMLize
@@ -2750,11 +2751,11 @@ party packages from [[https://melpa.org/][MELPA]].
 *** Toc Org
 
 #+begin_src emacs-lisp
-  (use-package toc-org :defer
-               :hook (org-mode . toc-org-enable))
+  (use-package toc-org :defer :hook (org-mode . toc-org-enable))
 #+end_src
 
 *** PDF Tools
+
 #+begin_src emacs-lisp
   (use-package pdf-tools :defer)
 #+end_src
@@ -2767,10 +2768,10 @@ party packages from [[https://melpa.org/][MELPA]].
 
 ** Projectile
 
-#+begin_src emacs-lisp
-  (use-package projectile :diminish projectile-mode
+#+begin_src emacs-lisp :tangle (unless (version< emacs-version "28") "no")
+  (use-package projectile :diminish projectile-mode :disabled
                :bind-keymap
-               ("C-c p" . projectile-command-map)
+               ("C-x p" . projectile-command-map)
                :config
                (projectile-mode)
                ;; (setq projectile-completion-system 'ivy)
@@ -2789,7 +2790,7 @@ party packages from [[https://melpa.org/][MELPA]].
 
 ** systemd
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (unless (eq system-type 'windows-nt) "yes")
   (use-package systemd :unless (equal system-type 'windows-nt) :defer)
 #+end_src
 
@@ -2801,8 +2802,8 @@ party packages from [[https://melpa.org/][MELPA]].
 
 ** Web Mode
 
-#+begin_src emacs-lisp
-  (use-package web-mode :defer
+#+begin_src emacs-lisp :tangle no
+  (use-package web-mode :defer :disabled
                :mode
                "\\.phtml\\'"
                "\\.tpl\\.php\\'"
@@ -2859,9 +2860,7 @@ party packages from [[https://melpa.org/][MELPA]].
   (use-package yaml-mode :defer
                :hook
                (yaml-mode . hs-minor-mode)
-               (yaml-mode . display-line-numbers-mode)
-               :config
-               (remove-hook 'before-save-hook 'my/indent-buffer))
+               (yaml-mode . display-line-numbers-mode))
 #+end_src
 
 ** Yasnippet

@@ -1,3 +1,11 @@
+;;; init.el --- init  -*- lexical-binding: t; -*-
+
+;;; Commentary:
+
+;; Copyright: (C) 2020 Toby Slight
+;; Author: Toby Slight <tslight@pm.me>
+
+;;; Code:
 (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
       gc-cons-percentage 0.6)
 
@@ -1965,7 +1973,7 @@ project, as defined by `vc-root-dir'."
 
 (use-package powershell :mode (("\\.ps1\\'" . powershell-mode)))
 
-(use-package projectile :diminish projectile-mode :disabled
+(use-package projectile :diminish
   :bind-keymap
   ("C-x p" . projectile-command-map)
   :config
@@ -2004,3 +2012,10 @@ project, as defined by `vc-root-dir'."
 (use-package yasnippet-snippets :defer)
 
 (use-package yasnippet-classic-snippets :defer)
+
+(provide 'init)
+;; Local Variables:
+;; indent-tabs-mode: nil
+;; byte-compile-warnings: (not free-vars noruntime)
+;; End:
+;;; init.el ends here

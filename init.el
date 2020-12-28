@@ -207,7 +207,7 @@
 (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
 (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
 
-(when (version< emacs-version "27")
+(unless (version< emacs-version "27")
   (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
   (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
   (global-set-key (kbd "C-x t k") 'tab-bar-close-tab)
@@ -990,7 +990,7 @@ window to right."
 (with-eval-after-load 'dired-aux
   (setq dired-isearch-filenames 'dwim)
   ;; The following variables were introduced in Emacs 27.1
-  (when (not (version< emacs-version "27.1"))
+  (unless (version< emacs-version "27.1")
     (setq dired-create-destination-dirs 'ask)
     (setq dired-vc-rename-file t))
   (message "Lazy loaded dired-aux :-)"))
@@ -1210,7 +1210,7 @@ The optional argument can be generated with `make-hippie-expand-function'."
 (setq icomplete-tidy-shadowed-file-names t)
 (setq icomplete-in-buffer t)
 
-(if (version< emacs-version "27")
+(unless (version< emacs-version "27")
     (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-fido-exit))
 (define-key icomplete-minibuffer-map (kbd "M-j") 'exit-minibuffer)
 (define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
@@ -1280,7 +1280,7 @@ When searching backward, kill to the beginning of the match."
     (my/isearch-exit)
     (call-interactively 'kill-region))
 
-  (when (not (version< emacs-version "27.1"))
+  (unless (version< emacs-version "27.1")
     (setq isearch-allow-scroll 'unlimited)
     (setq isearch-yank-on-move 't)
     (setq isearch-lazy-count t)
@@ -1496,7 +1496,7 @@ When searching backward, kill to the beginning of the match."
   (message "Lazy loaded prettify-symbols :-)"))
 (add-hook 'emacs-startup-hook 'global-prettify-symbols-mode)
 
-(when (not (version< emacs-version "28"))
+(unless (version< emacs-version "28")
   (setq my/project-roots '("~" "~/src/gitlab"))
 
 ;;;###autoload

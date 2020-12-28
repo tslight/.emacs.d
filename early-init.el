@@ -15,6 +15,7 @@
 ;; Setup up archives
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/packages/")
         ("gnu" . "https://elpa.gnu.org/packages/")))
 
 (provide 'early-init)

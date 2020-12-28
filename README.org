@@ -2124,7 +2124,9 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 
 ** Project
 
-#+begin_src emacs-lisp
+We only tangle this when ~emacs-version~ > 28
+
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "no" "yes")
   (unless (version< emacs-version "28")
     (setq my/project-roots '("~" "~/src/gitlab"))
 
@@ -2502,17 +2504,18 @@ party packages from [[https://melpa.org/][MELPA]].
 If we are on an Emacs version lower than "27" this will go in ~init.el~,
 otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][~early-init.el~]] for faster starup.
 
-#+begin_src emacs-lisp (unless (version< emacs-version "27") :tangle ~/.emacs.d/early-init.el)
-  ;; This must be true otherwise use-package won't load!
-  (setq package-enable-at-startup t)
-  ;; Allow loading from the package cache.
-  (setq package-quickstart t)
-  ;; Don't write (package-initialize) to my init file!
-  (setq package--init-file-ensured t)
-  ;; Setup up archives
-  (setq package-archives
-        '(("melpa" . "https://melpa.org/packages/")
-          ("gnu" . "https://elpa.gnu.org/packages/")))
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") "yes" "~/.emacs.d/early-init.el")
+    ;; This must be true otherwise use-package won't load!
+    (setq package-enable-at-startup t)
+    ;; Allow loading from the package cache.
+    (setq package-quickstart t)
+    ;; Don't write (package-initialize) to my init file!
+    (setq package--init-file-ensured t)
+    ;; Setup up archives
+    (setq package-archives
+          '(("melpa" . "https://melpa.org/packages/")
+            ("nongnu" . "https://elpa.nongnu.org/packages/")
+            ("gnu" . "https://elpa.gnu.org/packages/")))
 #+end_src
 
 ** use-package bootstrap
@@ -2603,7 +2606,9 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 ** Exec path from shell
 
-#+begin_src emacs-lisp (when (eq system-type 'windows-nt) :tangle no)
+Don't tangle this block if ~system-type~ is ~windows-nt~.
+
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" "yes")
   (use-package exec-path-from-shell :defer 10
     :unless (eq system-type 'windows-nt)
     :commands exec-path-from-shell-initialize
@@ -2673,7 +2678,11 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
             ("Path" 99 magit-repolist-column-path))))
 #+end_src
 
-#+begin_src emacs-lisp (when (eq system-type 'windows-nt) :tangle no)
+**** Forge
+
+Don't tangle this block if ~system-type~ is ~windows-nt~.
+
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" "yes")
   (use-package forge :unless (equal system-type 'windows-nt) :after magit)
 #+end_src
 
@@ -2776,7 +2785,9 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 *** PDF Tools
 
-#+begin_src emacs-lisp (when (eq system-type 'windows-nt) :tangle no)
+Don't tangle this block if ~system-type~ is ~windows-nt~.
+
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" "yes")
   (use-package pdf-tools :unless (eq system-type 'windows-nt) :defer)
 #+end_src
 
@@ -2788,7 +2799,10 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 ** Projectile
 
-#+begin_src emacs-lisp (unless (version< emacs-version "28") :tangle no)
+Don't tangle this block if ~emacs-version~ > 28, as Emacs 28 has the this
+functionality built in via ~project.el~.
+
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "yes" "no")
   (use-package projectile :diminish
     :bind-keymap
     ("C-x p" . projectile-command-map)
@@ -2810,7 +2824,9 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 ** systemd
 
-#+begin_src emacs-lisp (when (eq system-type 'windows-nt) :tangle no)
+Don't tangle this block if ~system-type~ is ~windows-nt~.
+
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" "yes")
   (use-package systemd :unless (equal system-type 'windows-nt) :defer)
 #+end_src
 
@@ -2822,8 +2838,8 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 ** Web Mode
 
-#+begin_src emacs-lisp :tangle no
-  (use-package web-mode :defer :disabled
+#+begin_src emacs-lisp
+  (use-package web-mode
     :mode
     "\\.phtml\\'"
     "\\.tpl\\.php\\'"

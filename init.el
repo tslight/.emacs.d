@@ -1516,84 +1516,6 @@ When searching backward, kill to the beginning of the match."
   (message "Lazy loaded prettify-symbols :-)"))
 (add-hook 'emacs-startup-hook 'global-prettify-symbols-mode)
 
-(unless (version< emacs-version "28")
-  (setq my/project-roots '("~" "~/src/gitlab"))
-
-;;;###autoload
-  (defun my/project--git-repo-p (directory)
-    "Return non-nil if there is a git repository in DIRECTORY."
-    (and
-     (file-directory-p (concat directory "/.git"))
-     (file-directory-p (concat directory "/.git/info"))
-     (file-directory-p (concat directory "/.git/objects"))
-     (file-directory-p (concat directory "/.git/refs"))
-     (file-regular-p (concat directory "/.git/HEAD"))))
-
-;;;###autoload
-  (defun my/project--git-repos-recursive (directory maxdepth)
-    "List git repos in under DIRECTORY recursively to MAXDEPTH."
-    (let* ((git-repos '())
-           (current-directory-list
-            (directory-files directory t directory-files-no-dot-files-regexp)))
-      ;; while we are in the current directory
-      (if (my/project--git-repo-p directory)
-          (setq git-repos (cons (file-truename (expand-file-name directory)) git-repos)))
-      (while current-directory-list
-        (let ((f (car current-directory-list)))
-          (cond ((and (file-directory-p f)
-                      (file-readable-p f)
-                      (> maxdepth 0)
-                      (not (my/project--git-repo-p f)))
-                 (setq git-repos
-                       (append git-repos
-                               (my/project--git-repos-recursive f (- maxdepth 1)))))
-                ((my/project--git-repo-p f)
-                 (setq git-repos (cons
-                                  (file-truename (expand-file-name f)) git-repos))))
-          (setq current-directory-list (cdr current-directory-list))))
-      (delete-dups git-repos)))
-
-;;;###autoload
-  (defun my/project--list-projects ()
-    "Produce list of projects in `my/project-roots'."
-    (let ((cands (delete-dups (mapcan (lambda (directory)
-                                        (my/project--git-repos-recursive
-                                         (expand-file-name directory)
-                                         10))
-                                      my/project-roots))))
-      ;; needs to be a list of lists
-      (mapcar (lambda (d)
-                (list (abbreviate-file-name d)))
-              cands)))
-
-;;;###autoload
-  (defun my/project-update-projects ()
-    "Overwrite `project--list' using `my/project--list-projects'.
-    WARNING: This will destroy & replace the contents of `project-list-file'."
-    (interactive)
-    (autoload 'project--ensure-read-project-list "project" nil t)
-    (project--ensure-read-project-list)
-    (setq project--list (my/project--list-projects))
-    (project--write-project-list)
-    (message "Updated project list in %s" project-list-file))
-
-  ;; (add-hook 'emacs-startup-hook 'my/project-update-projects)
-  (global-set-key (kbd "C-x p u") 'my/project-update-projects)
-
-  (with-eval-after-load 'project
-    (setq project-switch-commands
-          '((?b "Buffer" project-switch-to-buffer)
-            (?c "Compile" project-compile)
-            (?d "Dired" project-dired)
-            (?e "Eshell" project-eshell)
-            (?f "File" project-find-file)
-            (?g "Grep" project-find-regexp)
-            (?q "Query replace" project-query-replace-regexp)
-            (?r "Run command" project-async-shell-command)
-            (?s "Search" project-search)
-            (?v "VC dir" project-vc-dir)))
-    (message "Lazy loaded project :-)")))
-
 (with-eval-after-load 'recentf
   (setq recentf-exclude '(".gz"
                           ".xz"
@@ -1795,17 +1717,6 @@ project, as defined by `vc-root-dir'."
       (define-key dired-mode-map (kbd "C-o") 'dired-peep-temporarily)
       (define-key dired-mode-map (kbd "M-o") 'dired-peep))))
 
-;; This must be true otherwise use-package won't load!
-(setq package-enable-at-startup t)
-;; Allow loading from the package cache.
-(setq package-quickstart t)
-;; Don't write (package-initialize) to my init file!
-(setq package--init-file-ensured t)
-;; Setup up archives
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("gnu" . "https://elpa.gnu.org/packages/")))
-
 (require 'package)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -1860,15 +1771,6 @@ project, as defined by `vc-root-dir'."
 
 (use-package dockerfile-mode :defer)
 
-(use-package exec-path-from-shell :defer 10
-  :unless (eq system-type 'windows-nt)
-  :commands exec-path-from-shell-initialize
-  :init
-  (setq exec-path-from-shell-check-startup-files 'nil)
-  :config
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "PYTHONPATH"))
-
 (use-package flycheck :defer
   :diminish flycheck-mode
   :hook (prog-mode . flycheck-mode)
@@ -1908,8 +1810,6 @@ project, as defined by `vc-root-dir'."
           ("Push" 5 magit-repolist-column-unpushed-to-upstream)
           ("Commit" 8 magit-repolist-column-flag t)
           ("Path" 99 magit-repolist-column-path))))
-
-(use-package forge :unless (equal system-type 'windows-nt) :after magit)
 
 (use-package go-mode :defer
   :config
@@ -1969,27 +1869,44 @@ project, as defined by `vc-root-dir'."
 
 (use-package toc-org :defer :hook (org-mode . toc-org-enable))
 
-(use-package pdf-tools :unless (eq system-type 'windows-nt) :defer)
-
 (use-package powershell :mode (("\\.ps1\\'" . powershell-mode)))
-
-(use-package projectile :diminish
-  :bind-keymap
-  ("C-x p" . projectile-command-map)
-  :config
-  (projectile-mode)
-  ;; (setq projectile-completion-system 'ivy)
-  (when (require 'magit nil t)
-    (mapc #'projectile-add-known-project
-          (mapcar #'file-name-as-directory (magit-list-repos)))
-    ;; Optionally write to persistent `projectile-known-projects-file'
-    (projectile-save-known-projects)))
 
 (use-package restclient :defer)
 
-(use-package systemd :unless (equal system-type 'windows-nt) :defer)
-
 (use-package terraform-mode :defer)
+
+(use-package web-mode
+  :mode
+  "\\.phtml\\'"
+  "\\.tpl\\.php\\'"
+  "\\.[agj]sp\\'"
+  "\\.as[cp]x\\'"
+  "\\.erb\\'"
+  "\\.mustache\\'"
+  "\\.djhtml\\'"
+  "\\.html\\.twig\\'"
+  "\\.html?\\'"
+  "\\.php?\\'"
+  "\\.css?\\'"
+  :hook
+  (web-mode . js2-minor-mode)
+  :config
+  (setq web-mode-content-type "jsx")
+  (setq web-mode-enable-auto-quoting nil)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-attr-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-css-colorization t)
+  (setq web-mode-enable-block-face t)
+  (setq web-mode-enable-part-face t)
+  (setq web-mode-enable-comment-keywords t)
+  (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+  (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil)))
 
 (use-package wgrep :defer :commands wgrep
   :bind (:map grep-mode-map

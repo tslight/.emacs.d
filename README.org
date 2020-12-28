@@ -10,24 +10,23 @@
 
 A fairly standard [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration using [[https://orgmode.org/][Org mode]].
 
-Quickest way to get setup is to back up your current config:
+Quickest way to get setup is to back up your current config, then clone this
+repo to replace it:
 
 #+begin_src shell :tangle no
-  mv ~/.emacs.d{,.bak}
+  mv ~/.emacs.d{,.bak} && git clone https://github.com/tslight/.emacs.d ~/.emacs.d
 #+end_src
 
-Then clone this repo to replace it:
+*WARNING: JUST VISITING THIS FILE IN EMACS WILL OVERWRITE YOUR CONFIG!*
 
-#+begin_src shell :tangle no
-  git clone https://gitlab.com/tspub/lisp/emacs ~/.emacs.d
+This is because I have added the following ~eval~ elisp snippet [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html][file variables]]
+at the bottom of this file:
+
+#+begin_src emacs-lisp :tangle no
+  (setq init-file (expand-file-name "init.el" user-emacs-directory))
+  (setq early-init (expand-file-name "early-init.el" user-emacs-directory))
+  (org-babel-tangle)
 #+end_src
-
-Alternatively you can clone to a different location and ~org-babel-tangle~ this
-file with ~C-c C-v t~ whilst visiting this file.
-
-That will copy all the source code blocks in this file and overwrite whatever
-you have in your ~$HOME/.emacs.d/early-init.el~ and ~$HOME/.emacs.d/init.el~
-files, so make sure you've backed up anything you don't want to lose!
 
 * Doom startup speed hacks
 

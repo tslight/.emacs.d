@@ -595,7 +595,8 @@ I've collected (stolen!) or written over the years.
                  (t (org-narrow-to-subtree))))
           (t (narrow-to-defun))))
   (define-key ctl-x-map "n" 'my/narrow-or-widen-dwim)
-  (define-key org-mode-map (kbd "C-x n") 'my/narrow-or-widen-dwim)
+  (with-eval-after-load 'org
+    (define-key org-mode-map (kbd "C-x n") 'my/narrow-or-widen-dwim))
 #+end_src
 
 ** Nuke buffers

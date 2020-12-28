@@ -1,11 +1,3 @@
-;;; init.el --- init  -*- lexical-binding: t; -*-
-
-;;; Commentary:
-
-;; Copyright: (C) 2020 Toby Slight
-;; Author: Toby Slight <tslight@pm.me>
-
-;;; Code:
 (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
       gc-cons-percentage 0.6)
 
@@ -332,7 +324,8 @@ narrowed."
                (t (org-narrow-to-subtree))))
         (t (narrow-to-defun))))
 (define-key ctl-x-map "n" 'my/narrow-or-widen-dwim)
-(define-key org-mode-map (kbd "C-x n") 'my/narrow-or-widen-dwim)
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-x n") 'my/narrow-or-widen-dwim))
 
 ;;;###autoload
 (defun my/nuke-buffers ()
@@ -2011,10 +2004,3 @@ project, as defined by `vc-root-dir'."
 (use-package yasnippet-snippets :defer)
 
 (use-package yasnippet-classic-snippets :defer)
-
-(provide 'init)
-;; Local Variables:
-;; indent-tabs-mode: nil
-;; byte-compile-warnings: (not free-vars noruntime)
-;; End:
-;;; init.el ends here

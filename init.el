@@ -247,11 +247,11 @@
           (set-frame-font "Monospace 11" nil t))
         (if (version< emacs-version "28")
             (load-theme 'wombat)
-          (load-theme ''modus-vivendi)))
+          (load-theme 'modus-vivendi)))
     (progn
       (if (version< emacs-version "28")
           (load-theme 'manoj-dark)
-        (load-theme ''modus-vivendi))
+        (load-theme 'modus-vivendi))
       (xterm-mouse-mode 1)
       (mouse-avoidance-mode 'banish)
       ;; (setq linum-format "%d ")

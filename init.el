@@ -101,8 +101,8 @@
 (setq user-full-name "Toby Slight")
 (setq user-mail-address "tslight@pm.me")
 
-(setq split-width-threshold 160)
-(setq split-height-threshold 80)
+(setq split-width-threshold 200)
+(setq split-height-threshold 100)
 (setq auto-window-vscroll nil)
 
 (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word

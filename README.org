@@ -183,10 +183,10 @@ compressed/encrypted files won’t open.
   (setq bookmark-save-flag 1) ;; always save bookmarks to file
 #+end_src
 
-** Custom settings in /tmp
+** Customize settings file
 
 #+begin_src emacs-lisp
-  (setq custom-file (make-temp-file "emacs-custom"))
+  (setq custom-file (expand-file-name "custom" user-emacs-directory))
 #+end_src
 
 ** Enable all advanced features
@@ -2469,6 +2469,11 @@ party packages from [[https://melpa.org/][MELPA]].
 If we are on an Emacs version lower than "27" this will go in ~init.el~,
 otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][~early-init.el~]] for faster starup.
 
+#+begin_src emacs-lisp :comments no :tangle (if (version< emacs-version "27") "no" early-init)
+  ;; -*- lexical-binding: t; -*-
+#+end_src
+
+
 #+begin_src emacs-lisp :tangle (if (version< emacs-version "27") init-file early-init)
     ;; This must be true otherwise use-package won't load!
     (setq package-enable-at-startup t)
@@ -2885,24 +2890,10 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 #+end_src
 
 * Local Variables
-
-#+begin_src emacs-lisp
-  (setq safe-local-variable-values
-        '((eval add-hook 'after-save-hook 'org-babel-tangle nil t)
-          (eval if
-                (file-readable-p
-                 (expand-file-name "~/.emacs"))
-                (delete-file
-                 (expand-file-name "~/.emacs")))
-          (eval setq early-init
-                (expand-file-name "early-init.el" user-emacs-directory))
-          (eval setq init-file
-                (expand-file-name "init.el" user-emacs-directory))))
-#+end_src
-
 # Local Variables:
 # eval: (setq init-file (expand-file-name "init.el" user-emacs-directory))
 # eval: (setq early-init (expand-file-name "early-init.el" user-emacs-directory))
-# eval: (if (file-readable-p (expand-file-name "~/.emacs")) (delete-file (expand-file-name "~/.emacs")))
-# eval: (add-hook 'after-save-hook 'org-babel-tangle nil t) ; Last t is for local
+# eval: (add-hook 'after-save-hook 'org-babel-tangle nil t)
+# eval: (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file early-init nil 0)) nil t)
+# eval: (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file init-file nil 0)) nil t)
 # End:

@@ -425,8 +425,10 @@ compressed/encrypted files won’t open.
 
 ** Tabs (Emacs 27+)
 
-#+begin_src emacs-lisp
-  (unless (version< emacs-version "27")
+Don't tangle this block on ~emacs-version~ < 27.
+
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") "no" "yes")
+  (unless (version< emacs-version "27") ;; belt and braces
     (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
     (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
     (global-set-key (kbd "C-x t k") 'tab-bar-close-tab)
@@ -567,6 +569,7 @@ I've collected (stolen!) or written over the years.
     (switch-to-buffer (other-buffer (current-buffer) 1)))
   (global-set-key (kbd "C-c b") 'my/last-buffer)
 #+end_src
+
 ** Narrow DWIM
 
 #+begin_src emacs-lisp
@@ -1004,9 +1007,12 @@ or just less than ideal way...
       (indent-region (point-min) (point-max))))
 #+end_src
 
-** Yank pop forwards
+** Yank pop forwards (Emacs<28)
 
-#+begin_src emacs-lisp
+Don't bother tangling this if ~emacs-version~ > 28, as Emacs 28 has ~M-y~ bound
+to completing read of the kill ring, making this pretty pointless.
+
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "yes" "no")
   ;;;###autoload
   (defun my/yank-pop-forwards (arg)
     "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
@@ -1459,23 +1465,26 @@ This is basically ~other-window~ backwards.
     (message "Lazy loaded dired :-)"))
 #+end_src
 
+#+begin_src emacs-lisp
+  (add-hook 'dired-mode-hook 'hl-line-mode)
+#+end_src
+
+*** Dired-X Jump (Emacs<28)
+
 Has to come outside of with-eval-after-load otherwise we have no dired-jump.
 
-This is in ~dired~ not ~dired-jump~ in Emacs 28.
+This is in ~dired~ not ~dired-jump~ in Emacs 28, which means we no longer have
+to autoload these and bind the default keys prior to ~dired~ being loaded.
 
-#+begin_src emacs-lisp
+The default keys are ~C-x C-j~ and ~C-x 4 C-j~.
+
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "yes" "no")
   ;; This is in `dired' not `dired-jump' in Emacs 28
   (when (version< emacs-version "28")
     (autoload 'dired-jump "dired-x" nil t)
     (global-set-key (kbd "C-x C-j") 'dired-jump)
     (autoload 'dired-jump-other-window "dired-x" nil t)
     (define-key ctl-x-4-map "C-j" 'dired-jump-other-window))
-#+end_src
-
-Turn on hl-line-mode
-
-#+begin_src emacs-lisp
-  (add-hook 'dired-mode-hook 'hl-line-mode)
 #+end_src
 
 *** Dired AUX
@@ -1866,11 +1875,6 @@ Turn on ~fido-mode~ if we are on Emacs 27+
   (global-set-key (kbd "M-s M-o") 'multi-occur)
 #+end_src
 
-#+begin_src emacs-lisp
-  (add-hook 'occur-mode-hook 'hl-line-mode)
-  (define-key occur-mode-map "t" 'toggle-truncate-lines)
-#+end_src
-
 ** Minibuffer
 *** Save history mode
 
@@ -1917,6 +1921,13 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 #+begin_src emacs-lisp
   (add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold most-positive-fixnum)))
   (add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 16777216))) ; 16mb
+#+end_src
+
+** Occur
+
+#+begin_src emacs-lisp
+  (add-hook 'occur-mode-hook 'hl-line-mode)
+  (define-key occur-mode-map "t" 'toggle-truncate-lines)
 #+end_src
 
 ** Org
@@ -2016,9 +2027,6 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (setq org-default-notes-file "~/org/notes.org")
     (setq org-directory "~/org")
     (setq org-export-with-toc t)
-    (setq org-imenu-depth 12)
-    (setq org-goto-interface 'outline-path-completionp)
-    (setq org-outline-path-complete-in-steps nil)
     (setq org-indent-indentation-per-level 1)
     (setq org-list-allow-alphabetical t)
     (setq org-list-indent-offset 1)
@@ -2087,6 +2095,11 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
        (shell . t)
        (sql . t)
        (sqlite . t)))
+
+    (setq org-goto-interface 'outline-path-completionp)
+    (setq org-outline-path-complete-in-steps nil)
+    ;; org-goto is basically imenu on steroids for org-mode
+    (define-key org-mode-map (kbd "C-c i") 'org-goto)
 
     (add-hook 'org-mode-hook 'auto-fill-mode)
     (add-hook 'org-mode-hook 'hl-line-mode)

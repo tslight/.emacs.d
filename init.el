@@ -207,14 +207,6 @@
 (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
 (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
 
-(unless (version< emacs-version "27")
-  (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
-  (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
-  (global-set-key (kbd "C-x t k") 'tab-bar-close-tab)
-  (global-set-key (kbd "C-x t n") 'tab-bar-switch-to-next-tab)
-  (global-set-key (kbd "C-x t p") 'tab-bar-switch-to-prev-tab)
-  (global-set-key (kbd "C-x t l") 'tab-bar-switch-to-recent-tab))
-
 ;;;###autoload
 (defun my/jump-to-register-other-window ()
   "Tin job."
@@ -632,13 +624,6 @@ If you omit CLOSE, it will reuse OPEN."
     (indent-region (point-min) (point-max))))
 
 ;;;###autoload
-(defun my/yank-pop-forwards (arg)
-  "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
-  (interactive "p")
-  (yank-pop (- arg)))
-(global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
-
-;;;###autoload
 (defun my/delete-this-file ()
   "Delete the current file, and kill the buffer."
   (interactive)
@@ -984,13 +969,6 @@ window to right."
   (define-key dired-mode-map ")" 'dired-omit-mode)
   (message "Lazy loaded dired :-)"))
 
-;; This is in `dired' not `dired-jump' in Emacs 28
-(when (version< emacs-version "28")
-  (autoload 'dired-jump "dired-x" nil t)
-  (global-set-key (kbd "C-x C-j") 'dired-jump)
-  (autoload 'dired-jump-other-window "dired-x" nil t)
-  (define-key ctl-x-4-map "C-j" 'dired-jump-other-window))
-
 (add-hook 'dired-mode-hook 'hl-line-mode)
 
 (with-eval-after-load 'dired-aux
@@ -1307,9 +1285,6 @@ When searching backward, kill to the beginning of the match."
 (global-set-key (kbd "M-s f") 'multi-isearch-files-regexp)
 (global-set-key (kbd "M-s M-o") 'multi-occur)
 
-(add-hook 'occur-mode-hook 'hl-line-mode)
-(define-key occur-mode-map "t" 'toggle-truncate-lines)
-
 (with-eval-after-load 'savehist
   (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
   (setq savehist-save-minibuffer-history 1)
@@ -1338,6 +1313,9 @@ When searching backward, kill to the beginning of the match."
 
 (add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold most-positive-fixnum)))
 (add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 16777216))) ; 16mb
+
+(add-hook 'occur-mode-hook 'hl-line-mode)
+(define-key occur-mode-map "t" 'toggle-truncate-lines)
 
 (with-eval-after-load 'org
   (require 'org-tempo)
@@ -1433,9 +1411,6 @@ When searching backward, kill to the beginning of the match."
   (setq org-default-notes-file "~/org/notes.org")
   (setq org-directory "~/org")
   (setq org-export-with-toc t)
-  (setq org-imenu-depth 12)
-  (setq org-goto-interface 'outline-path-completionp)
-  (setq org-outline-path-complete-in-steps nil)
   (setq org-indent-indentation-per-level 1)
   (setq org-list-allow-alphabetical t)
   (setq org-list-indent-offset 1)
@@ -1504,6 +1479,11 @@ When searching backward, kill to the beginning of the match."
      (shell . t)
      (sql . t)
      (sqlite . t)))
+
+  (setq org-goto-interface 'outline-path-completionp)
+  (setq org-outline-path-complete-in-steps nil)
+  ;; org-goto is basically imenu on steroids for org-mode
+  (define-key org-mode-map (kbd "C-c i") 'org-goto)
 
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (add-hook 'org-mode-hook 'hl-line-mode)

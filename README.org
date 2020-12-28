@@ -2583,7 +2583,7 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 ** Exec path from shell
 
-#+begin_src emacs-lisp :tangle (when (eq system-type 'windows-nt) "no")
+#+begin_src emacs-lisp :tangle (unless (eq system-type 'windows-nt) "yes")
   (use-package exec-path-from-shell :defer 10
                :unless (eq system-type 'windows-nt)
                :commands exec-path-from-shell-initialize

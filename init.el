@@ -1,11 +1,3 @@
-;;; init.el --- init  -*- lexical-binding: t; -*-
-
-;;; Commentary:
-
-;; Copyright: (C) 2020 Toby Slight
-;; Author: Toby Slight <tslight@pm.me>
-
-;;; Code:
 (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
       gc-cons-percentage 0.6)
 
@@ -1774,9 +1766,184 @@ project, as defined by `vc-root-dir'."
       (define-key dired-mode-map (kbd "C-o") 'dired-peep-temporarily)
       (define-key dired-mode-map (kbd "M-o") 'dired-peep))))
 
-(provide 'init)
-;; Local Variables:
-;; indent-tabs-mode: nil
-;; byte-compile-warnings: (not free-vars noruntime)
-;; End:
-;;; init.el ends here
+(require 'package)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(setq use-package-enable-imenu-support t
+      ;; use-package-hook-name-suffix nil
+      use-package-always-ensure t
+      use-package-verbose t)
+(require 'use-package)
+
+(use-package ansible :defer :hook (yaml-mode . ansible))
+
+(use-package ansible-doc :defer :hook (yaml-mode . ansible-doc-mode))
+
+(use-package async :defer 5
+             :commands (async-byte-compile-file
+                        async-bytecomp-package-mode)
+             :init
+             (unless (equal system-type 'windows-nt)
+               (setq async-bytecomp-allowed-packages '(all)))
+             :config
+             (if (equal system-type 'windows-nt)
+                 (async-bytecomp-package-mode -1)
+               (async-bytecomp-package-mode 1))
+             :hook (dired-mode-hook . dired-async-mode))
+
+(use-package blacken :defer :hook (python-mode . blacken-mode))
+
+(use-package default-text-scale
+             :if window-system
+             :bind*
+             ("C-M-=" . default-text-scale-increase)
+             ("C-M--" . default-text-scale-decrease)
+             ("C-M-0" . default-text-scale-reset))
+
+(use-package diminish :defer 2
+             :diminish abbrev-mode
+             :diminish auto-fill-function ;; wtf?!
+             :diminish eldoc-mode
+             :diminish hs-minor-mode
+             :diminish highlight-changes-mode
+             :diminish my/key-mode
+             :diminish org-indent-mode
+             :diminish org-src-mode
+             :diminish subword-mode
+             :hook
+             (org-indent-mode . (lambda () (diminish 'org-indent-mode)))
+             (hs-minor-mode . (lambda () (diminish 'hs-minor-mode))))
+
+(use-package docker :bind ("C-c C-d" . docker))
+
+(use-package dockerfile-mode :defer)
+
+(use-package flycheck :defer
+             :diminish flycheck-mode
+             :hook (prog-mode . flycheck-mode)
+             :config (flycheck-add-mode 'javascript-eslint 'web-mode))
+
+(use-package git-timemachine :defer)
+
+(use-package gitlab-ci-mode :defer
+             :mode
+             "\\.gitlab-ci.yaml\\'"
+             "\\.gitlab-ci.yml\\'"
+             :hook
+             (yaml-mode . hs-minor-mode))
+
+(use-package magit
+             :bind*
+             ("C-x g" . magit-status)
+             :config
+             (when (eq system-type 'windows-nt)
+               (if (file-readable-p "C:/Program Files/Git/bin/git.exe")
+                   (setq magit-git-executable "C:/Program Files/Git/bin/git.exe"))
+               (when (file-directory-p "C:/Program Files/Git/bin")
+                 (setq exec-path (add-to-list 'exec-path "C:/Program Files/Git/bin"))
+                 (setenv "PATH" (concat "C:\\Program Files\\Git\\bin;" (getenv "PATH")))))
+             (setq magit-clone-set-remote.pushDefault t)
+             (setq magit-completing-read-function 'magit-builtin-completing-read))
+
+(use-package magit-repos :ensure nil
+             :bind* ("C-x C-g" . magit-list-repositories)
+             :config
+             (setq magit-repository-directories `(("~/" . 0)
+                                                  ("~/src/gitlab" . 10)))
+             (setq magit-repolist-columns
+                   '(("Name" 25 magit-repolist-column-ident)
+                     ;; ("Version" 25 magit-repolist-column-version)
+                     ("Pull" 5 magit-repolist-column-unpulled-from-upstream)
+                     ("Push" 5 magit-repolist-column-unpushed-to-upstream)
+                     ("Commit" 8 magit-repolist-column-flag t)
+                     ("Path" 99 magit-repolist-column-path))))
+
+(use-package go-mode :defer
+             :config
+             (defun my/go-indent ()
+               (setq indent-tabs-mode 1)
+               (setq tab-width 2))
+             :hook (go-mode . my/go-indent))
+
+(use-package hungry-delete :defer 6
+             :diminish hungry-delete-mode
+             :config (global-hungry-delete-mode))
+
+(use-package js2-mode :defer
+             :hook
+             (js-mode . js2-minor-mode)
+             (js2-mode . js2-imenu-extras-mode)
+             :mode
+             "\\.js\\'")
+
+(use-package js2-refactor :defer
+             :hook (js2-mode . js2-refactor-mode)
+             :bind (:map js2-mode-map
+                         ("C-k" . js2r-kill))
+             :config (js2r-add-keybindings-with-prefix "C-c C-j"))
+
+(use-package json-mode :defer
+             :config
+             (defun my/json-mode-setup ()
+               (json-mode)
+               (json-pretty-print (point-min) (point-max))
+               (goto-char (point-min))
+               (set-buffer-modified-p nil))
+             (add-to-list 'auto-mode-alist
+                          '("\\.json\\'" . 'my/json-mode-setup)))
+
+(use-package json-navigator :defer)
+
+(use-package markdown-mode
+             :commands (markdown-mode gfm-mode)
+             :mode (("README\\.md\\'" . gfm-mode)
+                    ("\\.md\\'" . gfm-mode)
+                    ("\\.markdown\\'" . gfm-mode))
+             :init (setq markdown-command "multimarkdown"))
+
+(use-package nodejs-repl :defer
+             :bind (:map js2-mode-map
+                         ("C-x C-e" . nodejs-repl-send-last-expression)
+                         ("C-c C-j" . nodejs-repl-send-line)
+                         ("C-c SPC" . nodejs-repl-send-region)
+                         ("C-c C-b" . nodejs-repl-send-buffer)
+                         ("C-c C-f" . nodejs-repl-load-file)
+                         ("C-c C-z" . nodejs-repl-switch-to-repl)))
+
+(use-package org-bullets :defer :hook (org-mode . org-bullets-mode))
+
+(use-package htmlize :defer)
+
+(use-package toc-org :defer :hook (org-mode . toc-org-enable))
+
+(use-package pdf-tools :defer)
+
+(use-package powershell :mode (("\\.ps1\\'" . powershell-mode)))
+
+(use-package restclient :defer)
+
+(use-package terraform-mode :defer)
+
+(use-package wgrep :defer :commands wgrep
+             :bind (:map grep-mode-map
+                         ("e" . wgrep-change-to-wgrep-mode)
+                         ("C-x C-q" . wgrep-change-to-wgrep-mode)))
+
+(use-package which-key :defer 5
+             :diminish which-key-mode
+             :config (which-key-mode))
+
+(use-package yaml-mode :defer
+             :hook
+             (yaml-mode . hs-minor-mode)
+             (yaml-mode . display-line-numbers-mode))
+
+(use-package yasnippet :defer
+             :diminish yas-minor-mode
+             :hook (prog-mode . yas-minor-mode))
+
+(use-package yasnippet-snippets :defer)
+
+(use-package yasnippet-classic-snippets :defer)

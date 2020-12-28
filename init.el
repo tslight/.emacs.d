@@ -207,6 +207,14 @@
 (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
 (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
 
+(unless (version< emacs-version "27") ;; belt and braces
+  (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
+  (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
+  (global-set-key (kbd "C-x t k") 'tab-bar-close-tab)
+  (global-set-key (kbd "C-x t n") 'tab-bar-switch-to-next-tab)
+  (global-set-key (kbd "C-x t p") 'tab-bar-switch-to-prev-tab)
+  (global-set-key (kbd "C-x t l") 'tab-bar-switch-to-recent-tab))
+
 ;;;###autoload
 (defun my/jump-to-register-other-window ()
   "Tin job."
@@ -1382,7 +1390,7 @@ When searching backward, kill to the beginning of the match."
   (defun my/org-babel-auto-tangle-init-file ()
     (if (and (string-match "^.*README\\.org$" (buffer-file-name))
              (my/buffer-substring-p
-              "^\\#\\+PROPERTY\\: header-args\\+ \\:tangle \\~\\/\\.emacs.d\\/init\\.el"))
+              "^\\#\\+PROPERTY\\: header-args\\+ \\:tangle.*init\\.el.*"))
         (org-babel-tangle)))
   (add-hook 'after-save-hook 'my/org-babel-auto-tangle-init-file)
 
@@ -1495,6 +1503,84 @@ When searching backward, kill to the beginning of the match."
   (setq prettify-symbols-unprettify-at-point 'right-edge)
   (message "Lazy loaded prettify-symbols :-)"))
 (add-hook 'emacs-startup-hook 'global-prettify-symbols-mode)
+
+(unless (version< emacs-version "28")
+  (setq my/project-roots '("~" "~/src/gitlab"))
+
+;;;###autoload
+  (defun my/project--git-repo-p (directory)
+    "Return non-nil if there is a git repository in DIRECTORY."
+    (and
+     (file-directory-p (concat directory "/.git"))
+     (file-directory-p (concat directory "/.git/info"))
+     (file-directory-p (concat directory "/.git/objects"))
+     (file-directory-p (concat directory "/.git/refs"))
+     (file-regular-p (concat directory "/.git/HEAD"))))
+
+;;;###autoload
+  (defun my/project--git-repos-recursive (directory maxdepth)
+    "List git repos in under DIRECTORY recursively to MAXDEPTH."
+    (let* ((git-repos '())
+           (current-directory-list
+            (directory-files directory t directory-files-no-dot-files-regexp)))
+      ;; while we are in the current directory
+      (if (my/project--git-repo-p directory)
+          (setq git-repos (cons (file-truename (expand-file-name directory)) git-repos)))
+      (while current-directory-list
+        (let ((f (car current-directory-list)))
+          (cond ((and (file-directory-p f)
+                      (file-readable-p f)
+                      (> maxdepth 0)
+                      (not (my/project--git-repo-p f)))
+                 (setq git-repos
+                       (append git-repos
+                               (my/project--git-repos-recursive f (- maxdepth 1)))))
+                ((my/project--git-repo-p f)
+                 (setq git-repos (cons
+                                  (file-truename (expand-file-name f)) git-repos))))
+          (setq current-directory-list (cdr current-directory-list))))
+      (delete-dups git-repos)))
+
+;;;###autoload
+  (defun my/project--list-projects ()
+    "Produce list of projects in `my/project-roots'."
+    (let ((cands (delete-dups (mapcan (lambda (directory)
+                                        (my/project--git-repos-recursive
+                                         (expand-file-name directory)
+                                         10))
+                                      my/project-roots))))
+      ;; needs to be a list of lists
+      (mapcar (lambda (d)
+                (list (abbreviate-file-name d)))
+              cands)))
+
+;;;###autoload
+  (defun my/project-update-projects ()
+    "Overwrite `project--list' using `my/project--list-projects'.
+    WARNING: This will destroy & replace the contents of `project-list-file'."
+    (interactive)
+    (autoload 'project--ensure-read-project-list "project" nil t)
+    (project--ensure-read-project-list)
+    (setq project--list (my/project--list-projects))
+    (project--write-project-list)
+    (message "Updated project list in %s" project-list-file))
+
+  ;; (add-hook 'emacs-startup-hook 'my/project-update-projects)
+  (global-set-key (kbd "C-x p u") 'my/project-update-projects)
+
+  (with-eval-after-load 'project
+    (setq project-switch-commands
+          '((?b "Buffer" project-switch-to-buffer)
+            (?c "Compile" project-compile)
+            (?d "Dired" project-dired)
+            (?e "Eshell" project-eshell)
+            (?f "File" project-find-file)
+            (?g "Grep" project-find-regexp)
+            (?q "Query replace" project-query-replace-regexp)
+            (?r "Run command" project-async-shell-command)
+            (?s "Search" project-search)
+            (?v "VC dir" project-vc-dir)))
+    (message "Lazy loaded project :-)")))
 
 (with-eval-after-load 'recentf
   (setq recentf-exclude '(".gz"
@@ -1751,6 +1837,15 @@ project, as defined by `vc-root-dir'."
 
 (use-package dockerfile-mode :defer)
 
+(use-package exec-path-from-shell :defer 10
+  :unless (eq system-type 'windows-nt)
+  :commands exec-path-from-shell-initialize
+  :init
+  (setq exec-path-from-shell-check-startup-files 'nil)
+  :config
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "PYTHONPATH"))
+
 (use-package flycheck :defer
   :diminish flycheck-mode
   :hook (prog-mode . flycheck-mode)
@@ -1790,6 +1885,8 @@ project, as defined by `vc-root-dir'."
           ("Push" 5 magit-repolist-column-unpushed-to-upstream)
           ("Commit" 8 magit-repolist-column-flag t)
           ("Path" 99 magit-repolist-column-path))))
+
+(use-package forge :unless (equal system-type 'windows-nt) :after magit)
 
 (use-package go-mode :defer
   :config
@@ -1849,9 +1946,13 @@ project, as defined by `vc-root-dir'."
 
 (use-package toc-org :defer :hook (org-mode . toc-org-enable))
 
+(use-package pdf-tools :unless (eq system-type 'windows-nt) :defer)
+
 (use-package powershell :mode (("\\.ps1\\'" . powershell-mode)))
 
 (use-package restclient :defer)
+
+(use-package systemd :unless (equal system-type 'windows-nt) :defer)
 
 (use-package terraform-mode :defer)
 

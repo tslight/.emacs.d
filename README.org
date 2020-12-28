@@ -1,9 +1,9 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Toby Slight
-#+PROPERTY: header-args :cache yes
+#+PROPERTY: header-args+ :cache yes
 #+PROPERTY: header-args+ :mkdirp yes
 #+PROPERTY: header-args+ :results silent
-#+PROPERTY: header-args+ :tangle ~/.emacs.d/init.el
+#+PROPERTY: header-args+ :tangle (expand-file-name "init.el" user-emacs-directory)
 #+PROPERTY: header-args+ :tangle-mode (identity #o644)
 #+OPTIONS: broken-links:t
 #+OPTIONS: toc:t
@@ -427,7 +427,7 @@ compressed/encrypted files won’t open.
 
 Don't tangle this block on ~emacs-version~ < 27.
 
-#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") "no" "yes")
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") "no" init-file)
   (unless (version< emacs-version "27") ;; belt and braces
     (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
     (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
@@ -1012,7 +1012,7 @@ or just less than ideal way...
 Don't bother tangling this if ~emacs-version~ > 28, as Emacs 28 has ~M-y~ bound
 to completing read of the kill ring, making this pretty pointless.
 
-#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "yes" "no")
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") init-file "no")
   ;;;###autoload
   (defun my/yank-pop-forwards (arg)
     "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
@@ -1478,7 +1478,7 @@ to autoload these and bind the default keys prior to ~dired~ being loaded.
 
 The default keys are ~C-x C-j~ and ~C-x 4 C-j~.
 
-#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "yes" "no")
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") init-file "no")
   ;; This is in `dired' not `dired-jump' in Emacs 28
   (when (version< emacs-version "28")
     (autoload 'dired-jump "dired-x" nil t)
@@ -1998,7 +1998,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (defun my/org-babel-auto-tangle-init-file ()
       (if (and (string-match "^.*README\\.org$" (buffer-file-name))
                (my/buffer-substring-p
-                "^\\#\\+PROPERTY\\: header-args\\+ \\:tangle \\~\\/\\.emacs.d\\/init\\.el"))
+                "^\\#\\+PROPERTY\\: header-args\\+ \\:tangle.*init\\.el.*"))
           (org-babel-tangle)))
     (add-hook 'after-save-hook 'my/org-babel-auto-tangle-init-file)
 
@@ -2139,7 +2139,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 
 We only tangle this when ~emacs-version~ > 28
 
-#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "no" "yes")
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "no" init-file)
   (unless (version< emacs-version "28")
     (setq my/project-roots '("~" "~/src/gitlab"))
 
@@ -2517,7 +2517,7 @@ party packages from [[https://melpa.org/][MELPA]].
 If we are on an Emacs version lower than "27" this will go in ~init.el~,
 otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][~early-init.el~]] for faster starup.
 
-#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") "yes" "~/.emacs.d/early-init.el")
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") init-file early-init)
     ;; This must be true otherwise use-package won't load!
     (setq package-enable-at-startup t)
     ;; Allow loading from the package cache.
@@ -2621,7 +2621,7 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 Don't tangle this block if ~system-type~ is ~windows-nt~.
 
-#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" "yes")
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" init-file)
   (use-package exec-path-from-shell :defer 10
     :unless (eq system-type 'windows-nt)
     :commands exec-path-from-shell-initialize
@@ -2695,7 +2695,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 
 Don't tangle this block if ~system-type~ is ~windows-nt~.
 
-#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" "yes")
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" init-file)
   (use-package forge :unless (equal system-type 'windows-nt) :after magit)
 #+end_src
 
@@ -2800,7 +2800,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 
 Don't tangle this block if ~system-type~ is ~windows-nt~.
 
-#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" "yes")
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" init-file)
   (use-package pdf-tools :unless (eq system-type 'windows-nt) :defer)
 #+end_src
 
@@ -2815,7 +2815,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 Don't tangle this block if ~emacs-version~ > 28, as Emacs 28 has the this
 functionality built in via ~project.el~.
 
-#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "yes" "no")
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "28") init-file "no")
   (use-package projectile :diminish
     :bind-keymap
     ("C-x p" . projectile-command-map)
@@ -2839,7 +2839,7 @@ functionality built in via ~project.el~.
 
 Don't tangle this block if ~system-type~ is ~windows-nt~.
 
-#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" "yes")
+#+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" init-file)
   (use-package systemd :unless (equal system-type 'windows-nt) :defer)
 #+end_src
 
@@ -2931,3 +2931,9 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 #+begin_src emacs-lisp
   (use-package yasnippet-classic-snippets :defer)
 #+end_src
+
+# Local Variables:
+# eval: (setq init-file (expand-file-name "init.el" user-emacs-directory))
+# eval: (setq early-init (expand-file-name "early-init.el" user-emacs-directory))
+# eval: (org-babel-tangle)
+# End:

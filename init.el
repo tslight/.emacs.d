@@ -893,6 +893,8 @@ window to right."
 (with-eval-after-load 'dabbrev
   (setq abbrev-file-name (concat user-emacs-directory "abbrevs"))
   (setq save-abbrevs 'silently)
+  (unless (version< emacs-version "28")
+    (setq abbrev-suggest t))
   (setq dabbrev-abbrev-char-regexp "\\sw\\|\\s_")
   (setq dabbrev-abbrev-skip-leading-regexp "[$*/=']")
   (setq dabbrev-backward-only nil)

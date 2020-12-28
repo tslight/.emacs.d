@@ -2482,7 +2482,7 @@ party packages from [[https://melpa.org/][MELPA]].
 If we are on an Emacs version lower than "27" this will go in ~init.el~,
 otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][~early-init.el~]] for faster starup.
 
-#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") "yes" "~/.emacs.d/early-init.el")
+#+begin_src emacs-lisp (unless (version< emacs-version "27") :tangle ~/.emacs.d/early-init.el)
   ;; This must be true otherwise use-package won't load!
   (setq package-enable-at-startup t)
   ;; Allow loading from the package cache.
@@ -2583,7 +2583,7 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 ** Exec path from shell
 
-#+begin_src emacs-lisp :tangle (unless (eq system-type 'windows-nt) "yes")
+#+begin_src emacs-lisp (when (eq system-type 'windows-nt) :tangle no)
   (use-package exec-path-from-shell :defer 10
     :unless (eq system-type 'windows-nt)
     :commands exec-path-from-shell-initialize
@@ -2653,7 +2653,7 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
             ("Path" 99 magit-repolist-column-path))))
 #+end_src
 
-#+begin_src emacs-lisp :tangle (unless (eq system-type 'windows-nt) "yes")
+#+begin_src emacs-lisp (when (eq system-type 'windows-nt) :tangle no)
   (use-package forge :unless (equal system-type 'windows-nt) :after magit)
 #+end_src
 
@@ -2756,8 +2756,8 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 *** PDF Tools
 
-#+begin_src emacs-lisp
-  (use-package pdf-tools :defer)
+#+begin_src emacs-lisp (when (eq system-type 'windows-nt) :tangle no)
+  (use-package pdf-tools :unless (eq system-type 'windows-nt) :defer)
 #+end_src
 
 ** Powershell
@@ -2768,7 +2768,7 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 ** Projectile
 
-#+begin_src emacs-lisp :tangle (unless (version< emacs-version "28") "no")
+#+begin_src emacs-lisp (unless (version< emacs-version "28") :tangle no)
   (use-package projectile :diminish projectile-mode :disabled
     :bind-keymap
     ("C-x p" . projectile-command-map)
@@ -2790,7 +2790,7 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 ** systemd
 
-#+begin_src emacs-lisp :tangle (unless (eq system-type 'windows-nt) "yes")
+#+begin_src emacs-lisp (when (eq system-type 'windows-nt) :tangle no)
   (use-package systemd :unless (equal system-type 'windows-nt) :defer)
 #+end_src
 

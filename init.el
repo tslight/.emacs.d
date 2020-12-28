@@ -1774,6 +1774,17 @@ project, as defined by `vc-root-dir'."
       (define-key dired-mode-map (kbd "C-o") 'dired-peep-temporarily)
       (define-key dired-mode-map (kbd "M-o") 'dired-peep))))
 
+;; This must be true otherwise use-package won't load!
+(setq package-enable-at-startup t)
+;; Allow loading from the package cache.
+(setq package-quickstart t)
+;; Don't write (package-initialize) to my init file!
+(setq package--init-file-ensured t)
+;; Setup up archives
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+        ("gnu" . "https://elpa.gnu.org/packages/")))
+
 (require 'package)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -1828,6 +1839,15 @@ project, as defined by `vc-root-dir'."
 
 (use-package dockerfile-mode :defer)
 
+(use-package exec-path-from-shell :defer 10
+  :unless (eq system-type 'windows-nt)
+  :commands exec-path-from-shell-initialize
+  :init
+  (setq exec-path-from-shell-check-startup-files 'nil)
+  :config
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "PYTHONPATH"))
+
 (use-package flycheck :defer
   :diminish flycheck-mode
   :hook (prog-mode . flycheck-mode)
@@ -1867,6 +1887,8 @@ project, as defined by `vc-root-dir'."
           ("Push" 5 magit-repolist-column-unpushed-to-upstream)
           ("Commit" 8 magit-repolist-column-flag t)
           ("Path" 99 magit-repolist-column-path))))
+
+(use-package forge :unless (equal system-type 'windows-nt) :after magit)
 
 (use-package go-mode :defer
   :config
@@ -1926,11 +1948,25 @@ project, as defined by `vc-root-dir'."
 
 (use-package toc-org :defer :hook (org-mode . toc-org-enable))
 
-(use-package pdf-tools :defer)
+(use-package pdf-tools :unless (eq system-type 'windows-nt) :defer)
 
 (use-package powershell :mode (("\\.ps1\\'" . powershell-mode)))
 
+(use-package projectile :diminish projectile-mode :disabled
+  :bind-keymap
+  ("C-x p" . projectile-command-map)
+  :config
+  (projectile-mode)
+  ;; (setq projectile-completion-system 'ivy)
+  (when (require 'magit nil t)
+    (mapc #'projectile-add-known-project
+          (mapcar #'file-name-as-directory (magit-list-repos)))
+    ;; Optionally write to persistent `projectile-known-projects-file'
+    (projectile-save-known-projects)))
+
 (use-package restclient :defer)
+
+(use-package systemd :unless (equal system-type 'windows-nt) :defer)
 
 (use-package terraform-mode :defer)
 

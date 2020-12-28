@@ -1,6 +1,7 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Toby Slight
 #+PROPERTY: header-args+ :cache yes
+#+PROPERTY: header-args+ :comments yes
 #+PROPERTY: header-args+ :mkdirp yes
 #+PROPERTY: header-args+ :results silent
 #+PROPERTY: header-args+ :tangle (expand-file-name "init.el" user-emacs-directory)
@@ -2922,10 +2923,10 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 #+end_src
 * Local Variables
 # Local Variables:
-# eval: (setq custom-file (make-temp-file "emacs-custom"))
 # eval: (setq init-file (expand-file-name "init.el" user-emacs-directory))
 # eval: (setq early-init (expand-file-name "early-init.el" user-emacs-directory))
 # eval: (org-babel-tangle)
 # eval: (load (file-name-sans-extension early-init))
 # eval: (load (file-name-sans-extension init-file))
+# eval: (if (file-readable-p (expand-file-name "~/.emacs")) (delete-file (expand-file-name "~/.emacs")))
 # End:

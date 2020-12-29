@@ -742,22 +742,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
              my/files-to-recompile))
    #+end_src
 
-** Auto recompile Emacs Lisp
-
-   Automatically recompile Emacs Lisp files after saving
-
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun my/auto-recompile ()
-       "Automatically recompile Emacs Lisp files whenever they are saved."
-       (when (or (equal (file-name-extension buffer-file-name) "el")
-                 (equal major-mode 'emacs-lisp-mode))
-         (byte-compile-file buffer-file-name)
-         (load (file-name-sans-extension buffer-file-name))
-         (message "Re-compiled & loaded %s :-)" buffer-file-name)))
-     (add-hook 'after-save-hook 'my/auto-recompile)
-   #+end_src
-
 ** Make compilation buffers more colorful
 
    #+begin_src emacs-lisp
@@ -881,23 +865,16 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+begin_src emacs-lisp
      (defmacro save-column (&rest body)
        `(let ((column (current-column)))
-          (unwind-protect
-              (progn ,@body)
-            (move-to-column column))))
+          (unwind-protect (progn ,@body) (move-to-column column))))
      (put 'save-column 'lisp-indent-function 0)
 
      (defun move-line-up ()
        (interactive)
-       (save-column
-         (transpose-lines 1)
-         (forward-line -2)))
+       (save-column (transpose-lines 1) (forward-line -2)))
 
      (defun move-line-down ()
        (interactive)
-       (save-column
-         (forward-line 1)
-         (transpose-lines 1)
-         (forward-line -1)))
+       (save-column (forward-line 1) (transpose-lines 1) (forward-line -1)))
 
      (global-set-key (kbd "M-<up>") 'move-line-up)
      (global-set-key (kbd "M-<down>") 'move-line-down)
@@ -1443,7 +1420,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (interactive)
          (goto-char (point-min))
          (dired-next-line 2))
-       (define-key dired-mode-map (vector 'remap 'beginning-of-buffer) 'my/dired-beginning-of-buffer)
+       (define-key dired-mode-map [remap 'beginning-of-buffer] 'my/dired-beginning-of-buffer)
 
      ;;;###autoload
        (defun my/dired-end-of-buffer ()
@@ -1451,29 +1428,13 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (interactive)
          (goto-char (point-max))
          (dired-next-line -1))
-       (define-key dired-mode-map (vector 'remap 'end-of-buffer) 'my/dired-end-of-buffer)
+       (define-key dired-mode-map [remap 'end-of-buffer] 'my/dired-end-of-buffer)
 
-       (defvar dired-compress-files-alist
-         '(("\\.tar\\.gz\\'" . "tar -c %i | gzip -c9 > %o")
-           ("\\.zip\\'" . "zip %o -r --filesync %i"))
-         "Control the compression shell command for `dired-do-compress-to'.
-
-       Each element is (REGEXP . CMD), where REGEXP is the name of the
-       archive to which you want to compress, and CMD the the
-       corresponding command.
-
-       Within CMD, %i denotes the input file(s), and %o denotes the
-       output file.  %i path(s) are relative, while %o is absolute.")
-
-       (autoload 'dired-omit-mode "dired-x"
-         "Omit files from dired listings." t)
-
-       (autoload 'dired-omit-files "dired-x"
-         "User regex to specify what files to omit." t)
+       (autoload 'dired-omit-mode "dired-x" nil t)
+       (autoload 'dired-omit-files "dired-x" nil t)
        (setq dired-omit-files "\\`[.]?#\\|\\`[.][.]?\\'\\|^\\..+$")
 
-       (when (eq system-type 'berkeley-unix)
-         (setq dired-listing-switches "-alhpL"))
+       (when (eq system-type 'berkeley-unix) (setq dired-listing-switches "-alhpL"))
 
        (when (eq system-type 'gnu/linux)
          (setq dired-listing-switches

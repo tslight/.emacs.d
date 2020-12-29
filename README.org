@@ -9,6 +9,7 @@
 #+PROPERTY: header-args+ :tangle-mode (identity #o644)
 #+OPTIONS: broken-links:t
 #+OPTIONS: toc:t
+#+STARTUP: overview
 
 A fairly standard [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration using [[https://orgmode.org/][Org mode]].
 
@@ -1959,6 +1960,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
                    (point)))))))
     (define-key org-mode-map (kbd "C-c p") 'my/org-narrow-to-parent)
 
+    (setq org-startup-folded t) ;; start in overview mode
     (setq org-directory "~/org")
     (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
     (setq org-default-notes-file "~/org/notes.org")
@@ -2877,6 +2879,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
   #+end_src
 
 * Local Variables
+
 # Local Variables:
 # eval: (setq init-file (expand-file-name "init.el" user-emacs-directory))
 # eval: (setq early-init (expand-file-name "early-init.el" user-emacs-directory))

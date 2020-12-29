@@ -19,7 +19,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
   (org-babel-tangle)
   (load early-init)
   (load init-file)
-  (my/ensure-byte-compiled-init)
+  (ts-ensure-byte-compiled-init)
 #+end_src
 
 * Doom startup speed hacks
@@ -52,10 +52,10 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    stuttering. We use 16mb as our default.
 
    #+begin_src emacs-lisp
-     (defun my/default-gc-cons-settings ()
+     (defun ts-default-gc-cons-settings ()
        (setq gc-cons-threshold 16777216 ; 16mb
              gc-cons-percentage 0.1))
-     (add-hook 'emacs-startup-hook 'my/default-gc-cons-settings)
+     (add-hook 'emacs-startup-hook 'ts-default-gc-cons-settings)
    #+end_src
 
 ** Unset file-name-handler-alist temporarily
@@ -69,7 +69,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    (temporarily!):
 
    #+begin_src emacs-lisp
-     (defvar my/default-file-name-handler-alist file-name-handler-alist)
+     (defvar ts-default-file-name-handler-alist file-name-handler-alist)
      (setq file-name-handler-alist nil)
    #+end_src
 
@@ -77,9 +77,9 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    compressed/encrypted files won’t open.
 
    #+begin_src emacs-lisp
-     (defun my/restore-default-file-name-handler-alist ()
-       (setq file-name-handler-alist my/default-file-name-handler-alist))
-     (add-hook 'emacs-startup-hook 'my/restore-default-file-name-handler-alist)
+     (defun ts-restore-default-file-name-handler-alist ()
+       (setq file-name-handler-alist ts-default-file-name-handler-alist))
+     (add-hook 'emacs-startup-hook 'ts-restore-default-file-name-handler-alist)
    #+end_src
 
 * General Settings
@@ -303,21 +303,21 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
   #+begin_src emacs-lisp
     ;;;###autoload
-    (defun my/convert-to-unix-coding-system ()
+    (defun ts-convert-to-unix-coding-system ()
       "Change the current buffer's file encoding to unix."
       (interactive)
       (let ((coding-str (symbol-name buffer-file-coding-system)))
         (when (string-match "-\\(?:dos\\|mac\\)$" coding-str)
           (set-buffer-file-coding-system 'unix))))
-    (global-set-key (kbd "C-x RET u") 'my/convert-to-unix-coding-system)
+    (global-set-key (kbd "C-x RET u") 'ts-convert-to-unix-coding-system)
 
     ;;;###autoload
-    (defun my/hide-dos-eol ()
+    (defun ts-hide-dos-eol ()
       "Do not show ^M in files containing mixed UNIX and DOS line endings."
       (interactive)
       (setq buffer-display-table (make-display-table))
       (aset buffer-display-table ?\^M []))
-    (add-hook 'find-file-hook 'my/hide-dos-eol)
+    (add-hook 'find-file-hook 'ts-hide-dos-eol)
 
     (setq-default buffer-file-coding-system 'utf-8-unix)
     (setq-default default-buffer-file-coding-system 'utf-8-unix)
@@ -446,7 +446,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
   #+begin_src emacs-lisp
     ;;;###autoload
-    (defun my/jump-to-register-other-window ()
+    (defun ts-jump-to-register-other-window ()
       "Tin job."
       (interactive)
       (split-window-sensibly)
@@ -454,131 +454,130 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (jump-to-register (register-read-with-preview "Jump to register")))
 
     (global-set-key (kbd "C-x j") 'jump-to-register)
-    (define-key ctl-x-4-map "j" 'my/jump-to-register-other-window)
+    (define-key ctl-x-4-map "j" 'ts-jump-to-register-other-window)
   #+end_src
 
 * Theme/UI
+** Turn off UI elements
 
-  #+begin_src emacs-lisp
-    (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-    (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-    (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-    (when (fboundp 'tooltip-mode) (tooltip-mode -1))
-    (setq frame-resize-pixelwise t) ;; jwm resize fix
-  #+end_src
+   #+begin_src emacs-lisp
+     (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+     (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+     (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+     (when (fboundp 'tooltip-mode) (tooltip-mode -1))
+     (setq frame-resize-pixelwise t) ;; jwm resize fix
+   #+end_src
 
-  #+begin_src emacs-lisp
-    ;;;###autoload
-    (defun my/after-make-frame (frame)
-      "Add custom settings after making the FRAME."
-      (select-frame frame)
-      (if (display-graphic-p)
-          (progn
-            (when (eq system-type 'windows-nt)
-              (set-frame-font "Cascadia Mono 10" nil t))
-            (when (eq system-type 'darwin)
-              (set-frame-font "Monaco 10" nil t))
-            (when (or (eq system-type 'gnu/linux)
-                      (eq system-type 'berkeley-unix))
-              (set-frame-font "Monospace 11" nil t))
-            (if (version< emacs-version "28")
-                (load-theme 'wombat)
-              (load-theme 'modus-vivendi)))
-        (progn
-          (if (version< emacs-version "28")
-              (load-theme 'manoj-dark)
-            (load-theme 'modus-vivendi))
-          (xterm-mouse-mode 1)
-          (mouse-avoidance-mode 'banish)
-          (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-          (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-          (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-          (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
-          (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1))))))
+** Setup Frame for Emacsclient
 
-    (if (daemonp)
-        (add-hook 'after-make-frame-functions #'my/after-make-frame(selected-frame))
-      (my/after-make-frame(selected-frame)))
-  #+end_src
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-after-make-frame (frame)
+       "Add custom settings after making the FRAME."
+       (select-frame frame)
+       (if (display-graphic-p)
+           (progn
+             (when (eq system-type 'windows-nt)
+               (set-frame-font "Cascadia Mono 10" nil t))
+             (when (eq system-type 'darwin)
+               (set-frame-font "Monaco 10" nil t))
+             (when (or (eq system-type 'gnu/linux)
+                       (eq system-type 'berkeley-unix))
+               (set-frame-font "Monospace 11" nil t))
+             (if (version< emacs-version "28")
+                 (load-theme 'wombat)
+               (load-theme 'modus-vivendi)))
+         (progn
+           (if (version< emacs-version "28")
+               (load-theme 'manoj-dark)
+             (load-theme 'modus-vivendi))
+           (xterm-mouse-mode 1)
+           (mouse-avoidance-mode 'banish)
+           (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+           (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+           (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+           (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
+           (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1))))))
 
-  Modeline configuration
+     (if (daemonp)
+         (add-hook 'after-make-frame-functions #'ts-after-make-frame(selected-frame))
+       (ts-after-make-frame(selected-frame)))
+   #+end_src
 
-  #+begin_src emacs-lisp
-    (setq display-time-format "%H:%M %d/%m")
-    (setq display-time-default-load-average 'nil)
-    (column-number-mode t)
-    (display-time-mode t)
-    (display-battery-mode t)
-    (size-indication-mode t)
-  #+end_src
+** Modeline
 
-  Disable the current theme, before loading a new one.
+   #+begin_src emacs-lisp
+     (setq display-time-format "%H:%M %d/%m")
+     (setq display-time-default-load-average 'nil)
+     (column-number-mode t)
+     (display-time-mode t)
+     (display-battery-mode t)
+     (size-indication-mode t)
+   #+end_src
 
-  #+begin_src emacs-lisp
-    (defadvice load-theme (before theme-dont-propagate activate)
-      "Disable theme before loading new one."
-      (mapc #'disable-theme custom-enabled-themes))
-  #+end_src
+** Maximize on startup
 
-  #+begin_src emacs-lisp
-    ;;;###autoload
-    (defun my/disable-themes ()
-      "Disable all custom themes in one fail swoop."
-      (interactive)
-      (mapc #'disable-theme custom-enabled-themes))
-    (global-set-key (kbd "C-c M-t C-t") 'my/disable-themes)
-  #+end_src
+   #+begin_src emacs-lisp
+     (setq default-frame-alist
+           '((fullscreen . maximized) (vertical-scroll-bars . nil)))
+   #+end_src
 
-  Maximize the frame on launch and disable scroll bars
+** Disable themes
 
-  #+begin_src emacs-lisp
-    (setq default-frame-alist
-          '((fullscreen . maximized) (vertical-scroll-bars . nil)))
-  #+end_src
+   #+begin_src emacs-lisp
+     (defadvice load-theme (before theme-dont-propagate activate)
+       "Disable theme before loading new one."
+       (mapc #'disable-theme custom-enabled-themes))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-disable-themes ()
+       "Disable all custom themes in one fail swoop."
+       (interactive)
+       (mapc #'disable-theme custom-enabled-themes))
+     (global-set-key (kbd "C-c M-t C-t") 'ts-disable-themes)
+   #+end_src
 
 * Buffer functions
-
-  A collection of useful functions for manipulating buffers in various ways that
-  I've collected (stolen!) or written over the years.
-
 ** Indent Buffer
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/indent-buffer ()
+     (defun ts-indent-buffer ()
        "Indent the contents of a buffer."
        (interactive)
        (indent-region (point-min) (point-max)))
-     (global-set-key (kbd "M-i") 'my/indent-buffer)
+     (global-set-key (kbd "M-i") 'ts-indent-buffer)
    #+end_src
 
 ** Kill this buffer
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/kill-this-buffer ()
+     (defun ts-kill-this-buffer ()
        "Kill the current buffer - `kill-this-buffer' is unreliable."
        (interactive)
        (kill-buffer (current-buffer)))
-     (global-set-key (kbd "C-x k") 'my/kill-this-buffer)
+     (global-set-key (kbd "C-x k") 'ts-kill-this-buffer)
    #+end_src
 
 ** Last buffer
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/last-buffer ()
+     (defun ts-last-buffer ()
        "Switch back and forth between two buffers easily."
        (interactive)
        (switch-to-buffer (other-buffer (current-buffer) 1)))
-     (global-set-key (kbd "C-c b") 'my/last-buffer)
+     (global-set-key (kbd "C-c b") 'ts-last-buffer)
    #+end_src
 
 ** Narrow DWIM
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/narrow-or-widen-dwim (p)
+     (defun ts-narrow-or-widen-dwim (p)
        "If the buffer is narrowed, it widens, otherwise, it narrows intelligently.
 
      Intelligently means: region, org-src-block, org-subtree, or
@@ -601,16 +600,16 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
                      (org-narrow-to-block))
                     (t (org-narrow-to-subtree))))
              (t (narrow-to-defun))))
-     (define-key ctl-x-map "n" 'my/narrow-or-widen-dwim)
+     (define-key ctl-x-map "n" 'ts-narrow-or-widen-dwim)
      (with-eval-after-load 'org
-       (define-key org-mode-map (kbd "C-x n") 'my/narrow-or-widen-dwim))
+       (define-key org-mode-map (kbd "C-x n") 'ts-narrow-or-widen-dwim))
    #+end_src
 
 ** Nuke buffers
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/nuke-buffers ()
+     (defun ts-nuke-buffers ()
        "Kill all buffers, leaving *scratch* only."
        (interactive)
        (mapc
@@ -619,14 +618,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
         (buffer-list))
        (if current-prefix-arg
            (delete-other-windows)))
-     (global-set-key (kbd "C-c M-n") 'my/nuke-buffers)
+     (global-set-key (kbd "C-c M-n") 'ts-nuke-buffers)
    #+end_src
 
 ** Remove stuff from a buffer
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/remove-from-buffer (string)
+     (defun ts-remove-from-buffer (string)
        "Remove all occurences of STRING from the whole buffer."
        (interactive "sString to remove: ")
        (save-match-data
@@ -639,48 +638,48 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
              (message (format "%d %s removed from buffer." count string))))))
 
      ;;;###autoload
-     (defun my/remove-character-number (number)
+     (defun ts-remove-character-number (number)
        "Remove all occurences of a control character NUMBER.
        Excluding ^I (tabs) and ^J (newline)."
        (if (and (>= number 0) (<= number 31)
                 (not (= number 9)) (not (= number 10)))
            (let ((character (string number)))
-             (my/remove-from-buffer character))))
+             (ts-remove-from-buffer character))))
 
      ;;;###autoload
-     (defun my/remove-all-ctrl-characters ()
+     (defun ts-remove-all-ctrl-characters ()
        "Remove all occurences of all control characters.
        Excluding ^I (tabs) and ^J (newlines)."
        (interactive)
        (mapcar (lambda (n)
-                 (my/remove-character-number n))
+                 (ts-remove-character-number n))
                (number-sequence 0 31)))
 
      ;;;###autoload
-     (defun my/remove-ctrl-m ()
+     (defun ts-remove-ctrl-m ()
        "Remove all ^M occurrences from EOL in a buffer."
        (interactive)
-       (my/remove-from-buffer "$"))
-     (global-set-key (kbd "C-c k") 'my/remove-from-buffer)
+       (ts-remove-from-buffer "$"))
+     (global-set-key (kbd "C-c k") 'ts-remove-from-buffer)
    #+end_src
 
 ** Save buffers silently
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/save-buffers-silently ()
+     (defun ts-save-buffers-silently ()
        "Save all open buffers without prompting."
        (interactive)
        (save-some-buffers t)
        (message "Saved all buffers :-)"))
-     (global-set-key (kbd "C-c s") 'my/save-buffers-silently)
+     (global-set-key (kbd "C-c s") 'ts-save-buffers-silently)
    #+end_src
 
 ** Toggle maximize buffer
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/toggle-maximize-buffer ()
+     (defun ts-toggle-maximize-buffer ()
        "Temporarily maximize a buffer."
        (interactive)
        (if (= 1 (length (window-list)))
@@ -688,10 +687,42 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (progn
            (window-configuration-to-register '_)
            (delete-other-windows))))
-     (global-set-key (kbd "C-c z") 'my/toggle-maximize-buffer)
+     (global-set-key (kbd "C-c z") 'ts-toggle-maximize-buffer)
    #+end_src
 
 * Complilation related
+** Byte Compile
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-byte-compile (arg)
+       "Byte compile Emacs Lisp files and load if ARG."
+       (interactive "P")
+       (if (or (equal (file-name-extension buffer-file-name) "el")
+               (equal major-mode 'emacs-lisp-mode))
+           (progn
+             (byte-compile-file buffer-file-name)
+             (message "Compiled %s :-)" buffer-file-name)
+             (when arg
+               (load (file-name-sans-extension buffer-file-name))
+               (message "Loaded %s :-)" buffer-file-name)))
+         (message "%s is not an Emacs Lisp file" buffer-file-name)))
+
+     (global-set-key (kbd "C-x M-b") 'ts-byte-compile)
+   #+end_src
+
+** Colorize Compilation Buffers
+
+   #+begin_src emacs-lisp
+     (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+     ;;;###autoload
+     (defun colorize-compilation-buffer ()
+       "ANSI color in compilation buffer."
+       (ansi-color-apply-on-region compilation-filter-start (point)))
+     (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+     (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+   #+end_src
+
 ** Prefer newer over compiled
 
    If init.elc is older, use newer ~init.el~.
@@ -712,7 +743,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    ~.elc~ file is not up to date with their contents.
 
    #+begin_src emacs-lisp
-     (defun my/ensure-byte-compiled-init ()
+     (defun ts-ensure-byte-compiled-init ()
        "Run `byte-recompile-file' on config files with 'nil' FORCE and ARG 0.
      This means we don't compile if .elc is up to date but we always
      create a new .elc file if it doesn't already exist."
@@ -720,17 +751,17 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (if (file-readable-p (expand-file-name "early-init.el" user-emacs-directory))
            (byte-recompile-file (expand-file-name "early-init.el" user-emacs-directory) 'nil 0))
        (byte-recompile-file (expand-file-name "init.el" user-emacs-directory) 'nil 0))
-     (add-hook 'after-init-hook 'my/ensure-byte-compiled-init)
+     (add-hook 'after-init-hook 'ts-ensure-byte-compiled-init)
    #+end_src
 
 ** Recompile config
 
    #+begin_src emacs-lisp
-     (defvar my/files-to-recompile '("early-init.el" "init.el")
+     (defvar ts-files-to-recompile '("early-init.el" "init.el")
        "Files under `user-emacs-directory' that we use for configuration.")
 
      ;;;###autoload
-     (defun my/recompile-config ()
+     (defun ts-recompile-config ()
        "Recompile everything in Emacs configuration."
        (interactive)
        (mapc (lambda (file)
@@ -739,57 +770,42 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
                    (byte-recompile-file path t 0)
                    (load (file-name-sans-extension path))
                    (message "Re-compiled & loaded %s :-)" path))))
-             my/files-to-recompile))
-   #+end_src
-
-** Make compilation buffers more colorful
-
-   #+begin_src emacs-lisp
-     (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-     ;;;###autoload
-     (defun colorize-compilation-buffer ()
-       "ANSI color in compilation buffer."
-       (ansi-color-apply-on-region compilation-filter-start (point)))
-     (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-     (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+             ts-files-to-recompile))
    #+end_src
 
 * Editing functions
-
-  Various stolen/cobbled together functions to make editing a bit more comfy.
-
 ** Aligning symbols
 
    Some handy functions to make aligning symbols less painful.
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/align-symbol (begin end symbol)
+     (defun ts-align-symbol (begin end symbol)
        "Align any SYMBOL in region (between BEGIN and END)."
        (interactive "r\nsEnter align symbol: ")
        (align-regexp begin end (concat "\\(\\s-*\\)" symbol) 1 1))
-     (global-set-key (kbd "C-c a") 'my/align-symbol)
+     (global-set-key (kbd "C-c a") 'ts-align-symbol)
 
      ;;;###autoload
-     (defun my/align-equals (begin end)
+     (defun ts-align-equals (begin end)
        "Align equals in region (between BEGIN and END)."
        (interactive "r")
-       (my/align-symbol begin end "="))
-     (global-set-key (kbd "C-c =") 'my/align-equals)
+       (ts-align-symbol begin end "="))
+     (global-set-key (kbd "C-c =") 'ts-align-equals)
 
      ;;;###autoload
-     (defun my/align-colon (begin end)
+     (defun ts-align-colon (begin end)
        "Align colons in region (between BEGIN and END)."
        (interactive "r")
-       (my/align-symbol begin end ":"))
-     (global-set-key (kbd "C-c :") 'my/align-colon)
+       (ts-align-symbol begin end ":"))
+     (global-set-key (kbd "C-c :") 'ts-align-colon)
 
      ;;;###autoload
-     (defun my/align-numbers (begin end)
+     (defun ts-align-numbers (begin end)
        "Align numbers in region (between BEGIN and END)."
        (interactive "r")
-       (my/align-symbol begin end "[0-9]+"))
-     (global-set-key (kbd "C-c #") 'my/align-numbers)
+       (ts-align-symbol begin end "[0-9]+"))
+     (global-set-key (kbd "C-c #") 'ts-align-numbers)
 
      (defadvice align-regexp (around align-regexp-with-spaces activate)
        "Force alignment commands to use spaces, not tabs."
@@ -803,7 +819,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/change-number-at-point (change)
+     (defun ts-change-number-at-point (change)
        "Change a number by CHANGE amount."
        (let ((number (number-at-point))
              (point (point)))
@@ -815,25 +831,25 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
              (goto-char point)))))
 
      ;;;###autoload
-     (defun my/increment-number-at-point ()
+     (defun ts-increment-number-at-point ()
        "Increment number at point."
        (interactive)
-       (my/change-number-at-point '1+))
-     (global-set-key (kbd "C-c +") 'my/increment-number-at-point)
+       (ts-change-number-at-point '1+))
+     (global-set-key (kbd "C-c +") 'ts-increment-number-at-point)
 
      ;;;###autoload
-     (defun my/decrement-number-at-point ()
+     (defun ts-decrement-number-at-point ()
        "Decrement number at point."
        (interactive)
-       (my/change-number-at-point '1-))
-     (global-set-key (kbd "C-c -") 'my/decrement-number-at-point)
+       (ts-change-number-at-point '1-))
+     (global-set-key (kbd "C-c -") 'ts-decrement-number-at-point)
    #+end_src
 
 ** Delete inside delimiters
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/delete-inside ()
+     (defun ts-delete-inside ()
        "Deletes the text within parentheses, brackets or quotes."
        (interactive)
        ;; Search for a match on the same line, don't delete across lines
@@ -843,14 +859,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (search-forward-regexp "[]})>\"\']" (line-end-position))
          (backward-char)
          (kill-region lstart (point))))
-     (global-set-key (kbd "C-c d") 'my/delete-inside)
+     (global-set-key (kbd "C-c d") 'ts-delete-inside)
    #+end_src
 
 ** Generate a numbered list
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/generate-numbered-list (start end char)
+     (defun ts-generate-numbered-list (start end char)
        "Create a numbered list from START to END.  Using CHAR as punctuation."
        (interactive "nStart number:\nnEnd number:\nsCharacter:")
        (let ((x start))
@@ -967,7 +983,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/sort-lines-nocase ()
+     (defun ts-sort-lines-nocase ()
        "Sort marked lines with case sensitivity."
        (interactive)
        (let ((sort-fold-case t))
@@ -978,7 +994,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/surround (begin end open close)
+     (defun ts-surround (begin end open close)
        "Put OPEN at BEGIN and CLOSE at END of the region.
 
      If you omit CLOSE, it will reuse OPEN."
@@ -990,14 +1006,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
            (insert close))
          (goto-char begin)
          (insert open)))
-     (global-set-key (kbd "M-s M-s") 'my/surround)
+     (global-set-key (kbd "M-s M-s") 'ts-surround)
    #+end_src
 
 ** Untabify a buffer
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/untabify-buffer ()
+     (defun ts-untabify-buffer ()
        "Convert all tabs to spaces in the buffer."
        (interactive)
        (untabify (point-min) (point-max)))
@@ -1007,7 +1023,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/xml-pretty-print ()
+     (defun ts-xml-pretty-print ()
        "Reformat and indent XML."
        (interactive)
        (save-excursion
@@ -1022,11 +1038,11 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp :tangle (if (version< emacs-version "28") init-file "no")
      ;;;###autoload
-     (defun my/yank-pop-forwards (arg)
+     (defun ts-yank-pop-forwards (arg)
        "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
        (interactive "p")
        (yank-pop (- arg)))
-     (global-set-key (kbd "C-M-y") 'my/yank-pop-forwards)
+     (global-set-key (kbd "C-M-y") 'ts-yank-pop-forwards)
    #+end_src
 
 * File manipulation functions
@@ -1034,7 +1050,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/delete-this-file ()
+     (defun ts-delete-this-file ()
        "Delete the current file, and kill the buffer."
        (interactive)
        (or (buffer-file-name) (error "No file is currently being edited"))
@@ -1042,14 +1058,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
                                   (file-name-nondirectory buffer-file-name)))
          (delete-file (buffer-file-name))
          (kill-this-buffer)))
-     (global-set-key (kbd "C-c f d") 'my/delete-this-file)
+     (global-set-key (kbd "C-c f d") 'ts-delete-this-file)
    #+end_src
 
 ** Yank current file name to kill ring
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/copy-file-name-to-clipboard ()
+     (defun ts-copy-file-name-to-clipboard ()
        "Copy the current buffer file name to the clipboard."
        (interactive)
        (let ((filename (if (equal major-mode 'dired-mode)
@@ -1058,14 +1074,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (when filename
            (kill-new filename)
            (message "Copied buffer file name '%s' to the clipboard." filename))))
-     (global-set-key (kbd "C-c f w") 'my/copy-file-name-to-clipboard)
+     (global-set-key (kbd "C-c f w") 'ts-copy-file-name-to-clipboard)
    #+end_src
 
 ** Make backup of current file
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/make-backup ()
+     (defun ts-make-backup ()
        "Make a backup copy of current file or dired marked files.
 
      If in dired, backup current file or marked files."
@@ -1089,25 +1105,25 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/make-backup-and-save ()
+     (defun ts-make-backup-and-save ()
        "Backup of current file and save, or backup dired marked files.
-     For detail, see `my/make-backup'."
+     For detail, see `ts-make-backup'."
        (interactive)
        (if (buffer-file-name)
            (progn
-             (my/make-backup)
+             (ts-make-backup)
              (when (buffer-modified-p)
                (save-buffer)))
          (progn
-           (my/make-backup))))
-     (global-set-key (kbd "C-c f b") 'my/make-backup-and-save)
+           (ts-make-backup))))
+     (global-set-key (kbd "C-c f b") 'ts-make-backup-and-save)
    #+end_src
 
 ** Rename file and buffer
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/rename-this-file-and-buffer (new-name)
+     (defun ts-rename-this-file-and-buffer (new-name)
        "Renames both current buffer and file it's visiting to NEW-NAME."
        (interactive "FNew name: ")
        (let ((name (buffer-name))
@@ -1121,28 +1137,28 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
                (rename-file filename new-name 1))
              (rename-buffer new-name)
              (set-visited-file-name new-name)))))
-     (global-set-key (kbd "C-c f r") 'my/rename-this-file-and-buffer)
+     (global-set-key (kbd "C-c f r") 'ts-rename-this-file-and-buffer)
    #+end_src
 
 ** Open current file as root
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/sudoedit (&optional arg)
+     (defun ts-sudoedit (&optional arg)
        "Open current or ARG file as root."
        (interactive "P")
        (if (or arg (not buffer-file-name))
            (find-file (concat "/sudo:root@localhost:"
                               (read-file-name "Find file (as root): ")))
          (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-     (global-set-key (kbd "C-c f s") 'my/sudoedit)
+     (global-set-key (kbd "C-c f s") 'ts-sudoedit)
    #+end_src
 
 * Miscellaneous functions
 
   #+begin_src emacs-lisp
     ;;;###autoload
-    (defun my/google (arg)
+    (defun ts-google (arg)
       "Googles a query or region.  With prefix ARG, wrap in quotes."
       (interactive "P")
       (let ((query
@@ -1152,10 +1168,10 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
         (when arg (setq query (concat "\"" query "\"")))
         (browse-url
          (concat "http://www.google.com/search?ie=utf-8&oe=utf-8&q=" query))))
-    (global-set-key (kbd "C-c M-s") 'my/google)
+    (global-set-key (kbd "C-c M-s") 'ts-google)
 
     ;;;###autoload
-    (defmacro my/measure-time (&rest body)
+    (defmacro ts-measure-time (&rest body)
       "Measure the time it takes to evaluate BODY."
       `(let ((time (current-time)))
          ,@body
@@ -1168,19 +1184,19 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    This is better, since I don't need to send prefix to ~scroll-other-window~.
 
    #+begin_src emacs-lisp
-     (defun my/scroll-other-window (arg)
+     (defun ts-scroll-other-window (arg)
        "Scroll up other window when called with prefix."
        (interactive "P")
        (if arg (scroll-other-window-down) (scroll-other-window)))
 
-     (global-set-key [remap scroll-other-window] 'my/scroll-other-window)
+     (global-set-key [remap scroll-other-window] 'ts-scroll-other-window)
    #+end_src
 
 ** Kill buffer other window
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/kill-buffer-other-window ()
+     (defun ts-kill-buffer-other-window ()
        "Kill the buffer in the last used window."
        (interactive)
        ;; Window selection is used because point goes to a different window if more
@@ -1190,14 +1206,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (select-window other-window)
          (kill-this-buffer)
          (select-window current-window)))
-     (define-key ctl-x-4-map "k" 'my/kill-buffer-other-window)
+     (define-key ctl-x-4-map "k" 'ts-kill-buffer-other-window)
    #+end_src
 
 ** Toggle focus to last window
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/last-window ()
+     (defun ts-last-window ()
        "Switch back and forth between two windows easily."
        (interactive)
        (let ((win (get-mru-window t t t)))
@@ -1206,19 +1222,19 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
            (raise-frame frame)
            (select-frame frame)
            (select-window win))))
-     (global-set-key (kbd "C-c w w") 'my/last-window)
+     (global-set-key (kbd "C-c w w") 'ts-last-window)
    #+end_src
 
 ** Open a buffer in another window
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/open-buffer-other-window (buffer)
+     (defun ts-open-buffer-other-window (buffer)
        "Open a BUFFER in another window without switching to it."
        (interactive "BBuffer: ")
        (switch-to-buffer-other-window buffer)
        (other-window -1))
-     (define-key ctl-x-4-map "o" 'my/open-buffer-other-window)
+     (define-key ctl-x-4-map "o" 'ts-open-buffer-other-window)
    #+end_src
 
 ** Switch to the previous window
@@ -1227,40 +1243,40 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/prev-window ()
+     (defun ts-prev-window ()
        "Go the previously used window, excluding other frames."
        (interactive)
        (other-window -1))
-     (global-set-key (kbd "C-x O") 'my/prev-window)
+     (global-set-key (kbd "C-x O") 'ts-prev-window)
    #+end_src
 
 ** Scroll lines up like Ctrl-e in Vim
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/scroll-line-up (n)
+     (defun ts-scroll-line-up (n)
        "Scroll line up N lines.  Like Ctrl-e in Vim."
        (interactive "p")
        (scroll-up n))
-     (global-set-key (kbd "M-p") 'my/scroll-line-up)
+     (global-set-key (kbd "M-p") 'ts-scroll-line-up)
    #+end_src
 
 ** Scroll lines down like Ctrl-y in Vim
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/scroll-line-down (n)
+     (defun ts-scroll-line-down (n)
        "Scroll line down N lines.  Ctrl-y in Vim."
        (interactive "p")
        (scroll-down n))
-     (global-set-key (kbd "M-n") 'my/scroll-line-down)
+     (global-set-key (kbd "M-n") 'ts-scroll-line-down)
    #+end_src
 
 ** Open last buffer in horizontal split
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/hsplit-last-buffer (prefix)
+     (defun ts-hsplit-last-buffer (prefix)
        "Split the window vertically and display the previous buffer.
      With PREFIX stay in current buffer."
        (interactive "p")
@@ -1268,28 +1284,28 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (other-window 1 nil)
        (if (= prefix 1)
            (switch-to-next-buffer)))
-     (global-set-key (kbd "C-c 2") 'my/hsplit-last-buffer)
+     (global-set-key (kbd "C-c 2") 'ts-hsplit-last-buffer)
    #+end_src
 
 ** Open last buffer in vertical split
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/vsplit-last-buffer (prefix)
+     (defun ts-vsplit-last-buffer (prefix)
        "Split the window horizontally and display the previous buffer.
      With PREFIX stay in current buffer."
        (interactive "p")
        (split-window-horizontally)
        (other-window 1 nil)
        (if (= prefix 1) (switch-to-next-buffer)))
-     (global-set-key (kbd "C-c 3") 'my/vsplit-last-buffer)
+     (global-set-key (kbd "C-c 3") 'ts-vsplit-last-buffer)
    #+end_src
 
 ** Toggle vertical -> horizontal splits
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/toggle-split ()
+     (defun ts-toggle-split ()
        "Switch window split from horizontally to vertically.
 
      Or vice versa.  Change right window to bottom, or change bottom
@@ -1315,14 +1331,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
                          (split-window-vertically)
                        (split-window-horizontally))
                      (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
-     (define-key ctl-x-4-map "s" 'my/toggle-split)
+     (define-key ctl-x-4-map "s" 'ts-toggle-split)
    #+end_src
 
 ** Transpose windows
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/transpose-windows (arg)
+     (defun ts-transpose-windows (arg)
        "Transpose windows.  Use prefix ARG to transpose in the other direction."
        (interactive "P")
        (if (not (> (count-windows) 1))
@@ -1342,7 +1358,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
                       (p2 (window-point w2)))
                  (set-window-buffer-start-and-point w1 b2 s2 p2)
                  (set-window-buffer-start-and-point w2 b1 s1 p1)))))))
-     (define-key ctl-x-4-map "t" 'my/transpose-windows)
+     (define-key ctl-x-4-map "t" 'ts-transpose-windows)
    #+end_src
 
 ** Windmove keybindings
@@ -1402,7 +1418,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+begin_src emacs-lisp
      (with-eval-after-load 'dired
      ;;;###autoload
-       (defun my/dired-get-size ()
+       (defun ts-dired-get-size ()
          "Get cumlative size of marked or current item."
          (interactive)
          (let ((files (dired-get-marked-files)))
@@ -1412,23 +1428,23 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
                       (progn
                         (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
                         (match-string 1))))))
-       (define-key dired-mode-map "?" 'my/dired-get-size)
+       (define-key dired-mode-map "?" 'ts-dired-get-size)
 
      ;;;###autoload
-       (defun my/dired-beginning-of-buffer ()
+       (defun ts-dired-beginning-of-buffer ()
          "Go to first file in directory."
          (interactive)
          (goto-char (point-min))
          (dired-next-line 2))
-       (define-key dired-mode-map [remap beginning-of-buffer] 'my/dired-beginning-of-buffer)
+       (define-key dired-mode-map [remap beginning-of-buffer] 'ts-dired-beginning-of-buffer)
 
      ;;;###autoload
-       (defun my/dired-end-of-buffer ()
+       (defun ts-dired-end-of-buffer ()
          "Go to last file in directory."
          (interactive)
          (goto-char (point-max))
          (dired-next-line -1))
-       (define-key dired-mode-map [remap end-of-buffer] 'my/dired-end-of-buffer)
+       (define-key dired-mode-map [remap end-of-buffer] 'ts-dired-end-of-buffer)
 
        (autoload 'dired-omit-mode "dired-x" nil t)
        (autoload 'dired-omit-files "dired-x" nil t)
@@ -1446,10 +1462,10 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
              dired-recursive-copies 'always
              dired-recursive-deletes 'always)
 
-       (defun my/dired-up-directory ()
+       (defun ts-dired-up-directory ()
          (interactive)
          (find-alternate-file ".."))
-       (define-key dired-mode-map "b" 'my/dired-up-directory)
+       (define-key dired-mode-map "b" 'ts-dired-up-directory)
 
        (define-key dired-mode-map "f" 'dired-find-alternate-file)
        (define-key dired-mode-map "c" 'dired-do-compress-to)
@@ -1571,7 +1587,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+begin_src emacs-lisp
      (with-eval-after-load 'eshell
      ;;;###autoload
-       (defun my/eshell-complete-recent-dir (&optional arg)
+       (defun ts-eshell-complete-recent-dir (&optional arg)
          "Switch to a recent `eshell' directory using completion.
      With \\[universal-argument] also open the directory in a `dired'
      buffer."
@@ -1584,7 +1600,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
              (dired dir))))
 
      ;;;###autoload
-       (defun my/eshell-complete-history ()
+       (defun ts-eshell-complete-history ()
          "Insert element from `eshell' history using completion."
          (interactive)
          (let ((hist (ring-elements eshell-history-ring)))
@@ -1592,7 +1608,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
             (completing-read "Input history: " hist nil t))))
 
      ;;;###autoload
-       (defun my/eshell-prompt ()
+       (defun ts-eshell-prompt ()
          "Custom eshell prompt."
          (concat
           (propertize (user-login-name) 'face `(:foreground "green" ))
@@ -1618,7 +1634,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
              eshell-prefer-lisp-functions t
              eshell-prefer-lisp-variables t
              eshell-prompt-regexp "^[^#$\n]*[#$] "
-             eshell-prompt-function 'my/eshell-prompt
+             eshell-prompt-function 'ts-eshell-prompt
              eshell-review-quick-commands nil
              eshell-save-history-on-exit t
              eshell-smart-space-goes-to-end t
@@ -1627,17 +1643,17 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (add-to-list 'eshell-modules-list 'eshell-tramp) ;; no sudo password with ~/.authinfo
        (add-hook 'eshell-preoutput-filter-functions 'ansi-color-apply)
 
-       (defun my/eshell-keys()
-         (define-key eshell-mode-map (kbd "M-r") 'my/eshell-complete-history)
-         (define-key eshell-mode-map (kbd "C-=") 'my/eshell-complete-recent-dir))
+       (defun ts-eshell-keys()
+         (define-key eshell-mode-map (kbd "M-r") 'ts-eshell-complete-history)
+         (define-key eshell-mode-map (kbd "C-=") 'ts-eshell-complete-recent-dir))
 
-       (add-hook 'eshell-mode-hook 'my/eshell-keys)
+       (add-hook 'eshell-mode-hook 'ts-eshell-keys)
        (message "Lazy loaded eshell :-)"))
    #+end_src
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/eshell-other-window ()
+     (defun ts-eshell-other-window ()
        "Open an `eshell' in another window."
        (interactive)
        (split-window-sensibly)
@@ -1646,7 +1662,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
      (autoload 'eshell "eshell" nil t)
      (global-set-key (kbd "C-c e") 'eshell)
-     (global-set-key (kbd "C-c 4 e") 'my/eshell-other-window)
+     (global-set-key (kbd "C-c 4 e") 'ts-eshell-other-window)
    #+end_src
 
 ** Gnus
@@ -1680,17 +1696,17 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun my/hippie-expand-completions (&optional hippie-expand-function)
+     (defun ts-hippie-expand-completions (&optional hippie-expand-function)
        "Return the full list of completions generated by HIPPIE-EXPAND-FUNCTION.
      The optional argument can be generated with `make-hippie-expand-function'."
-       (let ((this-command 'my/hippie-expand-completions)
+       (let ((this-command 'ts-hippie-expand-completions)
              (last-command last-command)
              (buffer-modified (buffer-modified-p))
              (hippie-expand-function (or hippie-expand-function 'hippie-expand)))
          (cl-flet ((ding)) ; avoid the (ding) when hippie-expand exhausts its options.
            (while (progn
                     (funcall hippie-expand-function nil)
-                    (setq last-command 'my/hippie-expand-completions)
+                    (setq last-command 'ts-hippie-expand-completions)
                     (not (equal he-num -1)))))
          ;; Evaluating the completions modifies the buffer, however we will finish
          ;; up in the same state that we began.
@@ -1699,20 +1715,20 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (delete he-search-string (reverse he-tried-table))))
 
      ;;;###autoload
-     (defun my/hippie-complete-with (hippie-expand-function)
+     (defun ts-hippie-complete-with (hippie-expand-function)
        "Offer `completing-read' using the specified HIPPIE-EXPAND-FUNCTION."
-       (let* ((options (my/hippie-expand-completions hippie-expand-function))
+       (let* ((options (ts-hippie-expand-completions hippie-expand-function))
               (selection (and options (completing-read "Completions: " options))))
          (if selection
              (he-substitute-string selection t)
            (message "No expansion found"))))
 
      ;;;###autoload
-     (defun my/hippie-expand-completing-read ()
+     (defun ts-hippie-expand-completing-read ()
        "Offer `completing-read' for the word at point."
        (interactive)
-       (my/hippie-complete-with 'hippie-expand))
-     (global-set-key (kbd "C-c /") 'my/hippie-expand-completing-read)
+       (ts-hippie-complete-with 'hippie-expand))
+     (global-set-key (kbd "C-c /") 'ts-hippie-expand-completing-read)
 
      (global-set-key (kbd "M-/") 'hippie-expand)
    #+end_src
@@ -1731,12 +1747,12 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
     #+begin_src emacs-lisp
       ;;;###autoload
-      (defun my/icomplete-styles ()
+      (defun ts-icomplete-styles ()
         "Set icomplete styles based on Emacs version."
         (if (version< emacs-version "27")
             (setq-local completion-styles '(initials partial-completion substring basic))
           (setq-local completion-styles '(initials partial-completion flex substring basic))))
-      (add-hook 'icomplete-minibuffer-setup-hook 'my/icomplete-styles)
+      (add-hook 'icomplete-minibuffer-setup-hook 'ts-icomplete-styles)
     #+end_src
 
 *** Icomplete settings
@@ -1792,20 +1808,20 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
     #+begin_src emacs-lisp
        ;;;###autoload
-      (defun my/isearch-exit ()
+      (defun ts-isearch-exit ()
         "Move point to the start of the matched string."
         (interactive)
         (when (eq isearch-forward t)
           (goto-char isearch-other-end))
         (isearch-exit))
-      (define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
+      (define-key isearch-mode-map (kbd "RET") 'ts-isearch-exit)
     #+end_src
 
 *** Isearch Abort DWIM
 
     #+begin_src emacs-lisp
       ;;;###autoload
-      (defun my/isearch-abort-dwim ()
+      (defun ts-isearch-abort-dwim ()
         "Delete failed `isearch' input, single char, or cancel search.
 
       This is a modified variant of `isearch-abort' that allows us to
@@ -1821,36 +1837,36 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
           (while (or (not isearch-success) isearch-error)
             (isearch-pop-state)))
         (isearch-update))
-      (define-key isearch-mode-map (kbd "<backspace>") 'my/isearch-abort-dwim)
+      (define-key isearch-mode-map (kbd "<backspace>") 'ts-isearch-abort-dwim)
     #+end_src
 
 *** Copy to isearch
 
     #+begin_src emacs-lisp
       ;;;###autoload
-      (defun my/copy-to-isearch ()
+      (defun ts-copy-to-isearch ()
         "Copy up to the search match when searching forward.
 
       When searching backward, copy to the start of the search match."
         (interactive)
-        (my/isearch-exit)
+        (ts-isearch-exit)
         (call-interactively 'kill-ring-save)
         (exchange-point-and-mark))
-      (define-key isearch-mode-map (kbd "M-w") 'my/copy-to-isearch)
+      (define-key isearch-mode-map (kbd "M-w") 'ts-copy-to-isearch)
     #+end_src
 
 *** Kill to isearch
 
     #+begin_src emacs-lisp
       ;;;###autoload
-      (defun my/kill-to-isearch ()
+      (defun ts-kill-to-isearch ()
         "Kill up to the search match when searching forward.
 
       When searching backward, kill to the beginning of the match."
         (interactive)
-        (my/isearch-exit)
+        (ts-isearch-exit)
         (call-interactively 'kill-region))
-      (define-key isearch-mode-map (kbd "C-M-w") 'my/kill-to-isearch)
+      (define-key isearch-mode-map (kbd "C-M-w") 'ts-kill-to-isearch)
     #+end_src
 
 *** Emacs 27+ Settings
@@ -1897,7 +1913,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
         (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
         (setq savehist-save-minibuffer-history 1)
         (message "Lazy loaded savehist :-)"))
-      (add-hook 'after-init-hook 'savehist-mode)
+      (add-hook 'emacs-startup-hook 'savehist-mode)
     #+end_src
 
 *** Completion framework settings
@@ -1950,12 +1966,12 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (with-eval-after-load 'org
        (require 'org-tempo)
      ;;;###autoload
-       (defun my/org-recursive-sort ()
+       (defun ts-org-recursive-sort ()
          "Sort all entries in the current buffer, recursively."
          (interactive)
          (org-map-entries (lambda () (condition-case x (org-sort-entries nil ?a) (user-error)))))
 
-       (defun my/org-narrow-to-parent ()
+       (defun ts-org-narrow-to-parent ()
          "Narrow buffer to the current subtree."
          (interactive)
          (widen)
@@ -1969,7 +1985,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
                (progn (org-end-of-subtree t t)
                       (when (and (org-at-heading-p) (not (eobp))) (backward-char 1))
                       (point)))))))
-       (define-key org-mode-map (kbd "C-c M-p") 'my/org-narrow-to-parent)
+       (define-key org-mode-map (kbd "C-c M-p") 'ts-org-narrow-to-parent)
 
        (setq org-startup-folded t) ;; start in overview mode
        (setq org-directory "~/org")
@@ -2083,10 +2099,10 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "no" init-file)
      (unless (version< emacs-version "28")
-       (setq my/project-roots '("~" "~/src/gitlab"))
+       (setq ts-project-roots '("~" "~/src/gitlab"))
 
      ;;;###autoload
-       (defun my/project--git-repo-p (directory)
+       (defun ts-project--git-repo-p (directory)
          "Return non-nil if there is a git repository in DIRECTORY."
          (and
           (file-directory-p (concat directory "/.git"))
@@ -2096,55 +2112,55 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
           (file-regular-p (concat directory "/.git/HEAD"))))
 
      ;;;###autoload
-       (defun my/project--git-repos-recursive (directory maxdepth)
+       (defun ts-project--git-repos-recursive (directory maxdepth)
          "List git repos in under DIRECTORY recursively to MAXDEPTH."
          (let* ((git-repos '())
                 (current-directory-list
                  (directory-files directory t directory-files-no-dot-files-regexp)))
            ;; while we are in the current directory
-           (if (my/project--git-repo-p directory)
+           (if (ts-project--git-repo-p directory)
                (setq git-repos (cons (file-truename (expand-file-name directory)) git-repos)))
            (while current-directory-list
              (let ((f (car current-directory-list)))
                (cond ((and (file-directory-p f)
                            (file-readable-p f)
                            (> maxdepth 0)
-                           (not (my/project--git-repo-p f)))
+                           (not (ts-project--git-repo-p f)))
                       (setq git-repos
                             (append git-repos
-                                    (my/project--git-repos-recursive f (- maxdepth 1)))))
-                     ((my/project--git-repo-p f)
+                                    (ts-project--git-repos-recursive f (- maxdepth 1)))))
+                     ((ts-project--git-repo-p f)
                       (setq git-repos (cons
                                        (file-truename (expand-file-name f)) git-repos))))
                (setq current-directory-list (cdr current-directory-list))))
            (delete-dups git-repos)))
 
      ;;;###autoload
-       (defun my/project--list-projects ()
-         "Produce list of projects in `my/project-roots'."
+       (defun ts-project--list-projects ()
+         "Produce list of projects in `ts-project-roots'."
          (let ((cands (delete-dups (mapcan (lambda (directory)
-                                             (my/project--git-repos-recursive
+                                             (ts-project--git-repos-recursive
                                               (expand-file-name directory)
                                               10))
-                                           my/project-roots))))
+                                           ts-project-roots))))
            ;; needs to be a list of lists
            (mapcar (lambda (d)
                      (list (abbreviate-file-name d)))
                    cands)))
 
      ;;;###autoload
-       (defun my/project-update-projects ()
-         "Overwrite `project--list' using `my/project--list-projects'.
+       (defun ts-project-update-projects ()
+         "Overwrite `project--list' using `ts-project--list-projects'.
          WARNING: This will destroy & replace the contents of `project-list-file'."
          (interactive)
          (autoload 'project--ensure-read-project-list "project" nil t)
          (project--ensure-read-project-list)
-         (setq project--list (my/project--list-projects))
+         (setq project--list (ts-project--list-projects))
          (project--write-project-list)
          (message "Updated project list in %s" project-list-file))
 
-       ;; (add-hook 'emacs-startup-hook 'my/project-update-projects)
-       (global-set-key (kbd "C-x p u") 'my/project-update-projects)
+       ;; (add-hook 'emacs-startup-hook 'ts-project-update-projects)
+       (global-set-key (kbd "C-x p u") 'ts-project-update-projects)
 
        (with-eval-after-load 'project
          (setq project-switch-commands
@@ -2179,7 +2195,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (setq recentf-max-saved-items 256)
 
        ;;;###autoload
-       (defun my/completing-recentf ()
+       (defun ts-completing-recentf ()
          "Show a list of recent files."
          (interactive)
          (let* ((all-files recentf-list)
@@ -2188,19 +2204,19 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
                 (list3 (mapcar #'abbreviate-file-name list2))
                 (list4 (cl-remove-duplicates list3 :test #'string-equal)))
            (find-file (completing-read "Recent Files: " list4 nil t))))
-       (global-set-key (kbd "C-c r") 'my/completing-recentf)
+       (global-set-key (kbd "C-c r") 'ts-completing-recentf)
 
-       (defun my/completing-recentf-other-window ()
+       (defun ts-completing-recentf-other-window ()
          (interactive)
          (split-window-sensibly)
          (other-window 1)
-         (my/completing-recentf))
-       (global-set-key (kbd "C-c 4 r") 'my/completing-recentf-other-window)
+         (ts-completing-recentf))
+       (global-set-key (kbd "C-c 4 r") 'ts-completing-recentf-other-window)
 
        (message "Lazy loaded recentf :-)"))
 
      (global-set-key (kbd "C-c C-r") 'recentf-open-files)
-     (add-hook 'after-init-hook 'recentf-mode)
+     (add-hook 'emacs-startup-hook 'recentf-mode)
    #+end_src
 
 ** Show paren
@@ -2259,45 +2275,45 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
     #+begin_src emacs-lisp
       ;;;###autoload
-      (defun my/ansi-term ()
+      (defun ts-ansi-term ()
         "Opens shell from $SHELL environmental variable in `ansi-term'."
         (interactive)
         ;; https://emacs.stackexchange.com/a/48481
         (let ((switch-to-buffer-obey-display-actions))
           (ansi-term (getenv "SHELL"))))
-      (global-set-key (kbd "C-c tt") 'my/ansi-term)
+      (global-set-key (kbd "C-c tt") 'ts-ansi-term)
 
       ;;;###autoload
-      (defun my/ansi-term-other-window ()
+      (defun ts-ansi-term-other-window ()
         "Opens default $SHELL `ansi-term' in another window."
         (interactive)
         (split-window-sensibly)
         (other-window 1)
-        (my/ansi-term))
-      (global-set-key (kbd "C-c 4 tt") 'my/ansi-term-other-window)
+        (ts-ansi-term))
+      (global-set-key (kbd "C-c 4 tt") 'ts-ansi-term-other-window)
     #+end_src
 
 *** Switch to ANSI Term
 
     #+begin_src emacs-lisp
       ;;;###autoload
-      (defun my/switch-to-ansi-term ()
+      (defun ts-switch-to-ansi-term ()
         "Open an `ansi-term' if it doesn't already exist.
       Otherwise switch to current one."
         (interactive)
         (if (get-buffer "*ansi-term*")
             (switch-to-buffer "*ansi-term*")
           (ansi-term (getenv "SHELL"))))
-      (global-set-key (kbd "C-c ts") 'my/switch-to-ansi-term)
+      (global-set-key (kbd "C-c ts") 'ts-switch-to-ansi-term)
 
       ;;;###autoload
-      (defun my/switch-to-ansi-term-other-window()
+      (defun ts-switch-to-ansi-term-other-window()
         "Does what it states on the tin!"
         (interactive)
         (split-window-sensibly)
         (other-window 1)
-        (my/switch-to-ansi-term))
-      (global-set-key (kbd "C-c 4 ts") 'my/switch-to-ansi-term-other-window)
+        (ts-switch-to-ansi-term))
+      (global-set-key (kbd "C-c 4 ts") 'ts-switch-to-ansi-term-other-window)
     #+end_src
 
 *** Term Advise
@@ -2339,7 +2355,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (message "Lazy loaded vc :-)"))
 
      ;;;###autoload
-     (defun my/vc-dir (&optional arg)
+     (defun ts-vc-dir (&optional arg)
        "Run `vc-dir' for the current project or directory.
      With optional ARG (\\[universal-argument]), use the present
      working directory, else default to the root of the current
@@ -2349,7 +2365,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (vc-dir dir)))
 
      (if (version< emacs-version "28")
-         (global-set-key (kbd "C-x v d") 'my/vc-dir)
+         (global-set-key (kbd "C-x v d") 'ts-vc-dir)
        (global-set-key (kbd "C-x v d") 'vc-dir-root))
    #+end_src
 
@@ -2489,7 +2505,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        :diminish eldoc-mode
        :diminish hs-minor-mode
        :diminish highlight-changes-mode
-       :diminish my/key-mode
+       :diminish ts-key-mode
        :diminish org-indent-mode
        :diminish org-src-mode
        :diminish subword-mode
@@ -2634,10 +2650,10 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+begin_src emacs-lisp
      (use-package go-mode :defer
        :config
-       (defun my/go-indent ()
+       (defun ts-go-indent ()
          (setq indent-tabs-mode 1)
          (setq tab-width 2))
-       :hook (go-mode . my/go-indent))
+       :hook (go-mode . ts-go-indent))
    #+end_src
 
 ** Hungry delete
@@ -2670,13 +2686,13 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+begin_src emacs-lisp
      (use-package json-mode :defer
        :config
-       (defun my/json-mode-setup ()
+       (defun ts-json-mode-setup ()
          (json-mode)
          (json-pretty-print (point-min) (point-max))
          (goto-char (point-min))
          (set-buffer-modified-p nil))
        (add-to-list 'auto-mode-alist
-                    '("\\.json\\'" . 'my/json-mode-setup)))
+                    '("\\.json\\'" . 'ts-json-mode-setup)))
    #+end_src
 
    #+begin_src emacs-lisp

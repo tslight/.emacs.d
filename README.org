@@ -2883,9 +2883,10 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
   #+begin_src emacs-lisp
     (setq safe-local-variable-values
-          '((eval add-hook 'after-save-hook 'org-babel-tangle nil t)
-            (eval setq early-init (expand-file-name "early-init.el" user-emacs-directory))
-            (eval setq init-file (expand-file-name "init.el" user-emacs-directory))))
+          '((eval setq early-init (expand-file-name "early-init.el" user-emacs-directory))
+            (eval setq init-file (expand-file-name "init.el" user-emacs-directory))
+            (eval add-hook 'after-save-hook 'org-html-export-to-html nil t)
+            (eval add-hook 'after-save-hook 'org-babel-tangle nil t)))
   #+end_src
 
 * COMMENT Local Variables                                  :NOEXPORT:ARCHIVE:
@@ -2893,4 +2894,5 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
   # eval: (setq init-file (expand-file-name "init.el" user-emacs-directory))
   # eval: (setq early-init (expand-file-name "early-init.el" user-emacs-directory))
   # eval: (add-hook 'after-save-hook 'org-babel-tangle nil t)
+  # eval: (add-hook 'after-save-hook 'org-html-export-to-html nil t)
   # End:

@@ -328,6 +328,100 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
     (prefer-coding-system 'utf-8-unix)
   #+end_src
 
+* Complilation related
+** Byte Compile
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-byte-compile (arg)
+       "Byte compile Emacs Lisp files and load if ARG."
+       (interactive "P")
+       (if (and buffer-file-name
+                (or (equal (file-name-extension buffer-file-name) "el")
+                    (equal major-mode 'emacs-lisp-mode)))
+           (progn
+             (byte-compile-file buffer-file-name)
+             (message "Compiled %s :-)" buffer-file-name)
+             (when arg
+               (load (file-name-sans-extension buffer-file-name))
+               (message "Loaded %s :-)" buffer-file-name)))
+         (message "%s is not an elisp file" (buffer-name))))
+
+     (defun ts-auto-byte-compile ()
+       "Call `ts-byte-compile' non-interactively."
+       (call-interactively 'ts-byte-compile))
+
+     (defun ts-auto-byte-compile-and-load ()
+       "Call `ts-byte-compile' non-interactively with loading prefix."
+       (let ((current-prefix-arg '(4)))
+         (call-interactively 'ts-byte-compile)))
+
+     (add-hook 'after-save-hook 'ts-auto-byte-compile)
+     (global-set-key (kbd "C-x M-b") 'ts-byte-compile)
+   #+end_src
+
+** Colorize Compilation Buffers
+
+   #+begin_src emacs-lisp
+     (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+     ;;;###autoload
+     (defun colorize-compilation-buffer ()
+       "ANSI color in compilation buffer."
+       (ansi-color-apply-on-region compilation-filter-start (point)))
+     (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+     (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+   #+end_src
+
+** Prefer newer over compiled
+
+   If init.elc is older, use newer ~init.el~.
+
+   #+begin_src emacs-lisp
+     (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
+   #+end_src
+
+** Place point after complilation error
+
+   #+begin_src emacs-lisp
+     (setq compilation-scroll-output 'first-error)
+   #+end_src
+
+** Ensure init files are byte compiled
+
+   This block will byte compile ~early-init.el~ and ~init.el~ if an existing
+   ~.elc~ file is not up to date with their contents.
+
+   #+begin_src emacs-lisp
+     (defun ts-ensure-byte-compiled-init ()
+       "Run `byte-recompile-file' on config files with 'nil' FORCE and ARG 0.
+     This means we don't compile if .elc is up to date but we always
+     create a new .elc file if it doesn't already exist."
+       (autoload 'byte-recompile-file "bytecomp")
+       (if (file-readable-p (expand-file-name "early-init.el" user-emacs-directory))
+           (byte-recompile-file (expand-file-name "early-init.el" user-emacs-directory) 'nil 0))
+       (byte-recompile-file (expand-file-name "init.el" user-emacs-directory) 'nil 0))
+     (add-hook 'after-init-hook 'ts-ensure-byte-compiled-init)
+   #+end_src
+
+** Recompile config
+
+   #+begin_src emacs-lisp
+     (defvar ts-files-to-recompile '("early-init.el" "init.el")
+       "Files under `user-emacs-directory' that we use for configuration.")
+
+     ;;;###autoload
+     (defun ts-recompile-config ()
+       "Recompile everything in Emacs configuration."
+       (interactive)
+       (mapc (lambda (file)
+               (let ((path (expand-file-name file user-emacs-directory)))
+                 (when (file-readable-p path)
+                   (byte-recompile-file path t 0)
+                   (load (file-name-sans-extension path))
+                   (message "Re-compiled & loaded %s :-)" path))))
+             ts-files-to-recompile))
+   #+end_src
+
 * Hooks
 
   #+begin_src emacs-lisp
@@ -688,90 +782,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
            (window-configuration-to-register '_)
            (delete-other-windows))))
      (global-set-key (kbd "C-c z") 'ts-toggle-maximize-buffer)
-   #+end_src
-
-* Complilation related
-** Byte Compile
-
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun ts-byte-compile (arg)
-       "Byte compile Emacs Lisp files and load if ARG."
-       (interactive "P")
-       (if (and buffer-file-name
-                (or (equal (file-name-extension buffer-file-name) "el")
-                    (equal major-mode 'emacs-lisp-mode)))
-           (progn
-             (byte-compile-file buffer-file-name)
-             (message "Compiled %s :-)" buffer-file-name)
-             (when arg
-               (load (file-name-sans-extension buffer-file-name))
-               (message "Loaded %s :-)" buffer-file-name)))
-         (message "%s is not an elisp file" (buffer-name))))
-
-     (global-set-key (kbd "C-x M-b") 'ts-byte-compile)
-   #+end_src
-
-** Colorize Compilation Buffers
-
-   #+begin_src emacs-lisp
-     (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-     ;;;###autoload
-     (defun colorize-compilation-buffer ()
-       "ANSI color in compilation buffer."
-       (ansi-color-apply-on-region compilation-filter-start (point)))
-     (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-     (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-   #+end_src
-
-** Prefer newer over compiled
-
-   If init.elc is older, use newer ~init.el~.
-
-   #+begin_src emacs-lisp
-     (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
-   #+end_src
-
-** Place point after complilation error
-
-   #+begin_src emacs-lisp
-     (setq compilation-scroll-output 'first-error)
-   #+end_src
-
-** Ensure init files are byte compiled
-
-   This block will byte compile ~early-init.el~ and ~init.el~ if an existing
-   ~.elc~ file is not up to date with their contents.
-
-   #+begin_src emacs-lisp
-     (defun ts-ensure-byte-compiled-init ()
-       "Run `byte-recompile-file' on config files with 'nil' FORCE and ARG 0.
-     This means we don't compile if .elc is up to date but we always
-     create a new .elc file if it doesn't already exist."
-       (autoload 'byte-recompile-file "bytecomp")
-       (if (file-readable-p (expand-file-name "early-init.el" user-emacs-directory))
-           (byte-recompile-file (expand-file-name "early-init.el" user-emacs-directory) 'nil 0))
-       (byte-recompile-file (expand-file-name "init.el" user-emacs-directory) 'nil 0))
-     (add-hook 'after-init-hook 'ts-ensure-byte-compiled-init)
-   #+end_src
-
-** Recompile config
-
-   #+begin_src emacs-lisp
-     (defvar ts-files-to-recompile '("early-init.el" "init.el")
-       "Files under `user-emacs-directory' that we use for configuration.")
-
-     ;;;###autoload
-     (defun ts-recompile-config ()
-       "Recompile everything in Emacs configuration."
-       (interactive)
-       (mapc (lambda (file)
-               (let ((path (expand-file-name file user-emacs-directory)))
-                 (when (file-readable-p path)
-                   (byte-recompile-file path t 0)
-                   (load (file-name-sans-extension path))
-                   (message "Re-compiled & loaded %s :-)" path))))
-             ts-files-to-recompile))
    #+end_src
 
 * Editing functions

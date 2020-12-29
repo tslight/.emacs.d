@@ -1829,20 +1829,25 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+end_src
 
 ** Isearch
+*** Isearch exit
 
    #+begin_src emacs-lisp
-     (with-eval-after-load 'isearch
-        ;;;###autoload
-       (defun my/isearch-exit ()
-         "Move point to the start of the matched string."
-         (interactive)
-         (when (eq isearch-forward t)
-           (goto-char isearch-other-end))
-         (isearch-exit))
+      ;;;###autoload
+     (defun my/isearch-exit ()
+       "Move point to the start of the matched string."
+       (interactive)
+       (when (eq isearch-forward t)
+         (goto-char isearch-other-end))
+       (isearch-exit))
+     (define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
+   #+end_src
 
-       ;;;###autoload
-       (defun my/isearch-abort-dwim ()
-         "Delete failed `isearch' input, single char, or cancel search.
+*** Isearch Abort DWIM
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun my/isearch-abort-dwim ()
+       "Delete failed `isearch' input, single char, or cancel search.
 
      This is a modified variant of `isearch-abort' that allows us to
      perform the following, based on the specifics of the case: (i)
@@ -1850,52 +1855,71 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      delete a single character, when possible; (iii) exit current
      search if no character is present and go back to point where the
      search started."
-         (interactive)
-         (if (eq (length isearch-string) 0)
-             (isearch-cancel)
-           (isearch-del-char)
-           (while (or (not isearch-success) isearch-error)
-             (isearch-pop-state)))
-         (isearch-update))
+       (interactive)
+       (if (eq (length isearch-string) 0)
+           (isearch-cancel)
+         (isearch-del-char)
+         (while (or (not isearch-success) isearch-error)
+           (isearch-pop-state)))
+       (isearch-update))
+     (define-key isearch-mode-map (kbd "<backspace>") 'my/isearch-abort-dwim)
+   #+end_src
 
-       ;;;###autoload
-       (defun my/copy-to-isearch ()
-         "Copy up to the search match when searching forward.
+*** Copy to isearch
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun my/copy-to-isearch ()
+       "Copy up to the search match when searching forward.
 
      When searching backward, copy to the start of the search match."
-         (interactive)
-         (my/isearch-exit)
-         (call-interactively 'kill-ring-save)
-         (exchange-point-and-mark))
+       (interactive)
+       (my/isearch-exit)
+       (call-interactively 'kill-ring-save)
+       (exchange-point-and-mark))
+     (define-key isearch-mode-map (kbd "M-w") 'my/copy-to-isearch)
+   #+end_src
 
-       ;;;###autoload
-       (defun my/kill-to-isearch ()
-         "Kill up to the search match when searching forward.
+*** Kill to isearch
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun my/kill-to-isearch ()
+       "Kill up to the search match when searching forward.
 
      When searching backward, kill to the beginning of the match."
-         (interactive)
-         (my/isearch-exit)
-         (call-interactively 'kill-region))
+       (interactive)
+       (my/isearch-exit)
+       (call-interactively 'kill-region))
+     (define-key isearch-mode-map (kbd "C-M-w") 'my/kill-to-isearch)
+   #+end_src
 
-       (unless (version< emacs-version "27.1")
-         (setq isearch-allow-scroll 'unlimited)
-         (setq isearch-yank-on-move 't)
-         (setq isearch-lazy-count t)
-         (setq lazy-count-prefix-format nil)
-         (setq lazy-count-suffix-format " (%s/%s)"))
-       (setq search-highlight t)
-       (setq search-whitespace-regexp ".*?")
-       (setq isearch-lax-whitespace t)
-       (setq isearch-regexp-lax-whitespace nil)
-       (setq isearch-lazy-highlight t)
+*** Emacs 27+ Settings
 
-       (define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
-       (define-key isearch-mode-map (kbd "<backspace>") 'my/isearch-abort-dwim)
-       (define-key isearch-mode-map (kbd "M-w") 'my/copy-to-isearch)
-       (define-key isearch-mode-map (kbd "C-M-w") 'my/kill-to-isearch)
-       (define-key isearch-mode-map (kbd "M-/") 'isearch-complete)
-       (define-key minibuffer-local-isearch-map (kbd "M-/") 'isearch-complete-edit)
-       (message "Lazy loaded isearch :-)"))
+   #+begin_src emacs-lisp :tangle (if (version< emacs-version "27.1") "no" init-file)
+     (unless (version< emacs-version "27.1")
+       (setq isearch-allow-scroll 'unlimited)
+       (setq isearch-yank-on-move 't)
+       (setq isearch-lazy-count t)
+       (setq lazy-count-prefix-format nil)
+       (setq lazy-count-suffix-format " (%s/%s)"))
+   #+end_src
+
+*** Settings
+
+   #+begin_src emacs-lisp
+     (setq search-highlight t)
+     (setq search-whitespace-regexp ".*?")
+     (setq isearch-lax-whitespace t)
+     (setq isearch-regexp-lax-whitespace nil)
+     (setq isearch-lazy-highlight t)
+   #+end_src
+
+*** Keybindings
+
+   #+begin_src emacs-lisp
+     (define-key isearch-mode-map (kbd "M-/") 'isearch-complete)
+     (define-key minibuffer-local-isearch-map (kbd "M-/") 'isearch-complete-edit)
    #+end_src
 
    #+begin_src emacs-lisp

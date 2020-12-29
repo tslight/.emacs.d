@@ -698,15 +698,16 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (defun ts-byte-compile (arg)
        "Byte compile Emacs Lisp files and load if ARG."
        (interactive "P")
-       (if (or (equal (file-name-extension buffer-file-name) "el")
-               (equal major-mode 'emacs-lisp-mode))
+       (if (and buffer-file-name
+                (or (equal (file-name-extension buffer-file-name) "el")
+                    (equal major-mode 'emacs-lisp-mode)))
            (progn
              (byte-compile-file buffer-file-name)
              (message "Compiled %s :-)" buffer-file-name)
              (when arg
                (load (file-name-sans-extension buffer-file-name))
                (message "Loaded %s :-)" buffer-file-name)))
-         (message "%s is not an Emacs Lisp file" buffer-file-name)))
+         (message "%s is not an elisp file" (buffer-name))))
 
      (global-set-key (kbd "C-x M-b") 'ts-byte-compile)
    #+end_src

@@ -1671,8 +1671,8 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      (setq highlight-changes-visibility-initial-state nil)
-     (global-set-key (kbd "C-c h n") 'highlight-changes-next-change)
-     (global-set-key (kbd "C-c h p") 'highlight-changes-previous-change)
+     (global-set-key (kbd "C-c n") 'highlight-changes-next-change)
+     (global-set-key (kbd "C-c p") 'highlight-changes-previous-change)
      (add-hook 'emacs-startup-hook 'global-highlight-changes-mode)
    #+end_src
 
@@ -1790,104 +1790,104 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 ** Isearch
 *** Isearch exit
 
-   #+begin_src emacs-lisp
-      ;;;###autoload
-     (defun my/isearch-exit ()
-       "Move point to the start of the matched string."
-       (interactive)
-       (when (eq isearch-forward t)
-         (goto-char isearch-other-end))
-       (isearch-exit))
-     (define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
-   #+end_src
+    #+begin_src emacs-lisp
+       ;;;###autoload
+      (defun my/isearch-exit ()
+        "Move point to the start of the matched string."
+        (interactive)
+        (when (eq isearch-forward t)
+          (goto-char isearch-other-end))
+        (isearch-exit))
+      (define-key isearch-mode-map (kbd "RET") 'my/isearch-exit)
+    #+end_src
 
 *** Isearch Abort DWIM
 
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun my/isearch-abort-dwim ()
-       "Delete failed `isearch' input, single char, or cancel search.
+    #+begin_src emacs-lisp
+      ;;;###autoload
+      (defun my/isearch-abort-dwim ()
+        "Delete failed `isearch' input, single char, or cancel search.
 
-     This is a modified variant of `isearch-abort' that allows us to
-     perform the following, based on the specifics of the case: (i)
-     delete the entirety of a non-matching part, when present; (ii)
-     delete a single character, when possible; (iii) exit current
-     search if no character is present and go back to point where the
-     search started."
-       (interactive)
-       (if (eq (length isearch-string) 0)
-           (isearch-cancel)
-         (isearch-del-char)
-         (while (or (not isearch-success) isearch-error)
-           (isearch-pop-state)))
-       (isearch-update))
-     (define-key isearch-mode-map (kbd "<backspace>") 'my/isearch-abort-dwim)
-   #+end_src
+      This is a modified variant of `isearch-abort' that allows us to
+      perform the following, based on the specifics of the case: (i)
+      delete the entirety of a non-matching part, when present; (ii)
+      delete a single character, when possible; (iii) exit current
+      search if no character is present and go back to point where the
+      search started."
+        (interactive)
+        (if (eq (length isearch-string) 0)
+            (isearch-cancel)
+          (isearch-del-char)
+          (while (or (not isearch-success) isearch-error)
+            (isearch-pop-state)))
+        (isearch-update))
+      (define-key isearch-mode-map (kbd "<backspace>") 'my/isearch-abort-dwim)
+    #+end_src
 
 *** Copy to isearch
 
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun my/copy-to-isearch ()
-       "Copy up to the search match when searching forward.
+    #+begin_src emacs-lisp
+      ;;;###autoload
+      (defun my/copy-to-isearch ()
+        "Copy up to the search match when searching forward.
 
-     When searching backward, copy to the start of the search match."
-       (interactive)
-       (my/isearch-exit)
-       (call-interactively 'kill-ring-save)
-       (exchange-point-and-mark))
-     (define-key isearch-mode-map (kbd "M-w") 'my/copy-to-isearch)
-   #+end_src
+      When searching backward, copy to the start of the search match."
+        (interactive)
+        (my/isearch-exit)
+        (call-interactively 'kill-ring-save)
+        (exchange-point-and-mark))
+      (define-key isearch-mode-map (kbd "M-w") 'my/copy-to-isearch)
+    #+end_src
 
 *** Kill to isearch
 
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun my/kill-to-isearch ()
-       "Kill up to the search match when searching forward.
+    #+begin_src emacs-lisp
+      ;;;###autoload
+      (defun my/kill-to-isearch ()
+        "Kill up to the search match when searching forward.
 
-     When searching backward, kill to the beginning of the match."
-       (interactive)
-       (my/isearch-exit)
-       (call-interactively 'kill-region))
-     (define-key isearch-mode-map (kbd "C-M-w") 'my/kill-to-isearch)
-   #+end_src
+      When searching backward, kill to the beginning of the match."
+        (interactive)
+        (my/isearch-exit)
+        (call-interactively 'kill-region))
+      (define-key isearch-mode-map (kbd "C-M-w") 'my/kill-to-isearch)
+    #+end_src
 
 *** Emacs 27+ Settings
 
-   #+begin_src emacs-lisp :tangle (if (version< emacs-version "27.1") "no" init-file)
-     (unless (version< emacs-version "27.1")
-       (setq isearch-allow-scroll 'unlimited)
-       (setq isearch-yank-on-move 't)
-       (setq isearch-lazy-count t)
-       (setq lazy-count-prefix-format nil)
-       (setq lazy-count-suffix-format " (%s/%s)"))
-   #+end_src
+    #+begin_src emacs-lisp :tangle (if (version< emacs-version "27.1") "no" init-file)
+      (unless (version< emacs-version "27.1")
+        (setq isearch-allow-scroll 'unlimited)
+        (setq isearch-yank-on-move 't)
+        (setq isearch-lazy-count t)
+        (setq lazy-count-prefix-format nil)
+        (setq lazy-count-suffix-format " (%s/%s)"))
+    #+end_src
 
 *** Settings
 
-   #+begin_src emacs-lisp
-     (setq search-highlight t)
-     (setq search-whitespace-regexp ".*?")
-     (setq isearch-lax-whitespace t)
-     (setq isearch-regexp-lax-whitespace nil)
-     (setq isearch-lazy-highlight t)
-   #+end_src
+    #+begin_src emacs-lisp
+      (setq search-highlight t)
+      (setq search-whitespace-regexp ".*?")
+      (setq isearch-lax-whitespace t)
+      (setq isearch-regexp-lax-whitespace nil)
+      (setq isearch-lazy-highlight t)
+    #+end_src
 
 *** Keybindings
 
-   #+begin_src emacs-lisp
-     (define-key isearch-mode-map (kbd "M-/") 'isearch-complete)
-     (define-key minibuffer-local-isearch-map (kbd "M-/") 'isearch-complete-edit)
-   #+end_src
+    #+begin_src emacs-lisp
+      (define-key isearch-mode-map (kbd "M-/") 'isearch-complete)
+      (define-key minibuffer-local-isearch-map (kbd "M-/") 'isearch-complete-edit)
+    #+end_src
 
-   #+begin_src emacs-lisp
-     (global-set-key (kbd "C-r") 'isearch-backward-regexp)
-     (global-set-key (kbd "C-s") 'isearch-forward-regexp)
-     (global-set-key (kbd "M-s b") 'multi-isearch-buffers-regexp)
-     (global-set-key (kbd "M-s f") 'multi-isearch-files-regexp)
-     (global-set-key (kbd "M-s M-o") 'multi-occur)
-   #+end_src
+    #+begin_src emacs-lisp
+      (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+      (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+      (global-set-key (kbd "M-s b") 'multi-isearch-buffers-regexp)
+      (global-set-key (kbd "M-s f") 'multi-isearch-files-regexp)
+      (global-set-key (kbd "M-s M-o") 'multi-occur)
+    #+end_src
 
 ** Minibuffer
 *** Save history mode
@@ -2382,62 +2382,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (add-hook 'before-save-hook 'whitespace-cleanup)
    #+end_src
 
-* My custom packages
-** Lazygit
-
-   Clone some or all of my projects on GitLab or GitHub via the magic of APIs and
-   Emacs' ~completing-read~.
-
-   Get the source from [[https://gitlab.com/tspub/lisp/lazygit][here]].
-
-   #+begin_src emacs-lisp
-     (let ((lazygit-directory (expand-file-name "~/src/gitlab/tspub/lisp/lazygit")))
-       (when (file-directory-p lazygit-directory)
-         (add-to-list 'load-path lazygit-directory)
-
-         (with-eval-after-load 'lazygitlab
-           (setq lazygit-directory (expand-file-name "~/src/gitlab"))
-           (message "Lazy loaded lazygitlab :-)"))
-
-         (autoload 'lazygit-status-all "lazygit" nil t)
-         (global-set-key (kbd "C-c g s") 'lazygit-status-all)
-         (autoload 'lazygit-pull-all "lazygit" nil t)
-         (global-set-key (kbd "C-c g p") 'lazygit-pull-all)
-
-         (autoload 'lazygitlab-clone-or-pull-all "lazygitlab" nil t)
-         (global-set-key (kbd "C-c g l a") 'lazygitlab-clone-or-pull-all)
-         (autoload 'lazygitlab-clone-or-pull-group "lazygitlab" nil t)
-         (global-set-key (kbd "C-c g l g") 'lazygitlab-clone-or-pull-group)
-         (autoload 'lazygitlab-clone-or-pull-project "lazygitlab" nil t)
-         (global-set-key (kbd "C-c g l p") 'lazygitlab-clone-or-pull-project)
-
-         (with-eval-after-load 'lazygithub
-           (setq lazygit-directory (expand-file-name "~/src/github"))
-           (message "Lazy loaded lazygithub :-)"))
-
-         (autoload 'lazygithub-clone-or-pull-all "lazygithub" nil t)
-         (global-set-key (kbd "C-c g h a") 'lazygithub-clone-or-pull-all)
-         (autoload 'lazygithub-clone-or-pull-repo "lazygithub" nil t)
-         (global-set-key (kbd "C-c g h r") 'lazygithub-clone-or-pull-repo)))
-   #+end_src
-
-** Dired Peep
-
-   Preview the file or directory at point when in ~dired~, a bit like [[https://github.com/ranger/ranger][ranger]].
-
-   Get the source from [[https://gitlab.com/tspub/lisp/dired-peep][here]].
-
-   #+begin_src emacs-lisp
-     (let ((dired-peep-directory (expand-file-name "~/src/gitlab/tspub/lisp/dired-peep")))
-       (when (file-directory-p dired-peep-directory)
-         (add-to-list 'load-path dired-peep-directory)
-         (with-eval-after-load 'dired
-           (autoload 'dired-peep-mode "dired-peep")
-           (define-key dired-mode-map "r" 'dired-peep-mode)
-           (define-key dired-mode-map (kbd "C-o") 'dired-peep-temporarily)
-           (define-key dired-mode-map (kbd "M-o") 'dired-peep))))
-   #+end_src
-
 * Third party packages
 
   I like to split up my "vanilla" Emacs configuration and custom functions from
@@ -2554,6 +2498,21 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (hs-minor-mode . (lambda () (diminish 'hs-minor-mode))))
    #+end_src
 
+** Dired Peep
+
+   Preview the file or directory at point when in ~dired~, a bit like [[https://github.com/ranger/ranger][ranger]].
+
+   Get the source from [[https://gitlab.com/tspub/lisp/dired-peep][here]].
+
+   #+begin_src emacs-lisp
+     (use-package dired-peep :ensure nil :after dired
+       :load-path "~/src/gitlab/tspub/lisp/dired-peep"
+       :bind (:map dired-mode-map
+                   ("r" . dired-peep-mode)
+                   ("C-o" . dired-peep-temporarily)
+                   ("M-o" . dired-peep)))
+   #+end_src
+
 ** Docker
 
    #+begin_src emacs-lisp
@@ -2604,6 +2563,30 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
         "\\.gitlab-ci.yml\\'"
         :hook
         (yaml-mode . hs-minor-mode))
+    #+end_src
+
+*** Lazygit
+
+    Clone some or all of my projects on GitLab or GitHub via the magic of APIs and
+    Emacs' ~completing-read~.
+
+    Get the source from [[https://gitlab.com/tspub/lisp/lazygit][here]].
+
+    #+begin_src emacs-lisp
+      (use-package lazygit :ensure nil
+        :load-path "~/src/gitlab/tspub/lisp/lazygit"
+        :bind-keymap
+        ("C-c g" . lazygit-map))
+
+      (use-package lazygitlab :ensure nil
+        :load-path "~/src/gitlab/tspub/lisp/lazygit"
+        :bind-keymap
+        ("C-c l" . lazygitlab-map))
+
+      (use-package lazygithub :ensure nil
+        :load-path "~/src/gitlab/tspub/lisp/lazygit"
+        :bind-keymap
+        ("C-c h" . lazygithub-map))
     #+end_src
 
 *** Magit

@@ -38,16 +38,16 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
 ** Avoid garbage collection at startup
 
-   The GC can easily double startup time, so we suppress it at startup by turning
-   up gc-cons-threshold (and perhaps gc-cons-percentage) temporarily:
+   The GC can easily double startup time, so we suppress it at startup by
+   turning up gc-cons-threshold (and perhaps gc-cons-percentage) temporarily:
 
    #+begin_src emacs-lisp
      (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
            gc-cons-percentage 0.6)
    #+end_src
 
-   It is important to reset the garbage collection settings eventually. Not doing
-   so will cause garbage collection freezes during long-term interactive
+   It is important to reset the garbage collection settings eventually. Not
+   doing so will cause garbage collection freezes during long-term interactive
    use. Conversely, a gc-cons-threshold that is too small will cause
    stuttering. We use 16mb as our default.
 
@@ -137,7 +137,9 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
 ** Emacsclient executable
 
-   #+begin_src emacs-lisp
+   Only tangled on Windows.
+
+   #+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) init-file "no")
      ;; https://emacs.stackexchange.com/a/31061
      (when (equal system-type 'windows-nt)
        (if (file-readable-p "C:/Program Files/Emacs/x86_64/bin/emacsclient.exe")
@@ -233,11 +235,11 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (setq initial-major-mode 'fundamental-mode)
    #+end_src
 
-** Passwords
+** COMMENT Passwords
 
-   #+begin_src emacs-lisp
-     ;; (setq password-cache t) ; enable password caching
-     ;; (setq password-cache-expiry 3600) ; for one hour (time in secs)
+   #+begin_src emacs-lisp :tangle no
+     (setq password-cache t) ; enable password caching
+     (setq password-cache-expiry 3600) ; for one hour (time in secs)
    #+end_src
 
 ** Undo limits
@@ -1173,7 +1175,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
         (when arg (setq query (concat "\"" query "\"")))
         (browse-url
          (concat "http://www.google.com/search?ie=utf-8&oe=utf-8&q=" query))))
-    (global-set-key (kbd "C-c M-g") 'my/google)
+    (global-set-key (kbd "C-c M-s") 'my/google)
 
     ;;;###autoload
     (defmacro my/measure-time (&rest body)

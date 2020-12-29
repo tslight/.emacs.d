@@ -186,7 +186,7 @@ compressed/encrypted files won’t open.
 ** Customize settings file
 
 #+begin_src emacs-lisp
-  (setq custom-file (expand-file-name "custom" user-emacs-directory))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 #+end_src
 
 ** Enable all advanced features
@@ -1941,18 +1941,7 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (defun my/org-recursive-sort ()
       "Sort all entries in the current buffer, recursively."
       (interactive)
-      (org-map-entries
-       (lambda ()
-         (condition-case x
-             (org-sort-entries nil ?a)
-           (user-error)))))
-
-  ;;;###autoload
-    (defun my/org-tangle-block ()
-      "Only tangle the block at point."
-      (interactive)
-      (let ((current-prefix-arg '(4)))
-        (call-interactively 'org-babel-tangle)))
+      (org-map-entries (lambda () (condition-case x (org-sort-entries nil ?a) (user-error)))))
 
     (defun my/org-narrow-to-parent ()
       "Narrow buffer to the current subtree."
@@ -1970,32 +1959,13 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
                    (point)))))))
     (define-key org-mode-map (kbd "C-c p") 'my/org-narrow-to-parent)
 
-    (setq org-image-actual-width nil)
-    (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
-    (setq org-emphasis-regexp-components '(" \t('\"{" "- \t.,:!?;'\")}\\" " \t\r\n,\"'" "." 300))
-    (setq org-confirm-babel-evaluate t)
-    (setq org-agenda-files (file-expand-wildcards "~/*.org"))
-    (setq org-agenda-files (quote ("~/org/todo.org")))
-    (setq org-default-notes-file "~/org/notes.org")
     (setq org-directory "~/org")
-    (setq org-export-with-toc t)
-    (setq org-indent-indentation-per-level 1)
-    (setq org-list-allow-alphabetical t)
-    (setq org-list-indent-offset 1)
-    ;; (setq org-replace-disputed-keys t) ;; fix windmove conflicts
-    (setq org-return-follows-link t)
-    (setq org-refile-use-outline-path 'file)
-    (setq org-outline-path-complete-in-steps nil)
-    (setq org-refile-allow-creating-parent-nodes 'confirm)
-    (setq org-refile-targets '((nil :maxlevel . 9)))
+    (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
+    (setq org-default-notes-file "~/org/notes.org")
+
+    (setq org-use-speed-commands t)
     (setq org-speed-commands-user (quote (("N" . org-down-element)
                                           ("P" . org-up-element))))
-    (setq org-src-fontify-natively t)
-    (setq org-src-tab-acts-natively t)
-    (setq org-src-window-setup 'current-window)
-    (setq org-startup-indented t)
-    (setq org-use-fast-todo-selection t)
-    (setq org-use-speed-commands t)
 
     (setq org-latex-listings 'minted)
     (setq org-latex-pdf-process
@@ -2052,6 +2022,14 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (setq org-outline-path-complete-in-steps nil)
     ;; org-goto is basically imenu on steroids for org-mode
     (define-key org-mode-map (kbd "C-c i") 'org-goto)
+
+    (if (version< emacs-version "28")
+        (progn
+          (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file early-init nil 0 t)))
+          (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file init-file nil 0 t))))
+      (progn
+        (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file early-init nil 0)))
+        (add-hook 'org-babel-post-tangle-hook 'emacs-lisp-byte-compile-and-load)))
 
     (add-hook 'org-mode-hook 'auto-fill-mode)
     (add-hook 'org-mode-hook 'hl-line-mode)
@@ -2889,11 +2867,18 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
   (use-package yasnippet-classic-snippets :defer)
 #+end_src
 
+* Set Safe Local Variables
+
+  #+begin_src emacs-lisp
+    (setq safe-local-variable-values
+          '((eval add-hook 'after-save-hook 'org-babel-tangle nil t)
+            (eval setq early-init (expand-file-name "early-init.el" user-emacs-directory))
+            (eval setq init-file (expand-file-name "init.el" user-emacs-directory))))
+  #+end_src
+
 * Local Variables
 # Local Variables:
 # eval: (setq init-file (expand-file-name "init.el" user-emacs-directory))
 # eval: (setq early-init (expand-file-name "early-init.el" user-emacs-directory))
 # eval: (add-hook 'after-save-hook 'org-babel-tangle nil t)
-# eval: (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file early-init nil 0)) nil t)
-# eval: (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file init-file nil 0)) nil t)
 # End:

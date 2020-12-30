@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2020-12-30 Wed 02:36 -->
+<!-- 2020-12-30 Wed 02:42 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs Configuration</title>
@@ -223,264 +223,264 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org6cbe831">Lexical Binding</a></li>
-<li><a href="#org0c1b8f2">Doom Speed Hacks</a>
+<li><a href="#org2fe6ffa">Lexical Binding</a></li>
+<li><a href="#orge408c7b">Doom Speed Hacks</a>
 <ul>
-<li><a href="#org73b281f">Avoid garbage collection at startup</a></li>
-<li><a href="#org26c506c">Unset file-name-handler-alist temporarily</a></li>
+<li><a href="#org551cce9">Avoid garbage collection at startup</a></li>
+<li><a href="#org0fb60bc">Unset file-name-handler-alist temporarily</a></li>
 </ul>
 </li>
-<li><a href="#org5caa90b">General Settings</a>
+<li><a href="#org3e773f4">General Settings</a>
 <ul>
-<li><a href="#org1f07c13">Auto-save</a></li>
-<li><a href="#org333bef0">Backups</a></li>
-<li><a href="#org104d4af">Bell</a></li>
-<li><a href="#orgd66dc24">Bookmarks</a></li>
-<li><a href="#orgd349be1">Clipboard</a></li>
-<li><a href="#orgc75bb68">Customize settings file</a></li>
-<li><a href="#orgf86c74f">Delete all on backspace</a></li>
-<li><a href="#org4684c90">Emacsclient executable</a></li>
-<li><a href="#orge8e6d2a">Enable all advanced features</a></li>
-<li><a href="#org59cb609">Encryption</a></li>
-<li><a href="#org0de26bc">Final newline</a></li>
-<li><a href="#orgb8c6f93">History</a></li>
-<li><a href="#orgb736dac">Increase message logging max</a></li>
-<li><a href="#org5d6675e">Initial startup</a></li>
-<li><a href="#orgc16cac7">More extensive apropos</a></li>
-<li><a href="#orgc0a65c4">Mouse yank at point</a></li>
-<li><a href="#org1c81c11">No lockfiles</a></li>
-<li><a href="#org4eab016">Pop mark on repeat</a></li>
-<li><a href="#org7581e63">Scrolling</a></li>
-<li><a href="#orga4a1298">Truncate Lines</a></li>
-<li><a href="#org03559bf">Undo limits</a></li>
-<li><a href="#org3acea35">Uniquify</a></li>
-<li><a href="#org976e69f">User info</a></li>
-<li><a href="#orgff65325">Windows</a></li>
-<li><a href="#org34bc95c">Yes or no</a></li>
+<li><a href="#orgb7dffe0">Auto-save</a></li>
+<li><a href="#org1e37bd4">Backups</a></li>
+<li><a href="#org798d618">Bell</a></li>
+<li><a href="#orgd5f5b95">Bookmarks</a></li>
+<li><a href="#org0834629">Clipboard</a></li>
+<li><a href="#org5b4b8c6">Customize settings file</a></li>
+<li><a href="#orgaa9b141">Delete all on backspace</a></li>
+<li><a href="#org46d0222">Emacsclient executable</a></li>
+<li><a href="#orgf3e6c46">Enable all advanced features</a></li>
+<li><a href="#org6ce9fe1">Encryption</a></li>
+<li><a href="#org260f42a">Final newline</a></li>
+<li><a href="#org3fafef9">History</a></li>
+<li><a href="#org2ca66f8">Initial startup</a></li>
+<li><a href="#orge007db3">More extensive apropos</a></li>
+<li><a href="#org74f0b9e">More Messages</a></li>
+<li><a href="#org55ad335">Mouse yank at point</a></li>
+<li><a href="#orgec38bb1">No lockfiles</a></li>
+<li><a href="#org489f34f">Pop mark on repeat</a></li>
+<li><a href="#org3219352">Safe Local Variables</a></li>
+<li><a href="#orgdc65acf">Scrolling</a></li>
+<li><a href="#org34d1acd">Truncate Lines</a></li>
+<li><a href="#orgce2c143">Undo limits</a></li>
+<li><a href="#org867c26a">Uniquify</a></li>
+<li><a href="#orgadf9706">User info</a></li>
+<li><a href="#orgfcd5400">Windows</a></li>
+<li><a href="#org4166308">Yes or no</a></li>
 </ul>
 </li>
-<li><a href="#org86a428f">Code Style</a></li>
-<li><a href="#org8b15ea8">Encoding</a></li>
-<li><a href="#orga00b53f">Compilation</a>
+<li><a href="#org72d314c">Code Style</a></li>
+<li><a href="#org08c84f5">Encoding</a></li>
+<li><a href="#orged9f493">Compilation</a>
 <ul>
-<li><a href="#org4d3bf67">Byte Compile</a></li>
-<li><a href="#orge0df2e0">Colorize Compilation Buffers</a></li>
-<li><a href="#org5900e7c">Ensure init files are byte compiled</a></li>
-<li><a href="#orga468d76">Place point after complilation error</a></li>
-<li><a href="#org331a68b">Prefer newer over compiled</a></li>
-<li><a href="#orgc80fded">Recompile config</a></li>
+<li><a href="#org6f7ee34">Byte Compile</a></li>
+<li><a href="#org125b9b5">Colorize Compilation Buffers</a></li>
+<li><a href="#orgc1b30d9">Ensure init files are byte compiled</a></li>
+<li><a href="#org7995e88">Place point after complilation error</a></li>
+<li><a href="#org89b007a">Prefer newer over compiled</a></li>
+<li><a href="#org0656d3e">Recompile config</a></li>
 </ul>
 </li>
-<li><a href="#orgab139ee">Keybindings</a>
+<li><a href="#orgc3eb593">Keybindings</a>
 <ul>
-<li><a href="#org2d83161">Buffers</a></li>
-<li><a href="#org69d0222">Calculator/Calc bindings</a></li>
-<li><a href="#orgafb4a25">Desktop read/save</a></li>
-<li><a href="#org316becf">Editing</a></li>
-<li><a href="#orgfeb5242">Frames</a></li>
-<li><a href="#orga7e45a9">Grep</a></li>
-<li><a href="#orgdd91c39">Menubar</a></li>
-<li><a href="#orgea58990">Special mode</a></li>
-<li><a href="#org3cc017d">Tabs (Emacs 27+)</a></li>
+<li><a href="#orge06adab">Buffers</a></li>
+<li><a href="#orgcbfea78">Calculator/Calc bindings</a></li>
+<li><a href="#org96c5016">Desktop read/save</a></li>
+<li><a href="#org1153bcf">Editing</a></li>
+<li><a href="#org1732bad">Frames</a></li>
+<li><a href="#orgdda8584">Grep</a></li>
+<li><a href="#orgceb6299">Menubar</a></li>
+<li><a href="#org81c4b30">Special mode</a></li>
+<li><a href="#org212d3fb">Tabs (Emacs 27+)</a></li>
 </ul>
 </li>
-<li><a href="#org620f50c">Registers</a></li>
-<li><a href="#org3dcc1c4">Theme/UI</a>
+<li><a href="#org1cdc683">Registers</a></li>
+<li><a href="#org59641dc">Theme/UI</a>
 <ul>
-<li><a href="#orgc95ac7e">Disable themes</a></li>
-<li><a href="#org06a1d9b">Maximize on startup</a></li>
-<li><a href="#org509bb4f">Modeline</a></li>
-<li><a href="#orgb6f4383">Setup Frame for Emacsclient</a></li>
-<li><a href="#org07daa4d">Turn off UI elements</a></li>
+<li><a href="#org83fbe54">Disable themes</a></li>
+<li><a href="#org5d8c788">Maximize on startup</a></li>
+<li><a href="#orgf892933">Modeline</a></li>
+<li><a href="#org57dd405">Setup Frame for Emacsclient</a></li>
+<li><a href="#org191bc57">Turn off UI elements</a></li>
 </ul>
 </li>
-<li><a href="#orge51b095">Buffer Functions</a>
+<li><a href="#org9ed7d3b">Buffer Functions</a>
 <ul>
-<li><a href="#org972a654">Indent Buffer</a></li>
-<li><a href="#orgf492b58">Kill this buffer</a></li>
-<li><a href="#org26eddaa">Last buffer</a></li>
-<li><a href="#orgc732f36">Narrow DWIM</a></li>
-<li><a href="#orgbb3ee94">Nuke buffers</a></li>
-<li><a href="#org89b1149">Remove stuff from a buffer</a></li>
-<li><a href="#org1d95ae9">Save buffers silently</a></li>
-<li><a href="#org5043800">Toggle maximize buffer</a></li>
+<li><a href="#org90c4dd3">Indent Buffer</a></li>
+<li><a href="#org2b97028">Kill this buffer</a></li>
+<li><a href="#org99018c0">Last buffer</a></li>
+<li><a href="#orgcad7357">Narrow DWIM</a></li>
+<li><a href="#orgdca757b">Nuke buffers</a></li>
+<li><a href="#org5ca5100">Remove stuff from a buffer</a></li>
+<li><a href="#orgbf347e1">Save buffers silently</a></li>
+<li><a href="#org2ec5022">Toggle maximize buffer</a></li>
 </ul>
 </li>
-<li><a href="#orgd65f98a">Editing Functions</a>
+<li><a href="#org4ce069f">Editing Functions</a>
 <ul>
-<li><a href="#org440138d">Aligning symbols</a></li>
-<li><a href="#org6940f9d">Beginning of line</a></li>
-<li><a href="#orgfb93f0a">Case insensitive sort-lines</a></li>
-<li><a href="#org677ad5c">Change numbers</a></li>
-<li><a href="#orgf067865">Delete inside delimiters</a></li>
-<li><a href="#org1dda786">Generate a numbered list</a></li>
-<li><a href="#org441010d">Kill region</a></li>
-<li><a href="#orgc326fd6">Kill ring save</a></li>
-<li><a href="#orgc58165b">Moving lines</a></li>
-<li><a href="#orgc716a4a">Surround stuff</a></li>
-<li><a href="#org6da009c">Untabify a buffer</a></li>
-<li><a href="#org507eeba">XML pretty print</a></li>
-<li><a href="#orgc1ca9c7">Yank pop forwards (Emacs&lt;28)</a></li>
+<li><a href="#orgc911ac6">Aligning symbols</a></li>
+<li><a href="#org374021d">Beginning of line</a></li>
+<li><a href="#orgfbfddb9">Case insensitive sort-lines</a></li>
+<li><a href="#org5bb48cb">Change numbers</a></li>
+<li><a href="#orge6e4edc">Delete inside delimiters</a></li>
+<li><a href="#org1d02b9d">Generate a numbered list</a></li>
+<li><a href="#orgf7b813d">Kill region</a></li>
+<li><a href="#orgce2d35b">Kill ring save</a></li>
+<li><a href="#org2edb09d">Moving lines</a></li>
+<li><a href="#org9defa1c">Surround stuff</a></li>
+<li><a href="#org83c6cb5">Untabify a buffer</a></li>
+<li><a href="#org5e2657e">XML pretty print</a></li>
+<li><a href="#org565b96f">Yank pop forwards (Emacs&lt;28)</a></li>
 </ul>
 </li>
-<li><a href="#orga1c8eb4">File Functions</a>
+<li><a href="#org274558a">File Functions</a>
 <ul>
-<li><a href="#orgc617724">Delete this file</a></li>
-<li><a href="#org7042382">Make backup of current file</a></li>
-<li><a href="#org5f88a68">Open current file as root</a></li>
-<li><a href="#org1da22e0">Rename file and buffer</a></li>
-<li><a href="#org728fa0d">Yank current file name to kill ring</a></li>
+<li><a href="#orgd99ae13">Delete this file</a></li>
+<li><a href="#org9459c62">Make backup of current file</a></li>
+<li><a href="#org56350a1">Open current file as root</a></li>
+<li><a href="#org3b324fb">Rename file and buffer</a></li>
+<li><a href="#orgbe3570b">Yank current file name to kill ring</a></li>
 </ul>
 </li>
-<li><a href="#org223a337">Miscellaneous Functions</a></li>
-<li><a href="#org8cad03e">Window Functions</a>
+<li><a href="#org146dee3">Miscellaneous Functions</a></li>
+<li><a href="#org5e8673d">Window Functions</a>
 <ul>
-<li><a href="#org486696f">Better scrolling of other windows</a></li>
-<li><a href="#org1ed2e4f">Kill buffer other window</a></li>
-<li><a href="#org1bc4594">Open a buffer in another window</a></li>
-<li><a href="#org1b733f3">Open last buffer in horizontal split</a></li>
-<li><a href="#org150edaa">Open last buffer in vertical split</a></li>
-<li><a href="#org94d8189">Scroll lines down like Ctrl-y in Vim</a></li>
-<li><a href="#org4b78c1d">Scroll lines up like Ctrl-e in Vim</a></li>
-<li><a href="#orge63765c">Switch to the previous window</a></li>
-<li><a href="#orgaff4215">Toggle focus to last window</a></li>
-<li><a href="#org769dcde">Toggle vertical -&gt; horizontal splits</a></li>
-<li><a href="#orgd762ac7">Transpose windows</a></li>
-<li><a href="#orgb2a4806">Windmove keybindings</a></li>
-<li><a href="#orgaaa3a20">Winner mode</a></li>
+<li><a href="#org0e13681">Better scrolling of other windows</a></li>
+<li><a href="#org2efe61c">Kill buffer other window</a></li>
+<li><a href="#org1d14d80">Open a buffer in another window</a></li>
+<li><a href="#org93ab9a8">Open last buffer in horizontal split</a></li>
+<li><a href="#org592d64e">Open last buffer in vertical split</a></li>
+<li><a href="#orgdfc45e8">Scroll lines down like Ctrl-y in Vim</a></li>
+<li><a href="#org23bec43">Scroll lines up like Ctrl-e in Vim</a></li>
+<li><a href="#org2b8ff53">Switch to the previous window</a></li>
+<li><a href="#orgc98b517">Toggle focus to last window</a></li>
+<li><a href="#org0edc0df">Toggle vertical -&gt; horizontal splits</a></li>
+<li><a href="#org62b7578">Transpose windows</a></li>
+<li><a href="#orga64e08f">Windmove keybindings</a></li>
+<li><a href="#orgaed54be">Winner mode</a></li>
 </ul>
 </li>
-<li><a href="#org0cf1d24">Emacs Packages</a>
+<li><a href="#org7ffb786">Emacs Packages</a>
 <ul>
-<li><a href="#org36de787">Auto-fill</a></li>
-<li><a href="#org737626b">Auto-revert</a></li>
-<li><a href="#orge745b7a">Dabbrev</a></li>
-<li><a href="#org2169a4b">Dired</a>
+<li><a href="#org3198d69">Auto-fill</a></li>
+<li><a href="#org7c9004c">Auto-revert</a></li>
+<li><a href="#org02576d4">Dabbrev</a></li>
+<li><a href="#org2957832">Dired</a>
 <ul>
-<li><a href="#org4593dfb">Dired AUX</a></li>
-<li><a href="#orgf428c4e">Dired-X Jump (Emacs&lt;28)</a></li>
-<li><a href="#org218a702">Find Dired</a></li>
-<li><a href="#org4c2ca7f">Writeable Dired</a></li>
+<li><a href="#org1c33106">Dired AUX</a></li>
+<li><a href="#org398b95e">Dired-X Jump (Emacs&lt;28)</a></li>
+<li><a href="#org3cbae57">Find Dired</a></li>
+<li><a href="#orgaf3f444">Writeable Dired</a></li>
 </ul>
 </li>
-<li><a href="#orgee8a918">Doc View</a></li>
-<li><a href="#orgaade8c0">Ediff</a></li>
-<li><a href="#org3ec494a">Eldoc</a></li>
-<li><a href="#orgff1d917">Electric</a></li>
-<li><a href="#orga86703a">ERC</a></li>
-<li><a href="#org1e98de6">Eshell</a></li>
-<li><a href="#org35843d6">Flyspell</a></li>
-<li><a href="#orgedbba09">Gnus</a></li>
-<li><a href="#org70dede7">Hide/Show</a></li>
-<li><a href="#orgab97a5a">Highlight changes</a></li>
-<li><a href="#org3bb3535">Highlight line</a></li>
-<li><a href="#org5aab7f2">Hippie Expand</a></li>
-<li><a href="#orgf682053">Icomplete</a>
+<li><a href="#orgba4e712">Doc View</a></li>
+<li><a href="#org0350b5d">Ediff</a></li>
+<li><a href="#org5325f06">Eldoc</a></li>
+<li><a href="#org4972a73">Electric</a></li>
+<li><a href="#org6c57bbb">ERC</a></li>
+<li><a href="#orgfe63aad">Eshell</a></li>
+<li><a href="#orgf5200b6">Flyspell</a></li>
+<li><a href="#org7b5ebce">Gnus</a></li>
+<li><a href="#org06beb2c">Hide/Show</a></li>
+<li><a href="#org54d457d">Highlight changes</a></li>
+<li><a href="#orgb285b17">Highlight line</a></li>
+<li><a href="#orgdf1df04">Hippie Expand</a></li>
+<li><a href="#org4b11abb">Icomplete</a>
 <ul>
-<li><a href="#org7eeeec8">Change completion styles</a></li>
-<li><a href="#org736aca2">Icomplete keybindings</a></li>
-<li><a href="#orga760e31">Icomplete settings</a></li>
+<li><a href="#org949f44c">Change completion styles</a></li>
+<li><a href="#org779e80c">Icomplete keybindings</a></li>
+<li><a href="#org0e59cdf">Icomplete settings</a></li>
 </ul>
 </li>
-<li><a href="#org1fdb885">Imenu</a></li>
-<li><a href="#orgb672af4">Isearch</a>
+<li><a href="#orged7dccc">Imenu</a></li>
+<li><a href="#org7917885">Isearch</a>
 <ul>
-<li><a href="#org90da38c">Copy to isearch</a></li>
-<li><a href="#org536cfe6">Isearch Abort DWIM</a></li>
-<li><a href="#org899e440">Isearch exit</a></li>
-<li><a href="#org1bc37d2">Kill to isearch</a></li>
-<li><a href="#org6483d9b">Keybindings</a></li>
-<li><a href="#org9d65275">Settings</a></li>
+<li><a href="#org204df2e">Copy to isearch</a></li>
+<li><a href="#org7cf46fd">Isearch Abort DWIM</a></li>
+<li><a href="#orgdbbb947">Isearch exit</a></li>
+<li><a href="#org2611f22">Kill to isearch</a></li>
+<li><a href="#orgfe4f7f8">Keybindings</a></li>
+<li><a href="#orge3f7b91">Settings</a></li>
 </ul>
 </li>
-<li><a href="#org2140910">Line Numbers</a></li>
-<li><a href="#org6032d85">Minibuffer</a>
+<li><a href="#org8128634">Line Numbers</a></li>
+<li><a href="#org0f8a81d">Minibuffer</a>
 <ul>
-<li><a href="#org7d9c22e">Completion framework settings</a></li>
-<li><a href="#orgbc1af35">Misc Minibuffer settings</a></li>
-<li><a href="#org0507a58">Save history mode</a></li>
+<li><a href="#org8ea0884">Completion framework settings</a></li>
+<li><a href="#org6971bb4">Misc Minibuffer settings</a></li>
+<li><a href="#org2b2762f">Save history mode</a></li>
 </ul>
 </li>
-<li><a href="#org9ce5985">Occur</a></li>
-<li><a href="#orgd3d60fc">Org</a>
+<li><a href="#org8d7ce81">Occur</a></li>
+<li><a href="#orgc90247a">Org</a>
 <ul>
-<li><a href="#orgaa9ba18">Org global bindings</a></li>
+<li><a href="#orgdd18241">Org global bindings</a></li>
 </ul>
 </li>
-<li><a href="#orgf1c7cd1">Pending delete</a></li>
-<li><a href="#org0c916c4">Prettify Symbols</a></li>
-<li><a href="#orgee4fa75">Project</a></li>
-<li><a href="#org248a76b">Recentf</a></li>
-<li><a href="#org3a57a67">Saveplace</a></li>
-<li><a href="#org0a5259d">Shell script</a></li>
-<li><a href="#orgfbd0264">Show paren</a></li>
-<li><a href="#org9b8e0eb">Subword</a></li>
-<li><a href="#org065176b">Term</a>
+<li><a href="#org3f5a516">Pending delete</a></li>
+<li><a href="#org5a56acc">Prettify Symbols</a></li>
+<li><a href="#org86b09a0">Project</a></li>
+<li><a href="#org6a5468f">Recentf</a></li>
+<li><a href="#org8129f69">Saveplace</a></li>
+<li><a href="#org01d9344">Shell script</a></li>
+<li><a href="#org30be533">Show paren</a></li>
+<li><a href="#org1ee0460">Subword</a></li>
+<li><a href="#org1204d40">Term</a>
 <ul>
-<li><a href="#orgfd4611d">ANSI Term launcher</a></li>
-<li><a href="#orgc1396f4">Set term coding system to UTF-8</a></li>
-<li><a href="#orgc97cbef">Switch to ANSI Term</a></li>
-<li><a href="#orgeab824c">Term Advise</a></li>
+<li><a href="#org91ce535">ANSI Term launcher</a></li>
+<li><a href="#orgcc2d6f3">Set term coding system to UTF-8</a></li>
+<li><a href="#org6d2b154">Switch to ANSI Term</a></li>
+<li><a href="#orgb53bd62">Term Advise</a></li>
 </ul>
 </li>
-<li><a href="#org33da6af">Tramp</a></li>
-<li><a href="#org088faa9">Version Control</a></li>
-<li><a href="#org035c19c">Whitespace</a></li>
+<li><a href="#org6ec20a4">Tramp</a></li>
+<li><a href="#orgb583d4a">Version Control</a></li>
+<li><a href="#orgb71ab34">Whitespace</a></li>
 </ul>
 </li>
-<li><a href="#org3f29d83">MELPA Packages</a>
+<li><a href="#org79ec77d">MELPA Packages</a>
 <ul>
-<li><a href="#orge0baaca">Setup package.el</a></li>
-<li><a href="#org8279789">use-package bootstrap</a></li>
-<li><a href="#org370b6f5">Ansible</a></li>
-<li><a href="#orga2e087a">Async</a></li>
-<li><a href="#org22e58cd">Blacken</a></li>
-<li><a href="#orgdad5644">Default text scaling</a></li>
-<li><a href="#orgaadc5c3">Diminish</a></li>
-<li><a href="#org84eacc5">Dired Peep</a></li>
-<li><a href="#orgeb813d5">Docker</a></li>
-<li><a href="#orgef0c940">Exec path from shell</a></li>
-<li><a href="#org7ed9752">Flycheck</a></li>
-<li><a href="#org8be4fa3">Git</a>
+<li><a href="#org04b3df0">Setup package.el</a></li>
+<li><a href="#org3bd4636">use-package bootstrap</a></li>
+<li><a href="#org53c222a">Ansible</a></li>
+<li><a href="#org249d32e">Async</a></li>
+<li><a href="#org408f18b">Blacken</a></li>
+<li><a href="#org301ba86">Default text scaling</a></li>
+<li><a href="#orgefc9c33">Diminish</a></li>
+<li><a href="#org28a5a3e">Dired Peep</a></li>
+<li><a href="#org2d70627">Docker</a></li>
+<li><a href="#org06bbc58">Exec path from shell</a></li>
+<li><a href="#org5fc1fdb">Flycheck</a></li>
+<li><a href="#org8b41eed">Git</a>
 <ul>
-<li><a href="#org2060fe7">Gitlab CI</a></li>
-<li><a href="#orga45cff4">Git Timemachine</a></li>
-<li><a href="#org1e6deb2">Lazygit</a></li>
-<li><a href="#org24f44bc">Magit</a></li>
+<li><a href="#org2ce9f7c">Gitlab CI</a></li>
+<li><a href="#org8402244">Git Timemachine</a></li>
+<li><a href="#org6aff2ad">Lazygit</a></li>
+<li><a href="#org78a52fb">Magit</a></li>
 </ul>
 </li>
-<li><a href="#org948e96c">Go mode</a></li>
-<li><a href="#orgf5ee66b">Hungry delete</a></li>
-<li><a href="#org11758ea">JS2 mode</a></li>
-<li><a href="#orge91d1f7">JSON</a></li>
-<li><a href="#org7e88aa9">Markdown</a></li>
-<li><a href="#orgf825447">Node JS</a></li>
-<li><a href="#org9f80484">Org</a>
+<li><a href="#orgaee54b3">Go mode</a></li>
+<li><a href="#org2f948b3">Hungry delete</a></li>
+<li><a href="#org4a9a359">JS2 mode</a></li>
+<li><a href="#org92a4920">JSON</a></li>
+<li><a href="#orge599dd2">Markdown</a></li>
+<li><a href="#org492d442">Node JS</a></li>
+<li><a href="#orgfd8cc1e">Org</a>
 <ul>
-<li><a href="#org1f7e9b9">HTMLize</a></li>
-<li><a href="#org7c7a471">Org Bullets</a></li>
-<li><a href="#org352eadd">PDF Tools</a></li>
-<li><a href="#org91e845b">Toc Org</a></li>
+<li><a href="#org92a1b6d">HTMLize</a></li>
+<li><a href="#orgd30f1fd">Org Bullets</a></li>
+<li><a href="#org9aca112">PDF Tools</a></li>
+<li><a href="#org851e812">Toc Org</a></li>
 </ul>
 </li>
-<li><a href="#org18b5856">Powershell</a></li>
-<li><a href="#org8994f2a">Projectile</a></li>
-<li><a href="#org02c7207">Restclient</a></li>
-<li><a href="#org2877c09">systemd</a></li>
-<li><a href="#orgd5b231d">Terraform</a></li>
-<li><a href="#org96017f8">Web Mode</a></li>
-<li><a href="#orgd01b856">Which Key</a></li>
-<li><a href="#org27d1431">Writeable Grep</a></li>
-<li><a href="#orgac7bd12">YAML</a></li>
-<li><a href="#org14a0478">Yasnippet</a>
+<li><a href="#orgf83ee1e">Powershell</a></li>
+<li><a href="#org1210823">Projectile</a></li>
+<li><a href="#orgc1b8502">Restclient</a></li>
+<li><a href="#orgf064486">systemd</a></li>
+<li><a href="#org86667f4">Terraform</a></li>
+<li><a href="#org422f7b2">Web Mode</a></li>
+<li><a href="#org3c774c2">Which Key</a></li>
+<li><a href="#org983cf90">Writeable Grep</a></li>
+<li><a href="#org2d62642">YAML</a></li>
+<li><a href="#org233fdc2">Yasnippet</a>
 <ul>
-<li><a href="#orga1a28ce">Classic snippets</a></li>
-<li><a href="#orge596c5f">Snippets</a></li>
+<li><a href="#orge1157c0">Classic snippets</a></li>
+<li><a href="#org7639a7f">Snippets</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org715b595">Safe Local Variables</a></li>
 </ul>
 </div>
 </div>
@@ -500,9 +500,9 @@ To install, evaluate the code block below with <code>C-c C-c</code> in Emacs:
 </pre>
 </div>
 
-<div id="outline-container-org6cbe831" class="outline-2">
-<h2 id="org6cbe831">Lexical Binding</h2>
-<div class="outline-text-2" id="text-org6cbe831">
+<div id="outline-container-org2fe6ffa" class="outline-2">
+<h2 id="org2fe6ffa">Lexical Binding</h2>
+<div class="outline-text-2" id="text-org2fe6ffa">
 <p>
 This must come at the beginning of the file
 </p>
@@ -518,13 +518,13 @@ This must come at the beginning of the file
 </div>
 </div>
 
-<div id="outline-container-org0c1b8f2" class="outline-2">
-<h2 id="org0c1b8f2"><a href="https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly">Doom Speed Hacks</a></h2>
-<div class="outline-text-2" id="text-org0c1b8f2">
+<div id="outline-container-orge408c7b" class="outline-2">
+<h2 id="orge408c7b"><a href="https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly">Doom Speed Hacks</a></h2>
+<div class="outline-text-2" id="text-orge408c7b">
 </div>
-<div id="outline-container-org73b281f" class="outline-3">
-<h3 id="org73b281f">Avoid garbage collection at startup</h3>
-<div class="outline-text-3" id="text-org73b281f">
+<div id="outline-container-org551cce9" class="outline-3">
+<h3 id="org551cce9">Avoid garbage collection at startup</h3>
+<div class="outline-text-3" id="text-org551cce9">
 <p>
 The GC can easily double startup time, so we suppress it at startup by
 turning up gc-cons-threshold (and perhaps gc-cons-percentage) temporarily:
@@ -553,9 +553,9 @@ stuttering. We use 16mb as our default.
 </div>
 </div>
 
-<div id="outline-container-org26c506c" class="outline-3">
-<h3 id="org26c506c">Unset file-name-handler-alist temporarily</h3>
-<div class="outline-text-3" id="text-org26c506c">
+<div id="outline-container-org0fb60bc" class="outline-3">
+<h3 id="org0fb60bc">Unset file-name-handler-alist temporarily</h3>
+<div class="outline-text-3" id="text-org0fb60bc">
 <p>
 Emacs consults this variable every time a file is read or library loaded, or
 when certain functions in the file API are used (like expand-file-name or
@@ -589,13 +589,13 @@ compressed/encrypted files won’t open.
 </div>
 </div>
 
-<div id="outline-container-org5caa90b" class="outline-2">
-<h2 id="org5caa90b">General Settings</h2>
-<div class="outline-text-2" id="text-org5caa90b">
+<div id="outline-container-org3e773f4" class="outline-2">
+<h2 id="org3e773f4">General Settings</h2>
+<div class="outline-text-2" id="text-org3e773f4">
 </div>
-<div id="outline-container-org1f07c13" class="outline-3">
-<h3 id="org1f07c13">Auto-save</h3>
-<div class="outline-text-3" id="text-org1f07c13">
+<div id="outline-container-orgb7dffe0" class="outline-3">
+<h3 id="orgb7dffe0">Auto-save</h3>
+<div class="outline-text-3" id="text-orgb7dffe0">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> auto-save-file-name-transforms '((<span style="color: #79a8ff;">".*"</span> <span style="color: #79a8ff;">"~/.emacs.d/auto-save-list/"</span> t)))
 (<span style="color: #b6a0ff;">setq</span> auto-save-timeout 5)
@@ -604,9 +604,9 @@ compressed/encrypted files won’t open.
 </div>
 </div>
 
-<div id="outline-container-org333bef0" class="outline-3">
-<h3 id="org333bef0">Backups</h3>
-<div class="outline-text-3" id="text-org333bef0">
+<div id="outline-container-org1e37bd4" class="outline-3">
+<h3 id="org1e37bd4">Backups</h3>
+<div class="outline-text-3" id="text-org1e37bd4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> backup-directory-alist '((<span style="color: #79a8ff;">"."</span> . <span style="color: #79a8ff;">"~/.emacs.d/backups"</span>)))
 (<span style="color: #b6a0ff;">setq</span> backup-by-copying t) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">copy files, don't rename them.</span>
@@ -618,9 +618,9 @@ compressed/encrypted files won’t open.
 </div>
 </div>
 
-<div id="outline-container-org104d4af" class="outline-3">
-<h3 id="org104d4af">Bell</h3>
-<div class="outline-text-3" id="text-org104d4af">
+<div id="outline-container-org798d618" class="outline-3">
+<h3 id="org798d618">Bell</h3>
+<div class="outline-text-3" id="text-org798d618">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> ring-bell-function 'ignore)
 (<span style="color: #b6a0ff;">setq</span> visible-bell 1)
@@ -629,9 +629,9 @@ compressed/encrypted files won’t open.
 </div>
 </div>
 
-<div id="outline-container-orgd66dc24" class="outline-3">
-<h3 id="orgd66dc24">Bookmarks</h3>
-<div class="outline-text-3" id="text-orgd66dc24">
+<div id="outline-container-orgd5f5b95" class="outline-3">
+<h3 id="orgd5f5b95">Bookmarks</h3>
+<div class="outline-text-3" id="text-orgd5f5b95">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> bookmark-save-flag 1) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">always save bookmarks to file</span>
 </pre>
@@ -639,9 +639,9 @@ compressed/encrypted files won’t open.
 </div>
 </div>
 
-<div id="outline-container-orgd349be1" class="outline-3">
-<h3 id="orgd349be1">Clipboard</h3>
-<div class="outline-text-3" id="text-orgd349be1">
+<div id="outline-container-org0834629" class="outline-3">
+<h3 id="org0834629">Clipboard</h3>
+<div class="outline-text-3" id="text-org0834629">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> select-enable-clipboard t)
 (<span style="color: #b6a0ff;">setq</span> select-enable-primary t)
@@ -652,9 +652,9 @@ compressed/encrypted files won’t open.
 </div>
 </div>
 
-<div id="outline-container-orgc75bb68" class="outline-3">
-<h3 id="orgc75bb68">Customize settings file</h3>
-<div class="outline-text-3" id="text-orgc75bb68">
+<div id="outline-container-org5b4b8c6" class="outline-3">
+<h3 id="org5b4b8c6">Customize settings file</h3>
+<div class="outline-text-3" id="text-org5b4b8c6">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> custom-file (expand-file-name <span style="color: #79a8ff;">"custom.el"</span> user-emacs-directory))
 </pre>
@@ -662,9 +662,9 @@ compressed/encrypted files won’t open.
 </div>
 </div>
 
-<div id="outline-container-orgf86c74f" class="outline-3">
-<h3 id="orgf86c74f">Delete all on backspace</h3>
-<div class="outline-text-3" id="text-orgf86c74f">
+<div id="outline-container-orgaa9b141" class="outline-3">
+<h3 id="orgaa9b141">Delete all on backspace</h3>
+<div class="outline-text-3" id="text-orgaa9b141">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> backward-delete-char-untabify-method 'all)
 </pre>
@@ -672,9 +672,9 @@ compressed/encrypted files won’t open.
 </div>
 </div>
 
-<div id="outline-container-org4684c90" class="outline-3">
-<h3 id="org4684c90">Emacsclient executable</h3>
-<div class="outline-text-3" id="text-org4684c90">
+<div id="outline-container-org46d0222" class="outline-3">
+<h3 id="org46d0222">Emacsclient executable</h3>
+<div class="outline-text-3" id="text-org46d0222">
 <p>
 Only tangled on Windows.
 </p>
@@ -690,9 +690,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-orge8e6d2a" class="outline-3">
-<h3 id="orge8e6d2a">Enable all advanced features</h3>
-<div class="outline-text-3" id="text-orge8e6d2a">
+<div id="outline-container-orgf3e6c46" class="outline-3">
+<h3 id="orgf3e6c46">Enable all advanced features</h3>
+<div class="outline-text-3" id="text-orgf3e6c46">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> disabled-command-function nil) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">enable all "advanced" features</span>
 </pre>
@@ -700,9 +700,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org59cb609" class="outline-3">
-<h3 id="org59cb609">Encryption</h3>
-<div class="outline-text-3" id="text-org59cb609">
+<div id="outline-container-org6ce9fe1" class="outline-3">
+<h3 id="org6ce9fe1">Encryption</h3>
+<div class="outline-text-3" id="text-org6ce9fe1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> epa-file-cache-passphrase-for-symmetric-encryption t)
 (<span style="color: #b6a0ff;">setf</span> epg-pinentry-mode 'loopback)
@@ -711,9 +711,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org0de26bc" class="outline-3">
-<h3 id="org0de26bc">Final newline</h3>
-<div class="outline-text-3" id="text-org0de26bc">
+<div id="outline-container-org260f42a" class="outline-3">
+<h3 id="org260f42a">Final newline</h3>
+<div class="outline-text-3" id="text-org260f42a">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> require-final-newline t) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">useful for crontab</span>
 </pre>
@@ -721,9 +721,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-orgb8c6f93" class="outline-3">
-<h3 id="orgb8c6f93">History</h3>
-<div class="outline-text-3" id="text-orgb8c6f93">
+<div id="outline-container-org3fafef9" class="outline-3">
+<h3 id="org3fafef9">History</h3>
+<div class="outline-text-3" id="text-org3fafef9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> history-length t)
 (<span style="color: #b6a0ff;">setq</span> history-delete-duplicates t)
@@ -732,19 +732,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-orgb736dac" class="outline-3">
-<h3 id="orgb736dac">Increase message logging max</h3>
-<div class="outline-text-3" id="text-orgb736dac">
-<div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> message-log-max 10000)
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org5d6675e" class="outline-3">
-<h3 id="org5d6675e">Initial startup</h3>
-<div class="outline-text-3" id="text-org5d6675e">
+<div id="outline-container-org2ca66f8" class="outline-3">
+<h3 id="org2ca66f8">Initial startup</h3>
+<div class="outline-text-3" id="text-org2ca66f8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">display-startup-echo-area-message</span> ()
   <span style="color: #c6eaff;">"Redefine this function to be more useful."</span>
@@ -757,9 +747,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-orgc16cac7" class="outline-3">
-<h3 id="orgc16cac7">More extensive apropos</h3>
-<div class="outline-text-3" id="text-orgc16cac7">
+<div id="outline-container-orge007db3" class="outline-3">
+<h3 id="orge007db3">More extensive apropos</h3>
+<div class="outline-text-3" id="text-orge007db3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> apropos-do-all t) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">doesn't seem to be documented anywhere..</span>
 </pre>
@@ -767,9 +757,19 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-orgc0a65c4" class="outline-3">
-<h3 id="orgc0a65c4">Mouse yank at point</h3>
-<div class="outline-text-3" id="text-orgc0a65c4">
+<div id="outline-container-org74f0b9e" class="outline-3">
+<h3 id="org74f0b9e">More Messages</h3>
+<div class="outline-text-3" id="text-org74f0b9e">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> message-log-max 10000)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org55ad335" class="outline-3">
+<h3 id="org55ad335">Mouse yank at point</h3>
+<div class="outline-text-3" id="text-org55ad335">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> mouse-yank-at-point t)
 </pre>
@@ -777,9 +777,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org1c81c11" class="outline-3">
-<h3 id="org1c81c11">No lockfiles</h3>
-<div class="outline-text-3" id="text-org1c81c11">
+<div id="outline-container-orgec38bb1" class="outline-3">
+<h3 id="orgec38bb1">No lockfiles</h3>
+<div class="outline-text-3" id="text-orgec38bb1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> create-lockfiles nil) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">prevent creation of .#myfile.ext</span>
 </pre>
@@ -787,9 +787,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org4eab016" class="outline-3">
-<h3 id="org4eab016">Pop mark on repeat</h3>
-<div class="outline-text-3" id="text-org4eab016">
+<div id="outline-container-org489f34f" class="outline-3">
+<h3 id="org489f34f">Pop mark on repeat</h3>
+<div class="outline-text-3" id="text-org489f34f">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> set-mark-command-repeat-pop t) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">repeating C-SPC after popping, pops it</span>
 </pre>
@@ -797,9 +797,27 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org7581e63" class="outline-3">
-<h3 id="org7581e63">Scrolling</h3>
-<div class="outline-text-3" id="text-org7581e63">
+<div id="outline-container-org3219352" class="outline-3">
+<h3 id="org3219352">Safe Local Variables</h3>
+<div class="outline-text-3" id="text-org3219352">
+<p>
+This variables are added to the end of this file.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> safe-local-variable-values
+      '((eval setq early-init (expand-file-name <span style="color: #79a8ff;">"early-init.el"</span> user-emacs-directory))
+        (eval setq init-file (expand-file-name <span style="color: #79a8ff;">"init.el"</span> user-emacs-directory))
+        (eval add-hook 'after-save-hook 'org-html-export-to-html nil t)
+        (eval add-hook 'after-save-hook 'org-babel-tangle nil t)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgdc65acf" class="outline-3">
+<h3 id="orgdc65acf">Scrolling</h3>
+<div class="outline-text-3" id="text-orgdc65acf">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> scroll-step 4)
 (<span style="color: #b6a0ff;">setq</span> scroll-margin 6)
@@ -810,9 +828,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-orga4a1298" class="outline-3">
-<h3 id="orga4a1298">Truncate Lines</h3>
-<div class="outline-text-3" id="text-orga4a1298">
+<div id="outline-container-org34d1acd" class="outline-3">
+<h3 id="org34d1acd">Truncate Lines</h3>
+<div class="outline-text-3" id="text-org34d1acd">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(set-default 'truncate-lines t)
 (global-set-key (kbd <span style="color: #79a8ff;">"C-c M-t t"</span>) 'toggle-truncate-lines)
@@ -821,9 +839,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org03559bf" class="outline-3">
-<h3 id="org03559bf">Undo limits</h3>
-<div class="outline-text-3" id="text-org03559bf">
+<div id="outline-container-orgce2c143" class="outline-3">
+<h3 id="orgce2c143">Undo limits</h3>
+<div class="outline-text-3" id="text-orgce2c143">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">http://www.dr-qubit.org/Lost_undo-tree_history.html</span>
 (<span style="color: #b6a0ff;">setq</span> undo-limit 80000000)
@@ -833,9 +851,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org3acea35" class="outline-3">
-<h3 id="org3acea35">Uniquify</h3>
-<div class="outline-text-3" id="text-org3acea35">
+<div id="outline-container-org867c26a" class="outline-3">
+<h3 id="org867c26a">Uniquify</h3>
+<div class="outline-text-3" id="text-org867c26a">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> uniquify-buffer-name-style 'forward)
 (<span style="color: #b6a0ff;">setq</span> uniquify-strip-common-suffix t)
@@ -845,9 +863,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org976e69f" class="outline-3">
-<h3 id="org976e69f">User info</h3>
-<div class="outline-text-3" id="text-org976e69f">
+<div id="outline-container-orgadf9706" class="outline-3">
+<h3 id="orgadf9706">User info</h3>
+<div class="outline-text-3" id="text-orgadf9706">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> user-full-name <span style="color: #79a8ff;">"Toby Slight"</span>)
 (<span style="color: #b6a0ff;">setq</span> user-mail-address <span style="color: #79a8ff;">"tslight@pm.me"</span>)
@@ -856,9 +874,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-orgff65325" class="outline-3">
-<h3 id="orgff65325">Windows</h3>
-<div class="outline-text-3" id="text-orgff65325">
+<div id="outline-container-orgfcd5400" class="outline-3">
+<h3 id="orgfcd5400">Windows</h3>
+<div class="outline-text-3" id="text-orgfcd5400">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> split-width-threshold 200)
 (<span style="color: #b6a0ff;">setq</span> split-height-threshold 100)
@@ -868,9 +886,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org34bc95c" class="outline-3">
-<h3 id="org34bc95c">Yes or no</h3>
-<div class="outline-text-3" id="text-org34bc95c">
+<div id="outline-container-org4166308" class="outline-3">
+<h3 id="org4166308">Yes or no</h3>
+<div class="outline-text-3" id="text-org4166308">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(fset 'yes-or-no-p 'y-or-n-p) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">never have to type full word</span>
 (<span style="color: #b6a0ff;">setq</span> confirm-kill-emacs 'y-or-n-p)
@@ -880,9 +898,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org86a428f" class="outline-2">
-<h2 id="org86a428f">Code Style</h2>
-<div class="outline-text-2" id="text-org86a428f">
+<div id="outline-container-org72d314c" class="outline-2">
+<h2 id="org72d314c">Code Style</h2>
+<div class="outline-text-2" id="text-org72d314c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> c-default-style <span style="color: #79a8ff;">"bsd"</span>)
 (<span style="color: #b6a0ff;">setq</span> c-basic-offset 4)
@@ -903,9 +921,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org8b15ea8" class="outline-2">
-<h2 id="org8b15ea8">Encoding</h2>
-<div class="outline-text-2" id="text-org8b15ea8">
+<div id="outline-container-org08c84f5" class="outline-2">
+<h2 id="org08c84f5">Encoding</h2>
+<div class="outline-text-2" id="text-org08c84f5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-convert-to-unix-coding-system</span> ()
@@ -936,13 +954,13 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-orga00b53f" class="outline-2">
-<h2 id="orga00b53f">Compilation</h2>
-<div class="outline-text-2" id="text-orga00b53f">
+<div id="outline-container-orged9f493" class="outline-2">
+<h2 id="orged9f493">Compilation</h2>
+<div class="outline-text-2" id="text-orged9f493">
 </div>
-<div id="outline-container-org4d3bf67" class="outline-3">
-<h3 id="org4d3bf67">Byte Compile</h3>
-<div class="outline-text-3" id="text-org4d3bf67">
+<div id="outline-container-org6f7ee34" class="outline-3">
+<h3 id="org6f7ee34">Byte Compile</h3>
+<div class="outline-text-3" id="text-org6f7ee34">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-byte-compile</span> (arg)
@@ -974,9 +992,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-orge0df2e0" class="outline-3">
-<h3 id="orge0df2e0">Colorize Compilation Buffers</h3>
-<div class="outline-text-3" id="text-orge0df2e0">
+<div id="outline-container-org125b9b5" class="outline-3">
+<h3 id="org125b9b5">Colorize Compilation Buffers</h3>
+<div class="outline-text-3" id="text-org125b9b5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 <span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
@@ -990,9 +1008,9 @@ Only tangled on Windows.
 </div>
 </div>
 
-<div id="outline-container-org5900e7c" class="outline-3">
-<h3 id="org5900e7c">Ensure init files are byte compiled</h3>
-<div class="outline-text-3" id="text-org5900e7c">
+<div id="outline-container-orgc1b30d9" class="outline-3">
+<h3 id="orgc1b30d9">Ensure init files are byte compiled</h3>
+<div class="outline-text-3" id="text-orgc1b30d9">
 <p>
 This block will byte compile <code>early-init.el</code> and <code>init.el</code> if an existing
 <code>.elc</code> file is not up to date with their contents.
@@ -1013,9 +1031,9 @@ This block will byte compile <code>early-init.el</code> and <code>init.el</code>
 </div>
 </div>
 
-<div id="outline-container-orga468d76" class="outline-3">
-<h3 id="orga468d76">Place point after complilation error</h3>
-<div class="outline-text-3" id="text-orga468d76">
+<div id="outline-container-org7995e88" class="outline-3">
+<h3 id="org7995e88">Place point after complilation error</h3>
+<div class="outline-text-3" id="text-org7995e88">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> compilation-scroll-output 'first-error)
 </pre>
@@ -1023,9 +1041,9 @@ This block will byte compile <code>early-init.el</code> and <code>init.el</code>
 </div>
 </div>
 
-<div id="outline-container-org331a68b" class="outline-3">
-<h3 id="org331a68b">Prefer newer over compiled</h3>
-<div class="outline-text-3" id="text-org331a68b">
+<div id="outline-container-org89b007a" class="outline-3">
+<h3 id="org89b007a">Prefer newer over compiled</h3>
+<div class="outline-text-3" id="text-org89b007a">
 <p>
 If init.elc is older, use newer <code>init.el</code>.
 </p>
@@ -1037,9 +1055,9 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-orgc80fded" class="outline-3">
-<h3 id="orgc80fded">Recompile config</h3>
-<div class="outline-text-3" id="text-orgc80fded">
+<div id="outline-container-org0656d3e" class="outline-3">
+<h3 id="org0656d3e">Recompile config</h3>
+<div class="outline-text-3" id="text-org0656d3e">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">defvar</span> <span style="color: #00d3d0;">ts-files-to-recompile</span> '(<span style="color: #79a8ff;">"early-init.el"</span> <span style="color: #79a8ff;">"init.el"</span>)
   <span style="color: #c6eaff;">"Files under `</span><span style="color: #00bcff;">user-emacs-directory</span><span style="color: #c6eaff;">' that we use for configuration."</span>)
@@ -1061,13 +1079,13 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-orgab139ee" class="outline-2">
-<h2 id="orgab139ee">Keybindings</h2>
-<div class="outline-text-2" id="text-orgab139ee">
+<div id="outline-container-orgc3eb593" class="outline-2">
+<h2 id="orgc3eb593">Keybindings</h2>
+<div class="outline-text-2" id="text-orgc3eb593">
 </div>
-<div id="outline-container-org2d83161" class="outline-3">
-<h3 id="org2d83161">Buffers</h3>
-<div class="outline-text-3" id="text-org2d83161">
+<div id="outline-container-orge06adab" class="outline-3">
+<h3 id="orge06adab">Buffers</h3>
+<div class="outline-text-3" id="text-orge06adab">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #79a8ff;">"C-x M-e"</span>) 'eval-buffer)
 (global-set-key (kbd <span style="color: #79a8ff;">"C-x c"</span>) 'save-buffers-kill-emacs)
@@ -1079,9 +1097,9 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-org69d0222" class="outline-3">
-<h3 id="org69d0222">Calculator/Calc bindings</h3>
-<div class="outline-text-3" id="text-org69d0222">
+<div id="outline-container-orgcbfea78" class="outline-3">
+<h3 id="orgcbfea78">Calculator/Calc bindings</h3>
+<div class="outline-text-3" id="text-orgcbfea78">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(autoload 'calculator <span style="color: #79a8ff;">"calculator"</span> nil t)
 (global-set-key (kbd <span style="color: #79a8ff;">"C-c c"</span>) 'calculator)
@@ -1092,9 +1110,9 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-orgafb4a25" class="outline-3">
-<h3 id="orgafb4a25">Desktop read/save</h3>
-<div class="outline-text-3" id="text-orgafb4a25">
+<div id="outline-container-org96c5016" class="outline-3">
+<h3 id="org96c5016">Desktop read/save</h3>
+<div class="outline-text-3" id="text-org96c5016">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #79a8ff;">"C-c M-d r"</span>) 'desktop-read)
 (global-set-key (kbd <span style="color: #79a8ff;">"C-c M-d s"</span>) 'desktop-save)
@@ -1103,9 +1121,9 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-org316becf" class="outline-3">
-<h3 id="org316becf">Editing</h3>
-<div class="outline-text-3" id="text-org316becf">
+<div id="outline-container-org1153bcf" class="outline-3">
+<h3 id="org1153bcf">Editing</h3>
+<div class="outline-text-3" id="text-org1153bcf">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #79a8ff;">"C-c C-e"</span>) 'pp-eval-last-sexp)
 (global-set-key (kbd <span style="color: #79a8ff;">"M-;"</span>) 'comment-line)
@@ -1123,9 +1141,9 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-orgfeb5242" class="outline-3">
-<h3 id="orgfeb5242">Frames</h3>
-<div class="outline-text-3" id="text-orgfeb5242">
+<div id="outline-container-org1732bad" class="outline-3">
+<h3 id="org1732bad">Frames</h3>
+<div class="outline-text-3" id="text-org1732bad">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #79a8ff;">"C-&lt;f10&gt;"</span>) 'toggle-frame-maximized)
 (global-set-key (kbd <span style="color: #79a8ff;">"C-&lt;f11&gt;"</span>) 'toggle-frame-fullscreen)
@@ -1136,9 +1154,9 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-orga7e45a9" class="outline-3">
-<h3 id="orga7e45a9">Grep</h3>
-<div class="outline-text-3" id="text-orga7e45a9">
+<div id="outline-container-orgdda8584" class="outline-3">
+<h3 id="orgdda8584">Grep</h3>
+<div class="outline-text-3" id="text-orgdda8584">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(autoload 'grep <span style="color: #79a8ff;">"grep"</span> nil t)
 (global-set-key (kbd <span style="color: #79a8ff;">"C-c C-g"</span>) 'grep)
@@ -1147,9 +1165,9 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-orgdd91c39" class="outline-3">
-<h3 id="orgdd91c39">Menubar</h3>
-<div class="outline-text-3" id="text-orgdd91c39">
+<div id="outline-container-orgceb6299" class="outline-3">
+<h3 id="orgceb6299">Menubar</h3>
+<div class="outline-text-3" id="text-orgceb6299">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(global-set-key (kbd <span style="color: #79a8ff;">"C-c M-m"</span>) 'menu-bar-mode)
 (global-set-key (kbd <span style="color: #79a8ff;">"S-&lt;f10&gt;"</span>) 'menu-bar-mode)
@@ -1158,9 +1176,9 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-orgea58990" class="outline-3">
-<h3 id="orgea58990">Special mode</h3>
-<div class="outline-text-3" id="text-orgea58990">
+<div id="outline-container-org81c4b30" class="outline-3">
+<h3 id="org81c4b30">Special mode</h3>
+<div class="outline-text-3" id="text-org81c4b30">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">for help modes, and simple/special modes</span>
 (define-key special-mode-map <span style="color: #79a8ff;">"n"</span> #'forward-button)
@@ -1176,9 +1194,9 @@ If init.elc is older, use newer <code>init.el</code>.
 </div>
 </div>
 
-<div id="outline-container-org3cc017d" class="outline-3">
-<h3 id="org3cc017d">Tabs (Emacs 27+)</h3>
-<div class="outline-text-3" id="text-org3cc017d">
+<div id="outline-container-org212d3fb" class="outline-3">
+<h3 id="org212d3fb">Tabs (Emacs 27+)</h3>
+<div class="outline-text-3" id="text-org212d3fb">
 <p>
 Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </p>
@@ -1197,9 +1215,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-org620f50c" class="outline-2">
-<h2 id="org620f50c">Registers</h2>
-<div class="outline-text-2" id="text-org620f50c">
+<div id="outline-container-org1cdc683" class="outline-2">
+<h2 id="org1cdc683">Registers</h2>
+<div class="outline-text-2" id="text-org1cdc683">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-jump-to-register-other-window</span> ()
@@ -1216,13 +1234,13 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-org3dcc1c4" class="outline-2">
-<h2 id="org3dcc1c4">Theme/UI</h2>
-<div class="outline-text-2" id="text-org3dcc1c4">
+<div id="outline-container-org59641dc" class="outline-2">
+<h2 id="org59641dc">Theme/UI</h2>
+<div class="outline-text-2" id="text-org59641dc">
 </div>
-<div id="outline-container-orgc95ac7e" class="outline-3">
-<h3 id="orgc95ac7e">Disable themes</h3>
-<div class="outline-text-3" id="text-orgc95ac7e">
+<div id="outline-container-org83fbe54" class="outline-3">
+<h3 id="org83fbe54">Disable themes</h3>
+<div class="outline-text-3" id="text-org83fbe54">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">defadvice</span> <span style="color: #feacd0;">load-theme</span> (before theme-dont-propagate activate)
   <span style="color: #c6eaff;">"Disable theme before loading new one."</span>
@@ -1242,9 +1260,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-org06a1d9b" class="outline-3">
-<h3 id="org06a1d9b">Maximize on startup</h3>
-<div class="outline-text-3" id="text-org06a1d9b">
+<div id="outline-container-org5d8c788" class="outline-3">
+<h3 id="org5d8c788">Maximize on startup</h3>
+<div class="outline-text-3" id="text-org5d8c788">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> default-frame-alist
       '((fullscreen . maximized) (vertical-scroll-bars . nil)))
@@ -1254,9 +1272,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-org509bb4f" class="outline-3">
-<h3 id="org509bb4f">Modeline</h3>
-<div class="outline-text-3" id="text-org509bb4f">
+<div id="outline-container-orgf892933" class="outline-3">
+<h3 id="orgf892933">Modeline</h3>
+<div class="outline-text-3" id="text-orgf892933">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">(setq display-time-format "%H:%M %d/%m")</span>
 <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">(setq display-time-default-load-average 'nil)</span>
@@ -1269,9 +1287,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-orgb6f4383" class="outline-3">
-<h3 id="orgb6f4383">Setup Frame for Emacsclient</h3>
-<div class="outline-text-3" id="text-orgb6f4383">
+<div id="outline-container-org57dd405" class="outline-3">
+<h3 id="org57dd405">Setup Frame for Emacsclient</h3>
+<div class="outline-text-3" id="text-org57dd405">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-after-make-frame</span> (frame)
@@ -1309,9 +1327,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-org07daa4d" class="outline-3">
-<h3 id="org07daa4d">Turn off UI elements</h3>
-<div class="outline-text-3" id="text-org07daa4d">
+<div id="outline-container-org191bc57" class="outline-3">
+<h3 id="org191bc57">Turn off UI elements</h3>
+<div class="outline-text-3" id="text-org191bc57">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">when</span> (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (<span style="color: #b6a0ff;">when</span> (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -1323,13 +1341,13 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-orge51b095" class="outline-2">
-<h2 id="orge51b095">Buffer Functions</h2>
-<div class="outline-text-2" id="text-orge51b095">
+<div id="outline-container-org9ed7d3b" class="outline-2">
+<h2 id="org9ed7d3b">Buffer Functions</h2>
+<div class="outline-text-2" id="text-org9ed7d3b">
 </div>
-<div id="outline-container-org972a654" class="outline-3">
-<h3 id="org972a654">Indent Buffer</h3>
-<div class="outline-text-3" id="text-org972a654">
+<div id="outline-container-org90c4dd3" class="outline-3">
+<h3 id="org90c4dd3">Indent Buffer</h3>
+<div class="outline-text-3" id="text-org90c4dd3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-indent-buffer</span> ()
@@ -1342,9 +1360,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-orgf492b58" class="outline-3">
-<h3 id="orgf492b58">Kill this buffer</h3>
-<div class="outline-text-3" id="text-orgf492b58">
+<div id="outline-container-org2b97028" class="outline-3">
+<h3 id="org2b97028">Kill this buffer</h3>
+<div class="outline-text-3" id="text-org2b97028">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-kill-this-buffer</span> ()
@@ -1357,9 +1375,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-org26eddaa" class="outline-3">
-<h3 id="org26eddaa">Last buffer</h3>
-<div class="outline-text-3" id="text-org26eddaa">
+<div id="outline-container-org99018c0" class="outline-3">
+<h3 id="org99018c0">Last buffer</h3>
+<div class="outline-text-3" id="text-org99018c0">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-last-buffer</span> ()
@@ -1372,9 +1390,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-orgc732f36" class="outline-3">
-<h3 id="orgc732f36">Narrow DWIM</h3>
-<div class="outline-text-3" id="text-orgc732f36">
+<div id="outline-container-orgcad7357" class="outline-3">
+<h3 id="orgcad7357">Narrow DWIM</h3>
+<div class="outline-text-3" id="text-orgcad7357">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-narrow-or-widen-dwim</span> (p)
@@ -1408,9 +1426,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-orgbb3ee94" class="outline-3">
-<h3 id="orgbb3ee94">Nuke buffers</h3>
-<div class="outline-text-3" id="text-orgbb3ee94">
+<div id="outline-container-orgdca757b" class="outline-3">
+<h3 id="orgdca757b">Nuke buffers</h3>
+<div class="outline-text-3" id="text-orgdca757b">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-nuke-buffers</span> ()
@@ -1428,9 +1446,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-org89b1149" class="outline-3">
-<h3 id="org89b1149">Remove stuff from a buffer</h3>
-<div class="outline-text-3" id="text-org89b1149">
+<div id="outline-container-org5ca5100" class="outline-3">
+<h3 id="org5ca5100">Remove stuff from a buffer</h3>
+<div class="outline-text-3" id="text-org5ca5100">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-remove-from-buffer</span> (string)
@@ -1474,9 +1492,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-org1d95ae9" class="outline-3">
-<h3 id="org1d95ae9">Save buffers silently</h3>
-<div class="outline-text-3" id="text-org1d95ae9">
+<div id="outline-container-orgbf347e1" class="outline-3">
+<h3 id="orgbf347e1">Save buffers silently</h3>
+<div class="outline-text-3" id="text-orgbf347e1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-save-buffers-silently</span> ()
@@ -1490,9 +1508,9 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-org5043800" class="outline-3">
-<h3 id="org5043800">Toggle maximize buffer</h3>
-<div class="outline-text-3" id="text-org5043800">
+<div id="outline-container-org2ec5022" class="outline-3">
+<h3 id="org2ec5022">Toggle maximize buffer</h3>
+<div class="outline-text-3" id="text-org2ec5022">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-toggle-maximize-buffer</span> ()
@@ -1510,13 +1528,13 @@ Don't tangle this block on <code>emacs-version</code> &lt; 27.
 </div>
 </div>
 
-<div id="outline-container-orgd65f98a" class="outline-2">
-<h2 id="orgd65f98a">Editing Functions</h2>
-<div class="outline-text-2" id="text-orgd65f98a">
+<div id="outline-container-org4ce069f" class="outline-2">
+<h2 id="org4ce069f">Editing Functions</h2>
+<div class="outline-text-2" id="text-org4ce069f">
 </div>
-<div id="outline-container-org440138d" class="outline-3">
-<h3 id="org440138d">Aligning symbols</h3>
-<div class="outline-text-3" id="text-org440138d">
+<div id="outline-container-orgc911ac6" class="outline-3">
+<h3 id="orgc911ac6">Aligning symbols</h3>
+<div class="outline-text-3" id="text-orgc911ac6">
 <p>
 Some handy functions to make aligning symbols less painful.
 </p>
@@ -1559,9 +1577,9 @@ Some handy functions to make aligning symbols less painful.
 </div>
 </div>
 
-<div id="outline-container-org6940f9d" class="outline-3">
-<h3 id="org6940f9d">Beginning of line</h3>
-<div class="outline-text-3" id="text-org6940f9d">
+<div id="outline-container-org374021d" class="outline-3">
+<h3 id="org374021d">Beginning of line</h3>
+<div class="outline-text-3" id="text-org374021d">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-move-beginning-of-line</span> ()
@@ -1579,9 +1597,9 @@ Some handy functions to make aligning symbols less painful.
 </div>
 </div>
 
-<div id="outline-container-orgfb93f0a" class="outline-3">
-<h3 id="orgfb93f0a">Case insensitive sort-lines</h3>
-<div class="outline-text-3" id="text-orgfb93f0a">
+<div id="outline-container-orgfbfddb9" class="outline-3">
+<h3 id="orgfbfddb9">Case insensitive sort-lines</h3>
+<div class="outline-text-3" id="text-orgfbfddb9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-sort-lines-nocase</span> ()
@@ -1594,9 +1612,9 @@ Some handy functions to make aligning symbols less painful.
 </div>
 </div>
 
-<div id="outline-container-org677ad5c" class="outline-3">
-<h3 id="org677ad5c">Change numbers</h3>
-<div class="outline-text-3" id="text-org677ad5c">
+<div id="outline-container-org5bb48cb" class="outline-3">
+<h3 id="org5bb48cb">Change numbers</h3>
+<div class="outline-text-3" id="text-org5bb48cb">
 <p>
 Increment or decrement numbers at the point.
 </p>
@@ -1632,9 +1650,9 @@ Increment or decrement numbers at the point.
 </div>
 </div>
 
-<div id="outline-container-orgf067865" class="outline-3">
-<h3 id="orgf067865">Delete inside delimiters</h3>
-<div class="outline-text-3" id="text-orgf067865">
+<div id="outline-container-orge6e4edc" class="outline-3">
+<h3 id="orge6e4edc">Delete inside delimiters</h3>
+<div class="outline-text-3" id="text-orge6e4edc">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-delete-inside</span> ()
@@ -1653,9 +1671,9 @@ Increment or decrement numbers at the point.
 </div>
 </div>
 
-<div id="outline-container-org1dda786" class="outline-3">
-<h3 id="org1dda786">Generate a numbered list</h3>
-<div class="outline-text-3" id="text-org1dda786">
+<div id="outline-container-org1d02b9d" class="outline-3">
+<h3 id="org1d02b9d">Generate a numbered list</h3>
+<div class="outline-text-3" id="text-org1d02b9d">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-generate-numbered-list</span> (start end char)
@@ -1671,9 +1689,9 @@ Increment or decrement numbers at the point.
 </div>
 </div>
 
-<div id="outline-container-org441010d" class="outline-3">
-<h3 id="org441010d">Kill region</h3>
-<div class="outline-text-3" id="text-org441010d">
+<div id="outline-container-orgf7b813d" class="outline-3">
+<h3 id="orgf7b813d">Kill region</h3>
+<div class="outline-text-3" id="text-orgf7b813d">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-kill-region</span> ()
@@ -1698,9 +1716,9 @@ Increment or decrement numbers at the point.
 </div>
 </div>
 
-<div id="outline-container-orgc326fd6" class="outline-3">
-<h3 id="orgc326fd6">Kill ring save</h3>
-<div class="outline-text-3" id="text-orgc326fd6">
+<div id="outline-container-orgce2d35b" class="outline-3">
+<h3 id="orgce2d35b">Kill ring save</h3>
+<div class="outline-text-3" id="text-orgce2d35b">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-kill-ring-save</span> ()
@@ -1725,9 +1743,9 @@ Increment or decrement numbers at the point.
 </div>
 </div>
 
-<div id="outline-container-orgc58165b" class="outline-3">
-<h3 id="orgc58165b">Moving lines</h3>
-<div class="outline-text-3" id="text-orgc58165b">
+<div id="outline-container-org2edb09d" class="outline-3">
+<h3 id="org2edb09d">Moving lines</h3>
+<div class="outline-text-3" id="text-org2edb09d">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">defmacro</span> <span style="color: #feacd0;">save-column</span> (<span style="color: #f78fe7;">&amp;rest</span> body)
   `(<span style="color: #b6a0ff;">let</span> ((column (current-column)))
@@ -1749,9 +1767,9 @@ Increment or decrement numbers at the point.
 </div>
 </div>
 
-<div id="outline-container-orgc716a4a" class="outline-3">
-<h3 id="orgc716a4a">Surround stuff</h3>
-<div class="outline-text-3" id="text-orgc716a4a">
+<div id="outline-container-org9defa1c" class="outline-3">
+<h3 id="org9defa1c">Surround stuff</h3>
+<div class="outline-text-3" id="text-org9defa1c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-surround</span> (begin end open close)
@@ -1772,9 +1790,9 @@ Increment or decrement numbers at the point.
 </div>
 </div>
 
-<div id="outline-container-org6da009c" class="outline-3">
-<h3 id="org6da009c">Untabify a buffer</h3>
-<div class="outline-text-3" id="text-org6da009c">
+<div id="outline-container-org83c6cb5" class="outline-3">
+<h3 id="org83c6cb5">Untabify a buffer</h3>
+<div class="outline-text-3" id="text-org83c6cb5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-untabify-buffer</span> ()
@@ -1786,9 +1804,9 @@ Increment or decrement numbers at the point.
 </div>
 </div>
 
-<div id="outline-container-org507eeba" class="outline-3">
-<h3 id="org507eeba">XML pretty print</h3>
-<div class="outline-text-3" id="text-org507eeba">
+<div id="outline-container-org5e2657e" class="outline-3">
+<h3 id="org5e2657e">XML pretty print</h3>
+<div class="outline-text-3" id="text-org5e2657e">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-xml-pretty-print</span> ()
@@ -1802,9 +1820,9 @@ Increment or decrement numbers at the point.
 </div>
 </div>
 
-<div id="outline-container-orgc1ca9c7" class="outline-3">
-<h3 id="orgc1ca9c7">Yank pop forwards (Emacs&lt;28)</h3>
-<div class="outline-text-3" id="text-orgc1ca9c7">
+<div id="outline-container-org565b96f" class="outline-3">
+<h3 id="org565b96f">Yank pop forwards (Emacs&lt;28)</h3>
+<div class="outline-text-3" id="text-org565b96f">
 <p>
 Don't bother tangling this if <code>emacs-version</code> &gt; 28, as Emacs 28 has <code>M-y</code> bound
 to completing read of the kill ring, making this pretty pointless.
@@ -1823,13 +1841,13 @@ to completing read of the kill ring, making this pretty pointless.
 </div>
 </div>
 
-<div id="outline-container-orga1c8eb4" class="outline-2">
-<h2 id="orga1c8eb4">File Functions</h2>
-<div class="outline-text-2" id="text-orga1c8eb4">
+<div id="outline-container-org274558a" class="outline-2">
+<h2 id="org274558a">File Functions</h2>
+<div class="outline-text-2" id="text-org274558a">
 </div>
-<div id="outline-container-orgc617724" class="outline-3">
-<h3 id="orgc617724">Delete this file</h3>
-<div class="outline-text-3" id="text-orgc617724">
+<div id="outline-container-orgd99ae13" class="outline-3">
+<h3 id="orgd99ae13">Delete this file</h3>
+<div class="outline-text-3" id="text-orgd99ae13">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-delete-this-file</span> ()
@@ -1846,9 +1864,9 @@ to completing read of the kill ring, making this pretty pointless.
 </div>
 </div>
 
-<div id="outline-container-org7042382" class="outline-3">
-<h3 id="org7042382">Make backup of current file</h3>
-<div class="outline-text-3" id="text-org7042382">
+<div id="outline-container-org9459c62" class="outline-3">
+<h3 id="org9459c62">Make backup of current file</h3>
+<div class="outline-text-3" id="text-org9459c62">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-make-backup</span> ()
@@ -1893,9 +1911,9 @@ to completing read of the kill ring, making this pretty pointless.
 </div>
 </div>
 
-<div id="outline-container-org5f88a68" class="outline-3">
-<h3 id="org5f88a68">Open current file as root</h3>
-<div class="outline-text-3" id="text-org5f88a68">
+<div id="outline-container-org56350a1" class="outline-3">
+<h3 id="org56350a1">Open current file as root</h3>
+<div class="outline-text-3" id="text-org56350a1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-sudoedit</span> (<span style="color: #f78fe7;">&amp;optional</span> arg)
@@ -1911,9 +1929,9 @@ to completing read of the kill ring, making this pretty pointless.
 </div>
 </div>
 
-<div id="outline-container-org1da22e0" class="outline-3">
-<h3 id="org1da22e0">Rename file and buffer</h3>
-<div class="outline-text-3" id="text-org1da22e0">
+<div id="outline-container-org3b324fb" class="outline-3">
+<h3 id="org3b324fb">Rename file and buffer</h3>
+<div class="outline-text-3" id="text-org3b324fb">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-rename-this-file-and-buffer</span> (new-name)
@@ -1936,9 +1954,9 @@ to completing read of the kill ring, making this pretty pointless.
 </div>
 </div>
 
-<div id="outline-container-org728fa0d" class="outline-3">
-<h3 id="org728fa0d">Yank current file name to kill ring</h3>
-<div class="outline-text-3" id="text-org728fa0d">
+<div id="outline-container-orgbe3570b" class="outline-3">
+<h3 id="orgbe3570b">Yank current file name to kill ring</h3>
+<div class="outline-text-3" id="text-orgbe3570b">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-copy-file-name-to-clipboard</span> ()
@@ -1957,9 +1975,9 @@ to completing read of the kill ring, making this pretty pointless.
 </div>
 </div>
 
-<div id="outline-container-org223a337" class="outline-2">
-<h2 id="org223a337">Miscellaneous Functions</h2>
-<div class="outline-text-2" id="text-org223a337">
+<div id="outline-container-org146dee3" class="outline-2">
+<h2 id="org146dee3">Miscellaneous Functions</h2>
+<div class="outline-text-2" id="text-org146dee3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-google</span> (arg)
@@ -1985,13 +2003,13 @@ to completing read of the kill ring, making this pretty pointless.
 </div>
 </div>
 
-<div id="outline-container-org8cad03e" class="outline-2">
-<h2 id="org8cad03e">Window Functions</h2>
-<div class="outline-text-2" id="text-org8cad03e">
+<div id="outline-container-org5e8673d" class="outline-2">
+<h2 id="org5e8673d">Window Functions</h2>
+<div class="outline-text-2" id="text-org5e8673d">
 </div>
-<div id="outline-container-org486696f" class="outline-3">
-<h3 id="org486696f">Better scrolling of other windows</h3>
-<div class="outline-text-3" id="text-org486696f">
+<div id="outline-container-org0e13681" class="outline-3">
+<h3 id="org0e13681">Better scrolling of other windows</h3>
+<div class="outline-text-3" id="text-org0e13681">
 <p>
 This is better, since I don't need to send prefix to <code>scroll-other-window</code>.
 </p>
@@ -2008,9 +2026,9 @@ This is better, since I don't need to send prefix to <code>scroll-other-window</
 </div>
 </div>
 
-<div id="outline-container-org1ed2e4f" class="outline-3">
-<h3 id="org1ed2e4f">Kill buffer other window</h3>
-<div class="outline-text-3" id="text-org1ed2e4f">
+<div id="outline-container-org2efe61c" class="outline-3">
+<h3 id="org2efe61c">Kill buffer other window</h3>
+<div class="outline-text-3" id="text-org2efe61c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-kill-buffer-other-window</span> ()
@@ -2029,9 +2047,9 @@ This is better, since I don't need to send prefix to <code>scroll-other-window</
 </div>
 </div>
 
-<div id="outline-container-org1bc4594" class="outline-3">
-<h3 id="org1bc4594">Open a buffer in another window</h3>
-<div class="outline-text-3" id="text-org1bc4594">
+<div id="outline-container-org1d14d80" class="outline-3">
+<h3 id="org1d14d80">Open a buffer in another window</h3>
+<div class="outline-text-3" id="text-org1d14d80">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-open-buffer-other-window</span> (buffer)
@@ -2045,9 +2063,9 @@ This is better, since I don't need to send prefix to <code>scroll-other-window</
 </div>
 </div>
 
-<div id="outline-container-org1b733f3" class="outline-3">
-<h3 id="org1b733f3">Open last buffer in horizontal split</h3>
-<div class="outline-text-3" id="text-org1b733f3">
+<div id="outline-container-org93ab9a8" class="outline-3">
+<h3 id="org93ab9a8">Open last buffer in horizontal split</h3>
+<div class="outline-text-3" id="text-org93ab9a8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-hsplit-last-buffer</span> (prefix)
@@ -2064,9 +2082,9 @@ This is better, since I don't need to send prefix to <code>scroll-other-window</
 </div>
 </div>
 
-<div id="outline-container-org150edaa" class="outline-3">
-<h3 id="org150edaa">Open last buffer in vertical split</h3>
-<div class="outline-text-3" id="text-org150edaa">
+<div id="outline-container-org592d64e" class="outline-3">
+<h3 id="org592d64e">Open last buffer in vertical split</h3>
+<div class="outline-text-3" id="text-org592d64e">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-vsplit-last-buffer</span> (prefix)
@@ -2082,9 +2100,9 @@ This is better, since I don't need to send prefix to <code>scroll-other-window</
 </div>
 </div>
 
-<div id="outline-container-org94d8189" class="outline-3">
-<h3 id="org94d8189">Scroll lines down like Ctrl-y in Vim</h3>
-<div class="outline-text-3" id="text-org94d8189">
+<div id="outline-container-orgdfc45e8" class="outline-3">
+<h3 id="orgdfc45e8">Scroll lines down like Ctrl-y in Vim</h3>
+<div class="outline-text-3" id="text-orgdfc45e8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-scroll-line-down</span> (n)
@@ -2097,9 +2115,9 @@ This is better, since I don't need to send prefix to <code>scroll-other-window</
 </div>
 </div>
 
-<div id="outline-container-org4b78c1d" class="outline-3">
-<h3 id="org4b78c1d">Scroll lines up like Ctrl-e in Vim</h3>
-<div class="outline-text-3" id="text-org4b78c1d">
+<div id="outline-container-org23bec43" class="outline-3">
+<h3 id="org23bec43">Scroll lines up like Ctrl-e in Vim</h3>
+<div class="outline-text-3" id="text-org23bec43">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-scroll-line-up</span> (n)
@@ -2112,9 +2130,9 @@ This is better, since I don't need to send prefix to <code>scroll-other-window</
 </div>
 </div>
 
-<div id="outline-container-orge63765c" class="outline-3">
-<h3 id="orge63765c">Switch to the previous window</h3>
-<div class="outline-text-3" id="text-orge63765c">
+<div id="outline-container-org2b8ff53" class="outline-3">
+<h3 id="org2b8ff53">Switch to the previous window</h3>
+<div class="outline-text-3" id="text-org2b8ff53">
 <p>
 This is basically <code>other-window</code> backwards.
 </p>
@@ -2131,9 +2149,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-orgaff4215" class="outline-3">
-<h3 id="orgaff4215">Toggle focus to last window</h3>
-<div class="outline-text-3" id="text-orgaff4215">
+<div id="outline-container-orgc98b517" class="outline-3">
+<h3 id="orgc98b517">Toggle focus to last window</h3>
+<div class="outline-text-3" id="text-orgc98b517">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-last-window</span> ()
@@ -2151,9 +2169,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-org769dcde" class="outline-3">
-<h3 id="org769dcde">Toggle vertical -&gt; horizontal splits</h3>
-<div class="outline-text-3" id="text-org769dcde">
+<div id="outline-container-org0edc0df" class="outline-3">
+<h3 id="org0edc0df">Toggle vertical -&gt; horizontal splits</h3>
+<div class="outline-text-3" id="text-org0edc0df">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-toggle-split</span> ()
@@ -2188,9 +2206,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-orgd762ac7" class="outline-3">
-<h3 id="orgd762ac7">Transpose windows</h3>
-<div class="outline-text-3" id="text-orgd762ac7">
+<div id="outline-container-org62b7578" class="outline-3">
+<h3 id="org62b7578">Transpose windows</h3>
+<div class="outline-text-3" id="text-org62b7578">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-transpose-windows</span> (arg)
@@ -2219,9 +2237,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-orgb2a4806" class="outline-3">
-<h3 id="orgb2a4806">Windmove keybindings</h3>
-<div class="outline-text-3" id="text-orgb2a4806">
+<div id="outline-container-orga64e08f" class="outline-3">
+<h3 id="orga64e08f">Windmove keybindings</h3>
+<div class="outline-text-3" id="text-orga64e08f">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(autoload 'windmove-left <span style="color: #79a8ff;">"windmove"</span> nil t)
 (global-set-key (kbd <span style="color: #79a8ff;">"C-c w b"</span>) 'windmove-left)
@@ -2239,9 +2257,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-orgaaa3a20" class="outline-3">
-<h3 id="orgaaa3a20">Winner mode</h3>
-<div class="outline-text-3" id="text-orgaaa3a20">
+<div id="outline-container-orgaed54be" class="outline-3">
+<h3 id="orgaed54be">Winner mode</h3>
+<div class="outline-text-3" id="text-orgaed54be">
 <p>
 <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Startup-Summary.html#Startup-Summary">Startup Summary</a>
 </p>
@@ -2256,13 +2274,13 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-org0cf1d24" class="outline-2">
-<h2 id="org0cf1d24">Emacs Packages</h2>
-<div class="outline-text-2" id="text-org0cf1d24">
+<div id="outline-container-org7ffb786" class="outline-2">
+<h2 id="org7ffb786">Emacs Packages</h2>
+<div class="outline-text-2" id="text-org7ffb786">
 </div>
-<div id="outline-container-org36de787" class="outline-3">
-<h3 id="org36de787">Auto-fill</h3>
-<div class="outline-text-3" id="text-org36de787">
+<div id="outline-container-org3198d69" class="outline-3">
+<h3 id="org3198d69">Auto-fill</h3>
+<div class="outline-text-3" id="text-org3198d69">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-fill-or-unfill</span> ()
@@ -2287,9 +2305,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-org737626b" class="outline-3">
-<h3 id="org737626b">Auto-revert</h3>
-<div class="outline-text-3" id="text-org737626b">
+<div id="outline-container-org7c9004c" class="outline-3">
+<h3 id="org7c9004c">Auto-revert</h3>
+<div class="outline-text-3" id="text-org7c9004c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'after-init-hook 'global-auto-revert-mode) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">reload if file changed on disk</span>
 </pre>
@@ -2297,9 +2315,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-orge745b7a" class="outline-3">
-<h3 id="orge745b7a">Dabbrev</h3>
-<div class="outline-text-3" id="text-orge745b7a">
+<div id="outline-container-org02576d4" class="outline-3">
+<h3 id="org02576d4">Dabbrev</h3>
+<div class="outline-text-3" id="text-org02576d4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'dabbrev
   (<span style="color: #b6a0ff;">setq</span> abbrev-file-name (concat user-emacs-directory <span style="color: #79a8ff;">"abbrevs"</span>))
@@ -2321,9 +2339,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-org2169a4b" class="outline-3">
-<h3 id="org2169a4b">Dired</h3>
-<div class="outline-text-3" id="text-org2169a4b">
+<div id="outline-container-org2957832" class="outline-3">
+<h3 id="org2957832">Dired</h3>
+<div class="outline-text-3" id="text-org2957832">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'dired
 <span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
@@ -2384,9 +2402,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-org4593dfb" class="outline-4">
-<h4 id="org4593dfb">Dired AUX</h4>
-<div class="outline-text-4" id="text-org4593dfb">
+<div id="outline-container-org1c33106" class="outline-4">
+<h4 id="org1c33106">Dired AUX</h4>
+<div class="outline-text-4" id="text-org1c33106">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'dired-aux
   (<span style="color: #b6a0ff;">setq</span> dired-isearch-filenames 'dwim)
@@ -2400,9 +2418,9 @@ This is basically <code>other-window</code> backwards.
 </div>
 </div>
 
-<div id="outline-container-orgf428c4e" class="outline-4">
-<h4 id="orgf428c4e">Dired-X Jump (Emacs&lt;28)</h4>
-<div class="outline-text-4" id="text-orgf428c4e">
+<div id="outline-container-org398b95e" class="outline-4">
+<h4 id="org398b95e">Dired-X Jump (Emacs&lt;28)</h4>
+<div class="outline-text-4" id="text-org398b95e">
 <p>
 Has to come outside of with-eval-after-load otherwise we have no dired-jump.
 </p>
@@ -2428,9 +2446,9 @@ The default keys are <code>C-x C-j</code> and <code>C-x 4 C-j</code>.
 </div>
 </div>
 
-<div id="outline-container-org218a702" class="outline-4">
-<h4 id="org218a702">Find Dired</h4>
-<div class="outline-text-4" id="text-org218a702">
+<div id="outline-container-org3cbae57" class="outline-4">
+<h4 id="org3cbae57">Find Dired</h4>
+<div class="outline-text-4" id="text-org3cbae57">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'find-dired
   <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">(setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld"))</span>
@@ -2443,9 +2461,9 @@ The default keys are <code>C-x C-j</code> and <code>C-x 4 C-j</code>.
 </div>
 </div>
 
-<div id="outline-container-org4c2ca7f" class="outline-4">
-<h4 id="org4c2ca7f">Writeable Dired</h4>
-<div class="outline-text-4" id="text-org4c2ca7f">
+<div id="outline-container-orgaf3f444" class="outline-4">
+<h4 id="orgaf3f444">Writeable Dired</h4>
+<div class="outline-text-4" id="text-orgaf3f444">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'wdired
   (<span style="color: #b6a0ff;">setq</span> wdired-allow-to-change-permissions t)
@@ -2457,9 +2475,9 @@ The default keys are <code>C-x C-j</code> and <code>C-x 4 C-j</code>.
 </div>
 </div>
 
-<div id="outline-container-orgee8a918" class="outline-3">
-<h3 id="orgee8a918">Doc View</h3>
-<div class="outline-text-3" id="text-orgee8a918">
+<div id="outline-container-orgba4e712" class="outline-3">
+<h3 id="orgba4e712">Doc View</h3>
+<div class="outline-text-3" id="text-orgba4e712">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'doc-view-mode
   (<span style="color: #b6a0ff;">setq</span> doc-view-continuous t)
@@ -2470,9 +2488,9 @@ The default keys are <code>C-x C-j</code> and <code>C-x 4 C-j</code>.
 </div>
 </div>
 
-<div id="outline-container-orgaade8c0" class="outline-3">
-<h3 id="orgaade8c0">Ediff</h3>
-<div class="outline-text-3" id="text-orgaade8c0">
+<div id="outline-container-org0350b5d" class="outline-3">
+<h3 id="org0350b5d">Ediff</h3>
+<div class="outline-text-3" id="text-org0350b5d">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'ediff
   (<span style="color: #b6a0ff;">setq</span> ediff-diff-options <span style="color: #79a8ff;">"-w"</span>)
@@ -2498,9 +2516,9 @@ The default keys are <code>C-x C-j</code> and <code>C-x 4 C-j</code>.
 </div>
 </div>
 
-<div id="outline-container-org3ec494a" class="outline-3">
-<h3 id="org3ec494a">Eldoc</h3>
-<div class="outline-text-3" id="text-org3ec494a">
+<div id="outline-container-org5325f06" class="outline-3">
+<h3 id="org5325f06">Eldoc</h3>
+<div class="outline-text-3" id="text-org5325f06">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
@@ -2510,9 +2528,9 @@ The default keys are <code>C-x C-j</code> and <code>C-x 4 C-j</code>.
 </div>
 </div>
 
-<div id="outline-container-orgff1d917" class="outline-3">
-<h3 id="orgff1d917">Electric</h3>
-<div class="outline-text-3" id="text-orgff1d917">
+<div id="outline-container-org4972a73" class="outline-3">
+<h3 id="org4972a73">Electric</h3>
+<div class="outline-text-3" id="text-org4972a73">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'after-init-hook 'electric-indent-mode)
 (add-hook 'after-init-hook 'electric-pair-mode)
@@ -2521,9 +2539,9 @@ The default keys are <code>C-x C-j</code> and <code>C-x 4 C-j</code>.
 </div>
 </div>
 
-<div id="outline-container-orga86703a" class="outline-3">
-<h3 id="orga86703a">ERC</h3>
-<div class="outline-text-3" id="text-orga86703a">
+<div id="outline-container-org6c57bbb" class="outline-3">
+<h3 id="org6c57bbb">ERC</h3>
+<div class="outline-text-3" id="text-org6c57bbb">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'erc
   (<span style="color: #b6a0ff;">setq</span> erc-autojoin-channels-alist '((<span style="color: #79a8ff;">"freenode.net"</span> <span style="color: #79a8ff;">"#emacs"</span>)))
@@ -2540,9 +2558,9 @@ The default keys are <code>C-x C-j</code> and <code>C-x 4 C-j</code>.
 </div>
 </div>
 
-<div id="outline-container-org1e98de6" class="outline-3">
-<h3 id="org1e98de6">Eshell</h3>
-<div class="outline-text-3" id="text-org1e98de6">
+<div id="outline-container-orgfe63aad" class="outline-3">
+<h3 id="orgfe63aad">Eshell</h3>
+<div class="outline-text-3" id="text-orgfe63aad">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'eshell
 <span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
@@ -2628,9 +2646,9 @@ The default keys are <code>C-x C-j</code> and <code>C-x 4 C-j</code>.
 </div>
 </div>
 
-<div id="outline-container-org35843d6" class="outline-3">
-<h3 id="org35843d6">Flyspell</h3>
-<div class="outline-text-3" id="text-org35843d6">
+<div id="outline-container-orgf5200b6" class="outline-3">
+<h3 id="orgf5200b6">Flyspell</h3>
+<div class="outline-text-3" id="text-orgf5200b6">
 <p>
 Don't bother using this on Windows as I can rather be bothered to install
 <a href="http://aspell.net/win32/">Aspell</a> for Windows.
@@ -2646,9 +2664,9 @@ Don't bother using this on Windows as I can rather be bothered to install
 </div>
 </div>
 
-<div id="outline-container-orgedbba09" class="outline-3">
-<h3 id="orgedbba09">Gnus</h3>
-<div class="outline-text-3" id="text-orgedbba09">
+<div id="outline-container-org7b5ebce" class="outline-3">
+<h3 id="org7b5ebce">Gnus</h3>
+<div class="outline-text-3" id="text-org7b5ebce">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'gnus
   (<span style="color: #b6a0ff;">setq</span> gnus-init-file <span style="color: #79a8ff;">"~/.emacs.d/init.el"</span>)
@@ -2668,9 +2686,9 @@ Don't bother using this on Windows as I can rather be bothered to install
 </div>
 </div>
 
-<div id="outline-container-org70dede7" class="outline-3">
-<h3 id="org70dede7">Hide/Show</h3>
-<div class="outline-text-3" id="text-org70dede7">
+<div id="outline-container-org06beb2c" class="outline-3">
+<h3 id="org06beb2c">Hide/Show</h3>
+<div class="outline-text-3" id="text-org06beb2c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'shell-script-mode-hook 'hs-minor-mode)
 (add-hook 'prog-mode-hook 'hs-minor-mode)
@@ -2679,9 +2697,9 @@ Don't bother using this on Windows as I can rather be bothered to install
 </div>
 </div>
 
-<div id="outline-container-orgab97a5a" class="outline-3">
-<h3 id="orgab97a5a">Highlight changes</h3>
-<div class="outline-text-3" id="text-orgab97a5a">
+<div id="outline-container-org54d457d" class="outline-3">
+<h3 id="org54d457d">Highlight changes</h3>
+<div class="outline-text-3" id="text-org54d457d">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> highlight-changes-visibility-initial-state nil)
 (global-set-key (kbd <span style="color: #79a8ff;">"C-c n"</span>) 'highlight-changes-next-change)
@@ -2692,9 +2710,9 @@ Don't bother using this on Windows as I can rather be bothered to install
 </div>
 </div>
 
-<div id="outline-container-org3bb3535" class="outline-3">
-<h3 id="org3bb3535">Highlight line</h3>
-<div class="outline-text-3" id="text-org3bb3535">
+<div id="outline-container-orgb285b17" class="outline-3">
+<h3 id="orgb285b17">Highlight line</h3>
+<div class="outline-text-3" id="text-orgb285b17">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'dired-mode-hook 'hl-line-mode)
 (add-hook 'org-mode-hook 'hl-line-mode)
@@ -2706,9 +2724,9 @@ Don't bother using this on Windows as I can rather be bothered to install
 </div>
 </div>
 
-<div id="outline-container-org5aab7f2" class="outline-3">
-<h3 id="org5aab7f2">Hippie Expand</h3>
-<div class="outline-text-3" id="text-org5aab7f2">
+<div id="outline-container-orgdf1df04" class="outline-3">
+<h3 id="orgdf1df04">Hippie Expand</h3>
+<div class="outline-text-3" id="text-orgdf1df04">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-hippie-expand-completions</span> (<span style="color: #f78fe7;">&amp;optional</span> hippie-expand-function)
@@ -2751,9 +2769,9 @@ Don't bother using this on Windows as I can rather be bothered to install
 </div>
 </div>
 
-<div id="outline-container-orgf682053" class="outline-3">
-<h3 id="orgf682053">Icomplete</h3>
-<div class="outline-text-3" id="text-orgf682053">
+<div id="outline-container-org4b11abb" class="outline-3">
+<h3 id="org4b11abb">Icomplete</h3>
+<div class="outline-text-3" id="text-org4b11abb">
 <p>
 Turn on <code>fido-mode</code> if we are on Emacs 27+
 </p>
@@ -2766,9 +2784,9 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-org7eeeec8" class="outline-4">
-<h4 id="org7eeeec8">Change completion styles</h4>
-<div class="outline-text-4" id="text-org7eeeec8">
+<div id="outline-container-org949f44c" class="outline-4">
+<h4 id="org949f44c">Change completion styles</h4>
+<div class="outline-text-4" id="text-org949f44c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-icomplete-styles</span> ()
@@ -2782,9 +2800,9 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-org736aca2" class="outline-4">
-<h4 id="org736aca2">Icomplete keybindings</h4>
-<div class="outline-text-4" id="text-org736aca2">
+<div id="outline-container-org779e80c" class="outline-4">
+<h4 id="org779e80c">Icomplete keybindings</h4>
+<div class="outline-text-4" id="text-org779e80c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">unless</span> (version&lt; emacs-version <span style="color: #79a8ff;">"27"</span>)
   (define-key icomplete-minibuffer-map (kbd <span style="color: #79a8ff;">"C-j"</span>) 'icomplete-fido-exit))
@@ -2800,9 +2818,9 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-orga760e31" class="outline-4">
-<h4 id="orga760e31">Icomplete settings</h4>
-<div class="outline-text-4" id="text-orga760e31">
+<div id="outline-container-org0e59cdf" class="outline-4">
+<h4 id="org0e59cdf">Icomplete settings</h4>
+<div class="outline-text-4" id="text-org0e59cdf">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> icomplete-delay-completions-threshold 100)
 (<span style="color: #b6a0ff;">setq</span> icomplete-max-delay-chars 2)
@@ -2821,9 +2839,9 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-org1fdb885" class="outline-3">
-<h3 id="org1fdb885">Imenu</h3>
-<div class="outline-text-3" id="text-org1fdb885">
+<div id="outline-container-orged7dccc" class="outline-3">
+<h3 id="orged7dccc">Imenu</h3>
+<div class="outline-text-3" id="text-orged7dccc">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'imenu
   (<span style="color: #b6a0ff;">setq</span> imenu-auto-rescan t)
@@ -2843,13 +2861,13 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-orgb672af4" class="outline-3">
-<h3 id="orgb672af4">Isearch</h3>
-<div class="outline-text-3" id="text-orgb672af4">
+<div id="outline-container-org7917885" class="outline-3">
+<h3 id="org7917885">Isearch</h3>
+<div class="outline-text-3" id="text-org7917885">
 </div>
-<div id="outline-container-org90da38c" class="outline-4">
-<h4 id="org90da38c">Copy to isearch</h4>
-<div class="outline-text-4" id="text-org90da38c">
+<div id="outline-container-org204df2e" class="outline-4">
+<h4 id="org204df2e">Copy to isearch</h4>
+<div class="outline-text-4" id="text-org204df2e">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-copy-to-isearch</span> ()
@@ -2866,9 +2884,9 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-org536cfe6" class="outline-4">
-<h4 id="org536cfe6">Isearch Abort DWIM</h4>
-<div class="outline-text-4" id="text-org536cfe6">
+<div id="outline-container-org7cf46fd" class="outline-4">
+<h4 id="org7cf46fd">Isearch Abort DWIM</h4>
+<div class="outline-text-4" id="text-org7cf46fd">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-isearch-abort-dwim</span> ()
@@ -2893,9 +2911,9 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-org899e440" class="outline-4">
-<h4 id="org899e440">Isearch exit</h4>
-<div class="outline-text-4" id="text-org899e440">
+<div id="outline-container-orgdbbb947" class="outline-4">
+<h4 id="orgdbbb947">Isearch exit</h4>
+<div class="outline-text-4" id="text-orgdbbb947">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> <span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-isearch-exit</span> ()
@@ -2910,9 +2928,9 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-org1bc37d2" class="outline-4">
-<h4 id="org1bc37d2">Kill to isearch</h4>
-<div class="outline-text-4" id="text-org1bc37d2">
+<div id="outline-container-org2611f22" class="outline-4">
+<h4 id="org2611f22">Kill to isearch</h4>
+<div class="outline-text-4" id="text-org2611f22">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-kill-to-isearch</span> ()
@@ -2928,9 +2946,9 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-org6483d9b" class="outline-4">
-<h4 id="org6483d9b">Keybindings</h4>
-<div class="outline-text-4" id="text-org6483d9b">
+<div id="outline-container-orgfe4f7f8" class="outline-4">
+<h4 id="orgfe4f7f8">Keybindings</h4>
+<div class="outline-text-4" id="text-orgfe4f7f8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(define-key isearch-mode-map (kbd <span style="color: #79a8ff;">"M-/"</span>) 'isearch-complete)
 (define-key minibuffer-local-isearch-map (kbd <span style="color: #79a8ff;">"M-/"</span>) 'isearch-complete-edit)
@@ -2948,9 +2966,9 @@ Turn on <code>fido-mode</code> if we are on Emacs 27+
 </div>
 </div>
 
-<div id="outline-container-org9d65275" class="outline-4">
-<h4 id="org9d65275">Settings</h4>
-<div class="outline-text-4" id="text-org9d65275">
+<div id="outline-container-orge3f7b91" class="outline-4">
+<h4 id="orge3f7b91">Settings</h4>
+<div class="outline-text-4" id="text-orge3f7b91">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> search-highlight t)
 (<span style="color: #b6a0ff;">setq</span> search-whitespace-regexp <span style="color: #79a8ff;">".*?"</span>)
@@ -2977,9 +2995,9 @@ Don't tangle this on <code>emacs-version</code> &lt; 27
 </div>
 </div>
 
-<div id="outline-container-org2140910" class="outline-3">
-<h3 id="org2140910">Line Numbers</h3>
-<div class="outline-text-3" id="text-org2140910">
+<div id="outline-container-org8128634" class="outline-3">
+<h3 id="org8128634">Line Numbers</h3>
+<div class="outline-text-3" id="text-org8128634">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> display-line-numbers 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
@@ -2989,13 +3007,13 @@ Don't tangle this on <code>emacs-version</code> &lt; 27
 </div>
 </div>
 
-<div id="outline-container-org6032d85" class="outline-3">
-<h3 id="org6032d85">Minibuffer</h3>
-<div class="outline-text-3" id="text-org6032d85">
+<div id="outline-container-org0f8a81d" class="outline-3">
+<h3 id="org0f8a81d">Minibuffer</h3>
+<div class="outline-text-3" id="text-org0f8a81d">
 </div>
-<div id="outline-container-org7d9c22e" class="outline-4">
-<h4 id="org7d9c22e">Completion framework settings</h4>
-<div class="outline-text-4" id="text-org7d9c22e">
+<div id="outline-container-org8ea0884" class="outline-4">
+<h4 id="org8ea0884">Completion framework settings</h4>
+<div class="outline-text-4" id="text-org8ea0884">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> completion-category-defaults nil)
 (<span style="color: #b6a0ff;">setq</span> completion-cycle-threshold 3)
@@ -3011,9 +3029,9 @@ Don't tangle this on <code>emacs-version</code> &lt; 27
 </div>
 </div>
 
-<div id="outline-container-orgbc1af35" class="outline-4">
-<h4 id="orgbc1af35">Misc Minibuffer settings</h4>
-<div class="outline-text-4" id="text-orgbc1af35">
+<div id="outline-container-org6971bb4" class="outline-4">
+<h4 id="org6971bb4">Misc Minibuffer settings</h4>
+<div class="outline-text-4" id="text-org6971bb4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> enable-recursive-minibuffers t)
 (<span style="color: #b6a0ff;">setq</span> file-name-shadow-mode 1)
@@ -3041,9 +3059,9 @@ helm and ivy). Stolen from <a href="https://github.com/hlissner/doom-emacs/blob/
 </div>
 </div>
 
-<div id="outline-container-org0507a58" class="outline-4">
-<h4 id="org0507a58">Save history mode</h4>
-<div class="outline-text-4" id="text-org0507a58">
+<div id="outline-container-org2b2762f" class="outline-4">
+<h4 id="org2b2762f">Save history mode</h4>
+<div class="outline-text-4" id="text-org2b2762f">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'savehist
   (<span style="color: #b6a0ff;">setq</span> savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
@@ -3056,9 +3074,9 @@ helm and ivy). Stolen from <a href="https://github.com/hlissner/doom-emacs/blob/
 </div>
 </div>
 
-<div id="outline-container-org9ce5985" class="outline-3">
-<h3 id="org9ce5985">Occur</h3>
-<div class="outline-text-3" id="text-org9ce5985">
+<div id="outline-container-org8d7ce81" class="outline-3">
+<h3 id="org8d7ce81">Occur</h3>
+<div class="outline-text-3" id="text-org8d7ce81">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'occur-mode-hook 'hl-line-mode)
 (define-key occur-mode-map <span style="color: #79a8ff;">"t"</span> 'toggle-truncate-lines)
@@ -3067,9 +3085,9 @@ helm and ivy). Stolen from <a href="https://github.com/hlissner/doom-emacs/blob/
 </div>
 </div>
 
-<div id="outline-container-orgd3d60fc" class="outline-3">
-<h3 id="orgd3d60fc">Org</h3>
-<div class="outline-text-3" id="text-orgd3d60fc">
+<div id="outline-container-orgc90247a" class="outline-3">
+<h3 id="orgc90247a">Org</h3>
+<div class="outline-text-3" id="text-orgc90247a">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'org
   (<span style="color: #b6a0ff;">require</span> '<span style="color: #00bcff;">org-tempo</span>)
@@ -3187,9 +3205,9 @@ helm and ivy). Stolen from <a href="https://github.com/hlissner/doom-emacs/blob/
 </div>
 </div>
 
-<div id="outline-container-orgaa9ba18" class="outline-4">
-<h4 id="orgaa9ba18">Org global bindings</h4>
-<div class="outline-text-4" id="text-orgaa9ba18">
+<div id="outline-container-orgdd18241" class="outline-4">
+<h4 id="orgdd18241">Org global bindings</h4>
+<div class="outline-text-4" id="text-orgdd18241">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(autoload 'org-mode <span style="color: #79a8ff;">"org"</span> nil t)
 (autoload 'org-agenda <span style="color: #79a8ff;">"org"</span> nil t)
@@ -3206,9 +3224,9 @@ helm and ivy). Stolen from <a href="https://github.com/hlissner/doom-emacs/blob/
 </div>
 </div>
 
-<div id="outline-container-orgf1c7cd1" class="outline-3">
-<h3 id="orgf1c7cd1">Pending delete</h3>
-<div class="outline-text-3" id="text-orgf1c7cd1">
+<div id="outline-container-org3f5a516" class="outline-3">
+<h3 id="org3f5a516">Pending delete</h3>
+<div class="outline-text-3" id="text-org3f5a516">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'after-init-hook 'pending-delete-mode 1) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">remove selected region if typing</span>
 </pre>
@@ -3216,9 +3234,9 @@ helm and ivy). Stolen from <a href="https://github.com/hlissner/doom-emacs/blob/
 </div>
 </div>
 
-<div id="outline-container-org0c916c4" class="outline-3">
-<h3 id="org0c916c4">Prettify Symbols</h3>
-<div class="outline-text-3" id="text-org0c916c4">
+<div id="outline-container-org5a56acc" class="outline-3">
+<h3 id="org5a56acc">Prettify Symbols</h3>
+<div class="outline-text-3" id="text-org5a56acc">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'prettify-symbols
   (<span style="color: #b6a0ff;">setq</span> prettify-symbols-unprettify-at-point 'right-edge)
@@ -3229,9 +3247,9 @@ helm and ivy). Stolen from <a href="https://github.com/hlissner/doom-emacs/blob/
 </div>
 </div>
 
-<div id="outline-container-orgee4fa75" class="outline-3">
-<h3 id="orgee4fa75">Project</h3>
-<div class="outline-text-3" id="text-orgee4fa75">
+<div id="outline-container-org86b09a0" class="outline-3">
+<h3 id="org86b09a0">Project</h3>
+<div class="outline-text-3" id="text-org86b09a0">
 <p>
 We only tangle this when <code>emacs-version</code> &gt; 28
 </p>
@@ -3319,9 +3337,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-org248a76b" class="outline-3">
-<h3 id="org248a76b">Recentf</h3>
-<div class="outline-text-3" id="text-org248a76b">
+<div id="outline-container-org6a5468f" class="outline-3">
+<h3 id="org6a5468f">Recentf</h3>
+<div class="outline-text-3" id="text-org6a5468f">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'recentf
   (<span style="color: #b6a0ff;">setq</span> recentf-exclude '(<span style="color: #79a8ff;">".gz"</span>
@@ -3365,9 +3383,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-org3a57a67" class="outline-3">
-<h3 id="org3a57a67">Saveplace</h3>
-<div class="outline-text-3" id="text-org3a57a67">
+<div id="outline-container-org8129f69" class="outline-3">
+<h3 id="org8129f69">Saveplace</h3>
+<div class="outline-text-3" id="text-org8129f69">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'save-place
   (<span style="color: #b6a0ff;">setq</span> save-place-file (concat user-emacs-directory <span style="color: #79a8ff;">"saveplace.el"</span>))
@@ -3378,9 +3396,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-org0a5259d" class="outline-3">
-<h3 id="org0a5259d">Shell script</h3>
-<div class="outline-text-3" id="text-org0a5259d">
+<div id="outline-container-org01d9344" class="outline-3">
+<h3 id="org01d9344">Shell script</h3>
+<div class="outline-text-3" id="text-org01d9344">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'sh-script
   (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
@@ -3404,9 +3422,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-orgfbd0264" class="outline-3">
-<h3 id="orgfbd0264">Show paren</h3>
-<div class="outline-text-3" id="text-orgfbd0264">
+<div id="outline-container-org30be533" class="outline-3">
+<h3 id="org30be533">Show paren</h3>
+<div class="outline-text-3" id="text-org30be533">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'after-init-hook 'show-paren-mode)
 </pre>
@@ -3414,9 +3432,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-org9b8e0eb" class="outline-3">
-<h3 id="org9b8e0eb">Subword</h3>
-<div class="outline-text-3" id="text-org9b8e0eb">
+<div id="outline-container-org1ee0460" class="outline-3">
+<h3 id="org1ee0460">Subword</h3>
+<div class="outline-text-3" id="text-org1ee0460">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'after-init-hook 'global-subword-mode) <span style="color: #a8a8a8;">;; </span><span style="color: #a8a8a8;">move by camel case, etc</span>
 </pre>
@@ -3424,9 +3442,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-org065176b" class="outline-3">
-<h3 id="org065176b">Term</h3>
-<div class="outline-text-3" id="text-org065176b">
+<div id="outline-container-org1204d40" class="outline-3">
+<h3 id="org1204d40">Term</h3>
+<div class="outline-text-3" id="text-org1204d40">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(autoload 'term <span style="color: #79a8ff;">"term"</span> nil t)
 (autoload 'ansi-term <span style="color: #79a8ff;">"term"</span> nil t)
@@ -3434,9 +3452,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-orgfd4611d" class="outline-4">
-<h4 id="orgfd4611d">ANSI Term launcher</h4>
-<div class="outline-text-4" id="text-orgfd4611d">
+<div id="outline-container-org91ce535" class="outline-4">
+<h4 id="org91ce535">ANSI Term launcher</h4>
+<div class="outline-text-4" id="text-org91ce535">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-ansi-term</span> ()
@@ -3460,9 +3478,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-orgc1396f4" class="outline-4">
-<h4 id="orgc1396f4">Set term coding system to UTF-8</h4>
-<div class="outline-text-4" id="text-orgc1396f4">
+<div id="outline-container-orgcc2d6f3" class="outline-4">
+<h4 id="orgcc2d6f3">Set term coding system to UTF-8</h4>
+<div class="outline-text-4" id="text-orgcc2d6f3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-hook 'term-exec (<span style="color: #b6a0ff;">lambda</span> () (set-process-coding-system 'utf-8-unix 'utf-8-unix)))
 </pre>
@@ -3470,9 +3488,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-orgc97cbef" class="outline-4">
-<h4 id="orgc97cbef">Switch to ANSI Term</h4>
-<div class="outline-text-4" id="text-orgc97cbef">
+<div id="outline-container-org6d2b154" class="outline-4">
+<h4 id="org6d2b154">Switch to ANSI Term</h4>
+<div class="outline-text-4" id="text-org6d2b154">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"><span style="color: #a8a8a8;">;;;</span><span style="color: #a8a8a8;">###</span><span style="color: #dbbe5f;">autoload</span>
 (<span style="color: #b6a0ff;">defun</span> <span style="color: #feacd0;">ts-switch-to-ansi-term</span> ()
@@ -3497,9 +3515,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-orgeab824c" class="outline-4">
-<h4 id="orgeab824c">Term Advise</h4>
-<div class="outline-text-4" id="text-orgeab824c">
+<div id="outline-container-orgb53bd62" class="outline-4">
+<h4 id="orgb53bd62">Term Advise</h4>
+<div class="outline-text-4" id="text-orgb53bd62">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'term
   (<span style="color: #b6a0ff;">defadvice</span> <span style="color: #feacd0;">term-handle-exit</span> (after term-kill-buffer-on-exit activate)
@@ -3513,9 +3531,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-org33da6af" class="outline-3">
-<h3 id="org33da6af">Tramp</h3>
-<div class="outline-text-3" id="text-org33da6af">
+<div id="outline-container-org6ec20a4" class="outline-3">
+<h3 id="org6ec20a4">Tramp</h3>
+<div class="outline-text-3" id="text-org6ec20a4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'tramp
   (<span style="color: #b6a0ff;">setq</span> tramp-backup-directory-alist backup-directory-alist)
@@ -3527,9 +3545,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-org088faa9" class="outline-3">
-<h3 id="org088faa9">Version Control</h3>
-<div class="outline-text-3" id="text-org088faa9">
+<div id="outline-container-orgb583d4a" class="outline-3">
+<h3 id="orgb583d4a">Version Control</h3>
+<div class="outline-text-3" id="text-orgb583d4a">
 <p>
 <a href="https://protesilaos.com/dotemacs/#h:31deeff4-dfae-48d9-a906-1f3272f29bc9">Protesilaos Stavrou's VC reference</a>
 </p>
@@ -3559,9 +3577,9 @@ We only tangle this when <code>emacs-version</code> &gt; 28
 </div>
 </div>
 
-<div id="outline-container-org035c19c" class="outline-3">
-<h3 id="org035c19c">Whitespace</h3>
-<div class="outline-text-3" id="text-org035c19c">
+<div id="outline-container-orgb71ab34" class="outline-3">
+<h3 id="orgb71ab34">Whitespace</h3>
+<div class="outline-text-3" id="text-orgb71ab34">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">with-eval-after-load</span> 'whitespace
   (<span style="color: #b6a0ff;">setq</span> whitespace-line-column 120)
@@ -3596,9 +3614,9 @@ Cleanup whitespace on save
 </div>
 </div>
 
-<div id="outline-container-org3f29d83" class="outline-2">
-<h2 id="org3f29d83">MELPA Packages</h2>
-<div class="outline-text-2" id="text-org3f29d83">
+<div id="outline-container-org79ec77d" class="outline-2">
+<h2 id="org79ec77d">MELPA Packages</h2>
+<div class="outline-text-2" id="text-org79ec77d">
 <p>
 I like to split up my "vanilla" Emacs configuration and custom functions from
 the customisations provided by third party libraries that have been installed
@@ -3622,9 +3640,9 @@ party packages from <a href="https://melpa.org/">MELPA</a>.
 </p>
 </div>
 
-<div id="outline-container-orge0baaca" class="outline-3">
-<h3 id="orge0baaca">Setup package.el</h3>
-<div class="outline-text-3" id="text-orge0baaca">
+<div id="outline-container-org04b3df0" class="outline-3">
+<h3 id="org04b3df0">Setup package.el</h3>
+<div class="outline-text-3" id="text-org04b3df0">
 <p>
 If we are on an Emacs version lower than "27" this will go in <code>init.el</code>,
 otherwise it goes in <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html">early-init.el</a> for faster starup.
@@ -3651,9 +3669,9 @@ otherwise it goes in <a href="https://www.gnu.org/software/emacs/manual/html_nod
 </div>
 </div>
 
-<div id="outline-container-org8279789" class="outline-3">
-<h3 id="org8279789">use-package bootstrap</h3>
-<div class="outline-text-3" id="text-org8279789">
+<div id="outline-container-org3bd4636" class="outline-3">
+<h3 id="org3bd4636">use-package bootstrap</h3>
+<div class="outline-text-3" id="text-org3bd4636">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">require</span> '<span style="color: #00bcff;">package</span>)
 (<span style="color: #b6a0ff;">unless</span> (package-installed-p 'use-package)
@@ -3670,9 +3688,9 @@ otherwise it goes in <a href="https://www.gnu.org/software/emacs/manual/html_nod
 </div>
 </div>
 
-<div id="outline-container-org370b6f5" class="outline-3">
-<h3 id="org370b6f5">Ansible</h3>
-<div class="outline-text-3" id="text-org370b6f5">
+<div id="outline-container-org53c222a" class="outline-3">
+<h3 id="org53c222a">Ansible</h3>
+<div class="outline-text-3" id="text-org53c222a">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">ansible</span> <span style="color: #f78fe7;">:defer</span> <span style="color: #f78fe7;">:hook</span> (yaml-mode . ansible))
 </pre>
@@ -3685,9 +3703,9 @@ otherwise it goes in <a href="https://www.gnu.org/software/emacs/manual/html_nod
 </div>
 </div>
 
-<div id="outline-container-orga2e087a" class="outline-3">
-<h3 id="orga2e087a">Async</h3>
-<div class="outline-text-3" id="text-orga2e087a">
+<div id="outline-container-org249d32e" class="outline-3">
+<h3 id="org249d32e">Async</h3>
+<div class="outline-text-3" id="text-org249d32e">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">async</span> <span style="color: #f78fe7;">:defer</span> 5
   <span style="color: #f78fe7;">:commands</span> (async-byte-compile-file
@@ -3705,9 +3723,9 @@ otherwise it goes in <a href="https://www.gnu.org/software/emacs/manual/html_nod
 </div>
 </div>
 
-<div id="outline-container-org22e58cd" class="outline-3">
-<h3 id="org22e58cd">Blacken</h3>
-<div class="outline-text-3" id="text-org22e58cd">
+<div id="outline-container-org408f18b" class="outline-3">
+<h3 id="org408f18b">Blacken</h3>
+<div class="outline-text-3" id="text-org408f18b">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">blacken</span> <span style="color: #f78fe7;">:defer</span> <span style="color: #f78fe7;">:hook</span> (python-mode . blacken-mode))
 </pre>
@@ -3715,9 +3733,9 @@ otherwise it goes in <a href="https://www.gnu.org/software/emacs/manual/html_nod
 </div>
 </div>
 
-<div id="outline-container-orgdad5644" class="outline-3">
-<h3 id="orgdad5644">Default text scaling</h3>
-<div class="outline-text-3" id="text-orgdad5644">
+<div id="outline-container-org301ba86" class="outline-3">
+<h3 id="org301ba86">Default text scaling</h3>
+<div class="outline-text-3" id="text-org301ba86">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">default-text-scale</span>
   <span style="color: #f78fe7;">:if</span> window-system
@@ -3730,9 +3748,9 @@ otherwise it goes in <a href="https://www.gnu.org/software/emacs/manual/html_nod
 </div>
 </div>
 
-<div id="outline-container-orgaadc5c3" class="outline-3">
-<h3 id="orgaadc5c3">Diminish</h3>
-<div class="outline-text-3" id="text-orgaadc5c3">
+<div id="outline-container-orgefc9c33" class="outline-3">
+<h3 id="orgefc9c33">Diminish</h3>
+<div class="outline-text-3" id="text-orgefc9c33">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">diminish</span> <span style="color: #f78fe7;">:defer</span> 2
   <span style="color: #f78fe7;">:diminish</span> abbrev-mode
@@ -3752,9 +3770,9 @@ otherwise it goes in <a href="https://www.gnu.org/software/emacs/manual/html_nod
 </div>
 </div>
 
-<div id="outline-container-org84eacc5" class="outline-3">
-<h3 id="org84eacc5">Dired Peep</h3>
-<div class="outline-text-3" id="text-org84eacc5">
+<div id="outline-container-org28a5a3e" class="outline-3">
+<h3 id="org28a5a3e">Dired Peep</h3>
+<div class="outline-text-3" id="text-org28a5a3e">
 <p>
 Preview the file or directory at point when in <code>dired</code>, a bit like <a href="https://github.com/ranger/ranger">ranger</a>.
 </p>
@@ -3775,9 +3793,9 @@ Get the source from <a href="https://gitlab.com/tspub/lisp/dired-peep">here</a>.
 </div>
 </div>
 
-<div id="outline-container-orgeb813d5" class="outline-3">
-<h3 id="orgeb813d5">Docker</h3>
-<div class="outline-text-3" id="text-orgeb813d5">
+<div id="outline-container-org2d70627" class="outline-3">
+<h3 id="org2d70627">Docker</h3>
+<div class="outline-text-3" id="text-org2d70627">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">docker</span> <span style="color: #f78fe7;">:bind</span> (<span style="color: #79a8ff;">"C-c C-d"</span> . docker))
 </pre>
@@ -3790,9 +3808,9 @@ Get the source from <a href="https://gitlab.com/tspub/lisp/dired-peep">here</a>.
 </div>
 </div>
 
-<div id="outline-container-orgef0c940" class="outline-3">
-<h3 id="orgef0c940">Exec path from shell</h3>
-<div class="outline-text-3" id="text-orgef0c940">
+<div id="outline-container-org06bbc58" class="outline-3">
+<h3 id="org06bbc58">Exec path from shell</h3>
+<div class="outline-text-3" id="text-org06bbc58">
 <p>
 Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </p>
@@ -3811,9 +3829,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org7ed9752" class="outline-3">
-<h3 id="org7ed9752">Flycheck</h3>
-<div class="outline-text-3" id="text-org7ed9752">
+<div id="outline-container-org5fc1fdb" class="outline-3">
+<h3 id="org5fc1fdb">Flycheck</h3>
+<div class="outline-text-3" id="text-org5fc1fdb">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">flycheck</span> <span style="color: #f78fe7;">:defer</span>
   <span style="color: #f78fe7;">:diminish</span> flycheck-mode
@@ -3824,13 +3842,13 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org8be4fa3" class="outline-3">
-<h3 id="org8be4fa3">Git</h3>
-<div class="outline-text-3" id="text-org8be4fa3">
+<div id="outline-container-org8b41eed" class="outline-3">
+<h3 id="org8b41eed">Git</h3>
+<div class="outline-text-3" id="text-org8b41eed">
 </div>
-<div id="outline-container-org2060fe7" class="outline-4">
-<h4 id="org2060fe7">Gitlab CI</h4>
-<div class="outline-text-4" id="text-org2060fe7">
+<div id="outline-container-org2ce9f7c" class="outline-4">
+<h4 id="org2ce9f7c">Gitlab CI</h4>
+<div class="outline-text-4" id="text-org2ce9f7c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">gitlab-ci-mode</span> <span style="color: #f78fe7;">:defer</span>
   <span style="color: #f78fe7;">:mode</span>
@@ -3843,9 +3861,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-orga45cff4" class="outline-4">
-<h4 id="orga45cff4">Git Timemachine</h4>
-<div class="outline-text-4" id="text-orga45cff4">
+<div id="outline-container-org8402244" class="outline-4">
+<h4 id="org8402244">Git Timemachine</h4>
+<div class="outline-text-4" id="text-org8402244">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">git-timemachine</span> <span style="color: #f78fe7;">:defer</span>)
 </pre>
@@ -3853,9 +3871,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org1e6deb2" class="outline-4">
-<h4 id="org1e6deb2">Lazygit</h4>
-<div class="outline-text-4" id="text-org1e6deb2">
+<div id="outline-container-org6aff2ad" class="outline-4">
+<h4 id="org6aff2ad">Lazygit</h4>
+<div class="outline-text-4" id="text-org6aff2ad">
 <p>
 Clone some or all of my projects on GitLab or GitHub via the magic of APIs and
 Emacs' <code>completing-read</code>.
@@ -3885,9 +3903,9 @@ Get the source from <a href="https://gitlab.com/tspub/lisp/lazygit">here</a>.
 </div>
 </div>
 
-<div id="outline-container-org24f44bc" class="outline-4">
-<h4 id="org24f44bc">Magit</h4>
-<div class="outline-text-4" id="text-org24f44bc">
+<div id="outline-container-org78a52fb" class="outline-4">
+<h4 id="org78a52fb">Magit</h4>
+<div class="outline-text-4" id="text-org78a52fb">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">magit</span>
   <span style="color: #f78fe7;">:bind*</span>
@@ -3922,8 +3940,8 @@ Get the source from <a href="https://gitlab.com/tspub/lisp/lazygit">here</a>.
 </div>
 
 <ul class="org-ul">
-<li><a id="orgcb61917"></a>Forge<br />
-<div class="outline-text-5" id="text-orgcb61917">
+<li><a id="org9319bba"></a>Forge<br />
+<div class="outline-text-5" id="text-org9319bba">
 <p>
 Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </p>
@@ -3938,9 +3956,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org948e96c" class="outline-3">
-<h3 id="org948e96c">Go mode</h3>
-<div class="outline-text-3" id="text-org948e96c">
+<div id="outline-container-orgaee54b3" class="outline-3">
+<h3 id="orgaee54b3">Go mode</h3>
+<div class="outline-text-3" id="text-orgaee54b3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">go-mode</span> <span style="color: #f78fe7;">:defer</span>
   <span style="color: #f78fe7;">:config</span>
@@ -3953,9 +3971,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-orgf5ee66b" class="outline-3">
-<h3 id="orgf5ee66b">Hungry delete</h3>
-<div class="outline-text-3" id="text-orgf5ee66b">
+<div id="outline-container-org2f948b3" class="outline-3">
+<h3 id="org2f948b3">Hungry delete</h3>
+<div class="outline-text-3" id="text-org2f948b3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">hungry-delete</span> <span style="color: #f78fe7;">:defer</span> 6
   <span style="color: #f78fe7;">:diminish</span> hungry-delete-mode
@@ -3965,9 +3983,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org11758ea" class="outline-3">
-<h3 id="org11758ea">JS2 mode</h3>
-<div class="outline-text-3" id="text-org11758ea">
+<div id="outline-container-org4a9a359" class="outline-3">
+<h3 id="org4a9a359">JS2 mode</h3>
+<div class="outline-text-3" id="text-org4a9a359">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">js2-mode</span> <span style="color: #f78fe7;">:defer</span>
   <span style="color: #f78fe7;">:hook</span>
@@ -3986,9 +4004,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-orge91d1f7" class="outline-3">
-<h3 id="orge91d1f7">JSON</h3>
-<div class="outline-text-3" id="text-orge91d1f7">
+<div id="outline-container-org92a4920" class="outline-3">
+<h3 id="org92a4920">JSON</h3>
+<div class="outline-text-3" id="text-org92a4920">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">json-mode</span> <span style="color: #f78fe7;">:defer</span>
   <span style="color: #f78fe7;">:config</span>
@@ -4009,9 +4027,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org7e88aa9" class="outline-3">
-<h3 id="org7e88aa9">Markdown</h3>
-<div class="outline-text-3" id="text-org7e88aa9">
+<div id="outline-container-orge599dd2" class="outline-3">
+<h3 id="orge599dd2">Markdown</h3>
+<div class="outline-text-3" id="text-orge599dd2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">markdown-mode</span>
   <span style="color: #f78fe7;">:commands</span> (markdown-mode gfm-mode)
@@ -4024,9 +4042,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-orgf825447" class="outline-3">
-<h3 id="orgf825447">Node JS</h3>
-<div class="outline-text-3" id="text-orgf825447">
+<div id="outline-container-org492d442" class="outline-3">
+<h3 id="org492d442">Node JS</h3>
+<div class="outline-text-3" id="text-org492d442">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">nodejs-repl</span> <span style="color: #f78fe7;">:defer</span>
   <span style="color: #f78fe7;">:bind</span> (<span style="color: #f78fe7;">:map</span> js2-mode-map
@@ -4041,13 +4059,13 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org9f80484" class="outline-3">
-<h3 id="org9f80484">Org</h3>
-<div class="outline-text-3" id="text-org9f80484">
+<div id="outline-container-orgfd8cc1e" class="outline-3">
+<h3 id="orgfd8cc1e">Org</h3>
+<div class="outline-text-3" id="text-orgfd8cc1e">
 </div>
-<div id="outline-container-org1f7e9b9" class="outline-4">
-<h4 id="org1f7e9b9">HTMLize</h4>
-<div class="outline-text-4" id="text-org1f7e9b9">
+<div id="outline-container-org92a1b6d" class="outline-4">
+<h4 id="org92a1b6d">HTMLize</h4>
+<div class="outline-text-4" id="text-org92a1b6d">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">htmlize</span> <span style="color: #f78fe7;">:defer</span>)
 </pre>
@@ -4055,9 +4073,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org7c7a471" class="outline-4">
-<h4 id="org7c7a471">Org Bullets</h4>
-<div class="outline-text-4" id="text-org7c7a471">
+<div id="outline-container-orgd30f1fd" class="outline-4">
+<h4 id="orgd30f1fd">Org Bullets</h4>
+<div class="outline-text-4" id="text-orgd30f1fd">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">org-bullets</span> <span style="color: #f78fe7;">:defer</span> <span style="color: #f78fe7;">:hook</span> (org-mode . org-bullets-mode))
 </pre>
@@ -4065,9 +4083,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org352eadd" class="outline-4">
-<h4 id="org352eadd">PDF Tools</h4>
-<div class="outline-text-4" id="text-org352eadd">
+<div id="outline-container-org9aca112" class="outline-4">
+<h4 id="org9aca112">PDF Tools</h4>
+<div class="outline-text-4" id="text-org9aca112">
 <p>
 Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </p>
@@ -4079,9 +4097,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org91e845b" class="outline-4">
-<h4 id="org91e845b">Toc Org</h4>
-<div class="outline-text-4" id="text-org91e845b">
+<div id="outline-container-org851e812" class="outline-4">
+<h4 id="org851e812">Toc Org</h4>
+<div class="outline-text-4" id="text-org851e812">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">toc-org</span> <span style="color: #f78fe7;">:defer</span> <span style="color: #f78fe7;">:hook</span> (org-mode . toc-org-enable))
 </pre>
@@ -4090,9 +4108,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org18b5856" class="outline-3">
-<h3 id="org18b5856">Powershell</h3>
-<div class="outline-text-3" id="text-org18b5856">
+<div id="outline-container-orgf83ee1e" class="outline-3">
+<h3 id="orgf83ee1e">Powershell</h3>
+<div class="outline-text-3" id="text-orgf83ee1e">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">powershell</span> <span style="color: #f78fe7;">:mode</span> ((<span style="color: #79a8ff;">"\\.ps1\\'"</span> . powershell-mode)))
 </pre>
@@ -4100,9 +4118,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org8994f2a" class="outline-3">
-<h3 id="org8994f2a">Projectile</h3>
-<div class="outline-text-3" id="text-org8994f2a">
+<div id="outline-container-org1210823" class="outline-3">
+<h3 id="org1210823">Projectile</h3>
+<div class="outline-text-3" id="text-org1210823">
 <p>
 Don't tangle this block if <code>emacs-version</code> &gt; 28, as Emacs 28 has the this
 functionality built in via <code>project.el</code>.
@@ -4125,9 +4143,9 @@ functionality built in via <code>project.el</code>.
 </div>
 </div>
 
-<div id="outline-container-org02c7207" class="outline-3">
-<h3 id="org02c7207">Restclient</h3>
-<div class="outline-text-3" id="text-org02c7207">
+<div id="outline-container-orgc1b8502" class="outline-3">
+<h3 id="orgc1b8502">Restclient</h3>
+<div class="outline-text-3" id="text-orgc1b8502">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">restclient</span> <span style="color: #f78fe7;">:defer</span>)
 </pre>
@@ -4135,9 +4153,9 @@ functionality built in via <code>project.el</code>.
 </div>
 </div>
 
-<div id="outline-container-org2877c09" class="outline-3">
-<h3 id="org2877c09">systemd</h3>
-<div class="outline-text-3" id="text-org2877c09">
+<div id="outline-container-orgf064486" class="outline-3">
+<h3 id="orgf064486">systemd</h3>
+<div class="outline-text-3" id="text-orgf064486">
 <p>
 Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </p>
@@ -4149,9 +4167,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-orgd5b231d" class="outline-3">
-<h3 id="orgd5b231d">Terraform</h3>
-<div class="outline-text-3" id="text-orgd5b231d">
+<div id="outline-container-org86667f4" class="outline-3">
+<h3 id="org86667f4">Terraform</h3>
+<div class="outline-text-3" id="text-org86667f4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">terraform-mode</span> <span style="color: #f78fe7;">:defer</span>)
 </pre>
@@ -4159,9 +4177,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org96017f8" class="outline-3">
-<h3 id="org96017f8">Web Mode</h3>
-<div class="outline-text-3" id="text-org96017f8">
+<div id="outline-container-org422f7b2" class="outline-3">
+<h3 id="org422f7b2">Web Mode</h3>
+<div class="outline-text-3" id="text-org422f7b2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">web-mode</span>
   <span style="color: #f78fe7;">:mode</span>
@@ -4200,9 +4218,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-orgd01b856" class="outline-3">
-<h3 id="orgd01b856">Which Key</h3>
-<div class="outline-text-3" id="text-orgd01b856">
+<div id="outline-container-org3c774c2" class="outline-3">
+<h3 id="org3c774c2">Which Key</h3>
+<div class="outline-text-3" id="text-org3c774c2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">which-key</span> <span style="color: #f78fe7;">:defer</span> 5
   <span style="color: #f78fe7;">:diminish</span> which-key-mode
@@ -4212,9 +4230,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org27d1431" class="outline-3">
-<h3 id="org27d1431">Writeable Grep</h3>
-<div class="outline-text-3" id="text-org27d1431">
+<div id="outline-container-org983cf90" class="outline-3">
+<h3 id="org983cf90">Writeable Grep</h3>
+<div class="outline-text-3" id="text-org983cf90">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">wgrep</span> <span style="color: #f78fe7;">:defer</span> <span style="color: #f78fe7;">:commands</span> wgrep
   <span style="color: #f78fe7;">:bind</span> (<span style="color: #f78fe7;">:map</span> grep-mode-map
@@ -4225,9 +4243,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-orgac7bd12" class="outline-3">
-<h3 id="orgac7bd12">YAML</h3>
-<div class="outline-text-3" id="text-orgac7bd12">
+<div id="outline-container-org2d62642" class="outline-3">
+<h3 id="org2d62642">YAML</h3>
+<div class="outline-text-3" id="text-org2d62642">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">yaml-mode</span> <span style="color: #f78fe7;">:defer</span>
   <span style="color: #f78fe7;">:hook</span>
@@ -4238,9 +4256,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-org14a0478" class="outline-3">
-<h3 id="org14a0478">Yasnippet</h3>
-<div class="outline-text-3" id="text-org14a0478">
+<div id="outline-container-org233fdc2" class="outline-3">
+<h3 id="org233fdc2">Yasnippet</h3>
+<div class="outline-text-3" id="text-org233fdc2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">yasnippet</span> <span style="color: #f78fe7;">:defer</span>
   <span style="color: #f78fe7;">:diminish</span> yas-minor-mode
@@ -4249,9 +4267,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-orga1a28ce" class="outline-4">
-<h4 id="orga1a28ce">Classic snippets</h4>
-<div class="outline-text-4" id="text-orga1a28ce">
+<div id="outline-container-orge1157c0" class="outline-4">
+<h4 id="orge1157c0">Classic snippets</h4>
+<div class="outline-text-4" id="text-orge1157c0">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">yasnippet-classic-snippets</span> <span style="color: #f78fe7;">:defer</span>)
 </pre>
@@ -4259,9 +4277,9 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 
-<div id="outline-container-orge596c5f" class="outline-4">
-<h4 id="orge596c5f">Snippets</h4>
-<div class="outline-text-4" id="text-orge596c5f">
+<div id="outline-container-org7639a7f" class="outline-4">
+<h4 id="org7639a7f">Snippets</h4>
+<div class="outline-text-4" id="text-org7639a7f">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">use-package</span> <span style="color: #00bcff;">yasnippet-snippets</span> <span style="color: #f78fe7;">:defer</span>)
 </pre>
@@ -4270,24 +4288,10 @@ Don't tangle this block if <code>system-type</code> is <code>windows-nt</code>.
 </div>
 </div>
 </div>
-
-<div id="outline-container-org715b595" class="outline-2">
-<h2 id="org715b595">Safe Local Variables</h2>
-<div class="outline-text-2" id="text-org715b595">
-<div class="org-src-container">
-<pre class="src src-emacs-lisp">(<span style="color: #b6a0ff;">setq</span> safe-local-variable-values
-      '((eval setq early-init (expand-file-name <span style="color: #79a8ff;">"early-init.el"</span> user-emacs-directory))
-        (eval setq init-file (expand-file-name <span style="color: #79a8ff;">"init.el"</span> user-emacs-directory))
-        (eval add-hook 'after-save-hook 'org-html-export-to-html nil t)
-        (eval add-hook 'after-save-hook 'org-babel-tangle nil t)))
-</pre>
-</div>
-</div>
-</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Toby Slight</p>
-<p class="date">Created: 2020-12-30 Wed 02:36</p>
+<p class="date">Created: 2020-12-30 Wed 02:42</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -168,12 +168,6 @@ Only tangled on Windows.
   (setq history-delete-duplicates t)
 #+end_src
 
-** Increase message logging max
-
-#+begin_src emacs-lisp
-  (setq message-log-max 10000)
-#+end_src
-
 ** Initial startup
 
 #+begin_src emacs-lisp
@@ -189,6 +183,12 @@ Only tangled on Windows.
 
 #+begin_src emacs-lisp
   (setq apropos-do-all t) ;; doesn't seem to be documented anywhere..
+#+end_src
+
+** More Messages
+
+#+begin_src emacs-lisp
+  (setq message-log-max 10000)
 #+end_src
 
 ** Mouse yank at point
@@ -214,6 +214,18 @@ Only tangled on Windows.
 
 #+begin_src emacs-lisp
   (setq set-mark-command-repeat-pop t) ;; repeating C-SPC after popping, pops it
+#+end_src
+
+** Safe Local Variables
+
+This variables are added to the end of this file.
+
+#+begin_src emacs-lisp
+  (setq safe-local-variable-values
+        '((eval setq early-init (expand-file-name "early-init.el" user-emacs-directory))
+          (eval setq init-file (expand-file-name "init.el" user-emacs-directory))
+          (eval add-hook 'after-save-hook 'org-html-export-to-html nil t)
+          (eval add-hook 'after-save-hook 'org-babel-tangle nil t)))
 #+end_src
 
 ** Scrolling
@@ -2908,16 +2920,6 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 
 #+begin_src emacs-lisp
   (use-package yasnippet-snippets :defer)
-#+end_src
-
-* Safe Local Variables
-
-#+begin_src emacs-lisp
-  (setq safe-local-variable-values
-        '((eval setq early-init (expand-file-name "early-init.el" user-emacs-directory))
-          (eval setq init-file (expand-file-name "init.el" user-emacs-directory))
-          (eval add-hook 'after-save-hook 'org-html-export-to-html nil t)
-          (eval add-hook 'after-save-hook 'org-babel-tangle nil t)))
 #+end_src
 
 * COMMENT Local Variables                                  :NOEXPORT:ARCHIVE:

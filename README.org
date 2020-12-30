@@ -23,13 +23,13 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
 * Lexical Binding
 
-   This must come at the beginning of the file
+  This must come at the beginning of the file
 
-   [[https://nullprogram.com/blog/2016/12/22/][Some Performance Advantages of Lexical Scope]]
+  [[https://nullprogram.com/blog/2016/12/22/][Some Performance Advantages of Lexical Scope]]
 
-   #+begin_src emacs-lisp :comments no
-     ;; -*- lexical-binding: t; -*-
-   #+end_src
+  #+begin_src emacs-lisp :comments no
+    ;; -*- lexical-binding: t; -*-
+  #+end_src
 
 * [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][Doom Speed Hacks]]
 ** Avoid garbage collection at startup
@@ -1834,17 +1834,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (define-key isearch-mode-map (kbd "M-w") 'ts-copy-to-isearch)
     #+end_src
 
-*** Emacs 27+ Settings
-
-    #+begin_src emacs-lisp :tangle (if (version< emacs-version "27.1") "no" init-file)
-      (unless (version< emacs-version "27.1")
-        (setq isearch-allow-scroll 'unlimited)
-        (setq isearch-yank-on-move 't)
-        (setq isearch-lazy-count t)
-        (setq lazy-count-prefix-format nil)
-        (setq lazy-count-suffix-format " (%s/%s)"))
-    #+end_src
-
 *** Isearch Abort DWIM
 
     #+begin_src emacs-lisp
@@ -1881,6 +1870,20 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (define-key isearch-mode-map (kbd "RET") 'ts-isearch-exit)
     #+end_src
 
+*** Kill to isearch
+
+    #+begin_src emacs-lisp
+      ;;;###autoload
+      (defun ts-kill-to-isearch ()
+        "Kill up to the search match when searching forward.
+
+      When searching backward, kill to the beginning of the match."
+        (interactive)
+        (ts-isearch-exit)
+        (call-interactively 'kill-region))
+      (define-key isearch-mode-map (kbd "C-M-w") 'ts-kill-to-isearch)
+    #+end_src
+
 *** Keybindings
 
     #+begin_src emacs-lisp
@@ -1896,20 +1899,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (global-set-key (kbd "M-s M-o") 'multi-occur)
     #+end_src
 
-*** Kill to isearch
-
-    #+begin_src emacs-lisp
-      ;;;###autoload
-      (defun ts-kill-to-isearch ()
-        "Kill up to the search match when searching forward.
-
-      When searching backward, kill to the beginning of the match."
-        (interactive)
-        (ts-isearch-exit)
-        (call-interactively 'kill-region))
-      (define-key isearch-mode-map (kbd "C-M-w") 'ts-kill-to-isearch)
-    #+end_src
-
 *** Settings
 
     #+begin_src emacs-lisp
@@ -1918,6 +1907,17 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (setq isearch-lax-whitespace t)
       (setq isearch-regexp-lax-whitespace nil)
       (setq isearch-lazy-highlight t)
+    #+end_src
+
+    Don't tangle this on ~emacs-version~ < 27
+
+    #+begin_src emacs-lisp :tangle (if (version< emacs-version "27.1") "no" init-file)
+      (unless (version< emacs-version "27.1")
+        (setq isearch-allow-scroll 'unlimited)
+        (setq isearch-yank-on-move 't)
+        (setq isearch-lazy-count t)
+        (setq lazy-count-prefix-format nil)
+        (setq lazy-count-suffix-format " (%s/%s)"))
     #+end_src
 
 ** Line Numbers
@@ -2014,10 +2014,25 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (setq org-directory "~/org")
        (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
        (setq org-default-notes-file "~/org/notes.org")
-
+       (setq org-image-actual-width nil) ; try to get width from #+ATTR.* keyword
+       (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
+       (setq org-emphasis-regexp-components '(" \t('\"{" "- \t.,:!?;'\")}\\" " \t\r\n,\"'" "." 300))
+       (setq org-confirm-babel-evaluate t)
+       (setq org-export-with-toc t)
+       (setq org-indent-indentation-per-level 1)
+       (setq org-list-allow-alphabetical t)
+       (setq org-list-indent-offset 1)
+       (setq org-return-follows-link t)
+       (setq org-refile-use-outline-path 'file)
+       (setq org-refile-allow-creating-parent-nodes 'confirm)
+       (setq org-refile-targets '((nil :maxlevel . 9)))
+       (setq org-src-fontify-natively t)
+       (setq org-src-tab-acts-natively t)
+       (setq org-src-window-setup 'current-window)
+       (setq org-startup-indented t)
+       (setq org-use-fast-todo-selection t)
        (setq org-use-speed-commands t)
        (setq org-speed-commands-user '(("N" . org-down-element) ("P" . org-up-element)))
-
        (setq org-latex-listings 'minted)
        (setq org-latex-pdf-process
              '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
@@ -2087,16 +2102,16 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
 *** Org global bindings
 
-    #+begin_src
-  (autoload 'org-mode "org" nil t)
-  (autoload 'org-agenda "org" nil t)
-  (global-set-key (kbd "C-c C-o a") 'org-agenda)
-  (autoload 'org-capture "org" nil t)
-  (global-set-key (kbd "C-c C-o c") 'org-capture)
-  (autoload 'org-store-link "org" nil t)
-  (global-set-key (kbd "C-c C-o l") 'org-store-link)
-  (autoload 'org-time-stamp "org" nil t)
-  (global-set-key (kbd "C-c C-o t") 'org-time-stamp)
+    #+begin_src emacs-lisp
+      (autoload 'org-mode "org" nil t)
+      (autoload 'org-agenda "org" nil t)
+      (global-set-key (kbd "C-c o a") 'org-agenda)
+      (autoload 'org-capture "org" nil t)
+      (global-set-key (kbd "C-c o c") 'org-capture)
+      (autoload 'org-store-link "org" nil t)
+      (global-set-key (kbd "C-c o l") 'org-store-link)
+      (autoload 'org-time-stamp "org" nil t)
+      (global-set-key (kbd "C-c o t") 'org-time-stamp)
     #+end_src
 
 ** Pending delete

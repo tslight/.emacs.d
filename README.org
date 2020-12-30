@@ -2603,8 +2603,11 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 #+begin_src emacs-lisp
   (use-package flycheck :defer
     :diminish flycheck-mode
-    :hook (prog-mode . flycheck-mode)
-    :config (flycheck-add-mode 'javascript-eslint 'web-mode))
+    :config
+    (flycheck-add-mode 'javascript-eslint 'web-mode)
+    :hook
+    (prog-mode . flycheck-mode)
+    (shell-script-mode . flycheck-mode))
 #+end_src
 
 ** Git

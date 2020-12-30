@@ -21,11 +21,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
   (ts-ensure-byte-compiled-init)
 #+end_src
 
-* Doom startup speed hacks
-
-  Stole this stuff from [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][here]].
-
-** Lexical Binding
+* Lexical Binding
 
    This must come at the beginning of the file
 
@@ -35,6 +31,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      ;; -*- lexical-binding: t; -*-
    #+end_src
 
+* [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][Doom]] startup speed hacks
 ** Avoid garbage collection at startup
 
    The GC can easily double startup time, so we suppress it at startup by
@@ -106,6 +103,12 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (setq visible-bell 1)
    #+end_src
 
+** Bookmarks
+
+   #+begin_src emacs-lisp
+     (setq bookmark-save-flag 1) ;; always save bookmarks to file
+   #+end_src
+
 ** Clipboard
 
    #+begin_src emacs-lisp
@@ -115,17 +118,10 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (setq save-interprogram-paste-before-kill t)
    #+end_src
 
-** COMMENT Line numbers
-
-   #+begin_src emacs-lisp :tangle no
-     (setq display-line-numbers 'relative)
-   #+end_src
-
-** Text filling
+** Customize settings file
 
    #+begin_src emacs-lisp
-     (setq-default fill-column 79)
-     (set-default 'truncate-lines t)
+     (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
    #+end_src
 
 ** Delete all on backspace
@@ -146,22 +142,10 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (setq-default with-editor-emacsclient-executable nil)))
    #+end_src
 
-** No lockfiles
+** Enable all advanced features
 
    #+begin_src emacs-lisp
-     (setq create-lockfiles nil) ;; prevent creation of .#myfile.ext
-   #+end_src
-
-** Final newline
-
-   #+begin_src emacs-lisp
-     (setq require-final-newline t) ;; useful for crontab
-   #+end_src
-
-** Pop mark on repeat
-
-   #+begin_src emacs-lisp
-     (setq set-mark-command-repeat-pop t) ;; repeating C-SPC after popping, pops it
+     (setq disabled-command-function nil) ;; enable all "advanced" features
    #+end_src
 
 ** Encryption
@@ -171,6 +155,12 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (setf epg-pinentry-mode 'loopback)
    #+end_src
 
+** Final newline
+
+   #+begin_src emacs-lisp
+     (setq require-final-newline t) ;; useful for crontab
+   #+end_src
+
 ** History
 
    #+begin_src emacs-lisp
@@ -178,28 +168,21 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (setq history-delete-duplicates t)
    #+end_src
 
-** Bookmarks
-
-   #+begin_src emacs-lisp
-     (setq bookmark-save-flag 1) ;; always save bookmarks to file
-   #+end_src
-
-** Customize settings file
-
-   #+begin_src emacs-lisp
-     (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-   #+end_src
-
-** Enable all advanced features
-
-   #+begin_src emacs-lisp
-     (setq disabled-command-function nil) ;; enable all "advanced" features
-   #+end_src
-
 ** Increase message logging max
 
    #+begin_src emacs-lisp
      (setq message-log-max 10000)
+   #+end_src
+
+** Initial startup
+
+   #+begin_src emacs-lisp
+     (defun display-startup-echo-area-message ()
+       "Redefine this function to be more useful."
+       (message "Started in %s. Hacks & Glory await! :-)" (emacs-init-time)))
+     (setq inhibit-startup-screen t)
+     (setq initial-scratch-message nil)
+     (setq initial-major-mode 'fundamental-mode)
    #+end_src
 
 ** More extensive apropos
@@ -214,6 +197,25 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (setq mouse-yank-at-point t)
    #+end_src
 
+** No lockfiles
+
+   #+begin_src emacs-lisp
+     (setq create-lockfiles nil) ;; prevent creation of .#myfile.ext
+   #+end_src
+
+** COMMENT Passwords
+
+   #+begin_src emacs-lisp :tangle no
+     (setq password-cache t) ; enable password caching
+     (setq password-cache-expiry 3600) ; for one hour (time in secs)
+   #+end_src
+
+** Pop mark on repeat
+
+   #+begin_src emacs-lisp
+     (setq set-mark-command-repeat-pop t) ;; repeating C-SPC after popping, pops it
+   #+end_src
+
 ** Scrolling
 
    #+begin_src emacs-lisp
@@ -223,22 +225,11 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (setq scroll-preserve-screen-position t)
    #+end_src
 
-** Initial startup
+** Truncate Lines
 
    #+begin_src emacs-lisp
-     (defun display-startup-echo-area-message ()
-       "Redefine this function to be more useful."
-       (message "Started in %s. Hacks & Glory await! :-)" (emacs-init-time)))
-     (setq inhibit-startup-screen t)
-     (setq initial-scratch-message nil)
-     (setq initial-major-mode 'fundamental-mode)
-   #+end_src
-
-** COMMENT Passwords
-
-   #+begin_src emacs-lisp :tangle no
-     (setq password-cache t) ; enable password caching
-     (setq password-cache-expiry 3600) ; for one hour (time in secs)
+     (set-default 'truncate-lines t)
+     (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
    #+end_src
 
 ** Undo limits
@@ -370,20 +361,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
    #+end_src
 
-** Prefer newer over compiled
-
-   If init.elc is older, use newer ~init.el~.
-
-   #+begin_src emacs-lisp
-     (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
-   #+end_src
-
-** Place point after complilation error
-
-   #+begin_src emacs-lisp
-     (setq compilation-scroll-output 'first-error)
-   #+end_src
-
 ** Ensure init files are byte compiled
 
    This block will byte compile ~early-init.el~ and ~init.el~ if an existing
@@ -399,6 +376,20 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
            (byte-recompile-file (expand-file-name "early-init.el" user-emacs-directory) 'nil 0))
        (byte-recompile-file (expand-file-name "init.el" user-emacs-directory) 'nil 0))
      (add-hook 'after-init-hook 'ts-ensure-byte-compiled-init)
+   #+end_src
+
+** Place point after complilation error
+
+   #+begin_src emacs-lisp
+     (setq compilation-scroll-output 'first-error)
+   #+end_src
+
+** Prefer newer over compiled
+
+   If init.elc is older, use newer ~init.el~.
+
+   #+begin_src emacs-lisp
+     (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
    #+end_src
 
 ** Recompile config
@@ -420,29 +411,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
              ts-files-to-recompile))
    #+end_src
 
-* Hooks
-
-  #+begin_src emacs-lisp
-    (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
-    (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
-    (add-hook 'lisp-mode-hook 'eldoc-mode)
-    (add-hook 'prog-mode-hook 'hl-line-mode)
-    (add-hook 'text-mode-hook 'hl-line-mode)
-    (add-hook 'prog-mode-hook 'hs-minor-mode)
-    (add-hook 'prog-mode-hook 'display-line-numbers-mode)
-    (add-hook 'text-mode-hook 'auto-fill-mode)
-  #+end_src
-
 * Keybindings
-** Calculator/Calc bindings
-
-   #+begin_src emacs-lisp
-     (autoload 'calculator "calculator" nil t)
-     (global-set-key (kbd "C-c c") 'calculator)
-     (autoload 'calc "calc" nil t)
-     (global-set-key (kbd "C-c M-c") 'calc)
-   #+end_src
-
 ** Buffers
 
    #+begin_src emacs-lisp
@@ -451,6 +420,15 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (autoload 'ibuffer "ibuffer" nil t)
      (global-set-key (kbd "C-x C-b") 'ibuffer)
      (global-set-key (kbd "C-x M-k") 'kill-buffer)
+   #+end_src
+
+** Calculator/Calc bindings
+
+   #+begin_src emacs-lisp
+     (autoload 'calculator "calculator" nil t)
+     (global-set-key (kbd "C-c c") 'calculator)
+     (autoload 'calc "calc" nil t)
+     (global-set-key (kbd "C-c M-c") 'calc)
    #+end_src
 
 ** Desktop read/save
@@ -513,13 +491,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (define-key special-mode-map "b" #'widget-backward)
    #+end_src
 
-** Toggle filling
-
-   #+begin_src emacs-lisp
-     (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
-     (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
-   #+end_src
-
 ** Tabs (Emacs 27+)
 
    Don't tangle this block on ~emacs-version~ < 27.
@@ -550,14 +521,39 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
   #+end_src
 
 * Theme/UI
-** Turn off UI elements
+** Disable themes
 
    #+begin_src emacs-lisp
-     (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-     (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-     (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-     (when (fboundp 'tooltip-mode) (tooltip-mode -1))
-     (setq frame-resize-pixelwise t) ;; jwm resize fix
+     (defadvice load-theme (before theme-dont-propagate activate)
+       "Disable theme before loading new one."
+       (mapc #'disable-theme custom-enabled-themes))
+   #+end_src
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-disable-themes ()
+       "Disable all custom themes in one fail swoop."
+       (interactive)
+       (mapc #'disable-theme custom-enabled-themes))
+     (global-set-key (kbd "C-c M-t C-t") 'ts-disable-themes)
+   #+end_src
+
+** Maximize on startup
+
+   #+begin_src emacs-lisp
+     (setq default-frame-alist
+           '((fullscreen . maximized) (vertical-scroll-bars . nil)))
+   #+end_src
+
+** Modeline
+
+   #+begin_src emacs-lisp
+     ;; (setq display-time-format "%H:%M %d/%m")
+     ;; (setq display-time-default-load-average 'nil)
+     (column-number-mode t)
+     ;; (display-time-mode t)
+     ;; (display-battery-mode t)
+     ;; (size-indication-mode t)
    #+end_src
 
 ** Setup Frame for Emacsclient
@@ -596,39 +592,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (ts-after-make-frame(selected-frame)))
    #+end_src
 
-** Modeline
+** Turn off UI elements
 
    #+begin_src emacs-lisp
-     ;; (setq display-time-format "%H:%M %d/%m")
-     ;; (setq display-time-default-load-average 'nil)
-     (column-number-mode t)
-     ;; (display-time-mode t)
-     ;; (display-battery-mode t)
-     ;; (size-indication-mode t)
-   #+end_src
-
-** Maximize on startup
-
-   #+begin_src emacs-lisp
-     (setq default-frame-alist
-           '((fullscreen . maximized) (vertical-scroll-bars . nil)))
-   #+end_src
-
-** Disable themes
-
-   #+begin_src emacs-lisp
-     (defadvice load-theme (before theme-dont-propagate activate)
-       "Disable theme before loading new one."
-       (mapc #'disable-theme custom-enabled-themes))
-   #+end_src
-
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun ts-disable-themes ()
-       "Disable all custom themes in one fail swoop."
-       (interactive)
-       (mapc #'disable-theme custom-enabled-themes))
-     (global-set-key (kbd "C-c M-t C-t") 'ts-disable-themes)
+     (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+     (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+     (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+     (when (fboundp 'tooltip-mode) (tooltip-mode -1))
+     (setq frame-resize-pixelwise t) ;; jwm resize fix
    #+end_src
 
 * Buffer functions
@@ -822,6 +793,33 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          ad-do-it))
    #+end_src
 
+** Beginning of line
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-move-beginning-of-line ()
+       "Move point back to indentation.
+
+     If there is any non blank characters to the left of the cursor.
+     Otherwise point moves to beginning of line."
+       (interactive)
+       (if (= (point) (save-excursion (back-to-indentation) (point)))
+           (beginning-of-line)
+         (back-to-indentation)))
+     (global-set-key [remap move-beginning-of-line] 'ts-move-beginning-of-line)
+   #+end_src
+
+** Case insensitive sort-lines
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-sort-lines-nocase ()
+       "Sort marked lines with case sensitivity."
+       (interactive)
+       (let ((sort-fold-case t))
+         (call-interactively 'sort-lines)))
+   #+end_src
+
 ** Change numbers
 
    Increment or decrement numbers at the point.
@@ -885,6 +883,52 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
            (setq x (+ x 1)))))
    #+end_src
 
+** Kill region
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-kill-region ()
+       "Cut current line, or text selection to kill ring.
+
+     When `universal-argument' is called first, cut whole buffer (but
+     respect `narrow-to-region')."
+       (interactive)
+       (let (p1 p2)
+         (if (null current-prefix-arg)
+             (progn (if (use-region-p)
+                        (progn (setq p1 (region-beginning))
+                               (setq p2 (region-end)))
+                      (progn (setq p1 (line-beginning-position))
+                             (setq p2 (line-beginning-position 2)))))
+           (progn (setq p1 (point-min))
+                  (setq p2 (point-max))))
+         (kill-region p1 p2)))
+     (global-set-key [remap kill-region] 'ts-kill-region)
+   #+end_src
+
+** Kill ring save
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-kill-ring-save ()
+       "Copy current line or text selection to kill ring.
+
+     When `universal-argument' is called first, copy whole buffer (but
+     respect `narrow-to-region')."
+       (interactive)
+       (let (p1 p2)
+         (if (null current-prefix-arg)
+             (progn (if (use-region-p)
+                        (progn (setq p1 (region-beginning))
+                               (setq p2 (region-end)))
+                      (progn (setq p1 (line-beginning-position))
+                             (setq p2 (line-end-position)))))
+           (progn (setq p1 (point-min))
+                  (setq p2 (point-max))))
+         (kill-ring-save p1 p2)))
+     (global-set-key [remap kill-ring-save] 'ts-kill-ring-save)
+   #+end_src
+
 ** Moving lines
 
    #+begin_src emacs-lisp
@@ -903,100 +947,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
      (global-set-key (kbd "M-<up>") 'move-line-up)
      (global-set-key (kbd "M-<down>") 'move-line-down)
-   #+end_src
-
-** Smarter that the default functions
-
-   Overwrite some default functions that do stuff in a slightly counter-intuitive
-   or just less than ideal way...
-
-*** Fill or unfill
-
-    #+begin_src emacs-lisp
-      ;;;###autoload
-      (defun smart/fill-or-unfill ()
-        "Like `fill-paragraph', but unfill if used twice."
-        (interactive)
-        (let ((fill-column
-               (if (eq last-command 'smart/fill-or-unfill)
-                   (progn (setq this-command nil)
-                          (point-max))
-                 fill-column)))
-          (call-interactively #'fill-paragraph)))
-      (global-set-key [remap fill-paragraph] 'smart/fill-or-unfill)
-    #+end_src
-
-*** Beginning of line
-
-    #+begin_src emacs-lisp
-      ;;;###autoload
-      (defun smart/move-beginning-of-line ()
-        "Move point back to indentation.
-
-      If there is any non blank characters to the left of the cursor.
-      Otherwise point moves to beginning of line."
-        (interactive)
-        (if (= (point) (save-excursion (back-to-indentation) (point)))
-            (beginning-of-line)
-          (back-to-indentation)))
-      (global-set-key [remap move-beginning-of-line] 'smart/move-beginning-of-line)
-    #+end_src
-
-*** Kill ring save
-
-    #+begin_src emacs-lisp
-      ;;;###autoload
-      (defun smart/kill-ring-save ()
-        "Copy current line or text selection to kill ring.
-
-      When `universal-argument' is called first, copy whole buffer (but
-      respect `narrow-to-region')."
-        (interactive)
-        (let (p1 p2)
-          (if (null current-prefix-arg)
-              (progn (if (use-region-p)
-                         (progn (setq p1 (region-beginning))
-                                (setq p2 (region-end)))
-                       (progn (setq p1 (line-beginning-position))
-                              (setq p2 (line-end-position)))))
-            (progn (setq p1 (point-min))
-                   (setq p2 (point-max))))
-          (kill-ring-save p1 p2)))
-      (global-set-key [remap kill-ring-save] 'smart/kill-ring-save)
-    #+end_src
-
-*** Kill region
-
-    #+begin_src emacs-lisp
-      ;;;###autoload
-      (defun smart/kill-region ()
-        "Cut current line, or text selection to kill ring.
-
-      When `universal-argument' is called first, cut whole buffer (but
-      respect `narrow-to-region')."
-        (interactive)
-        (let (p1 p2)
-          (if (null current-prefix-arg)
-              (progn (if (use-region-p)
-                         (progn (setq p1 (region-beginning))
-                                (setq p2 (region-end)))
-                       (progn (setq p1 (line-beginning-position))
-                              (setq p2 (line-beginning-position 2)))))
-            (progn (setq p1 (point-min))
-                   (setq p2 (point-max))))
-          (kill-region p1 p2)))
-      (global-set-key [remap kill-region] 'smart/kill-region)
-    #+end_src
-
-** Case insensitive sort-lines
-
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun ts-sort-lines-nocase ()
-       "Sort marked lines with case sensitivity."
-       (interactive)
-       (let ((sort-fold-case t))
-         (call-interactively 'sort-lines)))
    #+end_src
 
 ** Surround stuff
@@ -1070,22 +1020,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (global-set-key (kbd "C-c f d") 'ts-delete-this-file)
    #+end_src
 
-** Yank current file name to kill ring
-
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun ts-copy-file-name-to-clipboard ()
-       "Copy the current buffer file name to the clipboard."
-       (interactive)
-       (let ((filename (if (equal major-mode 'dired-mode)
-                           default-directory
-                         (buffer-file-name))))
-         (when filename
-           (kill-new filename)
-           (message "Copied buffer file name '%s' to the clipboard." filename))))
-     (global-set-key (kbd "C-c f w") 'ts-copy-file-name-to-clipboard)
-   #+end_src
-
 ** Make backup of current file
 
    #+begin_src emacs-lisp
@@ -1128,6 +1062,20 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (global-set-key (kbd "C-c f b") 'ts-make-backup-and-save)
    #+end_src
 
+** Open current file as root
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-sudoedit (&optional arg)
+       "Open current or ARG file as root."
+       (interactive "P")
+       (if (or arg (not buffer-file-name))
+           (find-file (concat "/sudo:root@localhost:"
+                              (read-file-name "Find file (as root): ")))
+         (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+     (global-set-key (kbd "C-c f s") 'ts-sudoedit)
+   #+end_src
+
 ** Rename file and buffer
 
    #+begin_src emacs-lisp
@@ -1149,18 +1097,20 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (global-set-key (kbd "C-c f r") 'ts-rename-this-file-and-buffer)
    #+end_src
 
-** Open current file as root
+** Yank current file name to kill ring
 
    #+begin_src emacs-lisp
      ;;;###autoload
-     (defun ts-sudoedit (&optional arg)
-       "Open current or ARG file as root."
-       (interactive "P")
-       (if (or arg (not buffer-file-name))
-           (find-file (concat "/sudo:root@localhost:"
-                              (read-file-name "Find file (as root): ")))
-         (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-     (global-set-key (kbd "C-c f s") 'ts-sudoedit)
+     (defun ts-copy-file-name-to-clipboard ()
+       "Copy the current buffer file name to the clipboard."
+       (interactive)
+       (let ((filename (if (equal major-mode 'dired-mode)
+                           default-directory
+                         (buffer-file-name))))
+         (when filename
+           (kill-new filename)
+           (message "Copied buffer file name '%s' to the clipboard." filename))))
+     (global-set-key (kbd "C-c f w") 'ts-copy-file-name-to-clipboard)
    #+end_src
 
 * Miscellaneous functions
@@ -1218,22 +1168,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (define-key ctl-x-4-map "k" 'ts-kill-buffer-other-window)
    #+end_src
 
-** Toggle focus to last window
-
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun ts-last-window ()
-       "Switch back and forth between two windows easily."
-       (interactive)
-       (let ((win (get-mru-window t t t)))
-         (unless win (error "Last window not found"))
-         (let ((frame (window-frame win)))
-           (raise-frame frame)
-           (select-frame frame)
-           (select-window win))))
-     (global-set-key (kbd "C-c w w") 'ts-last-window)
-   #+end_src
-
 ** Open a buffer in another window
 
    #+begin_src emacs-lisp
@@ -1244,41 +1178,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (switch-to-buffer-other-window buffer)
        (other-window -1))
      (define-key ctl-x-4-map "o" 'ts-open-buffer-other-window)
-   #+end_src
-
-** Switch to the previous window
-
-   This is basically ~other-window~ backwards.
-
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun ts-prev-window ()
-       "Go the previously used window, excluding other frames."
-       (interactive)
-       (other-window -1))
-     (global-set-key (kbd "C-x O") 'ts-prev-window)
-   #+end_src
-
-** Scroll lines up like Ctrl-e in Vim
-
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun ts-scroll-line-up (n)
-       "Scroll line up N lines.  Like Ctrl-e in Vim."
-       (interactive "p")
-       (scroll-up n))
-     (global-set-key (kbd "M-p") 'ts-scroll-line-up)
-   #+end_src
-
-** Scroll lines down like Ctrl-y in Vim
-
-   #+begin_src emacs-lisp
-     ;;;###autoload
-     (defun ts-scroll-line-down (n)
-       "Scroll line down N lines.  Ctrl-y in Vim."
-       (interactive "p")
-       (scroll-down n))
-     (global-set-key (kbd "M-n") 'ts-scroll-line-down)
    #+end_src
 
 ** Open last buffer in horizontal split
@@ -1308,6 +1207,57 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (other-window 1 nil)
        (if (= prefix 1) (switch-to-next-buffer)))
      (global-set-key (kbd "C-c 3") 'ts-vsplit-last-buffer)
+   #+end_src
+
+** Scroll lines down like Ctrl-y in Vim
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-scroll-line-down (n)
+       "Scroll line down N lines.  Ctrl-y in Vim."
+       (interactive "p")
+       (scroll-down n))
+     (global-set-key (kbd "M-n") 'ts-scroll-line-down)
+   #+end_src
+
+** Scroll lines up like Ctrl-e in Vim
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-scroll-line-up (n)
+       "Scroll line up N lines.  Like Ctrl-e in Vim."
+       (interactive "p")
+       (scroll-up n))
+     (global-set-key (kbd "M-p") 'ts-scroll-line-up)
+   #+end_src
+
+** Switch to the previous window
+
+   This is basically ~other-window~ backwards.
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-prev-window ()
+       "Go the previously used window, excluding other frames."
+       (interactive)
+       (other-window -1))
+     (global-set-key (kbd "C-x O") 'ts-prev-window)
+   #+end_src
+
+** Toggle focus to last window
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-last-window ()
+       "Switch back and forth between two windows easily."
+       (interactive)
+       (let ((win (get-mru-window t t t)))
+         (unless win (error "Last window not found"))
+         (let ((frame (window-frame win)))
+           (raise-frame frame)
+           (select-frame frame)
+           (select-window win))))
+     (global-set-key (kbd "C-c w w") 'ts-last-window)
    #+end_src
 
 ** Toggle vertical -> horizontal splits
@@ -1397,6 +1347,29 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+end_src
 
 * Emacs built in packages
+** Auto-fill
+
+   #+begin_src emacs-lisp
+     ;;;###autoload
+     (defun ts-fill-or-unfill ()
+       "Like `fill-paragraph', but unfill if used twice."
+       (interactive)
+       (let ((fill-column
+              (if (eq last-command 'ts-fill-or-unfill)
+                  (progn (setq this-command nil)
+                         (point-max))
+                fill-column)))
+         (call-interactively #'fill-paragraph)))
+
+     (global-set-key [remap fill-paragraph] 'ts-fill-or-unfill)
+
+     (setq-default fill-column 79)
+     (add-hook 'org-mode-hook 'auto-fill-mode)
+     (add-hook 'text-mode-hook 'auto-fill-mode)
+
+     (global-set-key (kbd "C-c M-t a") 'toggle-text-mode-autofill)
+   #+end_src
+
 ** Auto-revert
 
    #+begin_src emacs-lisp
@@ -1482,9 +1455,17 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (message "Lazy loaded dired :-)"))
    #+end_src
 
-   #+begin_src emacs-lisp
-     (add-hook 'dired-mode-hook 'hl-line-mode)
-   #+end_src
+*** Dired AUX
+
+    #+begin_src emacs-lisp
+      (with-eval-after-load 'dired-aux
+        (setq dired-isearch-filenames 'dwim)
+        ;; The following variables were introduced in Emacs 27.1
+        (unless (version< emacs-version "27.1")
+          (setq dired-create-destination-dirs 'ask)
+          (setq dired-vc-rename-file t))
+        (message "Lazy loaded dired-aux :-)"))
+    #+end_src
 
 *** Dired-X Jump (Emacs<28)
 
@@ -1502,18 +1483,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
         (global-set-key (kbd "C-x C-j") 'dired-jump)
         (autoload 'dired-jump-other-window "dired-x" nil t)
         (define-key ctl-x-4-map "C-j" 'dired-jump-other-window))
-    #+end_src
-
-*** Dired AUX
-
-    #+begin_src emacs-lisp
-      (with-eval-after-load 'dired-aux
-        (setq dired-isearch-filenames 'dwim)
-        ;; The following variables were introduced in Emacs 27.1
-        (unless (version< emacs-version "27.1")
-          (setq dired-create-destination-dirs 'ask)
-          (setq dired-vc-rename-file t))
-        (message "Lazy loaded dired-aux :-)"))
     #+end_src
 
 *** Find Dired
@@ -1567,6 +1536,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
        (advice-add 'ediff-quit :around #'disable-y-or-n-p)
        (message "Lazy loaded ediff :-)"))
+   #+end_src
+
+** Eldoc
+
+   #+begin_src emacs-lisp
+     (add-hook 'emacs-lisp-mode-hook 'eldoc-mode)
+     (add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
+     (add-hook 'lisp-mode-hook 'eldoc-mode)
    #+end_src
 
 ** Electric
@@ -1674,6 +1651,18 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (global-set-key (kbd "C-c 4 e") 'ts-eshell-other-window)
    #+end_src
 
+** Flyspell
+
+   Don't bother using this on Windows as I can rather be bothered to install
+   [[http://aspell.net/win32/][Aspell]] for Windows.
+
+   #+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" init-file)
+     (unless (eq system-type 'windows-nt)
+       (add-hook 'text-mode-hook 'flyspell-mode)
+       (add-hook 'org-mode-hook 'flyspell-mode)
+       (add-hook 'prog-mode-hook 'flyspell-prog-mode))
+   #+end_src
+
 ** Gnus
 
    #+begin_src emacs-lisp
@@ -1692,6 +1681,13 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (message "Lazy loaded gnus :-)"))
    #+end_src
 
+** Hide/Show
+
+   #+begin_src emacs-lisp
+     (add-hook 'shell-script-mode-hook 'hs-minor-mode)
+     (add-hook 'prog-mode-hook 'hs-minor-mode)
+   #+end_src
+
 ** Highlight changes
 
    #+begin_src emacs-lisp
@@ -1699,6 +1695,16 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (global-set-key (kbd "C-c n") 'highlight-changes-next-change)
      (global-set-key (kbd "C-c p") 'highlight-changes-previous-change)
      (add-hook 'emacs-startup-hook 'global-highlight-changes-mode)
+   #+end_src
+
+** Highlight line
+
+   #+begin_src emacs-lisp
+     (add-hook 'dired-mode-hook 'hl-line-mode)
+     (add-hook 'org-mode-hook 'hl-line-mode)
+     (add-hook 'prog-mode-hook 'hl-line-mode)
+     (add-hook 'shell-script-mode-hook 'hl-line-mode)
+     (add-hook 'text-mode-hook 'hl-line-mode)
    #+end_src
 
 ** Hippie Expand
@@ -1764,6 +1770,20 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (add-hook 'icomplete-minibuffer-setup-hook 'ts-icomplete-styles)
     #+end_src
 
+*** Icomplete keybindings
+
+    #+begin_src emacs-lisp
+      (unless (version< emacs-version "27")
+        (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-fido-exit))
+      (define-key icomplete-minibuffer-map (kbd "M-j") 'exit-minibuffer)
+      (define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
+      (define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)
+      (define-key icomplete-minibuffer-map (kbd "<up>") 'icomplete-backward-completions)
+      (define-key icomplete-minibuffer-map (kbd "<down>") 'icomplete-forward-completions)
+      (define-key icomplete-minibuffer-map (kbd "<left>") 'icomplete-backward-completions)
+      (define-key icomplete-minibuffer-map (kbd "<right>") 'icomplete-forward-completions)
+    #+end_src
+
 *** Icomplete settings
 
     #+begin_src emacs-lisp
@@ -1778,20 +1798,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (setq icomplete-with-completion-tables t)
       (setq icomplete-tidy-shadowed-file-names t)
       (setq icomplete-in-buffer t)
-    #+end_src
-
-*** Icomplete keybindings
-
-    #+begin_src emacs-lisp
-      (unless (version< emacs-version "27")
-        (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-fido-exit))
-      (define-key icomplete-minibuffer-map (kbd "M-j") 'exit-minibuffer)
-      (define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
-      (define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)
-      (define-key icomplete-minibuffer-map (kbd "<up>") 'icomplete-backward-completions)
-      (define-key icomplete-minibuffer-map (kbd "<down>") 'icomplete-forward-completions)
-      (define-key icomplete-minibuffer-map (kbd "<left>") 'icomplete-backward-completions)
-      (define-key icomplete-minibuffer-map (kbd "<right>") 'icomplete-forward-completions)
     #+end_src
 
 ** Imenu
@@ -1813,17 +1819,30 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+end_src
 
 ** Isearch
-*** Isearch exit
+*** Copy to isearch
 
     #+begin_src emacs-lisp
-       ;;;###autoload
-      (defun ts-isearch-exit ()
-        "Move point to the start of the matched string."
+      ;;;###autoload
+      (defun ts-copy-to-isearch ()
+        "Copy up to the search match when searching forward.
+
+      When searching backward, copy to the start of the search match."
         (interactive)
-        (when (eq isearch-forward t)
-          (goto-char isearch-other-end))
-        (isearch-exit))
-      (define-key isearch-mode-map (kbd "RET") 'ts-isearch-exit)
+        (ts-isearch-exit)
+        (call-interactively 'kill-ring-save)
+        (exchange-point-and-mark))
+      (define-key isearch-mode-map (kbd "M-w") 'ts-copy-to-isearch)
+    #+end_src
+
+*** Emacs 27+ Settings
+
+    #+begin_src emacs-lisp :tangle (if (version< emacs-version "27.1") "no" init-file)
+      (unless (version< emacs-version "27.1")
+        (setq isearch-allow-scroll 'unlimited)
+        (setq isearch-yank-on-move 't)
+        (setq isearch-lazy-count t)
+        (setq lazy-count-prefix-format nil)
+        (setq lazy-count-suffix-format " (%s/%s)"))
     #+end_src
 
 *** Isearch Abort DWIM
@@ -1849,54 +1868,17 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (define-key isearch-mode-map (kbd "<backspace>") 'ts-isearch-abort-dwim)
     #+end_src
 
-*** Copy to isearch
+*** Isearch exit
 
     #+begin_src emacs-lisp
-      ;;;###autoload
-      (defun ts-copy-to-isearch ()
-        "Copy up to the search match when searching forward.
-
-      When searching backward, copy to the start of the search match."
+       ;;;###autoload
+      (defun ts-isearch-exit ()
+        "Move point to the start of the matched string."
         (interactive)
-        (ts-isearch-exit)
-        (call-interactively 'kill-ring-save)
-        (exchange-point-and-mark))
-      (define-key isearch-mode-map (kbd "M-w") 'ts-copy-to-isearch)
-    #+end_src
-
-*** Kill to isearch
-
-    #+begin_src emacs-lisp
-      ;;;###autoload
-      (defun ts-kill-to-isearch ()
-        "Kill up to the search match when searching forward.
-
-      When searching backward, kill to the beginning of the match."
-        (interactive)
-        (ts-isearch-exit)
-        (call-interactively 'kill-region))
-      (define-key isearch-mode-map (kbd "C-M-w") 'ts-kill-to-isearch)
-    #+end_src
-
-*** Emacs 27+ Settings
-
-    #+begin_src emacs-lisp :tangle (if (version< emacs-version "27.1") "no" init-file)
-      (unless (version< emacs-version "27.1")
-        (setq isearch-allow-scroll 'unlimited)
-        (setq isearch-yank-on-move 't)
-        (setq isearch-lazy-count t)
-        (setq lazy-count-prefix-format nil)
-        (setq lazy-count-suffix-format " (%s/%s)"))
-    #+end_src
-
-*** Settings
-
-    #+begin_src emacs-lisp
-      (setq search-highlight t)
-      (setq search-whitespace-regexp ".*?")
-      (setq isearch-lax-whitespace t)
-      (setq isearch-regexp-lax-whitespace nil)
-      (setq isearch-lazy-highlight t)
+        (when (eq isearch-forward t)
+          (goto-char isearch-other-end))
+        (isearch-exit))
+      (define-key isearch-mode-map (kbd "RET") 'ts-isearch-exit)
     #+end_src
 
 *** Keybindings
@@ -1914,17 +1896,39 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (global-set-key (kbd "M-s M-o") 'multi-occur)
     #+end_src
 
-** Minibuffer
-*** Save history mode
+*** Kill to isearch
 
     #+begin_src emacs-lisp
-      (with-eval-after-load 'savehist
-        (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
-        (setq savehist-save-minibuffer-history 1)
-        (message "Lazy loaded savehist :-)"))
-      (add-hook 'emacs-startup-hook 'savehist-mode)
+      ;;;###autoload
+      (defun ts-kill-to-isearch ()
+        "Kill up to the search match when searching forward.
+
+      When searching backward, kill to the beginning of the match."
+        (interactive)
+        (ts-isearch-exit)
+        (call-interactively 'kill-region))
+      (define-key isearch-mode-map (kbd "C-M-w") 'ts-kill-to-isearch)
     #+end_src
 
+*** Settings
+
+    #+begin_src emacs-lisp
+      (setq search-highlight t)
+      (setq search-whitespace-regexp ".*?")
+      (setq isearch-lax-whitespace t)
+      (setq isearch-regexp-lax-whitespace nil)
+      (setq isearch-lazy-highlight t)
+    #+end_src
+
+** Line Numbers
+
+   #+begin_src emacs-lisp
+     (setq display-line-numbers 'relative)
+     (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+     (add-hook 'sh-script-hook 'display-line-numbers-mode)
+   #+end_src
+
+** Minibuffer
 *** Completion framework settings
 
     #+begin_src emacs-lisp
@@ -1960,6 +1964,16 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
     #+begin_src emacs-lisp
       (add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold most-positive-fixnum)))
       (add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 16777216))) ; 16mb
+    #+end_src
+
+*** Save history mode
+
+    #+begin_src emacs-lisp
+      (with-eval-after-load 'savehist
+        (setq savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+        (setq savehist-save-minibuffer-history 1)
+        (message "Lazy loaded savehist :-)"))
+      (add-hook 'emacs-startup-hook 'savehist-mode)
     #+end_src
 
 ** Occur
@@ -2068,8 +2082,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
            (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file early-init nil 0)))
            (add-hook 'org-babel-post-tangle-hook 'emacs-lisp-byte-compile-and-load)))
 
-       (add-hook 'org-mode-hook 'auto-fill-mode)
-       (add-hook 'org-mode-hook 'hl-line-mode)
        (message "Lazy loaded org :-)"))
    #+end_src
 
@@ -2228,12 +2240,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (add-hook 'emacs-startup-hook 'recentf-mode)
    #+end_src
 
-** Show paren
-
-   #+begin_src emacs-lisp
-     (add-hook 'after-init-hook 'show-paren-mode)
-   #+end_src
-
 ** Saveplace
 
    #+begin_src emacs-lisp
@@ -2247,8 +2253,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
    #+begin_src emacs-lisp
      (with-eval-after-load 'sh-script
-       (add-hook 'shell-script-mode-hook 'hl-line-mode)
-       (add-hook 'sh-script-hook 'display-line-numbers-mode)
        (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
        (add-to-list 'auto-mode-alist '("\\.sh\\'" . shell-script-mode))
        (add-to-list 'auto-mode-alist '("\\.bash.*\\'" . shell-script-mode))
@@ -2265,6 +2269,12 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (add-to-list 'interpreter-mode-alist '("sh" . shell-script-mode))
        (add-to-list 'interpreter-mode-alist '("zsh" . shell-script-mode))
        (message "Lazy loaded shell-script-mode :-)"))
+   #+end_src
+
+** Show paren
+
+   #+begin_src emacs-lisp
+     (add-hook 'after-init-hook 'show-paren-mode)
    #+end_src
 
 ** Subword
@@ -2302,6 +2312,12 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
       (global-set-key (kbd "C-c 4 tt") 'ts-ansi-term-other-window)
     #+end_src
 
+*** Set term coding system to UTF-8
+
+    #+begin_src emacs-lisp
+      (add-hook 'term-exec (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix)))
+    #+end_src
+
 *** Switch to ANSI Term
 
     #+begin_src emacs-lisp
@@ -2334,12 +2350,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
           (kill-buffer))
         (setq term-buffer-maximum-size 200000)
         (message "Lazy loaded term :-)"))
-    #+end_src
-
-*** Set term coding system to UTF-8
-
-    #+begin_src emacs-lisp
-      (add-hook 'term-exec (lambda () (set-process-coding-system 'utf-8-unix 'utf-8-unix)))
     #+end_src
 
 ** Tramp
@@ -2423,7 +2433,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
   I'm using John Wiegley's awesome [[https://github.com/jwiegley/use-package][use-package]] to pull in and configure any third
   party packages from [[https://melpa.org/][MELPA]].
 
-** Setup up package.el
+** Setup package.el
 
    If we are on an Emacs version lower than "27" this will go in ~init.el~,
    otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][early-init.el]] for faster starup.
@@ -2431,7 +2441,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+begin_src emacs-lisp :comments no :tangle (if (version< emacs-version "27") "no" early-init)
      ;; -*- lexical-binding: t; -*-
    #+end_src
-
 
    #+begin_src emacs-lisp :tangle (if (version< emacs-version "27") init-file early-init)
      ;; This must be true otherwise use-package won't load!
@@ -2572,12 +2581,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+end_src
 
 ** Git
-*** Git Timemachine
-
-    #+begin_src emacs-lisp
-      (use-package git-timemachine :defer)
-    #+end_src
-
 *** Gitlab CI
 
     #+begin_src emacs-lisp
@@ -2587,6 +2590,12 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
         "\\.gitlab-ci.yml\\'"
         :hook
         (yaml-mode . hs-minor-mode))
+    #+end_src
+
+*** Git Timemachine
+
+    #+begin_src emacs-lisp
+      (use-package git-timemachine :defer)
     #+end_src
 
 *** Lazygit
@@ -2732,22 +2741,16 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+end_src
 
 ** Org
-*** Org Bullets
-
-    #+begin_src emacs-lisp
-      (use-package org-bullets :defer :hook (org-mode . org-bullets-mode))
-    #+end_src
-
 *** HTMLize
 
     #+begin_src emacs-lisp
       (use-package htmlize :defer)
     #+end_src
 
-*** Toc Org
+*** Org Bullets
 
     #+begin_src emacs-lisp
-      (use-package toc-org :defer :hook (org-mode . toc-org-enable))
+      (use-package org-bullets :defer :hook (org-mode . org-bullets-mode))
     #+end_src
 
 *** PDF Tools
@@ -2756,6 +2759,12 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
     #+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" init-file)
       (use-package pdf-tools :unless (eq system-type 'windows-nt) :defer)
+    #+end_src
+
+*** Toc Org
+
+    #+begin_src emacs-lisp
+      (use-package toc-org :defer :hook (org-mode . toc-org-enable))
     #+end_src
 
 ** Powershell
@@ -2840,6 +2849,14 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        (add-to-list 'web-mode-indentation-params '("lineup-ternary" . nil)))
    #+end_src
 
+** Which Key
+
+   #+begin_src emacs-lisp
+     (use-package which-key :defer 5
+       :diminish which-key-mode
+       :config (which-key-mode))
+   #+end_src
+
 ** Writeable Grep
 
    #+begin_src emacs-lisp
@@ -2847,14 +2864,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        :bind (:map grep-mode-map
                    ("e" . wgrep-change-to-wgrep-mode)
                    ("C-x C-q" . wgrep-change-to-wgrep-mode)))
-   #+end_src
-
-** Which Key
-
-   #+begin_src emacs-lisp
-     (use-package which-key :defer 5
-       :diminish which-key-mode
-       :config (which-key-mode))
    #+end_src
 
 ** YAML
@@ -2874,16 +2883,16 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
        :hook (prog-mode . yas-minor-mode))
    #+end_src
 
-*** Snippets
-
-    #+begin_src emacs-lisp
-      (use-package yasnippet-snippets :defer)
-    #+end_src
-
 *** Classic snippets
 
     #+begin_src emacs-lisp
       (use-package yasnippet-classic-snippets :defer)
+    #+end_src
+
+*** Snippets
+
+    #+begin_src emacs-lisp
+      (use-package yasnippet-snippets :defer)
     #+end_src
 
 * Safe Local Variables

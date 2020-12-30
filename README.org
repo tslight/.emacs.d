@@ -1422,6 +1422,7 @@ This is basically ~other-window~ backwards.
                    (progn
                      (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
                      (match-string 1))))))
+
     (define-key dired-mode-map "?" 'ts-dired-get-size)
 
   ;;;###autoload
@@ -1430,6 +1431,7 @@ This is basically ~other-window~ backwards.
       (interactive)
       (goto-char (point-min))
       (dired-next-line 2))
+
     (define-key dired-mode-map [remap beginning-of-buffer] 'ts-dired-beginning-of-buffer)
 
   ;;;###autoload
@@ -1438,6 +1440,7 @@ This is basically ~other-window~ backwards.
       (interactive)
       (goto-char (point-max))
       (dired-next-line -1))
+
     (define-key dired-mode-map [remap end-of-buffer] 'ts-dired-end-of-buffer)
 
     (autoload 'dired-omit-mode "dired-x" nil t)
@@ -1459,9 +1462,11 @@ This is basically ~other-window~ backwards.
     (defun ts-dired-up-directory ()
       (interactive)
       (find-alternate-file ".."))
-    (define-key dired-mode-map "b" 'ts-dired-up-directory)
 
-    (define-key dired-mode-map "f" 'dired-find-alternate-file)
+    (define-key dired-mode-map [remap dired-up-directory] 'ts-dired-up-directory)
+    (define-key dired-mode-map [remap dired-find-file] 'dired-find-alternate-file)
+
+    (define-key dired-mode-map "b" 'dired-up-directory)
     (define-key dired-mode-map "c" 'dired-do-compress-to)
     (define-key dired-mode-map ")" 'dired-omit-mode)
     (message "Lazy loaded dired :-)"))

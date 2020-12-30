@@ -31,7 +31,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      ;; -*- lexical-binding: t; -*-
    #+end_src
 
-* [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][Doom]] startup speed hacks
+* [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][Doom Speed Hacks]]
 ** Avoid garbage collection at startup
 
    The GC can easily double startup time, so we suppress it at startup by
@@ -289,7 +289,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
     (setq-default tab-always-indent 'complete)
   #+end_src
 
-* File Encoding
+* Encoding
 
   #+begin_src emacs-lisp
     ;;;###autoload
@@ -318,7 +318,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
     (prefer-coding-system 'utf-8-unix)
   #+end_src
 
-* Complilation related
+* Compilation
 ** Byte Compile
 
    #+begin_src emacs-lisp
@@ -543,6 +543,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
    #+begin_src emacs-lisp
      (setq default-frame-alist
            '((fullscreen . maximized) (vertical-scroll-bars . nil)))
+     (setq frame-resize-pixelwise t) ;; jwm resize fix
    #+end_src
 
 ** Modeline
@@ -599,10 +600,9 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
      (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
      (when (fboundp 'tooltip-mode) (tooltip-mode -1))
-     (setq frame-resize-pixelwise t) ;; jwm resize fix
    #+end_src
 
-* Buffer functions
+* Buffer Functions
 ** Indent Buffer
 
    #+begin_src emacs-lisp
@@ -753,7 +753,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (global-set-key (kbd "C-c z") 'ts-toggle-maximize-buffer)
    #+end_src
 
-* Editing functions
+* Editing Functions
 ** Aligning symbols
 
    Some handy functions to make aligning symbols less painful.
@@ -1004,7 +1004,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (global-set-key (kbd "C-M-y") 'ts-yank-pop-forwards)
    #+end_src
 
-* File manipulation functions
+* File Functions
 ** Delete this file
 
    #+begin_src emacs-lisp
@@ -1113,7 +1113,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (global-set-key (kbd "C-c f w") 'ts-copy-file-name-to-clipboard)
    #+end_src
 
-* Miscellaneous functions
+* Miscellaneous Functions
 
   #+begin_src emacs-lisp
     ;;;###autoload
@@ -1137,7 +1137,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
          (message "%.06f" (float-time (time-since time)))))
   #+end_src
 
-* Window manipulation functions
+* Window Functions
 ** Better scrolling of other windows
 
    This is better, since I don't need to send prefix to ~scroll-other-window~.
@@ -1346,7 +1346,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (global-set-key (kbd "C-c w r") 'winner-redo)
    #+end_src
 
-* Emacs built in packages
+* Emacs Packages
 ** Auto-fill
 
    #+begin_src emacs-lisp
@@ -2417,7 +2417,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
      (add-hook 'before-save-hook 'whitespace-cleanup)
    #+end_src
 
-* Third party packages
+* MELPA Packages
 
   I like to split up my "vanilla" Emacs configuration and custom functions from
   the customisations provided by third party libraries that have been installed

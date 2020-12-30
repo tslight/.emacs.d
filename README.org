@@ -357,7 +357,7 @@ This variables are added to the end of this file.
     (let ((current-prefix-arg '(4)))
       (call-interactively 'ts-byte-compile)))
 
-  (add-hook 'after-save-hook 'ts-auto-byte-compile)
+  (add-hook 'after-save-hook 'ts-auto-byte-compile-and-load)
   (global-set-key (kbd "C-x M-b") 'ts-byte-compile)
 #+end_src
 
@@ -748,21 +748,6 @@ Don't tangle this block on ~emacs-version~ < 27.
     (save-some-buffers t)
     (message "Saved all buffers :-)"))
   (global-set-key (kbd "C-c s") 'ts-save-buffers-silently)
-#+end_src
-
-** Toggle maximize buffer
-
-#+begin_src emacs-lisp
-  ;;;###autoload
-  (defun ts-toggle-maximize-buffer ()
-    "Temporarily maximize a buffer."
-    (interactive)
-    (if (= 1 (length (window-list)))
-        (jump-to-register '_)
-      (progn
-        (window-configuration-to-register '_)
-        (delete-other-windows))))
-  (global-set-key (kbd "C-c z") 'ts-toggle-maximize-buffer)
 #+end_src
 
 * Editing Functions
@@ -1270,6 +1255,21 @@ This is basically ~other-window~ backwards.
         (select-frame frame)
         (select-window win))))
   (global-set-key (kbd "C-c w w") 'ts-last-window)
+#+end_src
+
+** Toggle maximize window
+
+#+begin_src emacs-lisp
+  ;;;###autoload
+  (defun ts-toggle-maximize-window ()
+    "Temporarily maximize a window."
+    (interactive)
+    (if (= 1 (length (window-list)))
+        (jump-to-register '_)
+      (progn
+        (window-configuration-to-register '_)
+        (delete-other-windows))))
+  (global-set-key (kbd "C-c z") 'ts-toggle-maximize-window)
 #+end_src
 
 ** Toggle vertical -> horizontal splits

@@ -454,7 +454,6 @@ If init.elc is older, use newer ~init.el~.
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
-  (global-set-key (kbd "M-;") 'comment-line)
   (global-set-key (kbd "C-z") 'zap-up-to-char) ;; suspend is still bound to C-x C-z
   (global-set-key (kbd "M-z") 'zap-to-char)
   (global-set-key (kbd "C-x M-t") 'transpose-regions)
@@ -847,6 +846,18 @@ Increment or decrement numbers at the point.
     (interactive)
     (ts-change-number-at-point '1-))
   (global-set-key (kbd "C-c -") 'ts-decrement-number-at-point)
+#+end_src
+** Comment DWIM
+
+#+begin_src emacs-lisp
+  (defun ts-comment-dwim (p)
+    "`comment-or-uncomment-region' or `comment-line'."
+    (interactive "p")
+    (if (region-active-p)
+        (comment-or-uncomment-region (region-beginning) (region-end))
+      (comment-line (if (> p 1) 1))))
+
+  (global-set-key (kbd "M-;") 'ts-comment-dwim)
 #+end_src
 
 ** Delete inside delimiters

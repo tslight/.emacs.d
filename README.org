@@ -1790,31 +1790,33 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 *** Icomplete keybindings
 
 #+begin_src emacs-lisp
-  (unless (version< emacs-version "27")
-    (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-fido-exit))
-  (define-key icomplete-minibuffer-map (kbd "M-j") 'exit-minibuffer)
-  (define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
-  (define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)
-  (define-key icomplete-minibuffer-map (kbd "<up>") 'icomplete-backward-completions)
-  (define-key icomplete-minibuffer-map (kbd "<down>") 'icomplete-forward-completions)
-  (define-key icomplete-minibuffer-map (kbd "<left>") 'icomplete-backward-completions)
-  (define-key icomplete-minibuffer-map (kbd "<right>") 'icomplete-forward-completions)
+  (with-eval-after-load 'icomplete
+    (unless (version< emacs-version "27")
+      (define-key icomplete-minibuffer-map (kbd "C-j") 'icomplete-fido-exit))
+    (define-key icomplete-minibuffer-map (kbd "M-j") 'exit-minibuffer)
+    (define-key icomplete-minibuffer-map (kbd "C-n") 'icomplete-forward-completions)
+    (define-key icomplete-minibuffer-map (kbd "C-p") 'icomplete-backward-completions)
+    (define-key icomplete-minibuffer-map (kbd "<up>") 'icomplete-backward-completions)
+    (define-key icomplete-minibuffer-map (kbd "<down>") 'icomplete-forward-completions)
+    (define-key icomplete-minibuffer-map (kbd "<left>") 'icomplete-backward-completions)
+    (define-key icomplete-minibuffer-map (kbd "<right>") 'icomplete-forward-completions))
 #+end_src
 
 *** Icomplete settings
 
 #+begin_src emacs-lisp
-  (setq icomplete-delay-completions-threshold 100)
-  (setq icomplete-max-delay-chars 2)
-  (setq icomplete-compute-delay 0.2)
-  (setq icomplete-show-matches-on-no-input t)
-  (setq icomplete-hide-common-prefix nil)
-  (setq icomplete-prospects-height 1)
-  ;; (setq icomplete-separator "\n")
-  (setq icomplete-separator (propertize " · " 'face 'shadow))
-  (setq icomplete-with-completion-tables t)
-  (setq icomplete-tidy-shadowed-file-names t)
-  (setq icomplete-in-buffer t)
+  (with-eval-after-load 'icomplete
+    (setq icomplete-delay-completions-threshold 100)
+    (setq icomplete-max-delay-chars 2)
+    (setq icomplete-compute-delay 0.2)
+    (setq icomplete-show-matches-on-no-input t)
+    (setq icomplete-hide-common-prefix nil)
+    (setq icomplete-prospects-height 1)
+    ;; (setq icomplete-separator "\n")
+    (setq icomplete-separator (propertize " · " 'face 'shadow))
+    (setq icomplete-with-completion-tables t)
+    (setq icomplete-tidy-shadowed-file-names t)
+    (setq icomplete-in-buffer t))
 #+end_src
 
 ** Imenu

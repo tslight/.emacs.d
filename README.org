@@ -2563,18 +2563,16 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
     (hs-minor-mode . (lambda () (diminish 'hs-minor-mode))))
 #+end_src
 
-** Dired Peep
+** Diranged
 
 Preview the file or directory at point when in ~dired~, a bit like [[https://github.com/ranger/ranger][ranger]].
 
 Get the source from [[https://gitlab.com/tspub/lisp/dired-peep][here]].
 
 #+begin_src emacs-lisp
-  (use-package dired-peep :ensure nil :after dired
-    :load-path "~/src/gitlab/tspub/lisp/dired-peep"
-    :bind (:map dired-mode-map
-                ("r" . dired-peep-mode)
-                ("C-o" . dired-peep)))
+  (use-package diranged :ensure nil :after dired
+    :load-path "~/src/gitlab/tspub/lisp/diranged"
+    :bind (:map dired-mode-map ("r" . diranged-mode)))
 #+end_src
 
 ** Docker

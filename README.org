@@ -123,7 +123,6 @@ compressed/encrypted files won’t open.
 #+begin_src emacs-lisp
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 #+end_src
-
 ** Delete all on backspace
 
 #+begin_src emacs-lisp
@@ -847,19 +846,6 @@ Increment or decrement numbers at the point.
     (ts-change-number-at-point '1-))
   (global-set-key (kbd "C-c -") 'ts-decrement-number-at-point)
 #+end_src
-** Comment DWIM
-
-#+begin_src emacs-lisp
-  (defun ts-comment-dwim (p)
-    "`comment-or-uncomment-region' or `comment-line'."
-    (interactive "p")
-    (if (region-active-p)
-        (comment-or-uncomment-region (region-beginning) (region-end))
-      (comment-line (if (> p 1) 1))))
-
-  (global-set-key (kbd "M-;") 'ts-comment-dwim)
-#+end_src
-
 ** Delete inside delimiters
 
 #+begin_src emacs-lisp

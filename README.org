@@ -1771,8 +1771,8 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 
 #+begin_src emacs-lisp
   (if (version< emacs-version "27")
-      (icomplete-mode)
-    (fido-mode))
+      (add-hook 'after-init-hook 'icomplete-mode)
+    (add-hook 'after-init-hook 'fido-mode))
 #+end_src
 
 *** Change completion styles

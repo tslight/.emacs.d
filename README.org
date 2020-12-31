@@ -1920,22 +1920,13 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 
 *** Settings
 
-#+begin_src emacs-lisp
-  (setq search-highlight t)
-  (setq search-whitespace-regexp ".*?")
-  (setq isearch-lax-whitespace t)
-  (setq isearch-regexp-lax-whitespace nil)
-  (setq isearch-lazy-highlight t)
-#+end_src
-
 Don't tangle this on ~emacs-version~ < 27
 
 #+begin_src emacs-lisp :tangle (if (version< emacs-version "27.1") "no" init-file)
   (unless (version< emacs-version "27.1")
     (setq isearch-allow-scroll 'unlimited)
-    (setq isearch-yank-on-move 't)
+    (setq isearch-yank-on-move 'shift)
     (setq isearch-lazy-count t)
-    (setq lazy-count-prefix-format nil)
     (setq lazy-count-suffix-format " (%s/%s)"))
 #+end_src
 

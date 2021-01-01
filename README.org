@@ -438,7 +438,11 @@ If init.elc is older, use newer ~init.el~.
 ** Buffers
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-x M-e") 'eval-buffer)
+  (global-set-key (kbd "C-x M-e") (lambda ()
+                                    (interactive)
+                                    (eval-buffer)
+                                    (message "Evaluated buffer")))
+  (global-set-key (kbd "C-c M-l") 'lisp-interaction-mode)
   (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
   (autoload 'ibuffer "ibuffer" nil t)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
@@ -465,7 +469,6 @@ If init.elc is older, use newer ~init.el~.
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
-  (global-set-key (kbd "C-c M-l") 'lisp-interaction-mode)
   (global-set-key (kbd "C-z") 'zap-up-to-char) ;; suspend is still bound to C-x C-z
   (global-set-key (kbd "M-z") 'zap-to-char)
   (global-set-key (kbd "C-x M-t") 'transpose-regions)
@@ -619,10 +622,12 @@ Don't tangle this block on ~emacs-version~ < 27.
 ** Turn off UI elements
 
 #+begin_src emacs-lisp
-  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-  (when (fboundp 'tooltip-mode) (tooltip-mode -1))
+  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (if (fboundp 'tooltip-mode) (tooltip-mode -1))
+  (if (fboundp 'set-horizontal-scroll-bar-mode)
+      (set-horizontal-scroll-bar-mode nil))
 #+end_src
 
 * Buffer Functions

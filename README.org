@@ -1,5 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Toby Slight
+#+EMAIL: tslight@pm.me
 #+PROPERTY: header-args:emacs-lisp :lexical t
 #+PROPERTY: header-args+ :cache yes
 #+PROPERTY: header-args+ :comments yes
@@ -15,10 +16,10 @@ A fairly standard [[https://en.wikipedia.org/wiki/Literate_programming][literate
 To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
 #+begin_src emacs-lisp :tangle no
-  (org-babel-tangle)
-  (load early-init)
-  (load init-file)
-  (ts-ensure-byte-compiled-init)
+    (org-babel-tangle)
+    (load early-init)
+    (load init-file)
+    (ts-ensure-byte-compiled-init)
 #+end_src
 
 * Lexical Binding
@@ -123,6 +124,7 @@ compressed/encrypted files won’t open.
 #+begin_src emacs-lisp
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 #+end_src
+
 ** Delete all on backspace
 
 #+begin_src emacs-lisp
@@ -463,6 +465,7 @@ If init.elc is older, use newer ~init.el~.
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
+  (global-set-key (kbd "C-c M-l") 'lisp-interaction-mode)
   (global-set-key (kbd "C-z") 'zap-up-to-char) ;; suspend is still bound to C-x C-z
   (global-set-key (kbd "M-z") 'zap-to-char)
   (global-set-key (kbd "C-x M-t") 'transpose-regions)

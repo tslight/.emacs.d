@@ -16,10 +16,10 @@ A fairly standard [[https://en.wikipedia.org/wiki/Literate_programming][literate
 To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
 #+begin_src emacs-lisp :tangle no
-    (org-babel-tangle)
-    (load early-init)
-    (load init-file)
-    (ts-ensure-byte-compiled-init)
+  (org-babel-tangle)
+  (load early-init)
+  (load init-file)
+  (ts-ensure-byte-compiled-init)
 #+end_src
 
 * Lexical Binding
@@ -899,22 +899,19 @@ Increment or decrement numbers at the point.
 
 #+begin_src emacs-lisp
   ;;;###autoload
-  (defun ts-kill-region ()
-    "Cut current line, or text selection to kill ring.
-
-  When `universal-argument' is called first, cut whole buffer (but
-  respect `narrow-to-region')."
-    (interactive)
+  (defun ts-kill-region (arg)
+    "Copy region or current ARG lines to kill ring."
+    (interactive "p")
     (let (p1 p2)
-      (if (null current-prefix-arg)
-          (progn (if (use-region-p)
-                     (progn (setq p1 (region-beginning))
-                            (setq p2 (region-end)))
-                   (progn (setq p1 (line-beginning-position))
-                          (setq p2 (line-beginning-position 2)))))
-        (progn (setq p1 (point-min))
-               (setq p2 (point-max))))
+      (if (use-region-p)
+          (progn (setq p1 (region-beginning))
+                 (setq p2 (region-end)))
+        (progn (setq p1 (line-beginning-position))
+               (setq p2 (line-beginning-position (+ arg 1)))
+               (next-line arg)
+               (beginning-of-line)))
       (kill-region p1 p2)))
+
   (global-set-key [remap kill-region] 'ts-kill-region)
 #+end_src
 
@@ -922,22 +919,19 @@ Increment or decrement numbers at the point.
 
 #+begin_src emacs-lisp
   ;;;###autoload
-  (defun ts-kill-ring-save ()
-    "Copy current line or text selection to kill ring.
-
-  When `universal-argument' is called first, copy whole buffer (but
-  respect `narrow-to-region')."
-    (interactive)
+  (defun ts-kill-ring-save (arg)
+    "Copy region or current ARG lines to kill ring."
+    (interactive "p")
     (let (p1 p2)
-      (if (null current-prefix-arg)
-          (progn (if (use-region-p)
-                     (progn (setq p1 (region-beginning))
-                            (setq p2 (region-end)))
-                   (progn (setq p1 (line-beginning-position))
-                          (setq p2 (line-end-position)))))
-        (progn (setq p1 (point-min))
-               (setq p2 (point-max))))
+      (if (use-region-p)
+          (progn (setq p1 (region-beginning))
+                 (setq p2 (region-end)))
+        (progn (setq p1 (line-beginning-position))
+               (setq p2 (line-beginning-position (+ arg 1)))
+               (next-line arg)
+               (beginning-of-line)))
       (kill-ring-save p1 p2)))
+
   (global-set-key [remap kill-ring-save] 'ts-kill-ring-save)
 #+end_src
 
@@ -2075,10 +2069,12 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
     (add-to-list 'org-latex-packages-alist '("" "minted"))
 
     (setq org-capture-templates
-          '(("t" "TODO Entry" entry (file+headline "~/org/todo.org" "CURRENT")
+          '(("t" "TODO Entry" entry (file+headline "~/org/todo.org" "Captured")
              "* TODO %?\n  %i\n  %a")
-            ("j" "Journal Entry" entry (file+datetree "~/org/journal.org" "JOURNAL")
-             "* %?\nEntered on %U\n  %i\n  %a")))
+            ("j" "Journal Entry" entry (file+datetree "~/org/journal.org" "Captured")
+             "* %?\nEntered on %U\n %i\n  %a")
+            ("n" "Notes Entry" entry (file+datetree "~/org/notes.org" "Captured")
+             "* %?\nEntered on %U\n %i\n  %a")))
 
     (setq org-todo-keywords '((sequence
                                "TODO(t!)"

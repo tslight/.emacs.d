@@ -470,12 +470,15 @@ If init.elc is older, use newer ~init.el~.
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
   (global-set-key (kbd "C-z") 'zap-up-to-char) ;; suspend is still bound to C-x C-z
-  (global-set-key (kbd "M-z") 'zap-to-char)
+  (global-set-key (kbd "M-z") 'zap-to-char)    ;
   (global-set-key (kbd "C-x M-t") 'transpose-regions)
   (global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
-  (global-set-key (kbd "M-SPC") 'mark-sexp) ; I use this far more than cycle-spacing
-  (global-set-key (kbd "C-M-SPC") 'cycle-spacing)
   (global-set-key (kbd "M-%") 'query-replace-regexp)
+#+end_src
+
+Always do what I mean!
+
+#+begin_src emacs-lisp
   (global-set-key [remap capitalize-word] 'capitalize-dwim)
   (global-set-key [remap downcase-word] 'downcase-dwim)
   (global-set-key [remap upcase-word] 'upcase-dwim)
@@ -1187,35 +1190,6 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
   (define-key ctl-x-4-map "o" 'ts-open-buffer-other-window)
 #+end_src
 
-** Open last buffer in horizontal split
-
-#+begin_src emacs-lisp
-  ;;;###autoload
-  (defun ts-hsplit-last-buffer (prefix)
-    "Split the window vertically and display the previous buffer.
-  With PREFIX stay in current buffer."
-    (interactive "p")
-    (split-window-vertically)
-    (other-window 1 nil)
-    (if (= prefix 1)
-        (switch-to-next-buffer)))
-  (global-set-key (kbd "C-c 2") 'ts-hsplit-last-buffer)
-#+end_src
-
-** Open last buffer in vertical split
-
-#+begin_src emacs-lisp
-  ;;;###autoload
-  (defun ts-vsplit-last-buffer (prefix)
-    "Split the window horizontally and display the previous buffer.
-  With PREFIX stay in current buffer."
-    (interactive "p")
-    (split-window-horizontally)
-    (other-window 1 nil)
-    (if (= prefix 1) (switch-to-next-buffer)))
-  (global-set-key (kbd "C-c 3") 'ts-vsplit-last-buffer)
-#+end_src
-
 ** Scroll lines down like Ctrl-y in Vim
 
 #+begin_src emacs-lisp
@@ -1236,6 +1210,38 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
     (interactive "p")
     (scroll-up n))
   (global-set-key (kbd "M-p") 'ts-scroll-line-up)
+#+end_src
+
+** Split window right to last buffer
+
+#+begin_src emacs-lisp
+  ;;;###autoload
+  (defun ts-split-window-right (prefix)
+    "Split the window vertically and display the previous buffer.
+  With PREFIX stay in current buffer."
+    (interactive "p")
+    (split-window-right)
+    (other-window 1)
+    (if (= prefix 1)
+        (switch-to-next-buffer)))
+
+  (global-set-key [remap split-window-right] 'ts-split-window-right)
+#+end_src
+
+** Split window below to last buffer
+
+#+begin_src emacs-lisp
+  ;;;###autoload
+  (defun ts-split-window-below (prefix)
+    "Split the window horizontally and display the previous buffer.
+  With PREFIX stay in current buffer."
+    (interactive "p")
+    (split-window-below)
+    (other-window 1)
+    (if (= prefix 1)
+        (switch-to-next-buffer)))
+
+  (global-set-key [remap split-window-below] 'ts-split-window-below)
 #+end_src
 
 ** Switch to the previous window
@@ -1279,6 +1285,7 @@ This is basically ~other-window~ backwards.
       (progn
         (window-configuration-to-register '_)
         (delete-other-windows))))
+
   (global-set-key (kbd "C-c z") 'ts-toggle-maximize-window)
 #+end_src
 
@@ -1288,10 +1295,10 @@ This is basically ~other-window~ backwards.
   ;;;###autoload
   (defun ts-toggle-split ()
     "Switch window split from horizontally to vertically.
-
-  Or vice versa.  Change right window to bottom, or change bottom
+  Or vice versa. Change right window to bottom, or change bottom
   window to right."
     (interactive)
+    (autoload 'windmove-find-other-window "windmove" nil t)
     (let ((done))
       (dolist (dirs '((right . down) (down . right)))
         (unless done
@@ -1300,9 +1307,10 @@ This is basically ~other-window~ backwards.
                  (neighbour-dir (cdr dirs))
                  (next-win (windmove-find-other-window nextdir win))
                  (neighbour1 (windmove-find-other-window neighbour-dir win))
-                 (neighbour2 (if next-win (with-selected-window next-win
-                                            (windmove-find-other-window neighbour-dir next-win)))))
-            ;;(message "win: %s\nnext-win: %s\nneighbour1: %s\nneighbour2:%s" win next-win neighbour1 neighbour2)
+                 (neighbour2 (if next-win
+                                 (with-selected-window next-win
+                                   (windmove-find-other-window
+                                    neighbour-dir next-win)))))
             (setq done (and (eq neighbour1 neighbour2)
                             (not (eq (minibuffer-window) next-win))))
             (if done
@@ -1311,7 +1319,10 @@ This is basically ~other-window~ backwards.
                   (if (eq nextdir 'right)
                       (split-window-vertically)
                     (split-window-horizontally))
-                  (set-window-buffer (windmove-find-other-window neighbour-dir) other-buf))))))))
+                  (set-window-buffer
+                   (windmove-find-other-window neighbour-dir)
+                   other-buf))))))))
+
   (define-key ctl-x-4-map "s" 'ts-toggle-split)
 #+end_src
 
@@ -1339,6 +1350,7 @@ This is basically ~other-window~ backwards.
                    (p2 (window-point w2)))
               (set-window-buffer-start-and-point w1 b2 s2 p2)
               (set-window-buffer-start-and-point w2 b1 s1 p1)))))))
+
   (define-key ctl-x-4-map "t" 'ts-transpose-windows)
 #+end_src
 

@@ -262,6 +262,11 @@ This variables are added to the end of this file.
   (setq undo-limit 80000000)
   (setq undo-strong-limit 90000000)
 #+end_src
+** Undo save
+
+#+begin_src emacs-lisp
+  (add-to-list 'desktop-locals-to-save 'buffer-undo-list)
+#+end_src
 
 ** Uniquify
 
@@ -470,15 +475,14 @@ If init.elc is older, use newer ~init.el~.
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
   (global-set-key (kbd "C-z") 'zap-up-to-char) ;; suspend is still bound to C-x C-z
-  (global-set-key (kbd "M-z") 'zap-to-char)    ;
+  (global-set-key (kbd "M-z") 'zap-to-char)
   (global-set-key (kbd "C-x M-t") 'transpose-regions)
   (global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
   (global-set-key (kbd "M-%") 'query-replace-regexp)
-#+end_src
-
-Always do what I mean!
-
-#+begin_src emacs-lisp
+  (global-set-key (kbd "M-;") 'comment-line)
+  (global-set-key (kbd "C-x C-;") 'comment-dwim)
+  (global-set-key (kbd "M-SPC") 'mark-sexp)
+  (global-set-key (kbd "C-M-SPC") 'cycle-spacing)
   (global-set-key [remap capitalize-word] 'capitalize-dwim)
   (global-set-key [remap downcase-word] 'downcase-dwim)
   (global-set-key [remap upcase-word] 'upcase-dwim)

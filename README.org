@@ -1114,19 +1114,28 @@ to completing read of the kill ring, making this pretty pointless.
 
 #+begin_src emacs-lisp
   ;;;###autoload
-  (defun ts-copy-file-name-to-clipboard ()
-    "Copy the current buffer file name to the clipboard."
-    (interactive)
+  (defun ts-copy-file-name-to-clipboard (arg)
+    "Copy the current buffer file name to the clipboard.
+  With prefix ARG, omit path."
+    (interactive "P")
     (let ((filename (if (equal major-mode 'dired-mode)
-                        default-directory
-                      (buffer-file-name))))
+                        (if arg
+                            (file-name-nondirectory
+                             (directory-file-name
+                              (file-name-directory default-directory)))
+                          default-directory)
+                      (if arg
+                          (file-name-nondirectory buffer-file-name)
+                        (buffer-file-name)))))
       (when filename
         (kill-new filename)
-        (message "Copied buffer file name '%s' to the clipboard." filename))))
+        (message "Copied '%s' to the clipboard." filename))))
+
   (global-set-key (kbd "C-c f w") 'ts-copy-file-name-to-clipboard)
 #+end_src
 
-* Miscellaneous Functions
+* Miscellaneous
+** Googling
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -1142,12 +1151,26 @@ to completing read of the kill ring, making this pretty pointless.
        (concat "http://www.google.com/search?ie=utf-8&oe=utf-8&q=" query))))
   (global-set-key (kbd "C-c M-s") 'ts-google)
 
+#+end_src
+
+** Measure function executions
+
+#+begin_src emacs-lisp
   ;;;###autoload
   (defmacro ts-measure-time (&rest body)
     "Measure the time it takes to evaluate BODY."
     `(let ((time (current-time)))
        ,@body
        (message "%.06f" (float-time (time-since time)))))
+#+end_src
+
+** Default Text Scale
+
+#+begin_src emacs-lisp
+  (defadvice text-scale-increase (around all-buffers (arg) activate)
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        ad-do-it)))
 #+end_src
 
 * Window Functions
@@ -2578,17 +2601,6 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
 #+begin_src emacs-lisp
   (use-package blacken :defer :hook (python-mode . blacken-mode))
-#+end_src
-
-** Default text scaling
-
-#+begin_src emacs-lisp
-  (use-package default-text-scale
-    :if window-system
-    :bind*
-    ("C-M-=" . default-text-scale-increase)
-    ("C-M--" . default-text-scale-decrease)
-    ("C-M-0" . default-text-scale-reset))
 #+end_src
 
 ** Diminish

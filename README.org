@@ -1032,6 +1032,26 @@ to completing read of the kill ring, making this pretty pointless.
       (kill-this-buffer)))
   (global-set-key (kbd "C-c f d") 'ts-delete-this-file)
 #+end_src
+** Insert other buffer file name
+
+#+begin_src emacs-lisp
+  (defun ts-insert-other-buffer-file-name (arg)
+    "Does what it say on the the tin!
+  With prefix ARG, omit path."
+    (interactive "P")
+    (insert (completing-read
+             "Select Buffer Filename: "
+             (delete nil
+                     (mapcar (lambda (buffer)
+                               (if (buffer-file-name buffer)
+                                   (if arg
+                                       (file-name-nondirectory
+                                        (buffer-file-name buffer))
+                                     (buffer-file-name buffer))))
+                             (buffer-list))))))
+
+  (global-set-key (kbd "C-c f i") 'ts-insert-other-buffer-file-name)
+#+end_src
 
 ** Make backup of current file
 

@@ -2,10 +2,7 @@
 #+AUTHOR: Toby Slight
 #+EMAIL: tslight@pm.me
 #+PROPERTY: header-args:emacs-lisp :lexical t
-#+PROPERTY: header-args+ :cache yes
-#+PROPERTY: header-args+ :comments yes
-#+PROPERTY: header-args+ :mkdirp yes
-#+PROPERTY: header-args+ :results silent
+#+PROPERTY: header-args+ :cache yes :comments yes :mkdirp yes :results silent
 #+PROPERTY: header-args+ :tangle (expand-file-name "init.el" user-emacs-directory)
 #+PROPERTY: header-args+ :tangle-mode (identity #o644)
 #+OPTIONS: broken-links:t toc:t num:nil
@@ -119,6 +116,21 @@ compressed/encrypted files won’t open.
   (setq save-interprogram-paste-before-kill t)
 #+end_src
 
+** Code Style
+
+#+begin_src emacs-lisp
+  (setq c-default-style "bsd")
+  (setq c-basic-offset 4)
+  (setq css-indent-offset 2)
+  (setq js-indent-level 2)
+
+  ;; If indent-tabs-mode is t, it may use tab, resulting in mixed spaces and tabs
+  (setq-default indent-tabs-mode nil)
+
+  ;; make tab key do indent first then completion.
+  (setq-default tab-always-indent 'complete)
+#+end_src
+
 ** Customize settings file
 
 #+begin_src emacs-lisp
@@ -147,6 +159,18 @@ Only tangled on Windows.
 
 #+begin_src emacs-lisp
   (setq disabled-command-function nil) ;; enable all "advanced" features
+#+end_src
+
+** Encoding
+
+#+begin_src emacs-lisp
+  (setq-default buffer-file-coding-system 'utf-8-unix)
+  (setq-default default-buffer-file-coding-system 'utf-8-unix)
+  (setq coding-system-for-read 'utf-8-unix)
+  (setq coding-system-for-write 'utf-8-unix)
+  (set-language-environment "UTF-8")
+  (set-default-coding-systems 'utf-8-unix)
+  (prefer-coding-system 'utf-8-unix)
 #+end_src
 
 ** Encryption
@@ -242,6 +266,7 @@ This variables are added to the end of this file.
   (setq scroll-conservatively 8)
   (setq scroll-preserve-screen-position t)
 #+end_src
+
 ** Sentence End Spaces
 
 #+begin_src emacs-lisp
@@ -262,6 +287,7 @@ This variables are added to the end of this file.
   (setq undo-limit 80000000)
   (setq undo-strong-limit 90000000)
 #+end_src
+
 ** Undo save
 
 #+begin_src emacs-lisp
@@ -296,54 +322,6 @@ This variables are added to the end of this file.
 #+begin_src emacs-lisp
   (fset 'yes-or-no-p 'y-or-n-p) ;; never have to type full word
   (setq confirm-kill-emacs 'y-or-n-p)
-#+end_src
-
-* Code Style
-
-#+begin_src emacs-lisp
-  (setq c-default-style "bsd")
-  (setq c-basic-offset 4)
-  (setq css-indent-offset 2)
-  (setq js-indent-level 2)
-
-  ;; If indent-tabs-mode is t, it may use tab, resulting in mixed spaces and tabs
-  (setq-default indent-tabs-mode nil)
-
-  (with-eval-after-load 'python
-    (setq python-fill-docstring-style 'django)
-    (message "Lazy loaded python :-)"))
-
-  ;; make tab key do indent first then completion.
-  (setq-default tab-always-indent 'complete)
-#+end_src
-
-* Encoding
-
-#+begin_src emacs-lisp
-  ;;;###autoload
-  (defun ts-convert-to-unix-coding-system ()
-    "Change the current buffer's file encoding to unix."
-    (interactive)
-    (let ((coding-str (symbol-name buffer-file-coding-system)))
-      (when (string-match "-\\(?:dos\\|mac\\)$" coding-str)
-        (set-buffer-file-coding-system 'unix))))
-  (global-set-key (kbd "C-x RET u") 'ts-convert-to-unix-coding-system)
-
-  ;;;###autoload
-  (defun ts-hide-dos-eol ()
-    "Do not show ^M in files containing mixed UNIX and DOS line endings."
-    (interactive)
-    (setq buffer-display-table (make-display-table))
-    (aset buffer-display-table ?\^M []))
-  (add-hook 'find-file-hook 'ts-hide-dos-eol)
-
-  (setq-default buffer-file-coding-system 'utf-8-unix)
-  (setq-default default-buffer-file-coding-system 'utf-8-unix)
-  (setq coding-system-for-read 'utf-8-unix)
-  (setq coding-system-for-write 'utf-8-unix)
-  (set-language-environment "UTF-8")
-  (set-default-coding-systems 'utf-8-unix)
-  (prefer-coding-system 'utf-8-unix)
 #+end_src
 
 * Compilation
@@ -637,6 +615,29 @@ Don't tangle this block on ~emacs-version~ < 27.
 #+end_src
 
 * Buffer Functions
+** Encoding
+
+#+begin_src emacs-lisp
+  ;;;###autoload
+  (defun ts-convert-to-unix-coding-system ()
+    "Change the current buffer's file encoding to unix."
+    (interactive)
+    (let ((coding-str (symbol-name buffer-file-coding-system)))
+      (when (string-match "-\\(?:dos\\|mac\\)$" coding-str)
+        (set-buffer-file-coding-system 'unix))))
+
+  (global-set-key (kbd "C-x RET u") 'ts-convert-to-unix-coding-system)
+
+  ;;;###autoload
+  (defun ts-hide-dos-eol ()
+    "Do not show ^M in files containing mixed UNIX and DOS line endings."
+    (interactive)
+    (setq buffer-display-table (make-display-table))
+    (aset buffer-display-table ?\^M []))
+
+  (add-hook 'find-file-hook 'ts-hide-dos-eol)
+#+end_src
+
 ** Indent Buffer
 
 #+begin_src emacs-lisp
@@ -2266,6 +2267,13 @@ We only tangle this when ~emacs-version~ > 28
               (?s "Search" project-search)
               (?v "VC dir" project-vc-dir)))
       (message "Lazy loaded project :-)")))
+#+end_src
+** Python
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'python
+    (setq python-fill-docstring-style 'django)
+    (message "Lazy loaded python :-)"))
 #+end_src
 
 ** Recentf

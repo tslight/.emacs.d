@@ -453,13 +453,26 @@ If init.elc is older, use newer ~init.el~.
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-e") 'pp-eval-last-sexp)
-  (global-set-key (kbd "C-z") 'zap-up-to-char) ;; suspend is still bound to C-x C-z
+  (global-set-key (kbd "C-z") 'zap-up-to-char) ; suspend is still bound to C-x C-z
   (global-set-key (kbd "M-z") 'zap-to-char)
   (global-set-key (kbd "C-x M-t") 'transpose-regions)
   (global-set-key (kbd "C-x M-p") 'transpose-paragraphs)
-  (global-set-key (kbd "M-%") 'query-replace-regexp)
-  (global-set-key (kbd "M-;") 'comment-line)
-  (global-set-key (kbd "C-x C-;") 'comment-dwim)
+#+end_src
+
+Remap some default to saner options
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "M-%") 'query-replace-regexp) ; regex all the things!
+  (global-set-key (kbd "M-;") 'comment-line) ; comment-dwim by default
+  (global-set-key (kbd "C-M-;") 'comment-dwim) ; unbound by default
+  (global-set-key (kbd "C-x C-;") 'comment-box) ; comment-line by default
+  (global-set-key (kbd "M-o") 'delete-blank-lines) ; this is on C-x C-o by default
+  (global-set-key (kbd "M-SPC") 'cycle-spacing) ; just-one-space by default
+#+end_src
+
+Always do what I mean!
+
+#+begin_src emacs-lisp
   (global-set-key [remap capitalize-word] 'capitalize-dwim)
   (global-set-key [remap downcase-word] 'downcase-dwim)
   (global-set-key [remap upcase-word] 'upcase-dwim)

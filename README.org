@@ -660,6 +660,7 @@ Don't tangle this block on ~emacs-version~ < 27.
     "Indent the contents of a buffer."
     (interactive)
     (indent-region (point-min) (point-max)))
+
   (global-set-key (kbd "M-i") 'ts-indent-buffer)
 #+end_src
 
@@ -671,6 +672,7 @@ Don't tangle this block on ~emacs-version~ < 27.
     "Kill the current buffer - `kill-this-buffer' is unreliable."
     (interactive)
     (kill-buffer (current-buffer)))
+
   (global-set-key (kbd "C-x k") 'ts-kill-this-buffer)
 #+end_src
 
@@ -682,6 +684,7 @@ Don't tangle this block on ~emacs-version~ < 27.
     "Switch back and forth between two buffers easily."
     (interactive)
     (switch-to-buffer (other-buffer (current-buffer) 1)))
+
   (global-set-key (kbd "C-c b") 'ts-last-buffer)
 #+end_src
 
@@ -712,6 +715,7 @@ Don't tangle this block on ~emacs-version~ < 27.
                   (org-narrow-to-block))
                  (t (org-narrow-to-subtree))))
           (t (narrow-to-defun))))
+
   (define-key ctl-x-map "n" 'ts-narrow-or-widen-dwim)
   (with-eval-after-load 'org
     (define-key org-mode-map (kbd "C-x n") 'ts-narrow-or-widen-dwim))
@@ -730,6 +734,7 @@ Don't tangle this block on ~emacs-version~ < 27.
      (buffer-list))
     (if current-prefix-arg
         (delete-other-windows)))
+
   (global-set-key (kbd "C-c M-n") 'ts-nuke-buffers)
 #+end_src
 
@@ -772,6 +777,7 @@ Don't tangle this block on ~emacs-version~ < 27.
     "Remove all ^M occurrences from EOL in a buffer."
     (interactive)
     (ts-remove-from-buffer "$"))
+
   (global-set-key (kbd "C-c k") 'ts-remove-from-buffer)
 #+end_src
 
@@ -784,6 +790,7 @@ Don't tangle this block on ~emacs-version~ < 27.
     (interactive)
     (save-some-buffers t)
     (message "Saved all buffers :-)"))
+
   (global-set-key (kbd "C-c s") 'ts-save-buffers-silently)
 #+end_src
 
@@ -798,6 +805,7 @@ Some handy functions to make aligning symbols less painful.
     "Align any SYMBOL in region (between BEGIN and END)."
     (interactive "r\nsEnter align symbol: ")
     (align-regexp begin end (concat "\\(\\s-*\\)" symbol) 1 1))
+
   (global-set-key (kbd "C-c a") 'ts-align-symbol)
 
   ;;;###autoload
@@ -805,6 +813,7 @@ Some handy functions to make aligning symbols less painful.
     "Align equals in region (between BEGIN and END)."
     (interactive "r")
     (ts-align-symbol begin end "="))
+
   (global-set-key (kbd "C-c =") 'ts-align-equals)
 
   ;;;###autoload
@@ -812,6 +821,7 @@ Some handy functions to make aligning symbols less painful.
     "Align colons in region (between BEGIN and END)."
     (interactive "r")
     (ts-align-symbol begin end ":"))
+
   (global-set-key (kbd "C-c :") 'ts-align-colon)
 
   ;;;###autoload
@@ -819,6 +829,7 @@ Some handy functions to make aligning symbols less painful.
     "Align numbers in region (between BEGIN and END)."
     (interactive "r")
     (ts-align-symbol begin end "[0-9]+"))
+
   (global-set-key (kbd "C-c #") 'ts-align-numbers)
 
   (defadvice align-regexp (around align-regexp-with-spaces activate)
@@ -840,6 +851,7 @@ Some handy functions to make aligning symbols less painful.
     (if (= (point) (save-excursion (back-to-indentation) (point)))
         (beginning-of-line)
       (back-to-indentation)))
+
   (global-set-key [remap move-beginning-of-line] 'ts-move-beginning-of-line)
 #+end_src
 
@@ -876,6 +888,7 @@ Increment or decrement numbers at the point.
     "Increment number at point."
     (interactive)
     (ts-change-number-at-point '1+))
+
   (global-set-key (kbd "C-c +") 'ts-increment-number-at-point)
 
   ;;;###autoload
@@ -883,6 +896,7 @@ Increment or decrement numbers at the point.
     "Decrement number at point."
     (interactive)
     (ts-change-number-at-point '1-))
+
   (global-set-key (kbd "C-c -") 'ts-decrement-number-at-point)
 #+end_src
 
@@ -900,6 +914,7 @@ Increment or decrement numbers at the point.
       (search-forward-regexp "[]})>\"\']" (line-end-position))
       (backward-char)
       (kill-region lstart (point))))
+
   (global-set-key (kbd "C-c d") 'ts-delete-inside)
 #+end_src
 
@@ -990,6 +1005,7 @@ Increment or decrement numbers at the point.
         (insert close))
       (goto-char begin)
       (insert open)))
+
   (global-set-key (kbd "M-s M-s") 'ts-surround)
 #+end_src
 
@@ -1026,6 +1042,7 @@ to completing read of the kill ring, making this pretty pointless.
     "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
     (interactive "p")
     (yank-pop (- arg)))
+
   (global-set-key (kbd "C-M-y") 'ts-yank-pop-forwards)
 #+end_src
 
@@ -1042,6 +1059,7 @@ to completing read of the kill ring, making this pretty pointless.
                                (file-name-nondirectory buffer-file-name)))
       (delete-file (buffer-file-name))
       (kill-this-buffer)))
+
   (global-set-key (kbd "C-c f d") 'ts-delete-this-file)
 #+end_src
 
@@ -1105,6 +1123,7 @@ to completing read of the kill ring, making this pretty pointless.
             (save-buffer)))
       (progn
         (ts-make-backup))))
+
   (global-set-key (kbd "C-c f b") 'ts-make-backup-and-save)
 #+end_src
 
@@ -1119,6 +1138,7 @@ to completing read of the kill ring, making this pretty pointless.
         (find-file (concat "/sudo:root@localhost:"
                            (read-file-name "Find file (as root): ")))
       (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
   (global-set-key (kbd "C-c f s") 'ts-sudoedit)
 #+end_src
 
@@ -1140,6 +1160,7 @@ to completing read of the kill ring, making this pretty pointless.
             (rename-file filename new-name 1))
           (rename-buffer new-name)
           (set-visited-file-name new-name)))))
+
   (global-set-key (kbd "C-c f r") 'ts-rename-this-file-and-buffer)
 #+end_src
 
@@ -1182,8 +1203,8 @@ to completing read of the kill ring, making this pretty pointless.
       (when arg (setq query (concat "\"" query "\"")))
       (browse-url
        (concat "http://www.google.com/search?ie=utf-8&oe=utf-8&q=" query))))
-  (global-set-key (kbd "C-c M-s") 'ts-google)
 
+  (global-set-key (kbd "C-c M-s") 'ts-google)
 #+end_src
 
 ** Measure function executions
@@ -1234,6 +1255,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
       (select-window other-window)
       (kill-this-buffer)
       (select-window current-window)))
+
   (define-key ctl-x-4-map "k" 'ts-kill-buffer-other-window)
 #+end_src
 
@@ -1246,6 +1268,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
     (interactive "BBuffer: ")
     (switch-to-buffer-other-window buffer)
     (other-window -1))
+
   (define-key ctl-x-4-map "o" 'ts-open-buffer-other-window)
 #+end_src
 
@@ -1257,6 +1280,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
     "Scroll line down N lines.  Ctrl-y in Vim."
     (interactive "p")
     (scroll-down n))
+
   (global-set-key (kbd "M-n") 'ts-scroll-line-down)
 #+end_src
 
@@ -1268,6 +1292,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
     "Scroll line up N lines.  Like Ctrl-e in Vim."
     (interactive "p")
     (scroll-up n))
+
   (global-set-key (kbd "M-p") 'ts-scroll-line-up)
 #+end_src
 
@@ -1313,6 +1338,7 @@ This is basically ~other-window~ backwards.
     "Go the previously used window, excluding other frames."
     (interactive)
     (other-window -1))
+
   (global-set-key (kbd "C-x O") 'ts-prev-window)
 #+end_src
 
@@ -1329,6 +1355,7 @@ This is basically ~other-window~ backwards.
         (raise-frame frame)
         (select-frame frame)
         (select-window win))))
+
   (global-set-key (kbd "C-c w w") 'ts-last-window)
 #+end_src
 

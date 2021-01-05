@@ -738,7 +738,7 @@ Don't tangle this block on ~emacs-version~ < 27.
   (global-set-key (kbd "C-c M-n") 'ts-nuke-buffers)
 #+end_src
 
-** Remove stuff from a buffer
+** COMMENT Remove stuff from a buffer
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -985,8 +985,8 @@ Increment or decrement numbers at the point.
     (interactive)
     (save-column (forward-line 1) (transpose-lines 1) (forward-line -1)))
 
-  (global-set-key (kbd "M-<up>") 'move-line-up)
-  (global-set-key (kbd "M-<down>") 'move-line-down)
+  (global-set-key (kbd "M-p") 'move-line-up)
+  (global-set-key (kbd "M-n") 'move-line-down)
 #+end_src
 
 ** Surround stuff
@@ -1207,7 +1207,7 @@ to completing read of the kill ring, making this pretty pointless.
   (global-set-key (kbd "C-c M-s") 'ts-google)
 #+end_src
 
-** Measure function executions
+** COMMENT Measure function executions
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -1272,7 +1272,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
   (define-key ctl-x-4-map "o" 'ts-open-buffer-other-window)
 #+end_src
 
-** Scroll lines down like Ctrl-y in Vim
+** COMMENT Scroll lines down like Ctrl-y in Vim
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -1284,7 +1284,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
   (global-set-key (kbd "M-n") 'ts-scroll-line-down)
 #+end_src
 
-** Scroll lines up like Ctrl-e in Vim
+** COMMENT Scroll lines up like Ctrl-e in Vim
 
 #+begin_src emacs-lisp
   ;;;###autoload
@@ -1309,7 +1309,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
     (if (= prefix 1)
         (switch-to-next-buffer)))
 
-  (global-set-key [remap split-window-right] 'ts-split-window-right)
+  (global-set-key (kbd "C-c 3") 'ts-split-window-right)
 #+end_src
 
 ** Split window below to last buffer
@@ -1325,7 +1325,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
     (if (= prefix 1)
         (switch-to-next-buffer)))
 
-  (global-set-key [remap split-window-below] 'ts-split-window-below)
+  (global-set-key (kbd "C-c 2") 'ts-split-window-below)
 #+end_src
 
 ** Switch to the previous window
@@ -1946,6 +1946,20 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 #+end_src
 
 ** Isearch
+*** Isearch exit
+
+#+begin_src emacs-lisp
+   ;;;###autoload
+  (defun ts-isearch-exit ()
+    "Move point to the start of the matched string."
+    (interactive)
+    (when (eq isearch-forward t)
+      (goto-char isearch-other-end))
+    (isearch-exit))
+
+  (define-key isearch-mode-map (kbd "RET") 'ts-isearch-exit)
+#+end_src
+
 *** Copy to isearch
 
 #+begin_src emacs-lisp
@@ -1958,7 +1972,23 @@ Turn on ~fido-mode~ if we are on Emacs 27+
     (ts-isearch-exit)
     (call-interactively 'kill-ring-save)
     (exchange-point-and-mark))
+
   (define-key isearch-mode-map (kbd "M-w") 'ts-copy-to-isearch)
+#+end_src
+
+*** Kill to isearch
+
+#+begin_src emacs-lisp
+  ;;;###autoload
+  (defun ts-kill-to-isearch ()
+    "Kill up to the search match when searching forward.
+
+  When searching backward, kill to the beginning of the match."
+    (interactive)
+    (ts-isearch-exit)
+    (call-interactively 'kill-region))
+
+  (define-key isearch-mode-map (kbd "C-k") 'ts-kill-to-isearch)
 #+end_src
 
 *** Isearch Abort DWIM
@@ -1981,34 +2011,8 @@ Turn on ~fido-mode~ if we are on Emacs 27+
       (while (or (not isearch-success) isearch-error)
         (isearch-pop-state)))
     (isearch-update))
+
   (define-key isearch-mode-map (kbd "<backspace>") 'ts-isearch-abort-dwim)
-#+end_src
-
-*** Isearch exit
-
-#+begin_src emacs-lisp
-   ;;;###autoload
-  (defun ts-isearch-exit ()
-    "Move point to the start of the matched string."
-    (interactive)
-    (when (eq isearch-forward t)
-      (goto-char isearch-other-end))
-    (isearch-exit))
-  (define-key isearch-mode-map (kbd "RET") 'ts-isearch-exit)
-#+end_src
-
-*** Kill to isearch
-
-#+begin_src emacs-lisp
-  ;;;###autoload
-  (defun ts-kill-to-isearch ()
-    "Kill up to the search match when searching forward.
-
-  When searching backward, kill to the beginning of the match."
-    (interactive)
-    (ts-isearch-exit)
-    (call-interactively 'kill-region))
-  (define-key isearch-mode-map (kbd "C-M-w") 'ts-kill-to-isearch)
 #+end_src
 
 *** Keybindings

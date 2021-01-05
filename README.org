@@ -929,9 +929,7 @@ Increment or decrement numbers at the point.
           (progn (setq p1 (region-beginning))
                  (setq p2 (region-end)))
         (progn (setq p1 (line-beginning-position))
-               (setq p2 (line-beginning-position (+ arg 1)))
-               (next-line arg)
-               (beginning-of-line)))
+               (setq p2 (line-beginning-position (+ arg 1)))))
       (kill-region p1 p2)))
 
   (global-set-key [remap kill-region] 'ts-kill-region)
@@ -949,10 +947,9 @@ Increment or decrement numbers at the point.
           (progn (setq p1 (region-beginning))
                  (setq p2 (region-end)))
         (progn (setq p1 (line-beginning-position))
-               (setq p2 (line-beginning-position (+ arg 1)))
-               (next-line arg)
-               (beginning-of-line)))
-      (kill-ring-save p1 p2)))
+               (setq p2 (line-beginning-position (+ arg 1)))))
+      (kill-ring-save p1 p2)
+      (goto-char p2)))
 
   (global-set-key [remap kill-ring-save] 'ts-kill-ring-save)
 #+end_src
@@ -3014,6 +3011,16 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 
 #+begin_src emacs-lisp
   (use-package yasnippet-snippets :defer)
+#+end_src
+* Footer
+
+Prevent overly verbose compiler warnings.
+
+#+begin_src emacs-lisp
+  ;; Local Variables:
+  ;; byte-compile-warnings: (not free-vars noruntime)
+  ;; End:
+  ;;; init.el ends here
 #+end_src
 
 * COMMENT Local Variables                                  :NOEXPORT:ARCHIVE:

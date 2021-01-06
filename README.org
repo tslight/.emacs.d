@@ -2650,6 +2650,7 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 
   (setq use-package-enable-imenu-support t
         ;; use-package-hook-name-suffix nil
+        use-package-always-defer t
         use-package-always-ensure t
         use-package-verbose t)
   (require 'use-package)
@@ -2658,11 +2659,11 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 ** Ansible
 
 #+begin_src emacs-lisp
-  (use-package ansible :defer :hook (yaml-mode . ansible))
+  (use-package ansible :hook (yaml-mode . ansible))
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package ansible-doc :defer :hook (yaml-mode . ansible-doc-mode))
+  (use-package ansible-doc :hook (yaml-mode . ansible-doc-mode))
 #+end_src
 
 ** Async
@@ -2684,7 +2685,7 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
 ** Blacken
 
 #+begin_src emacs-lisp
-  (use-package blacken :defer :hook (python-mode . blacken-mode))
+  (use-package blacken :hook (python-mode . blacken-mode))
 #+end_src
 
 ** Diminish
@@ -2724,7 +2725,7 @@ Get the source from [[https://gitlab.com/tspub/lisp/dired-peep][here]].
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package dockerfile-mode :defer)
+  (use-package dockerfile-mode)
 #+end_src
 
 ** Exec path from shell
@@ -2745,7 +2746,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 ** Flycheck
 
 #+begin_src emacs-lisp
-  (use-package flycheck :defer
+  (use-package flycheck
     :diminish flycheck-mode
     :config
     (flycheck-add-mode 'javascript-eslint 'web-mode)
@@ -2758,7 +2759,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 *** Gitlab CI
 
 #+begin_src emacs-lisp
-  (use-package gitlab-ci-mode :defer
+  (use-package gitlab-ci-mode
     :mode
     "\\.gitlab-ci.yaml\\'"
     "\\.gitlab-ci.yml\\'"
@@ -2769,7 +2770,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 *** Git Timemachine
 
 #+begin_src emacs-lisp
-  (use-package git-timemachine :defer)
+  (use-package git-timemachine)
 #+end_src
 
 *** Lazygit
@@ -2837,7 +2838,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 ** Go mode
 
 #+begin_src emacs-lisp
-  (use-package go-mode :defer
+  (use-package go-mode
     :config
     (defun ts-go-indent ()
       (setq indent-tabs-mode 1)
@@ -2856,14 +2857,14 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 ** JS2 mode
 
 #+begin_src emacs-lisp
-  (use-package js2-mode :defer
+  (use-package js2-mode
     :hook
     (js-mode . js2-minor-mode)
     (js2-mode . js2-imenu-extras-mode)
     :mode
     "\\.js\\'")
 
-  (use-package js2-refactor :defer
+  (use-package js2-refactor
     :hook (js2-mode . js2-refactor-mode)
     :bind (:map js2-mode-map
                 ("C-k" . js2r-kill))
@@ -2873,7 +2874,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 ** JSON
 
 #+begin_src emacs-lisp
-  (use-package json-mode :defer
+  (use-package json-mode
     :config
     (defun ts-json-mode-setup ()
       (json-mode)
@@ -2885,7 +2886,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package json-navigator :defer)
+  (use-package json-navigator)
 #+end_src
 
 ** Markdown
@@ -2902,7 +2903,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 ** Node JS
 
 #+begin_src emacs-lisp
-  (use-package nodejs-repl :defer
+  (use-package nodejs-repl
     :bind (:map js2-mode-map
                 ("C-x C-e" . nodejs-repl-send-last-expression)
                 ("C-c C-j" . nodejs-repl-send-line)
@@ -2916,13 +2917,13 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 *** htmlize
 
 #+begin_src emacs-lisp
-  (use-package htmlize :defer)
+  (use-package htmlize)
 #+end_src
 
 *** Org Bullets
 
 #+begin_src emacs-lisp
-  (use-package org-bullets :defer :hook (org-mode . org-bullets-mode))
+  (use-package org-bullets :hook (org-mode . org-bullets-mode))
 #+end_src
 
 *** PDF Tools
@@ -2930,13 +2931,13 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 Don't tangle this block if ~system-type~ is ~windows-nt~.
 
 #+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" init-file)
-  (use-package pdf-tools :unless (eq system-type 'windows-nt) :defer)
+  (use-package pdf-tools :unless (eq system-type 'windows-nt))
 #+end_src
 
 *** Toc Org
 
 #+begin_src emacs-lisp
-  (use-package toc-org :defer :hook (org-mode . toc-org-enable))
+  (use-package toc-org :hook (org-mode . toc-org-enable))
 #+end_src
 
 ** Powershell
@@ -2967,7 +2968,7 @@ functionality built in via ~project.el~.
 ** Restclient
 
 #+begin_src emacs-lisp
-  (use-package restclient :defer)
+  (use-package restclient)
 #+end_src
 
 ** systemd
@@ -2975,13 +2976,13 @@ functionality built in via ~project.el~.
 Don't tangle this block if ~system-type~ is ~windows-nt~.
 
 #+begin_src emacs-lisp :tangle (if (eq system-type 'windows-nt) "no" init-file)
-  (use-package systemd :unless (equal system-type 'windows-nt) :defer)
+  (use-package systemd :unless (equal system-type 'windows-nt))
 #+end_src
 
 ** Terraform
 
 #+begin_src emacs-lisp
-  (use-package terraform-mode :defer)
+  (use-package terraform-mode)
 #+end_src
 
 ** Web Mode
@@ -3032,7 +3033,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 ** Writeable Grep
 
 #+begin_src emacs-lisp
-  (use-package wgrep :defer :commands wgrep
+  (use-package wgrep :commands wgrep
     :bind (:map grep-mode-map
                 ("e" . wgrep-change-to-wgrep-mode)
                 ("C-x C-q" . wgrep-change-to-wgrep-mode)))
@@ -3041,7 +3042,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 ** YAML
 
 #+begin_src emacs-lisp
-  (use-package yaml-mode :defer
+  (use-package yaml-mode
     :hook
     (yaml-mode . hs-minor-mode)
     (yaml-mode . display-line-numbers-mode))
@@ -3050,18 +3051,19 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 ** Yasnippet
 
 #+begin_src emacs-lisp
-  (use-package yasnippet :defer
+  (use-package yasnippet
     :diminish yas-minor-mode
     :hook (prog-mode . yas-minor-mode))
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package yasnippet-classic-snippets :defer)
+  (use-package yasnippet-classic-snippets)
 #+end_src
 
 #+begin_src emacs-lisp
-  (use-package yasnippet-snippets :defer)
+  (use-package yasnippet-snippets)
 #+end_src
+
 * COMMENT Local Variables                                  :NOEXPORT:ARCHIVE:
 # Local Variables:
 # eval: (setq init-file (expand-file-name "init.el" user-emacs-directory))

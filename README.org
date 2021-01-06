@@ -19,6 +19,7 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
   (ts-ensure-byte-compiled-init)
 #+end_src
 
+
 * Lexical Binding
 
 This must come at the beginning of the file
@@ -422,13 +423,9 @@ If init.elc is older, use newer ~init.el~.
 ** Buffers
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-x M-e") (lambda ()
-                                    (interactive)
-                                    (eval-buffer)
-                                    (message "Evaluated buffer")))
+  (global-set-key (kbd "C-x M-e") (lambda () (interactive) (eval-buffer) (message "Evaluated buffer")))
   (global-set-key (kbd "C-c M-l") 'lisp-interaction-mode)
   (global-set-key (kbd "C-x c") 'save-buffers-kill-emacs)
-  (autoload 'ibuffer "ibuffer" nil t)
   (global-set-key (kbd "C-x C-b") 'ibuffer)
   (global-set-key (kbd "C-x M-k") 'kill-buffer)
 #+end_src
@@ -436,17 +433,8 @@ If init.elc is older, use newer ~init.el~.
 ** Calculator/Calc bindings
 
 #+begin_src emacs-lisp
-  (autoload 'calculator "calculator" nil t)
   (global-set-key (kbd "C-c c") 'calculator)
-  (autoload 'calc "calc" nil t)
   (global-set-key (kbd "C-c M-c") 'calc)
-#+end_src
-
-** Desktop read/save
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-c M-d r") 'desktop-read)
-  (global-set-key (kbd "C-c M-d s") 'desktop-save)
 #+end_src
 
 ** Editing
@@ -487,18 +475,10 @@ Always do what I mean!
   (global-set-key (kbd "C-s-m") 'toggle-frame-maximized)
 #+end_src
 
-** Grep
-
-#+begin_src emacs-lisp
-  (autoload 'grep "grep" nil t)
-  (global-set-key (kbd "C-c C-g") 'grep)
-#+end_src
-
 ** Menubar
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-c M-m") 'menu-bar-mode)
-  (global-set-key (kbd "S-<f10>") 'menu-bar-mode)
+  (global-set-key (kbd "S-<F10>") 'menu-bar-mode)
 #+end_src
 
 ** Special mode
@@ -513,20 +493,6 @@ Always do what I mean!
   (define-key special-mode-map "p" #'widget-backward)
   (define-key special-mode-map "f" #'widget-forward)
   (define-key special-mode-map "b" #'widget-backward)
-#+end_src
-
-** Tabs (Emacs 27+)
-
-Don't tangle this block on ~emacs-version~ < 27.
-
-#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") "no" init-file)
-  (unless (version< emacs-version "27") ;; belt and braces
-    (global-set-key (kbd "C-x t t") 'tab-bar-select-tab-by-name)
-    (global-set-key (kbd "C-x t c") 'tab-bar-new-tab)
-    (global-set-key (kbd "C-x t k") 'tab-bar-close-tab)
-    (global-set-key (kbd "C-x t n") 'tab-bar-switch-to-next-tab)
-    (global-set-key (kbd "C-x t p") 'tab-bar-switch-to-prev-tab)
-    (global-set-key (kbd "C-x t l") 'tab-bar-switch-to-recent-tab))
 #+end_src
 
 * Registers
@@ -1050,7 +1016,7 @@ Increment or decrement numbers at the point.
       (indent-region (point-min) (point-max))))
 #+end_src
 
-** Yank pop forwards (Emacs<28)
+** COMMENT Yank pop forwards (Emacs<28)
 
 Don't bother tangling this if ~emacs-version~ > 28, as Emacs 28 has ~M-y~ bound
 to completing read of the kill ring, making this pretty pointless.
@@ -2291,9 +2257,10 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
   (add-hook 'emacs-startup-hook 'global-prettify-symbols-mode)
 #+end_src
 
-** Project
+** Project (Emacs 28+)
 
-We only tangle this when ~emacs-version~ > 28
+We only tangle this when ~emacs-version~ > 28, since it's not very useful prior
+to that.
 
 #+begin_src emacs-lisp :tangle (if (version< emacs-version "28") "no" init-file)
   (unless (version< emacs-version "28")
@@ -2466,6 +2433,42 @@ We only tangle this when ~emacs-version~ > 28
 
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook 'global-subword-mode) ;; move by camel case, etc
+#+end_src
+
+** Tab-bar (Emacs 27+)
+
+Don't tangle this block on ~emacs-version~ < 27.
+
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") "no" init-file)
+  (unless (version< emacs-version "27") ;; belt and braces
+
+    (defun ts-tab-bar-select-dwim ()
+      "Do-What-I-Mean function for getting to a `tab-bar-mode' tab.
+  If no other tab exists, create one and switch to it. If there is
+  one other tab (so two in total) switch to it without further
+  questions. Else use completion to select the tab to switch to."
+      (interactive)
+      (let ((tabs (mapcar (lambda (tab)
+                            (alist-get 'name tab))
+                          (tab-bar--tabs-recent))))
+        (cond ((eq tabs nil)
+               (tab-new))
+              ((eq (length tabs) 1)
+               (tab-next))
+              (t
+               (tab-bar-switch-to-tab
+                (completing-read "Select tab: " tabs nil t))))))
+
+    (global-set-key (kbd "C-x t t") 'ts-tab-bar-select-dwim)
+
+    (setq tab-bar-close-button-show nil)
+    (setq tab-bar-close-last-tab-choice 'tab-bar-mode-disable)
+    ;; (setq tab-bar-show nil)
+    ;; (setq tab-bar-tab-hints t)
+    ;; (setq tab-bar-tab-name-function 'tab-bar-tab-name-all)
+
+    (with-eval-after-load 'tab-bar-mode
+      (tab-bar-history-mode 1)))
 #+end_src
 
 ** Term
@@ -2688,7 +2691,7 @@ otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs
   (use-package blacken :hook (python-mode . blacken-mode))
 #+end_src
 
-** Diminish
+** COMMENT Diminish
 
 #+begin_src emacs-lisp
   (use-package diminish :defer 2
@@ -2871,7 +2874,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
     :config (js2r-add-keybindings-with-prefix "C-c C-j"))
 #+end_src
 
-** JSON
+** COMMENT JSON
 
 #+begin_src emacs-lisp
   (use-package json-mode
@@ -2900,7 +2903,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
     :init (setq markdown-command "multimarkdown"))
 #+end_src
 
-** Node JS
+** COMMENT Node JS
 
 #+begin_src emacs-lisp
   (use-package nodejs-repl
@@ -2914,7 +2917,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 #+end_src
 
 ** Org
-*** htmlize
+*** COMMENT htmlize
 
 #+begin_src emacs-lisp
   (use-package htmlize)
@@ -2946,7 +2949,7 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
   (use-package powershell :mode (("\\.ps1\\'" . powershell-mode)))
 #+end_src
 
-** Projectile
+** COMMENT Projectile
 
 Don't tangle this block if ~emacs-version~ > 28, as Emacs 28 has the this
 functionality built in via ~project.el~.

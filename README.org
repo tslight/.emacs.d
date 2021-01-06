@@ -19,7 +19,6 @@ To install, evaluate the code block below with ~C-c C-c~ in Emacs:
   (ts-ensure-byte-compiled-init)
 #+end_src
 
-
 * Lexical Binding
 
 This must come at the beginning of the file
@@ -330,7 +329,6 @@ This variables are added to the end of this file.
 ** Byte Compile
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-byte-compile (arg)
     "Byte compile Emacs Lisp files and load if ARG."
     (interactive "P")
@@ -361,7 +359,6 @@ This variables are added to the end of this file.
 
 #+begin_src emacs-lisp
   (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
-  ;;;###autoload
   (defun colorize-compilation-buffer ()
     "ANSI color in compilation buffer."
     (ansi-color-apply-on-region compilation-filter-start (point)))
@@ -406,7 +403,6 @@ If init.elc is older, use newer ~init.el~.
   (defvar ts-files-to-recompile '("early-init.el" "init.el")
     "Files under `user-emacs-directory' that we use for configuration.")
 
-  ;;;###autoload
   (defun ts-recompile-config ()
     "Recompile everything in Emacs configuration."
     (interactive)
@@ -498,7 +494,6 @@ Always do what I mean!
 * Registers
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-jump-to-register-other-window ()
     "Tin job."
     (interactive)
@@ -520,7 +515,6 @@ Always do what I mean!
 #+end_src
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-disable-themes ()
     "Disable all custom themes in one fail swoop."
     (interactive)
@@ -550,7 +544,6 @@ Always do what I mean!
 ** Setup Frame for Emacsclient
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-after-make-frame (frame)
     "Add custom settings after making the FRAME."
     (select-frame frame)
@@ -598,7 +591,6 @@ Always do what I mean!
 ** Encoding
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-convert-to-unix-coding-system ()
     "Change the current buffer's file encoding to unix."
     (interactive)
@@ -608,7 +600,6 @@ Always do what I mean!
 
   (global-set-key (kbd "C-x RET u") 'ts-convert-to-unix-coding-system)
 
-  ;;;###autoload
   (defun ts-hide-dos-eol ()
     "Do not show ^M in files containing mixed UNIX and DOS line endings."
     (interactive)
@@ -621,7 +612,6 @@ Always do what I mean!
 ** Indent Buffer
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-indent-buffer ()
     "Indent the contents of a buffer."
     (interactive)
@@ -633,7 +623,6 @@ Always do what I mean!
 ** Kill this buffer
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-kill-this-buffer ()
     "Kill the current buffer - `kill-this-buffer' is unreliable."
     (interactive)
@@ -645,7 +634,6 @@ Always do what I mean!
 ** Last buffer
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-last-buffer ()
     "Switch back and forth between two buffers easily."
     (interactive)
@@ -657,7 +645,6 @@ Always do what I mean!
 ** Narrow DWIM
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-narrow-or-widen-dwim (p)
     "If the buffer is narrowed, it widens, otherwise, it narrows intelligently.
 
@@ -690,7 +677,6 @@ Always do what I mean!
 ** Nuke buffers
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-nuke-buffers ()
     "Kill all buffers, leaving *scratch* only."
     (interactive)
@@ -707,7 +693,6 @@ Always do what I mean!
 ** COMMENT Remove stuff from a buffer
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-remove-from-buffer (string)
     "Remove all occurences of STRING from the whole buffer."
     (interactive "sString to remove: ")
@@ -720,7 +705,6 @@ Always do what I mean!
             (replace-match "" nil nil))
           (message (format "%d %s removed from buffer." count string))))))
 
-  ;;;###autoload
   (defun ts-remove-character-number (number)
     "Remove all occurences of a control character NUMBER.
     Excluding ^I (tabs) and ^J (newline)."
@@ -729,7 +713,6 @@ Always do what I mean!
         (let ((character (string number)))
           (ts-remove-from-buffer character))))
 
-  ;;;###autoload
   (defun ts-remove-all-ctrl-characters ()
     "Remove all occurences of all control characters.
     Excluding ^I (tabs) and ^J (newlines)."
@@ -738,7 +721,6 @@ Always do what I mean!
               (ts-remove-character-number n))
             (number-sequence 0 31)))
 
-  ;;;###autoload
   (defun ts-remove-ctrl-m ()
     "Remove all ^M occurrences from EOL in a buffer."
     (interactive)
@@ -750,7 +732,6 @@ Always do what I mean!
 ** Save buffers silently
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-save-buffers-silently ()
     "Save all open buffers without prompting."
     (interactive)
@@ -766,7 +747,6 @@ Always do what I mean!
 Some handy functions to make aligning symbols less painful.
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-align-symbol (begin end symbol)
     "Align any SYMBOL in region (between BEGIN and END)."
     (interactive "r\nsEnter align symbol: ")
@@ -774,7 +754,6 @@ Some handy functions to make aligning symbols less painful.
 
   (global-set-key (kbd "C-c a") 'ts-align-symbol)
 
-  ;;;###autoload
   (defun ts-align-equals (begin end)
     "Align equals in region (between BEGIN and END)."
     (interactive "r")
@@ -782,7 +761,6 @@ Some handy functions to make aligning symbols less painful.
 
   (global-set-key (kbd "C-c =") 'ts-align-equals)
 
-  ;;;###autoload
   (defun ts-align-colon (begin end)
     "Align colons in region (between BEGIN and END)."
     (interactive "r")
@@ -790,7 +768,6 @@ Some handy functions to make aligning symbols less painful.
 
   (global-set-key (kbd "C-c :") 'ts-align-colon)
 
-  ;;;###autoload
   (defun ts-align-numbers (begin end)
     "Align numbers in region (between BEGIN and END)."
     (interactive "r")
@@ -807,7 +784,6 @@ Some handy functions to make aligning symbols less painful.
 ** Beginning of line
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-move-beginning-of-line ()
     "Move point back to indentation.
 
@@ -824,7 +800,6 @@ Some handy functions to make aligning symbols less painful.
 ** Case insensitive sort-lines
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-sort-lines-nocase ()
     "Sort marked lines with case sensitivity."
     (interactive)
@@ -885,7 +860,6 @@ Increment or decrement numbers at the point.
 ** Delete inside delimiters
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-delete-inside-delimiters (arg)
     "Deletes the text within parentheses, brackets or quotes.
   With prefix ARG, delete delimiters too."
@@ -906,7 +880,6 @@ Increment or decrement numbers at the point.
 ** Generate a numbered list
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-generate-numbered-list (start end char)
     "Create a numbered list from START to END.  Using CHAR as punctuation."
     (interactive "nStart number:\nnEnd number:\nsCharacter:")
@@ -920,7 +893,6 @@ Increment or decrement numbers at the point.
 ** Kill region
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-kill-region (arg)
     "Cut region or current ARG lines to kill ring."
     (interactive "p")
@@ -938,7 +910,6 @@ Increment or decrement numbers at the point.
 ** Kill ring save
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-kill-ring-save (arg)
     "Copy region or current ARG lines to kill ring."
     (interactive "p")
@@ -977,7 +948,6 @@ Increment or decrement numbers at the point.
 ** Surround stuff
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-surround (begin end open close)
     "Put OPEN at BEGIN and CLOSE at END of the region.
 
@@ -997,7 +967,6 @@ Increment or decrement numbers at the point.
 ** Untabify a buffer
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-untabify-buffer ()
     "Convert all tabs to spaces in the buffer."
     (interactive)
@@ -1007,7 +976,6 @@ Increment or decrement numbers at the point.
 ** XML pretty print
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-xml-pretty-print ()
     "Reformat and indent XML."
     (interactive)
@@ -1022,7 +990,6 @@ Don't bother tangling this if ~emacs-version~ > 28, as Emacs 28 has ~M-y~ bound
 to completing read of the kill ring, making this pretty pointless.
 
 #+begin_src emacs-lisp :tangle (if (version< emacs-version "28") init-file "no")
-  ;;;###autoload
   (defun ts-yank-pop-forwards (arg)
     "Cycle forwards through the kill.  Reverse `yank-pop'.  With ARG."
     (interactive "p")
@@ -1035,7 +1002,6 @@ to completing read of the kill ring, making this pretty pointless.
 ** Delete this file
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-delete-this-file ()
     "Delete the current file, and kill the buffer."
     (interactive)
@@ -1072,7 +1038,6 @@ to completing read of the kill ring, making this pretty pointless.
 ** Make backup of current file
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-make-backup ()
     "Make a backup copy of current file or dired marked files.
 
@@ -1096,7 +1061,6 @@ to completing read of the kill ring, making this pretty pointless.
 #+end_src
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-make-backup-and-save ()
     "Backup of current file and save, or backup dired marked files.
   For detail, see `ts-make-backup'."
@@ -1115,7 +1079,6 @@ to completing read of the kill ring, making this pretty pointless.
 ** Open current file as root
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-sudoedit (&optional arg)
     "Open current or ARG file as root."
     (interactive "P")
@@ -1130,7 +1093,6 @@ to completing read of the kill ring, making this pretty pointless.
 ** Rename file and buffer
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-rename-this-file-and-buffer (new-name)
     "Renames both current buffer and file it's visiting to NEW-NAME."
     (interactive "FNew name: ")
@@ -1152,7 +1114,6 @@ to completing read of the kill ring, making this pretty pointless.
 ** Yank current file name to kill ring
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-copy-file-name-to-clipboard (arg)
     "Copy the current buffer file name to the clipboard.
   With prefix ARG, omit path."
@@ -1177,7 +1138,6 @@ to completing read of the kill ring, making this pretty pointless.
 ** Googling
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-google (arg)
     "Googles a query or region.  With prefix ARG, wrap in quotes."
     (interactive "P")
@@ -1195,7 +1155,6 @@ to completing read of the kill ring, making this pretty pointless.
 ** COMMENT Measure function executions
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defmacro ts-measure-time (&rest body)
     "Measure the time it takes to evaluate BODY."
     `(let ((time (current-time)))
@@ -1229,7 +1188,6 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
 ** Kill buffer other window
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-kill-buffer-other-window ()
     "Kill the buffer in the last used window."
     (interactive)
@@ -1247,7 +1205,6 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
 ** Open a buffer in another window
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-open-buffer-other-window (buffer)
     "Open a BUFFER in another window without switching to it."
     (interactive "BBuffer: ")
@@ -1260,7 +1217,6 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
 ** COMMENT Scroll lines down like Ctrl-y in Vim
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-scroll-line-down (n)
     "Scroll line down N lines.  Ctrl-y in Vim."
     (interactive "p")
@@ -1272,7 +1228,6 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
 ** COMMENT Scroll lines up like Ctrl-e in Vim
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-scroll-line-up (n)
     "Scroll line up N lines.  Like Ctrl-e in Vim."
     (interactive "p")
@@ -1284,7 +1239,6 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
 ** Split window right to last buffer
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-split-window-right (prefix)
     "Split the window vertically and display the previous buffer.
   With PREFIX stay in current buffer."
@@ -1300,7 +1254,6 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
 ** Split window below to last buffer
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-split-window-below (prefix)
     "Split the window horizontally and display the previous buffer.
   With PREFIX stay in current buffer."
@@ -1318,7 +1271,6 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
 This is basically ~other-window~ backwards.
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-prev-window ()
     "Go the previously used window, excluding other frames."
     (interactive)
@@ -1330,7 +1282,6 @@ This is basically ~other-window~ backwards.
 ** Toggle focus to last window
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-last-window ()
     "Switch back and forth between two windows easily."
     (interactive)
@@ -1347,7 +1298,6 @@ This is basically ~other-window~ backwards.
 ** Toggle maximize window
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-toggle-maximize-window ()
     "Temporarily maximize a window."
     (interactive)
@@ -1363,7 +1313,6 @@ This is basically ~other-window~ backwards.
 ** Toggle vertical -> horizontal splits
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-toggle-split ()
     "Switch window split from horizontally to vertically.
   Or vice versa. Change right window to bottom, or change bottom
@@ -1400,7 +1349,6 @@ This is basically ~other-window~ backwards.
 ** Transpose windows
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-transpose-windows (arg)
     "Transpose windows.  Use prefix ARG to transpose in the other direction."
     (interactive "P")
@@ -1455,7 +1403,6 @@ This is basically ~other-window~ backwards.
 ** Auto-fill
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-fill-or-unfill ()
     "Like `fill-paragraph', but unfill if used twice."
     (interactive)
@@ -1504,7 +1451,6 @@ This is basically ~other-window~ backwards.
 ** Dired
 #+begin_src emacs-lisp
   (with-eval-after-load 'dired
-  ;;;###autoload
     (defun ts-dired-get-size ()
       "Get cumlative size of marked or current item."
       (interactive)
@@ -1518,7 +1464,6 @@ This is basically ~other-window~ backwards.
 
     (define-key dired-mode-map "?" 'ts-dired-get-size)
 
-  ;;;###autoload
     (defun ts-dired-beginning-of-buffer ()
       "Go to first file in directory."
       (interactive)
@@ -1527,7 +1472,6 @@ This is basically ~other-window~ backwards.
 
     (define-key dired-mode-map [remap beginning-of-buffer] 'ts-dired-beginning-of-buffer)
 
-  ;;;###autoload
     (defun ts-dired-end-of-buffer ()
       "Go to last file in directory."
       (interactive)
@@ -1638,7 +1582,6 @@ The default keys are ~C-x C-j~ and ~C-x 4 C-j~.
     (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
     ;; https://emacs.stackexchange.com/a/24602
-    ;;;###autoload
     (defun disable-y-or-n-p (orig-fun &rest args)
       "Advise ORIG-FUN with ARGS so it dynamically rebinds `y-or-n-p'."
       (cl-letf (((symbol-function 'y-or-n-p) (lambda () t)))
@@ -1682,7 +1625,6 @@ The default keys are ~C-x C-j~ and ~C-x 4 C-j~.
 
 #+begin_src emacs-lisp
   (with-eval-after-load 'eshell
-  ;;;###autoload
     (defun ts-eshell-complete-recent-dir (&optional arg)
       "Switch to a recent `eshell' directory using completion.
   With \\[universal-argument] also open the directory in a `dired'
@@ -1695,7 +1637,6 @@ The default keys are ~C-x C-j~ and ~C-x 4 C-j~.
         (when arg
           (dired dir))))
 
-  ;;;###autoload
     (defun ts-eshell-complete-history ()
       "Insert element from `eshell' history using completion."
       (interactive)
@@ -1703,7 +1644,6 @@ The default keys are ~C-x C-j~ and ~C-x 4 C-j~.
         (insert
          (completing-read "Input history: " hist nil t))))
 
-  ;;;###autoload
     (defun ts-eshell-prompt ()
       "Custom eshell prompt."
       (concat
@@ -1748,7 +1688,6 @@ The default keys are ~C-x C-j~ and ~C-x 4 C-j~.
 #+end_src
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-eshell-other-window ()
     "Open an `eshell' in another window."
     (interactive)
@@ -1820,7 +1759,6 @@ Don't bother using this on Windows as I can rather be bothered to install
 ** Hippie Expand
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-hippie-expand-completions (&optional hippie-expand-function)
     "Return the full list of completions generated by HIPPIE-EXPAND-FUNCTION.
   The optional argument can be generated with `make-hippie-expand-function'."
@@ -1839,7 +1777,6 @@ Don't bother using this on Windows as I can rather be bothered to install
       ;; Provide the options in the order in which they are normally generated.
       (delete he-search-string (reverse he-tried-table))))
 
-  ;;;###autoload
   (defun ts-hippie-complete-with (hippie-expand-function)
     "Offer `completing-read' using the specified HIPPIE-EXPAND-FUNCTION."
     (let* ((options (ts-hippie-expand-completions hippie-expand-function))
@@ -1848,7 +1785,6 @@ Don't bother using this on Windows as I can rather be bothered to install
           (he-substitute-string selection t)
         (message "No expansion found"))))
 
-  ;;;###autoload
   (defun ts-hippie-expand-completing-read ()
     "Offer `completing-read' for the word at point."
     (interactive)
@@ -1871,7 +1807,6 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 *** Change completion styles
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-icomplete-styles ()
     "Set icomplete styles based on Emacs version."
     (if (version< emacs-version "27")
@@ -1934,7 +1869,6 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 *** Isearch exit
 
 #+begin_src emacs-lisp
-   ;;;###autoload
   (defun ts-isearch-exit ()
     "Move point to the start of the matched string."
     (interactive)
@@ -1948,7 +1882,6 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 *** Copy to isearch
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-copy-to-isearch ()
     "Copy up to the search match when searching forward.
 
@@ -1964,7 +1897,6 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 *** Kill to isearch
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-kill-to-isearch ()
     "Kill up to the search match when searching forward.
 
@@ -1979,7 +1911,6 @@ Turn on ~fido-mode~ if we are on Emacs 27+
 *** Isearch Abort DWIM
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-isearch-abort-dwim ()
     "Delete failed `isearch' input, single char, or cancel search.
 
@@ -2266,7 +2197,6 @@ to that.
   (unless (version< emacs-version "28")
     (setq ts-project-roots '("~" "~/src/gitlab"))
 
-  ;;;###autoload
     (defun ts-project--git-repo-p (directory)
       "Return non-nil if there is a git repository in DIRECTORY."
       (and
@@ -2276,7 +2206,6 @@ to that.
        (file-directory-p (concat directory "/.git/refs"))
        (file-regular-p (concat directory "/.git/HEAD"))))
 
-  ;;;###autoload
     (defun ts-project--git-repos-recursive (directory maxdepth)
       "List git repos in under DIRECTORY recursively to MAXDEPTH."
       (let* ((git-repos '())
@@ -2300,7 +2229,6 @@ to that.
             (setq current-directory-list (cdr current-directory-list))))
         (delete-dups git-repos)))
 
-  ;;;###autoload
     (defun ts-project--list-projects ()
       "Produce list of projects in `ts-project-roots'."
       (let ((cands (delete-dups (mapcan (lambda (directory)
@@ -2313,7 +2241,6 @@ to that.
                   (list (abbreviate-file-name d)))
                 cands)))
 
-  ;;;###autoload
     (defun ts-project-update-projects ()
       "Overwrite `project--list' using `ts-project--list-projects'.
       WARNING: This will destroy & replace the contents of `project-list-file'."
@@ -2367,7 +2294,6 @@ to that.
     (setq recentf-max-menu-items 128)
     (setq recentf-max-saved-items 256)
 
-    ;;;###autoload
     (defun ts-completing-recentf ()
       "Show a list of recent files."
       (interactive)
@@ -2481,7 +2407,6 @@ Don't tangle this block on ~emacs-version~ < 27.
 *** ANSI Term launcher
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-ansi-term ()
     "Opens shell from $SHELL environmental variable in `ansi-term'."
     (interactive)
@@ -2490,7 +2415,6 @@ Don't tangle this block on ~emacs-version~ < 27.
       (ansi-term (getenv "SHELL"))))
   (global-set-key (kbd "C-c tt") 'ts-ansi-term)
 
-  ;;;###autoload
   (defun ts-ansi-term-other-window ()
     "Opens default $SHELL `ansi-term' in another window."
     (interactive)
@@ -2509,7 +2433,6 @@ Don't tangle this block on ~emacs-version~ < 27.
 *** Switch to ANSI Term
 
 #+begin_src emacs-lisp
-  ;;;###autoload
   (defun ts-switch-to-ansi-term ()
     "Open an `ansi-term' if it doesn't already exist.
   Otherwise switch to current one."
@@ -2519,7 +2442,6 @@ Don't tangle this block on ~emacs-version~ < 27.
       (ansi-term (getenv "SHELL"))))
   (global-set-key (kbd "C-c ts") 'ts-switch-to-ansi-term)
 
-  ;;;###autoload
   (defun ts-switch-to-ansi-term-other-window()
     "Does what it states on the tin!"
     (interactive)
@@ -2561,7 +2483,6 @@ Don't tangle this block on ~emacs-version~ < 27.
     (setq version-control t)
     (message "Lazy loaded vc :-)"))
 
-  ;;;###autoload
   (defun ts-vc-dir (&optional arg)
     "Run `vc-dir' for the current project or directory.
   With optional ARG (\\[universal-argument]), use the present

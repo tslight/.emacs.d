@@ -278,7 +278,6 @@ This variables are added to the end of this file.
 
 #+begin_src emacs-lisp
   (set-default 'truncate-lines t)
-  (global-set-key (kbd "C-c M-t t") 'toggle-truncate-lines)
 #+end_src
 
 ** Undo limits
@@ -326,33 +325,20 @@ This variables are added to the end of this file.
 #+end_src
 
 * Compilation
-** Byte Compile
+** Byte compile and load on save
 
 #+begin_src emacs-lisp
-  (defun ts-byte-compile (arg)
+  (defun ts-byte-compile-and-load ()
     "Byte compile Emacs Lisp files and load if ARG."
-    (interactive "P")
-    (if (and buffer-file-name
-             (or (equal (file-name-extension buffer-file-name) "el")
-                 (equal major-mode 'emacs-lisp-mode)))
-        (progn
-          (byte-compile-file buffer-file-name)
-          (message "Compiled %s :-)" buffer-file-name)
-          (when arg
-            (load (file-name-sans-extension buffer-file-name))
-            (message "Loaded %s :-)" buffer-file-name)))))
+    (when (and buffer-file-name
+               (equal (file-name-extension buffer-file-name) "el")
+               (equal major-mode 'emacs-lisp-mode))
+      (byte-compile-file buffer-file-name)
+      (message "Compiled %s :-)" buffer-file-name)
+      (load (file-name-sans-extension buffer-file-name))
+      (message "Loaded %s :-)" buffer-file-name)))
 
-  (defun ts-auto-byte-compile ()
-    "Call `ts-byte-compile' non-interactively."
-    (call-interactively 'ts-byte-compile))
-
-  (defun ts-auto-byte-compile-and-load ()
-    "Call `ts-byte-compile' non-interactively with loading prefix."
-    (let ((current-prefix-arg '(4)))
-      (call-interactively 'ts-byte-compile)))
-
-  (add-hook 'after-save-hook 'ts-auto-byte-compile-and-load)
-  (global-set-key (kbd "C-x M-b") 'ts-byte-compile)
+  (add-hook 'after-save-hook 'ts-byte-compile-and-load)
 #+end_src
 
 ** Colorize Compilation Buffers
@@ -380,6 +366,7 @@ This block will byte compile ~early-init.el~ and ~init.el~ if an existing
     (if (file-readable-p (expand-file-name "early-init.el" user-emacs-directory))
         (byte-recompile-file (expand-file-name "early-init.el" user-emacs-directory) 'nil 0))
     (byte-recompile-file (expand-file-name "init.el" user-emacs-directory) 'nil 0))
+
   (add-hook 'after-init-hook 'ts-ensure-byte-compiled-init)
 #+end_src
 
@@ -447,11 +434,11 @@ Remap some default to saner options
 
 #+begin_src emacs-lisp
   (global-set-key (kbd "M-%") 'query-replace-regexp) ; regex all the things!
-  (global-set-key (kbd "M-;") 'comment-line) ; comment-dwim by default
-  (global-set-key (kbd "C-M-;") 'comment-dwim) ; unbound by default
-  (global-set-key (kbd "C-x C-;") 'comment-box) ; comment-line by default
-  (global-set-key (kbd "M-o") 'delete-blank-lines) ; this is on C-x C-o by default
-  (global-set-key (kbd "M-SPC") 'cycle-spacing) ; just-one-space by default
+  (global-set-key (kbd "M-;") 'comment-line)         ; comment-dwim by default
+  (global-set-key (kbd "C-M-;") 'comment-dwim)       ; unbound by default
+  (global-set-key (kbd "C-x C-;") 'comment-box)      ; comment-line by default
+  (global-set-key (kbd "M-o") 'delete-blank-lines)   ; this is on C-x C-o by default
+  (global-set-key (kbd "M-SPC") 'cycle-spacing)      ; just-one-space by default
 #+end_src
 
 Always do what I mean!
@@ -522,46 +509,68 @@ Always do what I mean!
 #+end_src
 
 ** Modeline
+*** Time
+
+#+begin_src emacs-lisp :tangle no
+  (setq display-time-format "%H:%M %d/%m")
+  (setq display-time-default-load-average 'nil)
+  (display-time-mode t)
+#+end_src
+
+*** Columns
 
 #+begin_src emacs-lisp
-  ;; (setq display-time-format "%H:%M %d/%m")
-  ;; (setq display-time-default-load-average 'nil)
   (column-number-mode t)
-  ;; (display-time-mode t)
-  ;; (display-battery-mode t)
-  ;; (size-indication-mode t)
+#+end_src
+
+*** Battery
+
+#+begin_src emacs-lisp :tangle no
+  (display-battery-mode t)
+#+end_src
+
+*** Size
+
+#+begin_src emacs-lisp :tangle no
+  (size-indication-mode t)
 #+end_src
 
 ** Setup Frame for Emacsclient
 
 #+begin_src emacs-lisp
+  (defun ts-setup-emacs-nw ()
+    "Change some settings to make Emacs more terminal friendly."
+    (xterm-mouse-mode 1)
+    (mouse-avoidance-mode 'banish)
+    (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+    (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+    (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+    (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
+    (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1))))
+#+end_src
+
+#+begin_src emacs-lisp
+  (defun ts-setup-emacs-gui ()
+    "Change some settings that are only applicable to graphical Emacs."
+    (cond ((eq system-type 'window-nt) (set-frame-font "Cascadia Mono 10" nil t))
+          ((eq system-type 'darwin) (set-frame-font "Monaco 10" nil t))
+          ((eq system-type 'gnu/linux) (set-frame-font "Monospace 11" nil t))
+          (t (set-frame-font "Monospace 11" nil t))))
+#+end_src
+
+#+begin_src emacs-lisp
   (defun ts-after-make-frame (frame)
     "Add custom settings after making the FRAME."
     (select-frame frame)
+    (if (version< emacs-version "28")
+        (load-theme 'wombat)
+      (load-theme 'modus-vivendi))
     (if (display-graphic-p)
-        (progn
-          (when (eq system-type 'windows-nt)
-            (set-frame-font "Cascadia Mono 10" nil t))
-          (when (eq system-type 'darwin)
-            (set-frame-font "Monaco 10" nil t))
-          (when (or (eq system-type 'gnu/linux)
-                    (eq system-type 'berkeley-unix))
-            (set-frame-font "Monospace 11" nil t))
-          (if (version< emacs-version "28")
-              (load-theme 'wombat)
-            (load-theme 'modus-vivendi)))
-      (progn
-        (if (version< emacs-version "28")
-            (load-theme 'manoj-dark)
-          (load-theme 'modus-vivendi))
-        (xterm-mouse-mode 1)
-        (mouse-avoidance-mode 'banish)
-        (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-        (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-        (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-        (global-set-key [mouse-4] '(lambda () (interactive) (scroll-down 1)))
-        (global-set-key [mouse-5] '(lambda () (interactive) (scroll-up 1))))))
+        (ts-setup-emacs-gui)
+      (ts-setup-emacs-nw)))
+#+end_src
 
+#+begin_src emacs-lisp
   (if (daemonp)
       (add-hook 'after-make-frame-functions #'ts-after-make-frame(selected-frame))
     (ts-after-make-frame(selected-frame)))

@@ -2311,11 +2311,11 @@ https://karthinks.com/software/batteries-included-with-emacs/
 
   (global-set-key (kbd "C-x $") 'ts-toggle-selective-display)
 #+end_src
+
 ** Semantic
 
 #+begin_src emacs-lisp
-(add-hook 'prog-mode-hook 'semantic-mode)
-(add-hook 'prog-mode-hook 'semantic-decorations-mode)
+  (add-hook 'prog-mode-hook 'semantic-mode)
 #+end_src
 
 ** Shell script
@@ -2389,12 +2389,6 @@ Don't tangle this block on ~emacs-version~ < 27.
 #+end_src
 
 ** Term
-
-#+begin_src emacs-lisp
-  (autoload 'term "term" nil t)
-  (autoload 'ansi-term "term" nil t)
-#+end_src
-
 *** ANSI Term launcher
 
 #+begin_src emacs-lisp
@@ -2404,6 +2398,7 @@ Don't tangle this block on ~emacs-version~ < 27.
     ;; https://emacs.stackexchange.com/a/48481
     (let ((switch-to-buffer-obey-display-actions))
       (ansi-term (getenv "SHELL"))))
+
   (global-set-key (kbd "C-c tt") 'ts-ansi-term)
 
   (defun ts-ansi-term-other-window ()
@@ -2412,6 +2407,7 @@ Don't tangle this block on ~emacs-version~ < 27.
     (split-window-sensibly)
     (other-window 1)
     (ts-ansi-term))
+
   (global-set-key (kbd "C-c 4 tt") 'ts-ansi-term-other-window)
 #+end_src
 
@@ -2431,6 +2427,7 @@ Don't tangle this block on ~emacs-version~ < 27.
     (if (get-buffer "*ansi-term*")
         (switch-to-buffer "*ansi-term*")
       (ansi-term (getenv "SHELL"))))
+
   (global-set-key (kbd "C-c ts") 'ts-switch-to-ansi-term)
 
   (defun ts-switch-to-ansi-term-other-window()
@@ -2439,6 +2436,7 @@ Don't tangle this block on ~emacs-version~ < 27.
     (split-window-sensibly)
     (other-window 1)
     (ts-switch-to-ansi-term))
+
   (global-set-key (kbd "C-c 4 ts") 'ts-switch-to-ansi-term-other-window)
 #+end_src
 
@@ -2487,6 +2485,7 @@ Don't tangle this block on ~emacs-version~ < 27.
       (global-set-key (kbd "C-x v d") 'ts-vc-dir)
     (global-set-key (kbd "C-x v d") 'vc-dir-root))
 #+end_src
+
 ** View mode
 
 Provide pager-like keybindings. Makes navigating read-only buffers a breeze.

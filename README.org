@@ -1185,7 +1185,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
       (kill-this-buffer)
       (select-window current-window)))
 
-  (define-key ctl-x-4-map "k" 'ts-kill-buffer-other-window)
+  (global-set-key (kbd "C-c w k") 'ts-kill-buffer-other-window)
 #+end_src
 
 ** Open a buffer in another window
@@ -1197,7 +1197,7 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
     (switch-to-buffer-other-window buffer)
     (other-window -1))
 
-  (define-key ctl-x-4-map "o" 'ts-open-buffer-other-window)
+  (global-set-key (kbd "C-c w o") 'ts-open-buffer-other-window)
 #+end_src
 
 ** COMMENT Scroll lines down like Ctrl-y in Vim
@@ -1329,7 +1329,7 @@ This is basically ~other-window~ backwards.
                    (windmove-find-other-window neighbour-dir)
                    other-buf))))))))
 
-  (define-key ctl-x-4-map "s" 'ts-toggle-split)
+  (global-set-key (kbd "C-c w s") 'ts-toggle-split)
 #+end_src
 
 ** COMMENT Transpose windows

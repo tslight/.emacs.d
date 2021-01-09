@@ -1332,7 +1332,7 @@ This is basically ~other-window~ backwards.
   (define-key ctl-x-4-map "s" 'ts-toggle-split)
 #+end_src
 
-** Transpose windows
+** COMMENT Transpose windows
 
 #+begin_src emacs-lisp
   (defun ts-transpose-windows (arg)
@@ -1357,32 +1357,6 @@ This is basically ~other-window~ backwards.
               (set-window-buffer-start-and-point w2 b1 s1 p1)))))))
 
   (define-key ctl-x-4-map "t" 'ts-transpose-windows)
-#+end_src
-
-** Windmove keybindings
-
-#+begin_src emacs-lisp
-  (autoload 'windmove-left "windmove" nil t)
-  (global-set-key (kbd "C-c w b") 'windmove-left)
-  (autoload 'windmove-right "windmove" nil t)
-  (global-set-key (kbd "C-c w f") 'windmove-right)
-  (autoload 'windmove-up "windmove" nil t)
-  (global-set-key (kbd "C-c w p") 'windmove-up)
-  (autoload 'windmove-down "windmove" nil t)
-  (global-set-key (kbd "C-c w n") 'windmove-down)
-  (with-eval-after-load 'windmove
-    (setq windmove-wrap-around t)
-    (message "Lazy loaded windmove :-)"))
-#+end_src
-
-** Winner mode
-
-[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Startup-Summary.html#Startup-Summary][Startup Summary]]
-
-#+begin_src emacs-lisp
-  (add-hook 'window-setup-hook 'winner-mode)
-  (global-set-key (kbd "C-c w u") 'winner-undo)
-  (global-set-key (kbd "C-c w r") 'winner-redo)
 #+end_src
 
 * Emacs Packages
@@ -2253,6 +2227,19 @@ to that.
               (?v "VC dir" project-vc-dir)))
       (message "Lazy loaded project :-)")))
 #+end_src
+** Pulse
+
+https://karthinks.com/software/batteries-included-with-emacs/
+
+#+begin_src emacs-lisp
+(defun pulse-line (&rest _)
+      "Pulse the current line."
+      (pulse-momentary-highlight-one-line (point)))
+
+(dolist (command '(scroll-up-command scroll-down-command
+                   recenter-top-bottom other-window))
+  (advice-add command :after #'pulse-line))
+#+end_src
 
 ** Python
 
@@ -2310,6 +2297,18 @@ to that.
     (setq save-place-file (concat user-emacs-directory "saveplace.el"))
     (message "Lazy loaded save-place-mode :-)"))
   (add-hook 'emacs-startup-hook 'save-place-mode)
+#+end_src
+** Selective Display
+
+#+begin_src emacs-lisp
+  (defun ts-toggle-selective-display ()
+    "Toggle `selective-display'."
+    (interactive)
+    (if selective-display
+        (setq-local selective-display nil)
+      (setq-local selective-display 1)))
+
+  (global-set-key (kbd "C-x $") 'ts-toggle-selective-display)
 #+end_src
 
 ** Shell script
@@ -2481,6 +2480,19 @@ Don't tangle this block on ~emacs-version~ < 27.
       (global-set-key (kbd "C-x v d") 'ts-vc-dir)
     (global-set-key (kbd "C-x v d") 'vc-dir-root))
 #+end_src
+** View mode
+
+Provide pager-like keybindings. Makes navigating read-only buffers a breeze.
+Move down and up with SPC and delete (backspace) or S-SPC, half a page down and
+up with d and u, and isearch with s.
+
+Prolific emacser Omar Antolin Camarena points out a built-in way to use
+view-mode in all read-only buffers, including ones you set read-only with C-x
+C-q.
+
+#+begin_src emacs-lisp
+  (setq view-read-only t)
+#+end_src
 
 ** Whitespace
 
@@ -2509,6 +2521,34 @@ Cleanup whitespace on save
 
 #+begin_src emacs-lisp
   (add-hook 'before-save-hook 'whitespace-cleanup)
+#+end_src
+
+** Windmove
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c w b") 'windmove-left)
+  (global-set-key (kbd "C-c w f") 'windmove-right)
+  (global-set-key (kbd "C-c w p") 'windmove-up)
+  (global-set-key (kbd "C-c w n") 'windmove-down)
+
+  (global-set-key (kbd "C-c w C-b") 'windmove-swap-states-left)
+  (global-set-key (kbd "C-c w C-f") 'windmove-swap-states-right)
+  (global-set-key (kbd "C-c w C-p") 'windmove-swap-states-up)
+  (global-set-key (kbd "C-c w C-n") 'windmove-swap-states-down)
+
+  (with-eval-after-load 'windmove
+    (setq windmove-wrap-around t)
+    (message "Lazy loaded windmove :-)"))
+#+end_src
+
+** Winner mode
+
+[[https://www.gnu.org/software/emacs/manual/html_node/elisp/Startup-Summary.html#Startup-Summary][Startup Summary]]
+
+#+begin_src emacs-lisp
+  (add-hook 'window-setup-hook 'winner-mode)
+  (global-set-key (kbd "C-c w u") 'winner-undo)
+  (global-set-key (kbd "C-c w r") 'winner-redo)
 #+end_src
 
 * MELPA Packages

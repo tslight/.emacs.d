@@ -1981,100 +1981,10 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
 #+end_src
 
 ** Org
+*** Org Babel Load Languages
 
 #+begin_src emacs-lisp
   (with-eval-after-load 'org
-    (require 'org-tempo)
-
-    (defun ts-org-recursive-sort ()
-      "Sort all entries in the current buffer, recursively."
-      (interactive)
-      (org-map-entries (lambda () (condition-case x (org-sort-entries nil ?a) (user-error)))))
-
-    (defun ts-org-narrow-to-parent ()
-      "Narrow buffer to the current subtree."
-      (interactive)
-      (widen)
-      (org-up-element)
-      (save-excursion
-        (save-match-data
-          (org-with-limited-levels
-           (narrow-to-region
-            (progn
-              (org-back-to-heading t) (point))
-            (progn (org-end-of-subtree t t)
-                   (when (and (org-at-heading-p) (not (eobp))) (backward-char 1))
-                   (point)))))))
-    (define-key org-mode-map (kbd "C-c M-p") 'ts-org-narrow-to-parent)
-
-    (setq org-startup-folded t) ;; start in overview mode
-    (setq org-directory "~/org")
-    (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
-    (setq org-default-notes-file "~/org/notes.org")
-    (setq org-image-actual-width nil) ; try to get width from #+ATTR.* keyword
-    (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
-    (setq org-emphasis-regexp-components '(" \t('\"{" "- \t.,:!?;'\")}\\" " \t\r\n,\"'" "." 300))
-    (setq org-confirm-babel-evaluate t)
-    (setq org-export-with-toc t)
-    (setq org-indent-indentation-per-level 1)
-    (setq org-list-allow-alphabetical t)
-    (setq org-list-indent-offset 1)
-    (setq org-return-follows-link t)
-
-    (setq org-special-ctrl-a/e 'reversed)
-    (setq org-special-ctrl-k t)
-    (setq org-special-ctrl-o t)
-
-    (setq org-refile-use-outline-path 'file)
-    (setq org-refile-allow-creating-parent-nodes 'confirm)
-    (setq org-refile-targets '((nil :maxlevel . 9)))
-
-    (setq org-src-fontify-natively t)
-    (setq org-src-tab-acts-natively t)
-    (setq org-src-window-setup 'current-window)
-
-    (setq org-startup-indented t)
-
-    (setq org-use-fast-todo-selection t)
-    (setq org-use-speed-commands t)
-    (setq org-speed-commands-user '(("N" . org-down-element) ("P" . org-up-element)))
-
-    (setq org-latex-listings 'minted)
-    (setq org-latex-pdf-process
-          '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-    (add-to-list 'org-latex-packages-alist '("" "minted"))
-
-    (setq org-capture-templates
-          '(("t" "TODO Entry" entry (file+headline "~/org/todo.org" "Captured")
-             "* TODO %?\n  %i\n  %a")
-            ("j" "Journal Entry" entry (file+datetree "~/org/journal.org" "Captured")
-             "* %?\nEntered on %U\n %i\n  %a")
-            ("n" "Notes Entry" entry (file+datetree "~/org/notes.org" "Captured")
-             "* %?\nEntered on %U\n %i\n  %a")))
-
-    (setq org-todo-keywords '((sequence
-                               "TODO(t!)"
-                               "NEXT(n)"
-                               "BACKLOG(b!)"
-                               "WAITING(w@/!)"
-                               "IN-PROGRESS(i!)"
-                               "BLOCKED(B@/!)"
-                               "CANCELED(c@)"
-                               "DONE(d!)")))
-
-    (add-to-list 'org-structure-template-alist '("cl" . "src common-lisp"))
-    (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-    (add-to-list 'org-structure-template-alist '("go" . "src go"))
-    (add-to-list 'org-structure-template-alist '("ja" . "src java"))
-    (add-to-list 'org-structure-template-alist '("js" . "src javascript"))
-    (add-to-list 'org-structure-template-alist '("kr" . "src c"))
-    (add-to-list 'org-structure-template-alist '("py" . "src python"))
-    (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-    (add-to-list 'org-structure-template-alist '("sq" . "src sql"))
-    (add-to-list 'org-structure-template-alist '("tx" . "src text"))
-
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((awk . t)
@@ -2100,25 +2010,23 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
        (sed . t)
        (shell . t)
        (sql . t)
-       (sqlite . t)))
-
-    (setq org-goto-interface 'outline-path-completionp)
-    (setq org-outline-path-complete-in-steps nil)
-    ;; org-goto is basically imenu on steroids for org-mode
-    (define-key org-mode-map (kbd "C-c i") 'org-goto)
-
-    (if (version< emacs-version "28")
-        (progn
-          (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file early-init nil 0 t)))
-          (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file init-file nil 0 t))))
-      (progn
-        (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file early-init nil 0)))
-        (add-hook 'org-babel-post-tangle-hook 'emacs-lisp-byte-compile-and-load)))
-
-    (message "Lazy loaded org :-)"))
+       (sqlite . t))))
 #+end_src
 
-*** Org global bindings
+*** Org Capture Templates
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-capture-templates
+          '(("t" "TODO Entry" entry (file+headline "~/org/todo.org" "Captured")
+             "* TODO %?\n  %i\n  %a")
+            ("j" "Journal Entry" entry (file+datetree "~/org/journal.org" "Captured")
+             "* %?\nEntered on %U\n %i\n  %a")
+            ("n" "Notes Entry" entry (file+datetree "~/org/notes.org" "Captured")
+             "* %?\nEntered on %U\n %i\n  %a"))))
+#+end_src
+
+*** Org Global Keybindings
 
 #+begin_src emacs-lisp
   (autoload 'org-mode "org" nil t)
@@ -2130,6 +2038,165 @@ helm and ivy). Stolen from [[https://github.com/hlissner/doom-emacs/blob/develop
   (global-set-key (kbd "C-c o l") 'org-store-link)
   (autoload 'org-time-stamp "org" nil t)
   (global-set-key (kbd "C-c o t") 'org-time-stamp)
+#+end_src
+
+*** Org Latex
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org-latex
+    (setq org-latex-listings 'minted)
+    (setq org-latex-pdf-process
+          '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+            "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+    (add-to-list 'org-latex-packages-alist '("" "minted")))
+#+end_src
+
+*** Org Misc Settings
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-startup-folded t) ;; start in overview mode
+    (setq org-directory "~/org")
+    (setq org-agenda-files (file-expand-wildcards "~/org/*.org"))
+    (setq org-default-notes-file "~/org/notes.org")
+    (setq org-image-actual-width nil) ; try to get width from #+ATTR.* keyword
+    (setf org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
+    (setq org-emphasis-regexp-components '(" \t('\"{" "- \t.,:!?;'\")}\\" " \t\r\n,\"'" "." 300))
+    (setq org-confirm-babel-evaluate t)
+    (setq org-export-with-toc t)
+    (setq org-indent-indentation-per-level 1)
+    (setq org-list-allow-alphabetical t)
+    (setq org-list-indent-offset 1)
+    (setq org-return-follows-link t)
+    (setq org-startup-indented t)
+    (setq org-use-fast-todo-selection t))
+#+end_src
+
+*** COMMENT Org Narrow to Parent
+
+#+begin_src emacs-lisp
+  (defun ts-org-narrow-to-parent ()
+    "Narrow buffer to the current subtree."
+    (interactive)
+    (widen)
+    (org-up-element)
+    (save-excursion
+      (save-match-data
+        (org-with-limited-levels
+         (narrow-to-region
+          (progn
+            (org-back-to-heading t) (point))
+          (progn (org-end-of-subtree t t)
+                 (when (and (org-at-heading-p) (not (eobp)))
+                   (backward-char 1))
+                 (point)))))))
+
+  (define-key org-mode-map (kbd "C-c M-p") 'ts-org-narrow-to-parent)
+#+end_src
+
+*** Org Outline/Goto
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-goto-interface 'outline-path-completionp)
+    (setq org-outline-path-complete-in-steps nil)
+    ;; org-goto is basically imenu on steroids for org-mode
+    (define-key org-mode-map (kbd "C-c i") 'org-goto))
+#+end_src
+
+*** Org Recompile Post Tangle
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (if (version< emacs-version "28")
+        (progn
+          (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file early-init nil 0 t)))
+          (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file init-file nil 0 t))))
+      (progn
+        (add-hook 'org-babel-post-tangle-hook (lambda () (byte-recompile-file early-init nil 0)))
+        (add-hook 'org-babel-post-tangle-hook 'emacs-lisp-byte-compile-and-load))))
+#+end_src
+
+*** Org Recursive Sort
+
+#+begin_src emacs-lisp
+  (defun ts-org-recursive-sort ()
+    "Sort all entries in the current buffer, recursively."
+    (interactive)
+    (org-map-entries (lambda ()
+                       (condition-case x
+                           (org-sort-entries nil ?a) (user-error)))))
+#+end_src
+
+*** Org Refile
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-refile-use-outline-path 'file)
+    (setq org-refile-allow-creating-parent-nodes 'confirm)
+    (setq org-refile-targets '((nil :maxlevel . 9))))
+#+end_src
+
+*** Org Special Keys
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-special-ctrl-a/e 'reversed)
+    (setq org-special-ctrl-k t)
+    (setq org-special-ctrl-o t))
+#+end_src
+
+*** Org Speed Commands
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-use-speed-commands t)
+    (setq org-speed-commands-user
+          '(("N" . org-down-element)
+            ("P" . org-up-element))))
+#+end_src
+
+*** Org Src
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-src-fontify-natively t)
+    (setq org-src-tab-acts-natively t)
+    (setq org-src-window-setup 'current-window))
+#+end_src
+
+*** Org Structure Templates
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (require 'org-tempo)
+    (setq org-structure-template-alist (append org-structure-template-alist
+                                               '(("cl" . "src common-lisp")
+                                                 ("el" . "src emacs-lisp")
+                                                 ("go" . "src go")
+                                                 ("ja" . "src java")
+                                                 ("js" . "src javascript")
+                                                 ("kr" . "src c")
+                                                 ("py" . "src python")
+                                                 ("sh" . "src shell")
+                                                 ("sq" . "src sql")
+                                                 ("tx" . "src text")))))
+#+end_src
+
+*** Org Todo Keywords
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'org
+    (setq org-todo-keywords '((sequence
+                               "TODO(t!)"
+                               "NEXT(n)"
+                               "BACKLOG(b!)"
+                               "WAITING(w@/!)"
+                               "IN-PROGRESS(i!)"
+                               "BLOCKED(B@/!)"
+                               "CANCELED(c@)"
+                               "DONE(d!)"))))
 #+end_src
 
 ** Pending delete
@@ -2232,13 +2299,13 @@ to that.
 https://karthinks.com/software/batteries-included-with-emacs/
 
 #+begin_src emacs-lisp
-(defun pulse-line (&rest _)
-      "Pulse the current line."
-      (pulse-momentary-highlight-one-line (point)))
+  (defun pulse-line (&rest _)
+    "Pulse the current line."
+    (pulse-momentary-highlight-one-line (point)))
 
-(dolist (command '(scroll-up-command scroll-down-command
-                   recenter-top-bottom other-window))
-  (advice-add command :after #'pulse-line))
+  (dolist (command '(scroll-up-command scroll-down-command
+                                       recenter-top-bottom other-window))
+    (advice-add command :after #'pulse-line))
 #+end_src
 
 ** Python

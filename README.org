@@ -2385,25 +2385,29 @@ https://karthinks.com/software/batteries-included-with-emacs/
   (add-hook 'prog-mode-hook 'semantic-mode)
 #+end_src
 
-** Shell script
+** Shell Script
 
 #+begin_src emacs-lisp
+  (setq auto-mode-alist (append auto-mode-alist
+                                '(("\\.sh\\'" . shell-script-mode)
+                                  ("\\.bash.*\\'" . shell-script-mode)
+                                  ("\\.zsh.*\\'" . shell-script-mode)
+                                  ("\\bashrc\\'" . shell-script-mode)
+                                  ("\\kshrc\\'" . shell-script-mode)
+                                  ("\\profile\\'" . shell-script-mode)
+                                  ("\\zshenv\\'" . shell-script-mode)
+                                  ("\\zprompt\\'" . shell-script-mode)
+                                  ("\\zshrc\\'" . shell-script-mode)
+                                  ("\\prompt_.*_setup\\'" . shell-script-mode))))
+
+  (setq interpreter-mode-alist (append interpreter-mode-alist
+                                       '(("bash" . shell-script-mode)
+                                         ("ksh" . shell-script-mode)
+                                         ("sh" . shell-script-mode)
+                                         ("zsh" . shell-script-mode))))
+
   (with-eval-after-load 'sh-script
     (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
-    (add-to-list 'auto-mode-alist '("\\.sh\\'" . shell-script-mode))
-    (add-to-list 'auto-mode-alist '("\\.bash.*\\'" . shell-script-mode))
-    (add-to-list 'auto-mode-alist '("\\.zsh.*\\'" . shell-script-mode))
-    (add-to-list 'auto-mode-alist '("\\bashrc\\'" . shell-script-mode))
-    (add-to-list 'auto-mode-alist '("\\kshrc\\'" . shell-script-mode))
-    (add-to-list 'auto-mode-alist '("\\profile\\'" . shell-script-mode))
-    (add-to-list 'auto-mode-alist '("\\zshenv\\'" . shell-script-mode))
-    (add-to-list 'auto-mode-alist '("\\zprompt\\'" . shell-script-mode))
-    (add-to-list 'auto-mode-alist '("\\zshrc\\'" . shell-script-mode))
-    (add-to-list 'auto-mode-alist '("\\prompt_.*_setup\\'" . shell-script-mode))
-    (add-to-list 'interpreter-mode-alist '("bash" . shell-script-mode))
-    (add-to-list 'interpreter-mode-alist '("ksh" . shell-script-mode))
-    (add-to-list 'interpreter-mode-alist '("sh" . shell-script-mode))
-    (add-to-list 'interpreter-mode-alist '("zsh" . shell-script-mode))
     (message "Lazy loaded shell-script-mode :-)"))
 #+end_src
 

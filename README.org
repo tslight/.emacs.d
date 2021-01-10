@@ -8,7 +8,8 @@
 #+OPTIONS: broken-links:t toc:t num:nil
 #+STARTUP: overview
 
-A fairly standard [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration using [[https://orgmode.org/][Org mode]]. Requires *Emacs > 25.1*.
+A fairly standard [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration using [[https://orgmode.org/][Org mode]]. Requires *Emacs
+> 25.1*.
 
 To install, evaluate the code block below with ~C-c C-c~ in Emacs:
 
@@ -1409,6 +1410,8 @@ This is basically ~other-window~ backwards.
 #+end_src
 
 ** Dired
+*** Dired Extras
+
 #+begin_src emacs-lisp
   (with-eval-after-load 'dired
     (defun ts-dired-get-size ()
@@ -1440,32 +1443,51 @@ This is basically ~other-window~ backwards.
 
     (define-key dired-mode-map [remap end-of-buffer] 'ts-dired-end-of-buffer)
 
-    (autoload 'dired-omit-mode "dired-x" nil t)
-    (autoload 'dired-omit-files "dired-x" nil t)
-    (setq dired-omit-files "\\`[.]?#\\|\\`[.][.]?\\'\\|^\\..+$")
-
-    (when (eq system-type 'berkeley-unix) (setq dired-listing-switches "-alhpL"))
-
-    (when (eq system-type 'gnu/linux)
-      (setq dired-listing-switches
-            "-AGFhlv --group-directories-first --time-style=long-iso"))
-
-    (setq dired-dwim-target t
-          delete-by-moving-to-trash t
-          dired-use-ls-dired nil
-          dired-recursive-copies 'always
-          dired-recursive-deletes 'always)
-
     (defun ts-dired-up-directory ()
       (interactive)
       (find-alternate-file ".."))
 
-    (define-key dired-mode-map "b" 'ts-dired-up-directory)
+    (define-key dired-mode-map "b" 'ts-dired-up-directory))
+#+end_src
+
+*** Dired Omit
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'dired
+    (autoload 'dired-omit-mode "dired-x" nil t)
+    (autoload 'dired-omit-files "dired-x" nil t)
+    (setq dired-omit-files "\\`[.]?#\\|\\`[.][.]?\\'\\|^\\..+$"))
+#+end_src
+
+*** Dired Listing Switches
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'dired
+    (when (eq system-type 'berkeley-unix) (setq dired-listing-switches "-alhpL"))
+
+    (when (eq system-type 'gnu/linux)
+      (setq dired-listing-switches
+            "-AGFhlv --group-directories-first --time-style=long-iso")))
+#+end_src
+
+*** Dired Settings
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'dired
+    (setq dired-dwim-target t
+          delete-by-moving-to-trash t
+          dired-use-ls-dired nil
+          dired-recursive-copies 'always
+          dired-recursive-deletes 'always))
+#+end_src
+
+*** Dired Keybindings
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'dired
     (define-key dired-mode-map "f" 'dired-find-alternate-file)
     (define-key dired-mode-map "c" 'dired-do-compress-to)
-    (define-key dired-mode-map ")" 'dired-omit-mode)
-
-    (message "Lazy loaded dired :-)"))
+    (define-key dired-mode-map ")" 'dired-omit-mode))
 #+end_src
 
 *** Dired AUX

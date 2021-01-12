@@ -1192,13 +1192,12 @@ This is better, since I don't need to send prefix to ~scroll-other-window~.
 ** Open a buffer in another window
 
 #+begin_src emacs-lisp
-  (defun ts-open-buffer-other-window (buffer)
-    "Open a BUFFER in another window without switching to it."
-    (interactive "BBuffer: ")
-    (switch-to-buffer-other-window buffer)
-    (other-window -1))
+  (defun ts-display-buffer-in-previous-window (buffer)
+    "Display BUFFER in other window without switching to it."
+    (interactive "BDisplay buffer in other window: ")
+    (display-buffer buffer 'display-buffer-in-previous-window))
 
-  (global-set-key (kbd "C-c w o") 'ts-open-buffer-other-window)
+  (global-set-key (kbd "C-c w o") 'ts-display-buffer-in-previous-window)
 #+end_src
 
 ** COMMENT Scroll lines down like Ctrl-y in Vim

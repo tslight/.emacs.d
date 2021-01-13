@@ -1108,7 +1108,6 @@ This block will byte compile ~early-init.el~ and ~init.el~ if an existing
 
   (add-hook 'after-init-hook 'ts-ensure-byte-compiled-init)
 #+end_src
-
 ** Recompile config
 
 #+begin_src emacs-lisp
@@ -1125,6 +1124,14 @@ This block will byte compile ~early-init.el~ and ~init.el~ if an existing
                 (load (file-name-sans-extension path))
                 (message "Re-compiled & loaded %s :-)" path))))
           ts-files-to-recompile))
+#+end_src
+
+** Tangle config
+
+#+begin_src emacs-lisp
+  (defun ts-tangle-config ()
+    (autoload 'org-babel-tangle-file "ob-tangle")
+    (org-babel-tangle-file "~/src/gitlab/tspub/lisp/emacs/README.org"))
 #+end_src
 
 ** Googling

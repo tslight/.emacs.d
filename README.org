@@ -815,7 +815,7 @@ Increment or decrement numbers at the point.
         (setq x (+ x 1)))))
 #+end_src
 
-** Kill region
+** Kill Region
 
 #+begin_src emacs-lisp
   (defun ts-kill-region (arg)
@@ -832,7 +832,7 @@ Increment or decrement numbers at the point.
   (global-set-key [remap kill-region] 'ts-kill-region)
 #+end_src
 
-** Kill ring save
+** Kill Ring Save
 
 #+begin_src emacs-lisp
   (defun ts-kill-ring-save (arg)
@@ -848,6 +848,18 @@ Increment or decrement numbers at the point.
       (goto-char p2)))
 
   (global-set-key [remap kill-ring-save] 'ts-kill-ring-save)
+#+end_src
+
+** Kill Ring Save Whole Buffer
+
+#+begin_src emacs-lisp
+  (defun ts-kill-ring-save-whole-buffer ()
+    "Save the entire contents of the buffer to the kill ring."
+    (interactive)
+    (kill-ring-save (point-min) (point-max))
+    (message "Saved whole buffer to kill ring :-)"))
+
+  (global-set-key (kbd "C-c h") 'ts-kill-ring-save-whole-buffer)
 #+end_src
 
 ** Moving lines
@@ -2845,12 +2857,12 @@ Get the source from [[https://gitlab.com/tspub/lisp/lazygit][here]].
   (use-package lazygitlab :ensure nil
     :load-path "~/src/gitlab/tspub/lisp/lazygit"
     :bind-keymap
-    ("C-c l" . lazygitlab-map))
+    ("C-c L" . lazygitlab-map))
 
   (use-package lazygithub :ensure nil
     :load-path "~/src/gitlab/tspub/lisp/lazygit"
     :bind-keymap
-    ("C-c h" . lazygithub-map))
+    ("C-c H" . lazygithub-map))
 #+end_src
 
 *** Magit
@@ -3037,6 +3049,12 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
 
 #+begin_src emacs-lisp
   (use-package terraform-mode)
+#+end_src
+
+** Trashed
+
+#+begin_src emacs-lisp
+  (use-package trashed)
 #+end_src
 
 ** Web Mode

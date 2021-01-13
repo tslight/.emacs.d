@@ -439,33 +439,6 @@ Always do what I mean!
   (setq frame-resize-pixelwise t) ;; jwm resize fix
 #+end_src
 
-** Modeline
-*** Time
-
-#+begin_src emacs-lisp :tangle no
-  (setq display-time-format "%H:%M %d/%m")
-  (setq display-time-default-load-average 'nil)
-  (display-time-mode t)
-#+end_src
-
-*** Columns
-
-#+begin_src emacs-lisp
-  (column-number-mode t)
-#+end_src
-
-*** Battery
-
-#+begin_src emacs-lisp :tangle no
-  (display-battery-mode t)
-#+end_src
-
-*** Size
-
-#+begin_src emacs-lisp :tangle no
-  (size-indication-mode t)
-#+end_src
-
 ** Setup Frame for Emacsclient
 
 #+begin_src emacs-lisp
@@ -1416,6 +1389,25 @@ This is basically ~other-window~ backwards.
 
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook 'global-auto-revert-mode) ;; reload if file changed on disk
+#+end_src
+
+** Battery
+
+#+begin_src emacs-lisp :tangle no
+    (with-eval-after-load 'battery
+      (setq battery-mode-line-format " [%b%p%%]")
+      (setq battery-mode-line-limit 95)
+      (setq battery-update-interval 180)
+      (setq battery-load-low 20)
+      (setq battery-load-critical 10))
+
+  (add-hook 'after-init-hook 'display-battery-mode)
+#+end_src
+
+** Column Number
+
+#+begin_src emacs-lisp
+(add-hook 'after-init-hook 'column-number-mode)
 #+end_src
 
 ** Dabbrev
@@ -2486,6 +2478,12 @@ https://karthinks.com/software/batteries-included-with-emacs/
   (add-hook 'after-init-hook 'show-paren-mode)
 #+end_src
 
+** Size Indication
+
+#+begin_src emacs-lisp :tangle no
+  (add-hook 'after-init-hook 'size-indication-mode)
+#+end_src
+
 ** Subword
 
 #+begin_src emacs-lisp
@@ -2586,6 +2584,16 @@ Don't tangle this block on ~emacs-version~ < 27.
       (kill-buffer))
     (setq term-buffer-maximum-size 200000)
     (message "Lazy loaded term :-)"))
+#+end_src
+
+** Time
+
+#+begin_src emacs-lisp :tangle no
+  (with-eval-after-load 'time
+    (setq display-time-format "%H:%M %d/%m")
+    (setq display-time-default-load-average 'nil))
+
+  (add-hook 'after-init-hook 'display-time-mode)
 #+end_src
 
 ** Tramp

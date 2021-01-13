@@ -948,7 +948,7 @@ to completing read of the kill ring, making this pretty pointless.
     (or (buffer-file-name) (error "No file is currently being edited"))
     (when (yes-or-no-p (format "Really delete '%s'?"
                                (file-name-nondirectory buffer-file-name)))
-      (delete-file (buffer-file-name))
+      (delete-file (buffer-file-name) t)
       (kill-this-buffer)))
 
   (global-set-key (kbd "C-c f d") 'ts-delete-this-file)

@@ -2444,6 +2444,16 @@ https://karthinks.com/software/batteries-included-with-emacs/
   (add-hook 'prog-mode-hook 'semantic-mode)
 #+end_src
 
+** Shell
+
+#+begin_src emacs-lisp
+  (with-eval-after-load 'shell
+    (setq ansi-color-for-comint-mode t)
+    (unless (version< emacs-version "27")
+      ;; show current directory when prompting for a shell command.
+      (setq shell-command-prompt-show-cwd t)))
+#+end_src
+
 ** Shell Script
 
 #+begin_src emacs-lisp

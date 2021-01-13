@@ -403,6 +403,12 @@ Always do what I mean!
   (global-set-key (kbd "S-<f10>") 'menu-bar-mode)
 #+end_src
 
+** Registers
+
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-x j") 'jump-to-register)
+#+end_src
+
 ** Special mode
 
 #+begin_src emacs-lisp
@@ -415,20 +421,6 @@ Always do what I mean!
   (define-key special-mode-map "p" #'widget-backward)
   (define-key special-mode-map "f" #'widget-forward)
   (define-key special-mode-map "b" #'widget-backward)
-#+end_src
-
-* COMMENT Registers
-
-#+begin_src emacs-lisp
-  (defun ts-jump-to-register-other-window ()
-    "Tin job."
-    (interactive)
-    (split-window-sensibly)
-    (other-window 1)
-    (jump-to-register (register-read-with-preview "Jump to register")))
-
-  (global-set-key (kbd "C-x j") 'jump-to-register)
-  (define-key ctl-x-4-map "j" 'ts-jump-to-register-other-window)
 #+end_src
 
 * Theme/UI
@@ -1170,6 +1162,19 @@ This block will byte compile ~early-init.el~ and ~init.el~ if an existing
     (dolist (buffer (buffer-list))
       (with-current-buffer buffer
         ad-do-it)))
+#+end_src
+
+** COMMENT Registers
+
+#+begin_src emacs-lisp
+  (defun ts-jump-to-register-other-window ()
+    "Tin job."
+    (interactive)
+    (split-window-sensibly)
+    (other-window 1)
+    (jump-to-register (register-read-with-preview "Jump to register")))
+
+  (define-key ctl-x-4-map "j" 'ts-jump-to-register-other-window)
 #+end_src
 
 * Window Functions

@@ -1611,6 +1611,7 @@ The default keys are ~C-x C-j~ and ~C-x 4 C-j~.
 
 #+begin_src emacs-lisp
   (add-hook 'after-init-hook 'electric-indent-mode)
+  (add-hook 'after-init-hook 'electric-quote-mode)
   (add-hook 'after-init-hook 'electric-pair-mode)
 #+end_src
 
@@ -1706,6 +1707,12 @@ The default keys are ~C-x C-j~ and ~C-x 4 C-j~.
   (autoload 'eshell "eshell" nil t)
   (global-set-key (kbd "C-c e") 'eshell)
   (global-set-key (kbd "C-c 4 e") 'ts-eshell-other-window)
+#+end_src
+
+** Flymake
+
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook 'flymake-mode)
 #+end_src
 
 ** Flyspell
@@ -2491,6 +2498,9 @@ https://karthinks.com/software/batteries-included-with-emacs/
 ** Show paren
 
 #+begin_src emacs-lisp
+  (with-eval-after-load 'paren
+    (setq show-paren-when-point-in-periphery t)
+    (setq show-paren-when-point-inside-paren t))
   (add-hook 'after-init-hook 'show-paren-mode)
 #+end_src
 

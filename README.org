@@ -264,6 +264,12 @@ If init.elc is older, use newer ~init.el~.
   (setq load-prefer-newer t) ;; if init.elc is older, use newer init.el
 #+end_src
 
+** Repeat on final keystroke
+
+#+begin_src emacs-lisp
+  (setq repeat-on-final-keystroke t)
+#+end_src
+
 ** Safe Local Variables
 
 This variables are added to the end of this file.
@@ -280,8 +286,8 @@ This variables are added to the end of this file.
 
 #+begin_src emacs-lisp
   (setq scroll-step 4)
-  (setq scroll-margin 6)
-  (setq scroll-conservatively 8)
+  (setq scroll-margin 2)
+  (setq scroll-conservatively 4)
   (setq scroll-preserve-screen-position t)
 #+end_src
 
@@ -1714,6 +1720,16 @@ Don't bother using this on Windows as I can rather be bothered to install
     (add-hook 'prog-mode-hook 'flyspell-prog-mode))
 #+end_src
 
+** COMMENT Fringe
+
+#+begin_src emacs-lisp
+  (fringe-mode nil)
+  (setq-default fringes-outside-margins nil)
+  (setq-default indicate-buffer-boundaries nil)
+  (setq-default indicate-empty-lines nil)
+  (setq-default overflow-newline-into-fringe t)
+#+end_src
+
 ** Gnus
 
 #+begin_src emacs-lisp
@@ -2690,6 +2706,15 @@ Cleanup whitespace on save
   (with-eval-after-load 'windmove
     (setq windmove-wrap-around t)
     (message "Lazy loaded windmove :-)"))
+#+end_src
+
+** Window Divider
+
+#+begin_src emacs-lisp
+  (setq window-divider-default-right-width 1)
+  (setq window-divider-default-bottom-width 1)
+  (setq window-divider-default-places 'right-only)
+  (add-hook 'after-init-hook 'window-divider-mode)
 #+end_src
 
 ** Winner mode

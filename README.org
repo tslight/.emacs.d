@@ -32,8 +32,15 @@ This must come at the beginning of the file
 
 [[https://nullprogram.com/blog/2016/12/22/][Some Performance Advantages of Lexical Scope]]
 
+#+NAME: lexical-binding
 #+begin_src emacs-lisp :comments no
   ;; -*- lexical-binding: t; -*-
+#+end_src
+
+And one for =~/.emacs.d/early-init.el= if it exists...
+
+#+begin_src emacs-lisp :noweb yes :comments no :tangle (if (version< emacs-version "27") "no" early-init)
+  <<lexical-binding>>
 #+end_src
 
 * [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly][Doom Speed Hacks]]
@@ -42,7 +49,7 @@ This must come at the beginning of the file
 The GC can easily double startup time, so we suppress it at startup by
 turning up gc-cons-threshold (and perhaps gc-cons-percentage) temporarily:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") init-file early-init)
   (setq gc-cons-threshold most-positive-fixnum ; 2^61 bytes
         gc-cons-percentage 0.6)
 #+end_src
@@ -69,7 +76,7 @@ Emacs does this to check if a special handler is needed to read that file, but
 none of them are (typically) necessary at startup, so we disable them
 (temporarily!):
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") init-file early-init)
   (defvar ts-default-file-name-handler-alist file-name-handler-alist)
   (setq file-name-handler-alist nil)
 #+end_src
@@ -2776,10 +2783,6 @@ party packages from [[https://melpa.org/][MELPA]].
 
 If we are on an Emacs version lower than "27" this will go in ~init.el~,
 otherwise it goes in [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Early-Init-File.html][early-init.el]] for faster starup.
-
-#+begin_src emacs-lisp :comments no :tangle (if (version< emacs-version "27") "no" early-init)
-  ;; -*- lexical-binding: t; -*-
-#+end_src
 
 #+begin_src emacs-lisp :tangle (if (version< emacs-version "27") init-file early-init)
   ;; This must be true otherwise use-package won't load!

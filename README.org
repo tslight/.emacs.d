@@ -59,7 +59,7 @@ doing so will cause garbage collection freezes during long-term interactive
 use. Conversely, a gc-cons-threshold that is too small will cause
 stuttering. We use 16mb as our default.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") init-file early-init)
   (defun ts-default-gc-cons-settings ()
     (setq gc-cons-threshold 16777216 ; 16mb
           gc-cons-percentage 0.1))
@@ -84,7 +84,7 @@ none of them are (typically) necessary at startup, so we disable them
 Don’t forget to restore file-name-handler-alist, otherwise TRAMP won’t work and
 compressed/encrypted files won’t open.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle (if (version< emacs-version "27") init-file early-init)
   (defun ts-restore-default-file-name-handler-alist ()
     (setq file-name-handler-alist ts-default-file-name-handler-alist))
   (add-hook 'emacs-startup-hook 'ts-restore-default-file-name-handler-alist)
@@ -906,6 +906,36 @@ Increment or decrement numbers at the point.
     (save-excursion
       (sgml-pretty-print (point-min) (point-max))
       (indent-region (point-min) (point-max))))
+#+end_src
+
+** WSL Copy/Paste
+
+#+begin_src emacs-lisp :tangle (if (string-match "-[Mm]icrosoft" operating-system-release) init-file "no")
+  (defun ts-copy-to-windows-clipboard (start end)
+    "Copy region to Window’s clipboard."
+    (interactive "r")
+    (shell-command-on-region start end "clip.exe")
+    (deactivate-mark))
+
+  (defalias 'ts-copy-to-windows-clipboard 'wsl-copy)
+  (global-set-key (kbd "C-c C-w") 'ts-copy-to-windows-clipboard)
+
+  (defun ts-paste-from-windows-clipboard ()
+    "Paste from Window’s clipboard."
+    (interactive)
+    (let ((wslbuffername "wsl-temp-buffer"))
+      (get-buffer-create wslbuffername)
+      (with-current-buffer wslbuffername
+        (insert (let ((coding-system-for-read 'dos))
+                  ;; TODO: put stderr somewhere else
+                  (shell-command
+                   "powershell.exe -command ’Get-Clipboard’ 2> /dev/null"
+                   wslbuffername nil))))
+      (insert-buffer wslbuffername)
+      (kill-buffer wslbuffername)))
+
+  (defalias 'ts-paste-from-windows-clipboard 'wsl-paste)
+  (global-set-key (kbd "C-c y") 'ts-paste-from-windows-clipboard)
 #+end_src
 
 ** COMMENT Yank pop forwards (Emacs<28)
@@ -3165,18 +3195,18 @@ Don't tangle this block if ~system-type~ is ~windows-nt~.
     :hook
     (web-mode . js2-minor-mode)
     :config
-    (setq web-mode-content-type "jsx")
-    (setq web-mode-enable-auto-quoting nil)
-    (setq web-mode-code-indent-offset 2)
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-attr-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (setq web-mode-code-indent-offset 2)
-    (setq web-mode-enable-auto-pairing t)
-    (setq web-mode-enable-css-colorization t)
-    (setq web-mode-enable-block-face t)
-    (setq web-mode-enable-part-face t)
-    (setq web-mode-enable-comment-keywords t)
+    (setq web-mode-content-type "jsx"
+          web-mode-enable-auto-quoting nil
+          web-mode-code-indent-offset 2
+          web-mode-markup-indent-offset 2
+          web-mode-attr-indent-offset 2
+          web-mode-css-indent-offset 2
+          web-mode-code-indent-offset 2
+          web-mode-enable-auto-pairing t
+          web-mode-enable-css-colorization t
+          web-mode-enable-block-face t
+          web-mode-enable-part-face t
+          web-mode-enable-comment-keywords t)
     (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil))
     (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
